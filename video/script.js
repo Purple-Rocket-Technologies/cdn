@@ -189,6 +189,35 @@ var set90 = setInterval(function() {if (watchpercentage > 90) {updateWatchtime(p
 var set96 = setInterval(function() {if (watchpercentage > 96) {updateWatchtime(totalDurationTime, 100);clearInterval(set96);}}, 1000);
 
 
+var set32 = setInterval(function() {
+    if (watchpercentage < 32) {
+        $('.interval_text_item:nth-child(1)').addClass('active');
+        $('.interval_text_item:nth-child(2)').removeClass('active');
+        $('.interval_text_item:nth-child(3)').removeClass('active');
+        clearInterval(set32);
+    }
+}, 1000);
+
+
+var set35 = setInterval(function() {
+    if (watchpercentage > 35) {
+        $('.interval_text_item:nth-child(2)').addClass('active');
+        $('.interval_text_item:nth-child(1)').removeClass('active');
+        $('.interval_text_item:nth-child(3)').removeClass('active');
+        clearInterval(set35);
+    }
+}, 1000);
+
+var set75 = setInterval(function() {
+    if (watchpercentage > 75) {
+        $('.interval_text_item:nth-child(3)').addClass('active');
+        $('.interval_text_item:nth-child(2)').removeClass('active');
+        $('.interval_text_item:nth-child(1)').removeClass('active');
+        clearInterval(set75);
+    }
+}, 1000);
+
+
 // Playpause Functionality
 $('#playpause').click(function(){
     player.getPaused().then(function(paused) {
