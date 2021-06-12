@@ -59,6 +59,7 @@ function toggleVideo(country){
 
     if(country == 'US'){
         player.loadVideo(441446411).then(function(id) {}).catch(function(error) {});
+        player.pause();
         setDuration();
     }
 
@@ -141,6 +142,11 @@ $('#country-es').click(function(){
     toggleVideo('EU');
     Weglot.switchTo('es');
 });  
+
+$('#country-ca-es').click(function(){
+    toggleVideo('EU');
+    Weglot.switchTo('es');
+});
 
 
 //Fullscreen function
