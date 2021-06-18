@@ -73,6 +73,7 @@ function updatePricing(){
     });
 }
 
+//Hello
 
 function setPriceValues() {
     $('#price-setupfee').text("$"+price_array.setupFee);
