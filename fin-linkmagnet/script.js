@@ -76,11 +76,11 @@ function updatePricing(){
 
 function setPriceValues() {
     $('#price-setupfee').text("$"+price_array.setupFee);
-    $('#price-link').text("$"+price_array.invoiceTotal);
+    $('#price-link').text("$"+price_array.subscriptionTotal);
     $('#price-bracelet').text("$"+price_array.braceletsTotal);
     $('#price-shipping').text("$"+price_array.shippingCost); 
-    $('#price-total, #total-price').text("$"+price_array.subscriptionTotal);
-    $('#recurring-price').text("$"+price_array.invoiceTotal); 
+    $('#price-total, #total-price').text("$"+price_array.invoiceTotal);
+    $('#recurring-price').text("$"+price_array.subscriptionTotal); 
 
 
     $('#link-qty').text($('#no-of-links').val());
