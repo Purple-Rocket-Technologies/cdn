@@ -86,7 +86,7 @@ function setPriceValues() {
     $('#link-qty').text($('#no-of-links').val());
     $('#bracelet-qty').text($('#number-of-bracelets').val());
     $('#price-single-bracelet').text("$"+ (price_array.braceletsTotal / $('#number-of-bracelets').val()).toFixed(2));
-    $('#price-single-link').text("$"+ (price_array.invoiceTotal / $('#no-of-links').val()).toFixed(2));
+    $('#price-single-link').text("$"+ (price_array.subscriptionTotal / $('#no-of-links').val()).toFixed(2));
     $('#next-billing-date').text();
 }
 
