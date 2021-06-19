@@ -92,14 +92,12 @@ function setPriceValues() {
 }
 
 
-//onload
-$('.pmt-country').addClass('active');
-$('.pmt-products').addClass('active');
 
 //Activating shipping and continue button
-$('.pmt-radio-field').click(function(){
-    $('.pmt-address').addClass('active');
-    $('.pmt-continue-btn-container').addClass('active');
+$('.pmt-radio-field').click(function(){    
+    $('.trigger-button.cart')[0].click();
+    //$('.pmt-address').addClass('active');
+    //$('.pmt-continue-btn-container').addClass('active');
     setSelectStates($(this).children('input').val());
     selectedCountry = $(this).children('input').val();
 });
