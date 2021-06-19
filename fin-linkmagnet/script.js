@@ -100,6 +100,7 @@ $('.copy-code').click(function(){
     $('#coupon').attr("data-discount",parseInt($('.pmt-discount-percentage').text()));
 });
 
+$('#coupon').attr("data-discount","5");
 
 
 $('.pmt-coupon-button').click(function(){
