@@ -93,11 +93,35 @@ function setPriceValues() {
 
 
 
+//coupon add in field
+$('.copy-code').click(function(){
+    var couponcode = $(this).children('.pmt-coupon-code').text();
+    $('#coupon').val(couponcode);
+    $('#coupon').attr("data-discount",parseInt($('.pmt-discount-percentage').text()));
+});
+
+
+
+$('.pmt-coupon-button').click(function(){
+    $('.coupon-message').addClass('active');
+    
+    var discount_percentage = $('#coupon').attr("data-discount");
+    var discount_price = ((price_array.braceletsTotal)/100)*discount_percentage;
+    var discounted_price_on_bracelet = price_array.braceletsTotal-(((price_array.braceletsTotal)/100)*discount_percentage);
+
+    $('.discount-amout').children('strong').text('$'+parseFloat(discount_price));
+    $('.pmt-total-text.discount').text("- $"+parseFloat(discount_price));
+    $('.pmt-total-text.discounted, #total-price').text("$"+(price_array.invoiceTotal - discount_price));
+
+    //console.log(discount_percentage);
+    //console.log(discount_price);
+    //console.log(discounted_price_on_bracelet);
+});
+
+
 //Activating shipping and continue button
-$('.pmt-radio-field').click(function(){    
-    $('.trigger-button.cart')[0].click();
-    //$('.pmt-address').addClass('active');
-    //$('.pmt-continue-btn-container').addClass('active');
+$('.pmt-radio-field').click(function(){
+    $('.trigger-button.open-address')[0].click(); 
     setSelectStates($(this).children('input').val());
     selectedCountry = $(this).children('input').val();
 });
@@ -158,8 +182,8 @@ $('.continue_btn').click(function(){
 
         $('.continue_btn').addClass('hide');
         $('.edit_btn').addClass('active');
-        $('.pmt-fader').addClass('active');
-        $('.pmt-overview').addClass('active');
+        $('.pmt-fader').addClass('active');        
+        $('.trigger-button.open-cart')[0].click(); 
 
         $([document.documentElement, document.body]).animate({
             scrollTop: $("#add_2").offset().top
@@ -179,7 +203,7 @@ $('.edit_btn').click(function(){
     $('.continue_btn').removeClass('hide');
     $('.edit_btn').removeClass('active');
     $('.pmt-fader').removeClass('active');
-    $('.pmt-overview').removeClass('active');
+    $('.trigger-button.close-cart')[0].click(); 
 
     $([document.documentElement, document.body]).animate({
         scrollTop: 0
