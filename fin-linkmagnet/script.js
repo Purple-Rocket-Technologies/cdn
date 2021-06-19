@@ -104,19 +104,21 @@ $('#coupon').attr("data-discount","5");
 
 
 $('.pmt-coupon-button').click(function(){
-    $('.coupon-message').addClass('active');
+
+    if($('#coupon').val() != ''){
+        $('.coupon-message').addClass('active');
     
-    var discount_percentage = $('#coupon').attr("data-discount");
-    var discount_price = ((price_array.braceletsTotal)/100)*discount_percentage;
-    var discounted_price_on_bracelet = price_array.braceletsTotal-(((price_array.braceletsTotal)/100)*discount_percentage);
+        var discount_percentage = $('#coupon').attr("data-discount");
+        var discount_price = ((price_array.braceletsTotal)/100)*discount_percentage;
+        var discounted_price_on_bracelet = price_array.braceletsTotal-(((price_array.braceletsTotal)/100)*discount_percentage);
 
-    $('.discount-amout').children('strong').text('$'+parseFloat(discount_price));
-    $('.pmt-total-text.discount').text("- $"+parseFloat(discount_price));
-    $('.pmt-total-text.discounted, #total-price').text("$"+(price_array.invoiceTotal - discount_price));
-
-    //console.log(discount_percentage);
-    //console.log(discount_price);
-    //console.log(discounted_price_on_bracelet);
+        $('.discount-amout').children('strong').text('$'+parseFloat(discount_price));
+        $('.pmt-total-text.discount').text("- $"+parseFloat(discount_price));
+        $('.pmt-total-text.discounted, #total-price').text("$"+(price_array.invoiceTotal - discount_price));    
+    } else {
+        alert('Please enter a coupon code.');
+    }
+    
 });
 
 
