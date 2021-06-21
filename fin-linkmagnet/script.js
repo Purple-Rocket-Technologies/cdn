@@ -231,7 +231,7 @@ $('#no-of-links').change(function(){
     .then(function (response) {
         //console.log(response.data.data.data);
         var perlinkprice = response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val());   
-        console.log(perlinkprice);
+        $('.pmt-price-hightlight.link').text("$"+perlinkprice);
     })
     .catch(function (error) {
         console.log(error.status); 
