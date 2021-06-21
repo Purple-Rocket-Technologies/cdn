@@ -228,8 +228,8 @@ $('#no-of-links').change(function(){
         }
     })
     .then(function (response) {
-        linkprice = (response.data.data.data.subscriptionTotal).toFixed(2);   
-        $('.pmt-price-hightlight.link').text("$"+linkprice);
+        var perlinkprice = (response.data.data.data.subscriptionTotal).toFixed(2);   
+        $('.pmt-price-hightlight.link').text("$"+perlinkprice);
     })
     .catch(function (error) {
         console.log(error.status); 
