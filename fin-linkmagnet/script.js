@@ -217,7 +217,7 @@ $('.edit_btn').click(function(){
     }, 1000);
 });
 
-
+/*
 $('#no-of-links').change(function(){
     axios({
         method: 'post',
@@ -269,6 +269,8 @@ $('#select-billing').change(function(){
         $('.per-month').text("/year");
     }
 });
+
+*/
 
 
 
