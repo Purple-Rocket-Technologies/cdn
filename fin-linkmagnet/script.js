@@ -267,3 +267,27 @@ $('#select-billing').change(function(){
         $('.per-month').text("/year");
     }
 });
+
+
+
+$('#number-of-bracelets').keyup(function(){
+    axios({
+        method: 'post',
+        url: get_pricing,
+        data: {
+            planType: $("#select-billing").val(),
+            shippingType: selectedCountry,   
+            qty_links: parseInt($('#no-of-links').val()),
+            qty_bracelets: parseInt($('#number-of-bracelets').val())
+        }
+    })
+    .then(function (response) {
+        braceletprice = parseInt(response.data.data.data.braceletsTotal).toFixed(2);
+        $('.pmt-price-hightlight.bracelet').text("$"+braceletprice);
+    })
+    .catch(function (error) {
+        console.log(error.status); 
+        console.log(error.statusText);
+        alert("Oops, There was an unexpected error."); 
+    });
+});
