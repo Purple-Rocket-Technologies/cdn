@@ -230,14 +230,48 @@ $('#no-of-links').change(function(){
     })
     .then(function (response) {
         //console.log(response.data.data.data);
-        var perlinkprice = response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val());   
-        $('.pmt-price-hightlight.link').text("$"+perlinkprice);
+        var perlinkprice = praseFloat(response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val()));   
+        $('.pmt-price-hightlight .link').text("$"+perlinkprice.toFixed(2));
     })
     .catch(function (error) {
         console.log(error.status); 
         console.log(error.statusText);
         alert("Oops, There was an unexpected error."); 
     });
+});
+
+
+$('#select-billing').change(function(){
+
+    axios({
+        method: 'post',
+        url: get_pricing,
+        data: {
+            planType: $("#select-billing").val(),
+            shippingType: selectedCountry,   
+            qty_links: parseInt($('#no-of-links').val()) 
+        }
+    })
+    .then(function (response) {
+        linkprice = response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val())
+        console.log(linkprice);
+        $('.pmt-price-hightlight.link').text("$"+linkprice.tofixed(2));
+
+        console.log(response.data.data.data.setupFee);
+        //var setupfee = response.data.data.data.setupFee;  
+        //$('.pmt-price-hightlight .setup').text("$"+setupfee);
+    })
+    .catch(function (error) {
+        console.log(error.status); 
+        console.log(error.statusText);
+        alert("Oops, There was an unexpected error."); 
+    });
+
+    if($("#select-billing").val() == "FINTap_Monthly"){
+        $('.per-month').text("month");
+    } else if($("#select-billing").val() == "FINTap_Yearly"){
+        $('.per-month').text("year");
+    }
 });
 
 
