@@ -148,7 +148,7 @@ $('.continue_btn').click(function(){
     //validate all fields
     if($('#no-of-links').val() >= 5){
         if($('#number-of-bracelets').val() != ''){
-            if($('#name').val() != ''){
+            if($('#first-name').val() != '' && $('#last-name').val() != ''){
                 if($('#business-name').val() != ''){
                     if(isEmail($('#business-email').val())){
                         if($('#add_1').val() != ''){
