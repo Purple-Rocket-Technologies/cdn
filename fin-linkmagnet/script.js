@@ -231,7 +231,7 @@ $('#no-of-links').change(function(){
     .then(function (response) {
         //console.log(response.data.data.data);
         var perlinkprice = praseFloat(response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val()));   
-        $('.pmt-price-hightlight .link').text("$"+perlinkprice.toFixed(2));
+        $('.pmt-price-hightlight.link').text("$"+perlinkprice);
     })
     .catch(function (error) {
         console.log(error.status); 
@@ -253,13 +253,9 @@ $('#select-billing').change(function(){
         }
     })
     .then(function (response) {
-        linkprice = response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val())
-        console.log(linkprice);
-        $('.pmt-price-hightlight.link').text("$"+linkprice.tofixed(2));
-
-        console.log(response.data.data.data.setupFee);
-        //var setupfee = response.data.data.data.setupFee;  
-        //$('.pmt-price-hightlight .setup').text("$"+setupfee);
+        linkprice = response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val());
+        $('.pmt-price-hightlight.link').text("$"+linkprice);
+        $('.pmt-price-hightlight.setup').text("$"+response.data.data.data.setupFee);
     })
     .catch(function (error) {
         console.log(error.status); 
@@ -268,9 +264,9 @@ $('#select-billing').change(function(){
     });
 
     if($("#select-billing").val() == "FINTap_Monthly"){
-        $('.per-month').text("month");
+        $('.per-month').text("/month");
     } else if($("#select-billing").val() == "FINTap_Yearly"){
-        $('.per-month').text("year");
+        $('.per-month').text("/year");
     }
 });
 
