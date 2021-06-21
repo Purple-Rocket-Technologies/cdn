@@ -127,6 +127,7 @@ $('.pmt-radio-field').click(function(){
     $('.trigger-button.open-address')[0].click(); 
     setSelectStates($(this).children('input').val());
     selectedCountry = $(this).children('input').val();
+    $('.disable-product').addClass("hide");
 });
 
 // Not letting user enter link number above 100
@@ -139,6 +140,11 @@ $('#number-of-bracelets').keyup(function(){
 // Message on diabled fields
 $('.pmt-fader').click(function(){
     alert("Please click on \"Edit my details\" to change.");
+});
+
+// Message on diabled fields
+$('.disable-product').click(function(){
+    alert("Please select your country first");
 });
 
 $('.continue_btn').click(function(){
@@ -171,7 +177,7 @@ $('.continue_btn').click(function(){
                     alert('Please enter your business name.');
                 }
             } else {
-                alert('Please enter your name.');
+                alert('Please enter your first name and last name.');
             }
         } else {
             alert('Please select no. of bracelets.');
