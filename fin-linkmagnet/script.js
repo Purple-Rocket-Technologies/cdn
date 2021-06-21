@@ -217,7 +217,6 @@ $('.edit_btn').click(function(){
     }, 1000);
 });
 
-/*
 $('#no-of-links').change(function(){
     axios({
         method: 'post',
@@ -229,8 +228,7 @@ $('#no-of-links').change(function(){
         }
     })
     .then(function (response) {
-        //console.log(response.data.data.data);
-        var perlinkprice = praseFloat(response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val()));   
+        var perlinkprice = parseFloat(response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val()));   
         $('.pmt-price-hightlight.link').text("$"+perlinkprice);
     })
     .catch(function (error) {
@@ -269,8 +267,3 @@ $('#select-billing').change(function(){
         $('.per-month').text("/year");
     }
 });
-
-*/
-
-
-
