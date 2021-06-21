@@ -137,6 +137,7 @@ $('#number-of-bracelets').keyup(function(){
     }
 });
 
+// Message on disabled fields
 $('.pmt-fader').click(function(){
     alert("Please click on \"Edit my details\" to change.");
 });
