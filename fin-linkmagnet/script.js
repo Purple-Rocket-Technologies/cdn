@@ -228,7 +228,7 @@ $('#no-of-links').change(function(){
         }
     })
     .then(function (response) {
-        var perlinkprice = parseFloat(response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val()));   
+        var perlinkprice = (response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val())).toFixed(2);   
         $('.pmt-price-hightlight.link').text("$"+perlinkprice);
     })
     .catch(function (error) {
@@ -251,7 +251,7 @@ $('#select-billing').change(function(){
         }
     })
     .then(function (response) {
-        linkprice = response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val());
+        linkprice = (response.data.data.data.subscriptionTotal / parseInt($('#no-of-links').val())).toFixed(2);
         $('.pmt-price-hightlight.link').text("$"+linkprice);
         $('.pmt-price-hightlight.setup').text("$"+response.data.data.data.setupFee);
     })
