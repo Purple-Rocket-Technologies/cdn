@@ -53,7 +53,7 @@ function setSelectStates(country){
 function updatePricing(){
     axios({
         method: 'post',
-        url: "https://devbackendapp.discoverfin.io/api/v1/users/assets/calculateTotal",
+        url: get_pricing,
         data: {
             planType: $("#select-billing").val(),
             shippingType: selectedCountry,
@@ -137,20 +137,17 @@ $('#number-of-bracelets').keyup(function(){
     }
 });
 
-// Message on diabled fields
 $('.pmt-fader').click(function(){
     alert("Please click on \"Edit my details\" to change.");
 });
 
-// Message on diabled fields
+// Message on disabled fields
 $('.disable-product').click(function(){
     alert("Please select your country first");
 });
 
 $('.continue_btn').click(function(){
     isEmail($('#business-email').val());
-    
-
     //validate all fields
     if($('#no-of-links').val() >= 5){
         if($('#number-of-bracelets').val() != ''){
@@ -220,5 +217,28 @@ $('.edit_btn').click(function(){
 });
 
 
+$('#no-of-links').change(function(){
+
+    alert("hello");
+
+    axios({
+        method: 'post',
+        url: get_pricing,
+        data: {
+            planType: $("#select-billing").val(),
+            shippingType: selectedCountry,
+            qty_links: parseInt($('#no-of-links').val())        
+        }
+    })
+    .then(function (response) {
+        //console.log(response.data.data.data);
+        console.log(response.data.data.data);    
+    })
+    .catch(function (error) {
+        console.log(error.status); 
+        console.log(error.statusText);
+        alert("Oops, There was an unexpected error."); 
+    });
+});
 
 
