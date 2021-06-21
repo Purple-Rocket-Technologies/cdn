@@ -219,9 +219,6 @@ $('.edit_btn').click(function(){
 
 
 $('#no-of-links').change(function(){
-
-    alert("hello");
-
     axios({
         method: 'post',
         url: get_pricing,
