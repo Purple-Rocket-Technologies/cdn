@@ -6,7 +6,8 @@ var price_array = [];
 //api list
 var get_states_api = "https://devbackendapp.discoverfin.io/api/v1/users/countriesAndStates/?abbreviation=";
 var get_pricing = "https://devbackendapp.discoverfin.io/api/v1/users/assets/calculateTotal";
-
+var checkCompanyEmail = "https://devbackendapp.discoverfin.io/api/v1/users/checkCompanyUserEmail";
+var createCharge = "https://devbackendapp.discoverfin.io/api/v1/users/createCharge";
 
 //*************************************************//
 //***************Functions declations*************//
@@ -73,16 +74,16 @@ function updatePricing(){
     });
 }
 
-//Hello
 
 function setPriceValues() {
     $('#price-setupfee').text("$"+price_array.setupFee);
     $('#price-link').text("$"+price_array.subscriptionTotal);
     $('#price-bracelet').text("$"+price_array.braceletsTotal);
     $('#price-shipping').text("$"+price_array.shippingCost); 
-    $('#price-total, #total-price').text("$"+price_array.invoiceTotal);
-    $('#recurring-price').text("$"+price_array.subscriptionTotal); 
-
+    $('#price-total, #total-price').text("$"+ parseFloat(price_array.invoiceTotal).toFixed(2));
+    $('#recurring-price').text("$"+price_array.subscriptionTotal);
+    $('.pmt-discount-percentage').text(price_array.coupon.discountPercent); 
+    $('.pmt-coupon-code').text(price_array.coupon.couponCode);   
 
     $('#link-qty').text($('#no-of-links').val());
     $('#bracelet-qty').text($('#number-of-bracelets').val());
@@ -104,17 +105,17 @@ $('#coupon').attr("data-discount","5");
 
 
 $('.pmt-coupon-button').click(function(){
-
     if($('#coupon').val() != ''){
         $('.coupon-message').addClass('active');
     
         var discount_percentage = $('#coupon').attr("data-discount");
         var discount_price = ((price_array.braceletsTotal)/100)*discount_percentage;
-        var discounted_price_on_bracelet = price_array.braceletsTotal-(((price_array.braceletsTotal)/100)*discount_percentage);
+        var discounted_price_on_bracelet = price_array.invoiceTotal - discount_price;
+        price_array.payblePrice = discounted_price_on_bracelet;
 
         $('.discount-amout').children('strong').text('$'+parseFloat(discount_price));
         $('.pmt-total-text.discount').text("- $"+parseFloat(discount_price));
-        $('.pmt-total-text.discounted, #total-price').text("$"+(price_array.invoiceTotal - discount_price));    
+        $('.pmt-total-text.discounted, #total-price').text("$"+ parseFloat(discounted_price_on_bracelet).toFixed(2));    
     } else {
         alert('Please enter a coupon code.');
     }
@@ -146,6 +147,81 @@ $('.pmt-fader').click(function(){
 $('.disable-product').click(function(){
     alert("Please select your country first");
 });
+
+
+$('#no-of-links').change(function(){
+    axios({
+        method: 'post',
+        url: get_pricing,
+        data: {
+            planType: $("#select-billing").val(),
+            shippingType: selectedCountry,
+            qty_links: parseInt($('#no-of-links').val())        
+        }
+    })
+    .then(function (response) {
+        var perlinkprice = parseInt(response.data.data.data.subscriptionTotal).toFixed(2);   
+        $('.pmt-price-hightlight.link').text("$"+perlinkprice);
+    })
+    .catch(function (error) {
+        console.log(error.status); 
+        console.log(error.statusText);
+        alert("Oops, There was an unexpected error."); 
+    });
+});
+
+
+$('#select-billing').change(function(){
+    axios({
+        method: 'post',
+        url: get_pricing,
+        data: {
+            planType: $("#select-billing").val(),
+            shippingType: selectedCountry,   
+            qty_links: parseInt($('#no-of-links').val()) 
+        }
+    })
+    .then(function (response) {
+        linkprice = parseInt(response.data.data.data.subscriptionTotal).toFixed(2);
+        $('.pmt-price-hightlight.link').text("$"+linkprice);
+        $('.pmt-price-hightlight.setup').text("$"+response.data.data.data.setupFee);
+    })
+    .catch(function (error) {
+        console.log(error.status); 
+        console.log(error.statusText);
+        alert("Oops, There was an unexpected error."); 
+    });
+
+    if($("#select-billing").val() == "FINTap_Monthly"){
+        $('.per-month').text("/month");
+    } else if($("#select-billing").val() == "FINTap_Yearly"){
+        $('.per-month').text("/year");
+    }
+});
+
+
+$('#number-of-bracelets').keyup(function(){
+    axios({
+        method: 'post',
+        url: get_pricing,
+        data: {
+            planType: $("#select-billing").val(),
+            shippingType: selectedCountry,   
+            qty_links: parseInt($('#no-of-links').val()),
+            qty_bracelets: parseInt($('#number-of-bracelets').val())
+        }
+    })
+    .then(function (response) {
+        braceletprice = parseInt(response.data.data.data.braceletsTotal).toFixed(2);
+        $('.pmt-price-hightlight.bracelet').text("$"+braceletprice);
+    })
+    .catch(function (error) {
+        console.log(error.status); 
+        console.log(error.statusText);
+        alert("Oops, There was an unexpected error."); 
+    });
+});
+
 
 $('.continue_btn').click(function(){
     isEmail($('#business-email').val());
@@ -210,84 +286,160 @@ $('.edit_btn').click(function(){
     $('.continue_btn').removeClass('hide');
     $('.edit_btn').removeClass('active');
     $('.pmt-fader').removeClass('active');
+    $('.coupon-message').removeClass('active');
+    $('#coupon').val('');
     $('.trigger-button.close-cart')[0].click(); 
+    $('.pmt-total-text.discount').text("- $0.00");
 
     $([document.documentElement, document.body]).animate({
         scrollTop: 0
     }, 1000);
 });
 
-$('#no-of-links').change(function(){
-    axios({
-        method: 'post',
-        url: get_pricing,
+
+
+$('#checkout_btn').click(function(){
+    var email = $('.business-email').val();
+    atomic(checkCompanyEmail, {
+	    method: 'POST',
         data: {
-            planType: $("#select-billing").val(),
-            shippingType: selectedCountry,
-            qty_links: parseInt($('#no-of-links').val())        
-        }
-    })
-    .then(function (response) {
-        var perlinkprice = parseInt(response.data.data.data.subscriptionTotal).toFixed(2);   
-        $('.pmt-price-hightlight.link').text("$"+perlinkprice);
-    })
-    .catch(function (error) {
-        console.log(error.status); 
-        console.log(error.statusText);
-        alert("Oops, There was an unexpected error."); 
-    });
+            'email':''+email,    
+        },
+    }).then(function (response) {
+	    if(response.data.status==200){
+            var checkout_name = $('#first-name').val() + " " + $('#last-name').val();
+            var checkout_company = $('#business-name').val();
+            var checkout_email = $('#business-email').val();
+            $('#checkout_name').text(checkout_name);
+            $('#checkout_company').text(checkout_company);
+            $('#checkout_email').text(checkout_email.toString().toLowerCase());
+            $('#checkout_price').text("$"+ parseFloat(price_array.payblePrice).toFixed(2));
+            $('.trigger-button.open-checkout')[0].click();
+        } else{      	
+            alert('Email already exists');
+		    return false;
+        }    
+    }).catch(function (error) {
+        console.log(error.status);
+	    console.log(error.statusText);
+    });	
 });
 
 
-$('#select-billing').change(function(){
 
-    axios({
-        method: 'post',
-        url: get_pricing,
-        data: {
-            planType: $("#select-billing").val(),
-            shippingType: selectedCountry,   
-            qty_links: parseInt($('#no-of-links').val()) 
-        }
-    })
-    .then(function (response) {
-        linkprice = parseInt(response.data.data.data.subscriptionTotal).toFixed(2);
-        $('.pmt-price-hightlight.link').text("$"+linkprice);
-        $('.pmt-price-hightlight.setup').text("$"+response.data.data.data.setupFee);
-    })
-    .catch(function (error) {
-        console.log(error.status); 
-        console.log(error.statusText);
-        alert("Oops, There was an unexpected error."); 
-    });
 
-    if($("#select-billing").val() == "FINTap_Monthly"){
-        $('.per-month').text("/month");
-    } else if($("#select-billing").val() == "FINTap_Yearly"){
-        $('.per-month').text("/year");
+//*************************************************//
+//***************Stripe Integration***************//
+//***********************************************//
+
+var stripe = Stripe('pk_test_51H9OieCKHZ8kusjLzWw353ZdzHc9Atug0VunuxSd7dR8Dl1e0LDFRGq5GGp4IfjTqQJSRdDKfNtgMSuuyC9P3HpI00OUJLyPof');
+var elements = stripe.elements();
+
+// Custom styling can be passed to options when creating an Element.
+var style = {
+    base: {
+      // Add your base input styles here. For example:
+      fontSize: '16px',
+      color: '#32325d',
+    },
+  };
+  
+// Create an instance of the card Element.
+var card = elements.create('card', {style: style});
+  
+// Add an instance of the card Element into the `card-element` <div>.
+card.mount('#card-element');
+
+// Create a token or display an error when the form is submitted.
+var form = document.getElementById('payment_form');
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    var email= document.getElementById('business-email').value  
+    console.log(email)
+    
+    if(email==''){
+        // console.log("error")
+        alert("Enter Email");
+    } else if(!validateEmail(email)){
+        alert("Email is invalid");
     }
-});
+    else{
 
-
-
-$('#number-of-bracelets').keyup(function(){
-    axios({
-        method: 'post',
-        url: get_pricing,
-        data: {
-            planType: $("#select-billing").val(),
-            shippingType: selectedCountry,   
-            qty_links: parseInt($('#no-of-links').val()),
-            qty_bracelets: parseInt($('#number-of-bracelets').val())
+    // console.log("No error")
+    stripe.createToken(card).then(function(result) {
+        if (result.error) {
+            // Inform the customer that there was an error.
+            var errorElement = document.getElementById('card-errors');
+            errorElement.textContent = result.error.message;
+            // console.log("error true")
+        } else {
+            //console.log(result.token)
+            // Send the token to your server.
+            var apiResult= stripeTokenHandler(result.token);
+            //console.log(apiResult);
         }
-    })
-    .then(function (response) {
-        braceletprice = parseInt(response.data.data.data.braceletsTotal).toFixed(2);
-        $('.pmt-price-hightlight.bracelet').text("$"+braceletprice);
-    })
-    .catch(function (error) {
-        console.log(error.status); 
-        console.log(error.statusText);
-        alert("Oops, There was an unexpected error."); 
     });
+  }
 });
+
+function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+async function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById('payment_form');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+    var email = document.getElementById('business-email').value
+    
+	var todo={
+        advisorEmail: "paymenttest6@test.com",
+        advisorName: "payment tester6",
+        firstName:"payment",
+        lastName:"tester",
+        companyEmail: "paymenttest6@test.com",
+        companyName: "payment Test6 company",
+        desc: "payment Test6 description",
+        pay: "usd",
+        plan: "price_1IzzFsCKHZ8kusjLtYCtQwit",
+        token: "tok_visa",
+        qty_links: 10,
+        qty_bracelets: 10,
+        addressLine1: "back street",
+        addressLine2: "510 block",
+        appartment: "peace towers",
+        city: "Abbeville",
+        state: "Alabama",
+        stateCode: "AL",
+        country: "United States",
+        countryCode: "US",
+        postalCode: "70510",
+        couponCode: "BRACELET_25"
+    }
+    const addedTodo = await addTodo(todo);   
+    
+    if(addedTodo.status===200&&addedTodo.data.success!=undefined&&addedTodo.data.success=='success'&&addedTodo.data.url!=''){
+       	var redirect_url = addedTodo.data.url;
+        window.parent.location = redirect_url;
+		window.location.replace(redirect_url);	
+    } else if(addedTodo.status!=200&&addedTodo.error==true){
+		alert('Your payment was declined. Please try again.');
+	}
+}
+
+const BASE_URL = createCharge;
+const addTodo = async todo => {
+    try {
+        const res = await axios.post(`${BASE_URL}`, todo);
+        const addedTodo = res.data;
+        return addedTodo;
+    } catch (e) {
+        console.error(e);
+    }
+};
+
