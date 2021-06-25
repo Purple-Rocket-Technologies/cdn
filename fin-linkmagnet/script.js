@@ -459,7 +459,7 @@ async function stripeTokenHandler(token) {
 
     const addedTodo = await addTodo(todo);   
     
-    if(addedTodo.status===200&&addedTodo.data.success!=undefined&&addedTodo.data.success=='success'&&addedTodo.data.url!=''){
+    if(addedTodo.status===200&&addedTodo.data.success!=undefined&&addedTodo.data.success=='success'&&addedTodo.data.url!='' || addedTodo.status===204&&addedTodo.data.success!=undefined&&addedTodo.data.success=='success'&&addedTodo.data.url!=''){
        	var redirect_url = addedTodo.data.url;
         console.log(redirect_url);
         window.parent.location = redirect_url;
