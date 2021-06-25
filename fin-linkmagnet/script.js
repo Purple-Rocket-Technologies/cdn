@@ -2,13 +2,17 @@
 var statesList = [];
 var selectedCountry;
 var price_array = [];
+var stripeId;
 
 //api list
 var get_states_api = "https://devbackendapp.discoverfin.io/api/v1/users/countriesAndStates/?abbreviation=";
 var get_pricing = "https://devbackendapp.discoverfin.io/api/v1/users/assets/calculateTotal";
 var checkCompanyEmail = "https://devbackendapp.discoverfin.io/api/v1/users/checkCompanyUserEmail";
 var createCharge = "https://devbackendapp.discoverfin.io/api/v1/users/createCharge";
+var fetchPlan = "https://devbackendapp.discoverfin.io/api/v1/users/plans?planName=";
 
+$('#select-billing option:nth-child(1)').attr("data-stripe","FINTap Monthly");
+$('#select-billing option:nth-child(2)').attr("data-stripe","FINTap Yearly");
 //*************************************************//
 //***************Functions declations*************//
 //***********************************************//
@@ -199,6 +203,22 @@ $('#select-billing').change(function(){
     }
 });
 
+$('#select-billing').change(function(){
+    var selected_element = $(this).find('option:selected'); 
+    var active_plan = selected_element.attr("data-stripe"); 
+    
+    axios({
+        method: 'get',
+        url: fetchPlan + active_plan,        
+    })
+    .then(function (response) {
+        stripeId = response.data.data[0].stripeId;
+    })
+    .catch(function (error) {
+        console.log(error.status); 
+        console.log(error.statusText);
+    });
+});
 
 $('#number-of-bracelets').keyup(function(){
     axios({
@@ -332,6 +352,21 @@ $('#checkout_btn').click(function(){
 //***************Stripe Integration***************//
 //***********************************************//
 
+
+$('#payment_submit_btn').click(function(){
+    setTimeout(function(){
+        if($('.StripeElement').hasClass('StripeElement--invalid') == true){
+    	        // Do nothing
+        } else {
+    	    if($('#checkbox').prop('checked') == true){
+  	            $('.payment_loader').addClass('show');	          
+	        } else {
+  	       	    alert('Please agree to the terms and conditions.');     
+	        }   	
+        }
+    }, 500);      
+});
+
 var stripe = Stripe('pk_test_51H9OieCKHZ8kusjLzWw353ZdzHc9Atug0VunuxSd7dR8Dl1e0LDFRGq5GGp4IfjTqQJSRdDKfNtgMSuuyC9P3HpI00OUJLyPof');
 var elements = stripe.elements();
 
@@ -397,37 +432,40 @@ async function stripeTokenHandler(token) {
     form.appendChild(hiddenInput);
     var email = document.getElementById('business-email').value
     
-	var todo={
-        advisorEmail: "paymenttest6@test.com",
-        advisorName: "payment tester6",
-        firstName:"payment",
-        lastName:"tester",
-        companyEmail: "paymenttest6@test.com",
-        companyName: "payment Test6 company",
-        desc: "payment Test6 description",
+	var todo = {
+        advisorEmail: $('#business-email').val(),
+        advisorName: $('#business-name').val(),
+        firstName: $('#first-name').val(),
+        lastName:$('#last-name').val(),
+        companyEmail: $('#business-email').val(),
+        companyName: $('#business-name').val(),
+        desc: "payment",
         pay: "usd",
-        plan: "price_1IzzFsCKHZ8kusjLtYCtQwit",
+        plan: stripeId,
         token: "tok_visa",
-        qty_links: 10,
-        qty_bracelets: 10,
-        addressLine1: "back street",
-        addressLine2: "510 block",
+        qty_links: $('#no-of-links').val() ,
+        qty_bracelets: $('#number-of-bracelets').val(),
+        addressLine1: $('#add_1').val(),
+        addressLine2: $('#add_2').val(),
         appartment: "peace towers",
-        city: "Abbeville",
-        state: "Alabama",
-        stateCode: "AL",
+        city: $('#city').val(),
+        state: $('#state').val(),
+        stateCode: $('#state').val(),
         country: "United States",
         countryCode: "US",
-        postalCode: "70510",
-        couponCode: "BRACELET_25"
+        postalCode: $('#zip').val(),
+        couponCode: $('#coupon').val()
     }
+
     const addedTodo = await addTodo(todo);   
     
     if(addedTodo.status===200&&addedTodo.data.success!=undefined&&addedTodo.data.success=='success'&&addedTodo.data.url!=''){
        	var redirect_url = addedTodo.data.url;
+        console.log(redirect_url);
         window.parent.location = redirect_url;
 		window.location.replace(redirect_url);	
     } else if(addedTodo.status!=200&&addedTodo.error==true){
+        $('.payment_loader').removeClass('show');
 		alert('Your payment was declined. Please try again.');
 	}
 }
@@ -442,4 +480,7 @@ const addTodo = async todo => {
         console.error(e);
     }
 };
+
+
+
 
