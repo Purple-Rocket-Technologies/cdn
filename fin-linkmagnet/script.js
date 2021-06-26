@@ -1,6 +1,7 @@
 //Variable Declaration
 var statesList = [];
 var selectedCountry;
+var selectedCountryName;
 var price_array = [];
 var stripeId;
 
@@ -99,8 +100,8 @@ function setPriceValues() {
 
 
 //coupon add in field
-$('.copy-code').click(function(){
-    var couponcode = $(this).children('.pmt-coupon-code').text();
+$('.copy-code, .pmt-coupon-container').click(function(){
+    var couponcode = $('.pmt-coupon-code').text();
     $('#coupon').val(couponcode);
     $('#coupon').attr("data-discount",parseInt($('.pmt-discount-percentage').text()));
 });
@@ -132,6 +133,7 @@ $('.pmt-radio-field').click(function(){
     $('.trigger-button.open-address')[0].click(); 
     setSelectStates($(this).children('input').val());
     selectedCountry = $(this).children('input').val();
+    selectedCountryName = $(this).children('input').attr('data-country-name');
     $('.disable-product').addClass("hide");
 });
 
@@ -164,8 +166,12 @@ $('#no-of-links').change(function(){
         }
     })
     .then(function (response) {
-        var perlinkprice = parseInt(response.data.data.data.subscriptionTotal).toFixed(2);   
-        $('.pmt-price-hightlight.link').text("$"+perlinkprice);
+        if($('#no-of-links').val() != ''){
+            var perlinkprice = parseInt(response.data.data.data.subscriptionTotal).toFixed(2);   
+            $('.pmt-price-hightlight.link').text("$"+perlinkprice);
+        } else {
+            $('.pmt-price-hightlight.link').text("$75.00");
+        }
     })
     .catch(function (error) {
         console.log(error.status); 
@@ -354,18 +360,24 @@ $('#checkout_btn').click(function(){
 
 
 $('#payment_submit_btn').click(function(){
+    $('#pay_now').trigger('click');			
+});
+
+
+$('#payment_submit_btn').click(function(){
     setTimeout(function(){
         if($('.StripeElement').hasClass('StripeElement--invalid') == true){
     	        // Do nothing
         } else {
     	    if($('#checkbox').prop('checked') == true){
-  	            $('.payment_loader').addClass('show');	          
+                $('.payment_loader').addClass('show');                         
 	        } else {
   	       	    alert('Please agree to the terms and conditions.');     
 	        }   	
         }
     }, 500);      
 });
+
 
 var stripe = Stripe('pk_test_51H9OieCKHZ8kusjLzWw353ZdzHc9Atug0VunuxSd7dR8Dl1e0LDFRGq5GGp4IfjTqQJSRdDKfNtgMSuuyC9P3HpI00OUJLyPof');
 var elements = stripe.elements();
@@ -387,6 +399,7 @@ card.mount('#card-element');
 
 // Create a token or display an error when the form is submitted.
 var form = document.getElementById('payment_form');
+
 form.addEventListener('submit', function(event) {
     event.preventDefault();
     var email= document.getElementById('business-email').value  
@@ -410,7 +423,7 @@ form.addEventListener('submit', function(event) {
         } else {
             //console.log(result.token)
             // Send the token to your server.
-            var apiResult= stripeTokenHandler(result.token);
+            var apiResult = stripeTokenHandler(result.token);
             //console.log(apiResult);
         }
     });
@@ -449,10 +462,10 @@ async function stripeTokenHandler(token) {
         addressLine2: $('#add_2').val(),
         appartment: "peace towers",
         city: $('#city').val(),
-        state: $('#state').val(),
+        state: $('#state').find('option:selected').text(),
         stateCode: $('#state').val(),
-        country: "United States",
-        countryCode: "US",
+        country: selectedCountryName,
+        countryCode: selectedCountry,
         postalCode: $('#zip').val(),
         couponCode: $('#coupon').val()
     }
