@@ -200,7 +200,7 @@ var set32 = setInterval(function() {
 
 
 var set35 = setInterval(function() {
-    if (watchpercentage > 35) {
+    if (watchpercentage > 67) {
         $('.interval_text_item:nth-child(2)').addClass('active');
         $('.interval_text_item:nth-child(1)').removeClass('active');
         $('.interval_text_item:nth-child(3)').removeClass('active');
@@ -209,7 +209,7 @@ var set35 = setInterval(function() {
 }, 1000);
 
 var set75 = setInterval(function() {
-    if (watchpercentage > 75) {
+    if (watchpercentage > 96) {
         $('.interval_text_item:nth-child(3)').addClass('active');
         $('.interval_text_item:nth-child(2)').removeClass('active');
         $('.interval_text_item:nth-child(1)').removeClass('active');
@@ -273,19 +273,19 @@ $('.submit').click(function(){
 //Validating the link
 var user = getUrlParameter('user');
 var company = getUrlParameter('company');
+
 atomic('https://'+ api_url +'/api/v1/users/getCompany/name/'+company+'/'+user, {
 	method: 'GET',
 })
 .then(function (response) {					
     if(response.data.error==true){
     	console.log('Error');
-        $('.fourofour').addClass('show');			
+        $('.fourofour').addClass('show');	       
     }
     else{      	
-    	$('.main-app-container').addClass("show");				
-      	setCookies('ID', '5ffad0eec1a43000062da9c6');	
-		setCookies('USER_ID', '606c0c41421ef10006752b4b');				
-        //$(document).prop('title', 'DiscoverFIN');
+    	$('.main-app-container').addClass("show");		
+      	setCookies('ID', response.data.data.companyId);	
+		setCookies('USER_ID', response.data.data.userId);
 		console.clear();
     }
 })
@@ -352,7 +352,7 @@ function checkVideoProspect() {
             setCookies('USER_NAME', $('#fname').val());                                    
             toggleVideo(response.data.data[0].country);
 
-            $('.success-msg-text').text('Welcome back ' + response.data.data[0].firstName + '! Enjoy your video');
+            $('.success-msg-text').text('Welcome ' + response.data.data[0].firstName + '! Enjoy your video');
             $(function() {$('.nav-bullet-dot:nth-child(2)').click(function() {this.click();}).click();});
     		$("*").scrollTop(0);
         } else {
