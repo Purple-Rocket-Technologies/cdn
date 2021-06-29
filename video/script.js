@@ -286,6 +286,9 @@ atomic('https://'+ api_url +'/api/v1/users/getCompany/name/'+company+'/'+user, {
     	$('.main-app-container').addClass("show");		
       	setCookies('ID', response.data.data.companyId);	
 		setCookies('USER_ID', response.data.data.userId);
+        setCookies('PIC', response.data.data.profilePic);
+        setCookies('NAME', response.data.data.firstName);
+        setCookies('LINK', response.data.data.appointmentBookingLink);
 		console.clear();
     }
 })
