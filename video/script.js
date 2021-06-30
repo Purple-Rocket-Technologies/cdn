@@ -364,8 +364,8 @@ function checkVideoProspect() {
         }     
     })
     .catch(function (error) {
-        console.log(error.status); 
-        console.log(error.statusText);
+        //console.log(error.status); 
+        //console.log(error.statusText);
         error_show("Oops, There was an unexpected error."); 
     });	
 }
@@ -376,39 +376,41 @@ atomic('https://'+ api_url +'/api/v1/users/company/' + readCookie("ID") +'/video
         method: 'PUT',
         data: {
             'watchedTime': time,
-            'watchPercentage': percentage
+            'watchPercentage': percentage,
+            'totalVideoTime': totalDurationTime
         },
     })
     .then(function (response) {
-    	console.log(response.data);
-    	console.log(response.xhr);
+    	//console.log(response.data);
+    	//console.log(response.xhr);
     })
     .catch(function (error) {
-    	console.log(error.status); 
-    	console.log(error.statusText);        
+    	//console.log(error.status); 
+    	//console.log(error.statusText);        
     });
 }
 
 
 // Update path
-function updatepath(path){
+function updatepath(path, redirect_url){
     atomic('https://'+ api_url +'/api/v1/users/company/' + readCookie("ID") +'/videoProspects/' + readCookie("VIDEO_PROSPECT_ID"), {
             method: 'PUT',
             data: {
                 "pathChoosen": path
             },
         })
-        .then(function (response) {
-            console.log(response.data);
-            console.log(response.xhr);
-        })
-        .catch(function (error) {
-            console.log(error.status); 
-            console.log(error.statusText);        
-        });
+    .then(function (response) {
+        //console.log(response.data);
+        //console.log(response.xhr);
+        window.location = "/"+redirect_url;
+    })
+    .catch(function (error) {
+            //console.log(error.status); 
+            //console.log(error.statusText);        
+    });
 }
 
 
-$('#path_1').click(function(){updatepath("Path 1")});
-$('#path_2').click(function(){updatepath("Path 2")});
-$('#path_3').click(function(){updatepath("Path 3")});
+$('#path-1').click(function(){updatepath("Path 1", "path-1")});
+$('#path-2').click(function(){updatepath("Path 2", "path-2")});
+$('#path-3').click(function(){updatepath("Path 3", "path-3")});
