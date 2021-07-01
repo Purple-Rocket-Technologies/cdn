@@ -54,7 +54,7 @@ $('.submit').click(function(){
         atomic(put_api, {
             method: 'PUT',
             data: {
-                'interests': ['Paying of Credit Cards / Student Loans']
+                'interests': mcq
             },
         })
         .then(function (response) {
