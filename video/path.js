@@ -49,7 +49,7 @@ $('.checkbox-field').click(function(){
     }    
 });
 
-$('.submit').click(function(){
+/* $('.submit').click(function(){
     if(mcq.length != 0){
         atomic(put_api, {
             method: 'PUT',
@@ -69,12 +69,32 @@ $('.submit').click(function(){
     } else {
         alert('Please select at least one option');
     }
+}); */
+
+
+$('.submit').click(function(){
+    if(mcq.length != 0){
+        axios({
+            method: 'put',
+            url: put_api,
+            data: {
+                interests: mcq        
+            }
+        })
+        .then(function (response) {
+            console.log(response.data);
+            $(function() {$('.dummy_submit').click(function() {this.click();}).click();});
+        })
+        .catch(function (error) {
+            console.log(error.status); 
+            console.log(error.statusText);
+            alert("Oops, There was an unexpected error."); 
+        });      
+    } else {
+        alert('Please select at least one option');
+    }
 });
-
    
-
-
-
 
 
 
