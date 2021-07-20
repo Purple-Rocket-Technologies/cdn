@@ -307,6 +307,7 @@ function createVideoProspect(){
             'firstName': $("#fname").val(),
             'lastName': $("#lname").val(),
 
+            'email': $("#email").val(),
             'phone': Inputmask.unmask($('#phone').val(), { mask: "(999) 999-9999" }),
             'country': $("#country").val(),
             
