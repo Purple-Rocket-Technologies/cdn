@@ -3,7 +3,7 @@ var totalDurationTime;
 var watchpercentage;    
 var currentTiming;
 var playerinitialized = 0;
-var api_url = 'devbackendapp.discoverfin.io';
+var api_url = environment;
 
 //*******************************/
 //********ALL FUNCTIONS *********/
