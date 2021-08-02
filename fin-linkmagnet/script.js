@@ -325,11 +325,12 @@ $('.edit_btn').click(function(){
 
 
 $('#checkout_btn').click(function(){
-    var email = $('.business-email').val();
+    var email = $('#business-email').val();
+
     atomic(checkCompanyEmail, {
 	    method: 'POST',
         data: {
-            'email':''+email,    
+            'email': email    
         },
     }).then(function (response) {
 	    if(response.data.status==200){
