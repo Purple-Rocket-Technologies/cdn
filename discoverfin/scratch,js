@@ -86,7 +86,7 @@
           setTimeout(function(){
             $('.fin-body').addClass('active');            
           }, 1000);
-        }, 2000);
+        }, 1000);
         $('#confetti_btn')[0].click();  
       }
     }
