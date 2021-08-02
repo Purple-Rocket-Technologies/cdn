@@ -2,8 +2,6 @@ var videoprospectid = readCookie('VIDEO_PROSPECT_ID');
 var companyId = readCookie('ID');
 var options;
 
-
-
 var get_api = "https://" + environment + "/api/v1/users/videoProspects/paths/?name=" + $('.path-heading').text();
 var put_api = "https://" + environment + "/api/v1/users/company/" + companyId + "/videoProspects/" +  videoprospectid;
 
