@@ -451,6 +451,7 @@ async function stripeTokenHandler(token) {
 	var todo = {
         advisorEmail: $('#business-email').val(),
         advisorName: $('#business-name').val(),
+        phone: $('#business-phone').val(),
         firstName: $('#first-name').val(),
         lastName:$('#last-name').val(),
         companyEmail: $('#business-email').val(),
@@ -470,7 +471,7 @@ async function stripeTokenHandler(token) {
         country: selectedCountryName,
         countryCode: selectedCountry,
         postalCode: $('#zip').val(),
-        couponCode: $('#coupon').val()
+        couponCode: $('#coupon').val()        
     }
 
     const addedTodo = await addTodo(todo);   
