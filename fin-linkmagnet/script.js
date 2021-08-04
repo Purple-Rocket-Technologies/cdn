@@ -20,12 +20,13 @@ $('#select-billing option:nth-child(2)').attr("data-stripe","FINTap Yearly");
 //***********************************************//
 
 
+//Masking phone field
+$('#phone').inputmask("(999) 999-9999");
+
 function isEmail(email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(email);
 }
-
-
 
 function setSelectStates(country){    
     //emptying already added options
