@@ -5,12 +5,13 @@ var selectedCountryName;
 var price_array = [];
 var stripeId;
 
+
 //api list
-var get_states_api = "https://devbackendapp.discoverfin.io/api/v1/users/countriesAndStates/?abbreviation=";
-var get_pricing = "https://devbackendapp.discoverfin.io/api/v1/users/assets/calculateTotal";
-var checkCompanyEmail = "https://devbackendapp.discoverfin.io/api/v1/users/checkCompanyUserEmail";
-var createCharge = "https://devbackendapp.discoverfin.io/api/v1/users/createCharge";
-var fetchPlan = "https://devbackendapp.discoverfin.io/api/v1/users/plans?planName=";
+var get_states_api = "https://"+api_url+"/api/v1/users/countriesAndStates/?abbreviation=";
+var get_pricing = "https://"+api_url+"/api/v1/users/assets/calculateTotal";
+var checkCompanyEmail = "https://"+api_url+"/api/v1/users/checkCompanyUserEmail";
+var createCharge = "https://"+api_url+"/api/v1/users/createCharge";
+var fetchPlan = "https://"+api_url+"/api/v1/users/plans?planName=";
 
 $('#select-billing option:nth-child(1)').attr("data-stripe","FINTap Monthly");
 $('#select-billing option:nth-child(2)').attr("data-stripe","FINTap Yearly");
