@@ -419,33 +419,18 @@ form.addEventListener('submit', function (event) {
             type: 'card',
             card: card,
             billing_details: {
-                name: $('#name-on-card').val(),               
+                name: $('#name-on-card').val(),
             },
         }).then(function (result) {
             // Handle result.error or result.paymentMethod
-            if(result.error){
+            if (result.error) {
                 var errorElement = document.getElementById('card-errors');
                 errorElement.textContent = result.error.message;
             } else {
                 console.log(result.paymentMethod);
-                return;
+                var apiResult = stripeTokenHandler(result.paymentMethod);
             }
         });
-
-        // console.log("No error")
-        // stripe.createToken(card).then(function (result) {
-        //     if (result.error) {
-        //         // Inform the customer that there was an error.
-        //         var errorElement = document.getElementById('card-errors');
-        //         errorElement.textContent = result.error.message;
-        //         // console.log("error true")
-        //     } else {
-        //         //console.log(result.token)
-        //         // Send the token to your server.
-        //         var apiResult = stripeTokenHandler(result.token);
-        //         //console.log(apiResult);
-        //     }
-        // });
 
     }
 });
