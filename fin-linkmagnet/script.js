@@ -419,18 +419,33 @@ form.addEventListener('submit', function (event) {
             type: 'card',
             card: card,
             billing_details: {
-                name: $('#name-on-card').val(),
+                name: $('#name-on-card').val(),               
             },
         }).then(function (result) {
             // Handle result.error or result.paymentMethod
-            if (result.error) {
+            if(result.error){
                 var errorElement = document.getElementById('card-errors');
                 errorElement.textContent = result.error.message;
             } else {
                 console.log(result.paymentMethod);
-                var apiResult = stripeTokenHandler(result.paymentMethod);
+                var apiResult = stripeTokenHandler(result.paymentMethod);                
             }
         });
+
+        // console.log("No error")
+        // stripe.createToken(card).then(function (result) {
+        //     if (result.error) {
+        //         // Inform the customer that there was an error.
+        //         var errorElement = document.getElementById('card-errors');
+        //         errorElement.textContent = result.error.message;
+        //         // console.log("error true")
+        //     } else {
+        //         //console.log(result.token)
+        //         // Send the token to your server.
+        //         var apiResult = stripeTokenHandler(result.token);
+        //         //console.log(apiResult);
+        //     }
+        // });
 
     }
 });
@@ -442,12 +457,14 @@ function validateEmail(email) {
 
 async function stripeTokenHandler(token) {
     // Insert the token ID into the form so it gets submitted to the server
+    console.log("Token handler started");
+
     var form = document.getElementById('payment_form');
-    var hiddenInput = document.createElement('input');
-    hiddenInput.setAttribute('type', 'hidden');
-    hiddenInput.setAttribute('name', 'stripeToken');
-    hiddenInput.setAttribute('value', token.id);
-    form.appendChild(hiddenInput);
+    // var hiddenInput = document.createElement('input');
+    // hiddenInput.setAttribute('type', 'hidden');
+    // hiddenInput.setAttribute('name', 'stripeToken');
+    // hiddenInput.setAttribute('value', token.id);
+    // form.appendChild(hiddenInput);
     var email = document.getElementById('business-email').value
 
     var todo = {
@@ -492,6 +509,7 @@ async function stripeTokenHandler(token) {
 const BASE_URL = createCharge;
 const addTodo = async todo => {
     try {
+        console.log("CreateCharge API called");
         const res = await axios.post(`${BASE_URL}`, todo);
         const addedTodo = res.data;
         return addedTodo;
