@@ -23,6 +23,21 @@ $('#select-billing option:nth-child(2)').attr("data-stripe", "FINTap Yearly");
 //Masking phone field
 $('#business-phone').inputmask("(999) 999-9999");
 
+
+// Setting plan on page load
+axios({
+    method: 'get',
+    url: fetchPlan + 'FINTap Monthly',
+}).then(function (response) {
+    console.log("fetched started");
+    stripeId = response.data.data[0].stripeId;
+    
+}).catch(function (error) {
+    console.log(error.status);
+    console.log(error.statusText);
+});
+
+
 function isEmail(email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(email);
@@ -192,17 +207,16 @@ $('#select-billing').change(function () {
             shippingType: selectedCountry,
             qty_links: parseInt($('#no-of-links').val())
         }
-    })
-        .then(function (response) {
-            linkprice = parseInt(response.data.data.data.subscriptionTotal).toFixed(2);
-            $('.pmt-price-hightlight.link').text("$" + linkprice);
-            $('.pmt-price-hightlight.setup').text("$" + response.data.data.data.setupFee);
-        })
-        .catch(function (error) {
-            console.log(error.status);
-            console.log(error.statusText);
-            alert("Oops, There was an unexpected error.");
-        });
+    }).then(function (response) {
+        linkprice = parseInt(response.data.data.data.subscriptionTotal).toFixed(2);
+        $('.pmt-price-hightlight.link').text("$" + linkprice);
+        $('.pmt-price-hightlight.setup').text("$" + response.data.data.data.setupFee);
+
+    }).catch(function (error) {
+        console.log(error.status);
+        console.log(error.statusText);
+        alert("Oops, There was an unexpected error.");
+    });
 
     if ($("#select-billing").val() == "FINTap_Monthly") {
         $('.per-month').text("/month");
@@ -218,15 +232,14 @@ $('#select-billing').change(function () {
     axios({
         method: 'get',
         url: fetchPlan + active_plan,
-    })
-        .then(function (response) {
-            stripeId = response.data.data[0].stripeId;
-        })
-        .catch(function (error) {
-            console.log(error.status);
-            console.log(error.statusText);
-        });
+    }).then(function (response) {
+        stripeId = response.data.data[0].stripeId;
+    }).catch(function (error) {
+        console.log(error.status);
+        console.log(error.statusText);
+    });
 });
+
 
 $('#number-of-bracelets').keyup(function () {
     axios({
@@ -517,7 +530,6 @@ const addTodo = async todo => {
         console.error(e);
     }
 };
-
 
 
 
