@@ -3,6 +3,7 @@ function isEmail(e) {
     e
   );
 }
+
 $(".button_blocker.email").click(function () {
   alert("Please enter a correct email");
 });
