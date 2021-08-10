@@ -18,3 +18,7 @@ var rep_email = readCookie('EMAIL');
 $('#email_id').text(rep_email);
 
 $('.apt-rep-image').css("background-image","url('"+ readCookie('PIC')+"')");
+
+$('.closer-last').click(function(){
+    $('#window_frame').attr("src","/appointment");
+});
