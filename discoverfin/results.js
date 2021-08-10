@@ -1,5 +1,3 @@
-import "https://teamepyc.github.io/cdn/discoverfin/js/scratch.js";
-
 //reading cookies
 var fin_num = addCommas(parseInt(readCookie("FIN Number")));
 $("#fin_number").html("$" + fin_num);
