@@ -90,8 +90,10 @@
             }, 1000);
           }, 2000); 
         } else {
-          $('.fin-heading-title').addClass('hide');
-          $('.fin-body').addClass('active');      
+          setTimeout(function(){
+            $('.fin-heading-title').addClass('hide');
+            $('.fin-body').addClass('active');            
+          }, 1000);          
         }
 
         $('#confetti_btn')[0].click();  
