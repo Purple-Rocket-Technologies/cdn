@@ -262,16 +262,16 @@ $("#submit_btn").click(function () {
     data: {
       "Unique-Id": unique_id,
       "User-Id": user_id,
-      Name: name,
-      Age: age,
+      "Name": name,
+      "Age": age,
       "Retirement-Age": retirement_age,
       "Annual-Income-after-inflation": income_after_inflation,
       "Annual-Income-before-Inflation": income_befor_inflation,
       "Pension-Choice": pension_choice,
       "Guessed-FIN": guessed_fin,
-      Email: email,
+      "Email": email,
       "Fin-Number": fin_number,
-      country: country_name,
+      "country": country_name,
     },
   })
     .then(function (response) {
