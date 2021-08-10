@@ -14,9 +14,9 @@ $(".button_blocker.check").click(function () {
 
 $(".text-field.email").keyup(function () {
     if(isEmail($(this).val())){
-      $(".button_blocker").addClass("hide");      
+      $(".button_blocker.email").addClass("hide");      
     } else {
-      $(".button_blocker").removeClass("hide");  
+      $(".button_blocker.email").removeClass("hide");  
     }  
 });
 
