@@ -80,13 +80,20 @@
         //$('.cntext').addClass('cntxt_visible');
         $('.body').addClass('result');
         $('.scratch_legen').addClass('hide');
-        setTimeout(function(){
-          //$('.chatter').addClass('active');
-          $('.fin-heading-title').addClass('hide');
+
+        var pageWidth = $(window).width();
+        if (pageWidth > 1024) {    
           setTimeout(function(){
-            $('.fin-body').addClass('active');            
-          }, 1000);
-        }, 2000);
+            $('.fin-heading-title').addClass('hide');
+            setTimeout(function(){
+              $('.fin-body').addClass('active');            
+            }, 1000);
+          }, 2000); 
+        } else {
+          $('.fin-heading-title').addClass('hide');
+          $('.fin-body').addClass('active');      
+        }
+
         $('#confetti_btn')[0].click();  
       }
     }
@@ -122,3 +129,5 @@
     }
     
   })();
+
+
