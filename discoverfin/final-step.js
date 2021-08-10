@@ -1,5 +1,5 @@
-var height = ($(".video_placeholder-2").width() / 16) * 9;
-$(".video_placeholder-2").height(height);
+var height = ($(".video_placeholder").width() / 16) * 9;
+$(".video_placeholder").height(height);
 
 // Reading name cookie
 var user_name = readCookie("Name");
