@@ -31,6 +31,23 @@ function initializeVar() {
   default_death_age = 0;
 }
 
+
+$(".button_blocker.email").click(function () {
+  alert("Please enter a correct email");
+});
+
+$(".button_blocker.check").click(function () {
+  alert("Please accept the terms and conditions");
+});
+
+$(".text-field.email").keyup(function () {
+    if(isEmail($(this).val())){
+      $(".button_blocker").addClass("hide");      
+    } else {
+      $(".button_blocker").removeClass("hide");  
+    }  
+});
+
 $("#guessed_fin").val("skipped");
 
 $("#user_name").keyup(function () {
@@ -299,11 +316,10 @@ function isEmail(e) {
     e
   );
 }
-$(".button_blocker").click(function () {
-  alert("Please enter a correct email");
-}),
-  $(".text-field.email").keyup(function () {
-    isEmail($(this).val())
-      ? $(".button_blocker").addClass("hide")
-      : $(".button_blocker").removeClass("hide");
-  });
+
+
+
+
+
+
+  
