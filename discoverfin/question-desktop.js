@@ -30,7 +30,9 @@ function initializeVar() {
   avg_retirement_age = 0;
   default_death_age = 0;
 }
+
 $("#guessed_fin").val("skipped");
+
 $("#user_name").keyup(function () {
   var var_name = $(this).val();
   if (var_name.length > 1) {
