@@ -3,14 +3,23 @@ function isEmail(e) {
     e
   );
 }
-$(".button_blocker").click(function () {
+$(".button_blocker.email").click(function () {
   alert("Please enter a correct email");
-}),
-  $(".text-field.email").keyup(function () {
-    isEmail($(this).val())
-      ? $(".button_blocker").addClass("hide")
-      : $(".button_blocker").removeClass("hide");
-  });
+});
+
+$(".button_blocker.check").click(function () {
+  alert("Please accept the terms and conditions");
+});
+
+$(".text-field.email").keyup(function () {
+    if(isEmail($(this).val())){
+      $(".button_blocker").addClass("hide");      
+    } else {
+      $(".button_blocker").removeClass("hide");  
+    }  
+});
+
+
 var unique_url = "mayank";
 var user_url = "mayank";
 var user_id = "1n6kcukwtrg";
@@ -31,6 +40,9 @@ function initializeVar() {
   avg_retirement_age = 0;
   default_death_age = 0;
 }
+
+
+
 
 $("#guessed_fin").val("skipped");
 
