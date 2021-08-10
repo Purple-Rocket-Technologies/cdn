@@ -59,12 +59,6 @@ atomic('https://' + api_url + '/api/v1/users/getCompany/name/' + company + '/' +
     });
 
 
-var pageWidth = $(window).width();
-if (pageWidth < 1024) {    
-    var height = (($('.video_placeholder').width() / 16) * 9);
-    $('.video_placeholder').height(height);
-}
-
 
 var iframe = document.getElementById('video');
 var player = new Vimeo.Player(iframe);
