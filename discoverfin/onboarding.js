@@ -58,7 +58,6 @@ atomic('https://' + api_url + '/api/v1/users/getCompany/name/' + company + '/' +
         console.log(error.statusText); // xhr.statusText
     });
 
-// <script src="https://player.vimeo.com/api/player.js"></script>
 
 var height = (($('.video_placeholder').width() / 16) * 9);
 $('.video_placeholder').height(height);
