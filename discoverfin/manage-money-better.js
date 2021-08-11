@@ -33,9 +33,9 @@ var answer_array_2 = [$("#ques_2").text()];
 var answer_array_3 = [$("#ques_3").text()];
 var answer_array_4 = [$("#ques_4").text()];
 var answer_array_5 = [$("#ques_5").text()];
+
+
 // Question 5
-
-
 $('#Slide_2 .check').click(function () {
     var get_value = $(this).children('.check_box').siblings("div").html();
     check_element = $(this).children('.check_box').children('.extended_tick');
@@ -136,7 +136,8 @@ $('#Slide_5 .toggle_option').click(function () {
             } else {
                 $('#Slide_5 .next_btn').addClass('active');
                 answer_array_value = 'No one & have ' + $('#nos_child').val() + ' childrens';
-                answer_array_4.splice(answer_array_4.indexOf(answer_array_value), 1);
+                answer_array_4 = [];
+                answer_array_4.push($("#ques_4").text());
                 answer_array_4.push(answer_array_value);
             }
         });
@@ -206,6 +207,19 @@ $('#Slide_2 .next_btn').click(function () {
 
 
 
+//turning arrays into strings
+function array_to_string(array_item){
+    var stringy = "";
+    for(i=0;i<array_item.length;i++){
+        stringy = stringy + array_item[i];
+        if(i < array_item.length-1){
+            stringy = stringy + " * ";    
+        }
+    }
+    return stringy;
+}
+
+
 //Submitting Form
 
 $('#submit_btn').click(function () {
@@ -223,13 +237,11 @@ $('#submit_btn').click(function () {
     fin_number = readCookie('FIN Number');
     country_name = readCookie('Country');
     route_selection = readCookie('Route Selection');
-    ques_1 = answer_array_1;
-    ques_2 = answer_array_2;
-    ques_3 = answer_array_3;
-    ques_4 = answer_array_4;
-    ques_5 = answer_array_5;
-
-
+    ques_1 = array_to_string(answer_array_1);
+    ques_2 = array_to_string(answer_array_2);
+    ques_3 = array_to_string(answer_array_3);
+    ques_4 = array_to_string(answer_array_4);
+    ques_5 = array_to_string(answer_array_5);
 
     atomic('https://' + api_url + '/api/v1/users/submit/form', {
         method: 'POST',
