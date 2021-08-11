@@ -41,7 +41,7 @@ function submitRoute(redirectUrl) {
         },
     })
         .then(function (response) {
-            window.location.href = redirectUrl;
+            //window.location.href = redirectUrl;
             console.log(response.data); // xhr.responseText
             console.log(response.xhr);  // full response
         })
