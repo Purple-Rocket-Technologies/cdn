@@ -31,6 +31,8 @@ $("#cta_btn").click(function () {
   ques_1 = readCookie("question_1");
   ques_2 = readCookie("question_2");
   ques_3 = readCookie("question_3");
+  ques_4 = readCookie("question_4");
+  ques_5 = readCookie("question_5");
 
   atomic("https://" + api_url + "/api/v1/users/submit/form", {
     method: "POST",
@@ -40,21 +42,21 @@ $("#cta_btn").click(function () {
     data: {
       "Unique-Id": unique_id,
       "User-Id": user_id,
-      Name: name,
-      Age: age,
+      "Name": name,
+      "Age": age,
       "Retirement-Age": retirement_age,
       "Annual-Income-after-inflation": income_after_inflation,
       "Annual-Income-before-Inflation": income_befor_inflation,
       "Pension-Choice": pension_choice,
       "Guessed-FIN": guessed_fin,
-      Email: email,
+      "Email": email,
       "Fin-Number": fin_number,
-      country: country_name,
-      route_choice: route_selection,
-      ques_1: ques_1,
-      ques_2: ques_2,
-      ques_3: ques_3,
-      hasRequestedVideoEmail: true,
+      "country": country_name,
+      "route_choice": route_selection,
+      "ques_1": ques_1,
+      "ques_2": ques_2,
+      "ques_3": ques_3,
+      "hasRequestedVideoEmail": true,
     },
   })
     .then(function (response) {
