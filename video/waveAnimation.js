@@ -12,6 +12,7 @@ function setup () {
    size = floor(size);
    var canvas = createCanvas(windowWidth, ((windowHeight/100)*20));
    canvas.parent('waves');
+   canvas.parent('waves2');
    noiseSeed(random(100));
    mouseY = height / 2;
    noFill();              
