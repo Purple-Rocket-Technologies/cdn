@@ -22,3 +22,12 @@ $('.apt-rep-image').css("background-image","url('"+ readCookie('PIC')+"')");
 $('.closer-last').click(function(){
     $('#window_frame').attr("src","/appointment");
 });
+
+
+
+var video_id = readCookie('VIDEO').trim();
+
+if(video_id != ""){
+    $('.apt-hero-bottomsection').addClass('active');
+}
+
