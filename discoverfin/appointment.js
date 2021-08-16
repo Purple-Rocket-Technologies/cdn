@@ -24,7 +24,6 @@ $('.closer-last').click(function(){
 });
 
 
-
 var video_id = readCookie('VIDEO').trim();
 
 if(video_id != ""){
