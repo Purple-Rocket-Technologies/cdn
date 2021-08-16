@@ -25,8 +25,16 @@ $('.closer-last').click(function(){
 
 
 var video_id = readCookie('VIDEO').trim();
+const aptmturl = new URL(video_id);
+videotokenID = aptmturl.pathname
+videotokenID = videotokenID.replace('/','');
+iframeUrl = "https://player.vimeo.com/video/" + videotokenID + "?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;h=ed9a32a11a";
+
 
 if(video_id != ""){
-    $('.apt-hero-bottomsection').addClass('active');
+    $('#aptmt_video').attr('src',iframeUrl);
+    $('.apt-hero-bottomsection').addClass('active');    
 }
+
+
 
