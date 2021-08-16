@@ -48,6 +48,7 @@ atomic('https://' + api_url + '/api/v1/users/getCompany/name/' + company + '/' +
             setCookies('PIC', response.data.data.profilePic);
             setCookies('PHONE', response.data.data.phone);
             setCookies('EMAIL', response.data.data.email);
+            setCookies('VIDEO', response.data.data.videoProfileLink);
             $(document).prop('title', 'DiscoverFIN');
             console.clear();
         }
