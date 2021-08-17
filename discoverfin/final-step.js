@@ -70,3 +70,29 @@ $("#cta_btn").click(function () {
 });
 
 $(".rep-phoito").css("background-image", "url('" + readCookie("PIC") + "')");
+
+
+
+// learn more
+$('.slide_cta').click(function(){
+  $('.last-popup').addClass('active');
+});
+
+$('.fin_learn_more').click(function(){
+  $('.last-popup').addClass('active');
+});
+
+$('.iframe-back').click(function(){
+  var iframe_current_url = $('.appointment-iframe .w-iframe iframe').attr('src');
+
+  if(iframe_current_url != '/appointment'){
+    $('.appointment-iframe .w-iframe iframe').attr('src','/appointment');
+  } else {    
+    $('.last-popup').removeClass('active');
+  }
+});
+
+$('.closer-last').click(function(){
+  $('.last-popup').removeClass('active');
+  $('.appointment-iframe .w-iframe iframe').attr('src','/appointment');
+});
