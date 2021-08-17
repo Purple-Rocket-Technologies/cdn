@@ -1,14 +1,24 @@
-
+//*******************************/
+//**ALL VARIABLES DECLARATIONS***/
+//*******************************/
+var videoType = (window.location.pathname).replace('/', '');
+var country_val;
+var lang_val;
+var video_id;
+var video_prospect_id;
 var totalDurationTime;
-var watchpercentage;    
-var currentTiming;
 var playerinitialized = 0;
-var api_url = environment;
+var currentTiming;
+var watchpercentage;
+var options;
+var mcq = [];
+
 
 //*******************************/
 //********ALL FUNCTIONS *********/
 //*******************************/
 
+// reading url parameters
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1),
     sURLVariables = sPageURL.split('&'),
@@ -24,24 +34,30 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
 }
 
-
-function setCookies(field1, value1) {
-    document.cookie = field1 + "=" + value1 + ";path=/";
+// Check email format
+function isEmail(e) {
+    return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
+      e
+    );
 }
 
+// show error message
 function error_show(msg){
     $('#error_msg').text(msg);
     $(function() {$('.error-triggerer').click(function() {this.click();}).click();});
 }
 
+// show success message
+function success_show(msg){
+    $('.success-msg-text').text(msg);
+    $(function() {$('.success-triggerer').click(function() {this.click();}).click();});
+}
 
+//formating seconds into time
 function format(time) {   
-    // Hours, minutes and seconds
     var hrs = ~~(time / 3600);
     var mins = ~~((time % 3600) / 60);
     var secs = ~~time % 60;
-
-    // Output like "1:01" or "4:03:59" or "123:03:59"
     var ret = "";
     if (hrs > 0) {
         ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
@@ -51,119 +67,227 @@ function format(time) {
     return ret;
 }
 
-//Initialize player
-iframe = document.getElementById('video');
-player = new Vimeo.Player(iframe);
-
-function toggleVideo(country){
-
-    if(country == 'US'){
-        player.loadVideo(441446411).then(function(id) {}).catch(function(error) {});
-        player.pause();
-        setDuration();
-    }
-
-    if(country == 'CA'){
-        player.loadVideo(444573838).then(function(id) {}).catch(function(error) {});
-        setDuration();         
-    }
-
-    if(country == 'EU'){        
-        player.loadVideo(456821364).then(function(id) {}).catch(function(error) {});
-          
-    }    
-   
-    setDuration();    
-    playerinitialized = 1;    
+//Validating URL
+function validateUrl(company, user){
+    validateCompanyUserAPI = "https://"+environment+"/api/v1/users/getCompany/name/"+company+'/'+user;
+    axios({
+        method: 'get',
+        url: validateCompanyUserAPI
+    })
+    .then(function(response) {
+        if(response.data.status == 200){
+            $('.main-app-container').addClass("show");
+            setCookies('COMPANY_ID', response.data.data.companyId);	
+		    setCookies('USER_ID', response.data.data.userId);
+            setCookies('PIC', response.data.data.profilePic);
+            setCookies('REP_NAME', response.data.data.firstName);
+            setCookies('APTMT_LINK', response.data.data.appointmentBookingLink);
+            setCookies('VIDEO', response.data.data.videoProfileLink);
+            setCookies('PHONE', response.data.data.phone);
+            setCookies('EMAIL', response.data.data.email);
+        } else {
+            $('.fourofour').addClass('show');
+        }        
+    })
+    .catch(function (error) {
+        error_show("Oops, There was an unexpected error."); 
+    }); 
 }
 
-function setDuration(){
-    player.getDuration().then(function(duration) {
-        totalDurationTime = duration;
-        $('.totaltime').text(format(duration));
-    });
+
+//Validating video type
+function validateVideoType(typeName){
+    validateVideoTypeAPI = "https://"+environment+"/api/v1/users/videoProspects/leadCapturingVideos?type=" + typeName;
+    axios({
+        method: 'get',
+        url: validateVideoTypeAPI
+    })
+    .then(function(response) {
+        document.title = response.data.data[0].name; // Setting page title
+        if(response.data.count > 0){
+            validateUrl(getUrlParameter('company'), getUrlParameter('user'));
+            setPathsContentVariable(videoType);
+        } else {
+            $('.fourofour').addClass('show');	      
+        }       
+    })
+    .catch(function (error) {
+        $('.fourofour').addClass('show');	             
+    }); 
 }
 
-player.on('ended', function() {
-    $(function() {$('.nav-bullet-dot:nth-child(3)').click(function() {this.click();}).click();});
-});
 
+//Setting paths content variable
+function setPathsContentVariable(videoType){
+    pathsContentAPI = "https://"+environment+"/api/v1/users/videoProspects/paths?type=" + videoType;
 
-var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = window.location.search.substring(1),
-    sURLVariables = sPageURL.split('&'),
-    sParameterName,
-    i;
+    axios({
+        method: 'get',
+        url: pathsContentAPI
+    })
+    .then(function(response) { 
 
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        for(i=0; i < response.data.data.length; i++){
+            var description_array = description_array = response.data.data[i].description;           
+            $('.path-option:nth-child('+ (i+1) +') .heading').text(response.data.data[i].name);
+            for(j=0; j < description_array.length; j++){
+                var description_item = "<div class='path-text'>"+description_array[j]+"</div>";
+                $('.path-option:nth-child('+ (i+1) +')').append(description_item);
+            }    
         }
-    }
+
+    })
+    .catch(function (error) {
+        error_show("Oops, There was an unexpected error."); 
+    }); 
 }
 
 
-//*******************************/
-//********ALL TRIGGERS *********/
-//*******************************/
 
-//Masking phone field
-$('#phone').inputmask("(999) 999-9999");
+// Render Video 
+function renderVideo(videoID){
+    iframe = document.getElementById('video');
+    player = new Vimeo.Player(iframe);
+    player.loadVideo(videoID).then(function(id) {setTotalDuration(); playerinitialized = 1;}).catch(function(error) {});
+    player.pause();    
+    setFinalFunction();
+}
 
-//Country Button functions
-$('.country-btn').click(function(){
+//fetch video
+function fetchVideo(type, country, lang){
+    var fetchVideoAPI = "https://" + environment + "/api/v1/users/videoProspects/leadCapturingVideos?type=" + type + "&countryCode=" + country + "&language=" + lang;
+    axios({
+        method: 'get',
+        url: fetchVideoAPI
+    })
+    .then(function(response) {
+        video_id = response.data.data[0].url;
+        renderVideo(video_id);       
+    })
+    .catch(function (error) {
+        error_show("Oops, There was an unexpected error.");    
+    }); 
+}
 
-    //active inactive state
-    $('.country-btn').removeClass('active');
-    $(this).addClass('active');
 
-    //Setting values in text field
-   	var country_val = $(this).attr('data-country');
-    var lang_val = $(this).attr('data-lang');
-   	$('#country').val(''+country_val);
-    $('#lang').val(''+lang_val);   
-});  
+// Check Video Prospect
+function checkVideoProspect() {
+    var email = $("#email").val();
+    var checkVideoProspectAPI = 'https://'+ environment +'/api/v1/users/company/' + readCookie('COMPANY_ID') +'/videoProspects?email=' + email;
+
+    axios({
+        method: 'get',
+        url: checkVideoProspectAPI
+    })
+    .then(function(response) {
+        if(response.data.count == 1){ 
+            video_prospect_id = response.data.data[0]._id;                   
+            success_show('Welcome ' + response.data.data[0].firstName + '! Enjoy your video');
+            country_val = response.data.data[0].country;
+            lang_val = response.data.data[0].language;
+            fetchVideo(videoType, country_val, lang_val);   
+            letsStart();
+        } else {                           
+            createVideoProspect();            
+        }    
+    })
+    .catch(function (error) {
+        error_show("Oops, There was an unexpected error.");     
+    }); 
+}
 
 
-/*Setting video url based on language */
-$('#country-us').click(function(){
-    toggleVideo('US');  
-    Weglot.switchTo('en');  
+// Create Video Prospect
+function createVideoProspect(){
+    var createVideoProspectID = 'https://'+ environment +'/api/v1/users/company/' + readCookie('COMPANY_ID') +'/videoProspects';
+    axios({
+        method: 'post',
+        url: createVideoProspectID,
+        data: {
+            firstName: $("#fname").val(),
+            lastName: $("#lname").val(),
+            email: $("#email").val(),
+            phone: Inputmask.unmask($('#phone').val(), { mask: "(999) 999-9999" }),
+            country: country_val,
+            language: lang_val,
+            watchingWith: $("#peoplewatching").val(),
+            watchedTime: 0,
+            totalVideoTime: format(totalDurationTime),
+            watchPercentage: 0,         
+            appointmentCompleted: false,    
+            userId: readCookie('USER_ID'),
+            companyId: readCookie('COMPANY_ID')        
+        }
+    })
+    .then(function(response) {        
+        video_prospect_id = response.data.data._id;   
+        success_show('Your details have been verified, Enjoy your video!');
+        letsStart();
+    })
+    .catch(function (error) {
+        error_show("Oops, There was an unexpected error.");     
+        console.log("error");
+    }); 
+}
+
+
+// Move the screens on successfull prospect
+function letsStart(){    
+    $(function() {$('.nav-bullet-dot:nth-child(2)').click(function() {this.click();}).click();});
+    $('.onboarding').addClass("pan-out");
+    $('.watch-video').addClass("pan-in");
+    $("*").scrollTop(0);
+}
+
+
+// Update watch percentage
+function updateWatchtime(time, percentage){
+    var updateWatchTimeAPI = 'https://'+ environment +'/api/v1/users/company/' + readCookie("COMPANY_ID") +'/videoProspects/' + video_prospect_id;
+    axios({
+        method: 'put',
+        url: updateWatchTimeAPI,
+        data: {
+            watchedTime: format(time),
+            watchPercentage: parseInt(percentage),             
+        }
+    })
+    .then(function(response) {        
+        //console.log(response.data);
+        //console.log(response.xhr);
+    })
+    .catch(function (error) {
+        //console.log(response.data);
+        //console.log(response.xhr);
+    }); 
+}
+
+
+/********************************/
+/*******CUSTOM VIDEO CONTROLS****/
+/******************************/
+
+// Forward Backward Functionality
+$('#forward').click(function(){
+    player.setCurrentTime(currentTiming+10);
 });
 
-$('#country-ca').click(function(){
-    toggleVideo('CA');
-    Weglot.switchTo('en');
-});
-
-$('#country-es').click(function(){
-    toggleVideo('EU');
-    Weglot.switchTo('es');
-});  
-
-$('#country-ca-es').click(function(){
-    toggleVideo('EU');
-    Weglot.switchTo('es');
+$('#backward').click(function(){
+	player.setCurrentTime(currentTiming-10);
 });
 
 
 //Fullscreen function
 $('#fullscreen').click(function(){
-  	player.requestFullscreen();
+    player.requestFullscreen();
 });
-    
-// Current timing
-setInterval(function(){ 
-   	if(playerinitialized == 1){
-		player.getCurrentTime().then(function(seconds) {
-        $('.elapsedtime').text(format(seconds));
-	    	currentTiming = seconds;
-	    });
-	}    	
-}, 200);
 
+// Setting total time duration of video
+function setTotalDuration(){
+    player.getDuration().then(function(duration) {
+        totalDurationTime = duration;            
+        $('.totaltime').text(format(duration));
+    });
+}
 
 // Progress bar update
 setInterval(function(){ 
@@ -176,19 +300,116 @@ setInterval(function(){
 }, 200);
 
 
-/* sending updated watchtimes */
-var set10 = setInterval(function() {if (watchpercentage > 10) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));clearInterval(set10);}}, 1000);
-var set20 = setInterval(function() {if (watchpercentage > 20) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));clearInterval(set20);}}, 1000);
-var set30 = setInterval(function() {if (watchpercentage > 30) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));clearInterval(set30);}}, 1000);
-var set40 = setInterval(function() {if (watchpercentage > 40) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));clearInterval(set40);}}, 1000);
-var set50 = setInterval(function() {if (watchpercentage > 50) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));clearInterval(set50);}}, 1000);
-var set60 = setInterval(function() {if (watchpercentage > 60) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));clearInterval(set60);}}, 1000);
-var set70 = setInterval(function() {if (watchpercentage > 70) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));clearInterval(set70);}}, 1000);
-var set80 = setInterval(function() {if (watchpercentage > 80) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));clearInterval(set80);}}, 1000);
-var set90 = setInterval(function() {if (watchpercentage > 90) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));clearInterval(set90);}}, 1000);
+// Current timing
+setInterval(function(){ 
+    if(playerinitialized == 1){
+     player.getCurrentTime().then(function(seconds) {
+        $('.elapsedtime').text(format(seconds));
+        currentTiming = seconds;
+     });
+ }    	
+}, 200);
+
+
+// Move the screen when watched full video
+function setFinalFunction(){
+    player.on('ended', function() {
+        $(function() {$('.nav-bullet-dot:nth-child(3)').click(function() {this.click();}).click();});
+        $('.site-content-wrapper.video').addClass("move");
+        $('.site-content-wrapper.paths').addClass("move");
+    });
+}
+
+// Rendering path questions based on the path selected
+function render_options(){
+    for(i=0; i <= options.length; i++){
+        $('.checkbox-field:nth-child('+(i)+')').show();
+        $('.checkbox-field:nth-child('+ (i+1) +') .checkbox-label').text(options[i]);
+    }
+    $(function() {$('.nav-bullet-dot:nth-child(4)').click(function() {this.click();}).click();});
+    $('.watch-video').addClass('pan-out');
+    $('.path-container').addClass('pan-in');
+}
+
+
+
+/********************************/
+/*******PAGE LOAD TRIGGER*******/
+/******************************/
+
+validateVideoType(videoType); //validating video type from the url
+$('#phone').inputmask("(999) 999-9999"); //Masking the phone number field
+$('.checkbox-field').hide();
+
+
+/*********************************/
+/******** EVENT TRIGGERS ********/
+/*******************************/
+
+
+// email help text 
+$('#email').on('focus blur', toggleFocus);
+
+function toggleFocus(e){
+    console.log(e.type)
+
+    if( e.type == 'focus' ){ 
+        $('.email_help_text').addClass("active");
+    }
+    else{
+        $('.email_help_text').removeClass("active");
+    }
+}
+
+
+//Setting cookie name
+$('#fname').keyup(function(){
+    setCookies('Name', $(this).val());
+});
+
+//Country Button functions
+$('.country-btn').click(function(){
+    $('.country-btn').removeClass('active');
+    $(this).addClass('active');
+   	country_val = $(this).attr('data-country');
+    lang_val = $(this).attr('data-lang');   	
+    fetchVideo(videoType, country_val, lang_val);  
+});  
+
+$('.non-clicker').click(function(){
+    error_show("Please select a language first.");     
+})
+
+$('.onboad').click(function(){
+    if(country_val != ''){
+        if($('#peoplewatching').val() != '' && $('#phone').val() != '' && $('#lname').val() != '' && $('#fname').val() != ''){
+            if(isEmail($('#email').val())){                  
+                checkVideoProspect();
+            } else {
+                error_show("Please enter a correct email.");     
+            }   
+        } else {
+            error_show("Please fill in all details.");     
+        }
+    } else{
+        error_show("Please select your country.");
+    } 
+});
+
+
+// Updating watch time percentage thorough api
+var set10 = setInterval(function() {if (watchpercentage > 10) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage)); clearInterval(set10);}}, 1000);
+var set20 = setInterval(function() {if (watchpercentage > 20) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage)); clearInterval(set20);}}, 1000);
+var set30 = setInterval(function() {if (watchpercentage > 30) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage)); clearInterval(set30);}}, 1000);
+var set40 = setInterval(function() {if (watchpercentage > 40) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage)); clearInterval(set40);}}, 1000);
+var set50 = setInterval(function() {if (watchpercentage > 50) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage)); clearInterval(set50);}}, 1000);
+var set60 = setInterval(function() {if (watchpercentage > 60) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage)); clearInterval(set60);}}, 1000);
+var set70 = setInterval(function() {if (watchpercentage > 70) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage)); clearInterval(set70);}}, 1000);
+var set80 = setInterval(function() {if (watchpercentage > 80) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage)); clearInterval(set80);}}, 1000);
+var set90 = setInterval(function() {if (watchpercentage > 90) {updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage)); clearInterval(set90);}}, 1000);
 var set96 = setInterval(function() {if (watchpercentage > 96) {updateWatchtime(totalDurationTime, 100);clearInterval(set96);}}, 1000);
 
-
+// Changing the video text based on progress
 var set32 = setInterval(function() {
     if (watchpercentage < 32) {
         $('.interval_text_item:nth-child(1)').addClass('active');
@@ -197,7 +418,6 @@ var set32 = setInterval(function() {
         clearInterval(set32);
     }
 }, 1000);
-
 
 var set35 = setInterval(function() {
     if (watchpercentage > 67) {
@@ -218,200 +438,84 @@ var set75 = setInterval(function() {
 }, 1000);
 
 
-// Playpause Functionality
-$('#playpause').click(function(){
-    player.getPaused().then(function(paused) {
-        if(paused == true){
-            player.play();
-        } else {
-            player.pause();
-        }
-    });
-});
-
-
-
-// Forward Backward Functionality
-$('#forward').click(function(){
-    player.setCurrentTime(currentTiming+10);
-});
-
-$('#backward').click(function(){
-	player.setCurrentTime(currentTiming-10);
-});
-
-
-
-// Validating data on submit button
-$('.submit').click(function(){
-    if($('#country').val() != ''){
-        if($('#peoplewatching').val() != '' && $('#phone').val() != '' && $('#lname').val() != '' && $('#fname').val() != ''){
-            checkVideoProspect();            
-        } else {
-            error_show("Please fill in all details.");     
-        }
-    } else{
-        error_show("Please select your country.");
-    }      
-
-    setTimeout(function(){
-        player.getDuration().then(function(duration) {
-            totalDurationTime = duration;
-            $('.totaltime').text(format(duration));
-        });
-    }, 3000);
-});
-
-
-//Setting language to spanish and english
-
-
-//*******************************/
-//********ALL API REQUESTS *********/
-//*******************************/
-
-//Validating the link
-var user = getUrlParameter('user');
-var company = getUrlParameter('company');
-
-atomic('https://'+ api_url +'/api/v1/users/getCompany/name/'+company+'/'+user, {
-	method: 'GET',
-})
-.then(function (response) {					
-    if(response.data.error==true){
-    	console.log('Error');
-        $('.fourofour').addClass('show');	       
-    }
-    else{      	
-    	$('.main-app-container').addClass("show");		
-      	setCookies('ID', response.data.data.companyId);	
-		setCookies('USER_ID', response.data.data.userId);
-        setCookies('PIC', response.data.data.profilePic);
-        setCookies('NAME', response.data.data.firstName);
-        setCookies('LINK', response.data.data.appointmentBookingLink);
-		console.clear();
-    }
-})
-.catch(function (error) {
-	console.log(error.status); // xhr.status
-	console.log(error.statusText); // xhr.statusText
-});
-
-
-
-// submitting first data and setting cookies
-function createVideoProspect(){
-    atomic('https://'+ api_url +'/api/v1/users/company/' + readCookie('ID') +'/videoProspects', {
-        method: 'POST',
+$('.path-option').click(function(){
+    var path_name = $(this).children(".heading").text();
+    $('.path-heading').text(path_name);
+    var getPathOptionsAPI = "https://" + environment + "/api/v1/users/videoProspects/paths/?name=" + path_name;
+    var setPathAPI = "https://" + environment + "/api/v1/users/company/" + readCookie('COMPANY_ID') + "/videoProspects/" +  video_prospect_id;
+    
+    axios({
+        method: 'put',
+        url: setPathAPI,
         data: {
-            'firstName': $("#fname").val(),
-            'lastName': $("#lname").val(),
-
-            'email': $("#email").val(),
-            'phone': Inputmask.unmask($('#phone').val(), { mask: "(999) 999-9999" }),
-            'country': $("#country").val(),
-            
-            'watchingWith': $("#peoplewatching").val(),
-            'watchedTime': 0,
-            'totalVideoTime': totalDurationTime,
-
-            'watchPercentage': 0,           
-
-            'appointmentCompleted': false,    
-            'userId': readCookie('USER_ID'),
-            'companyId': readCookie('ID')
-        },
+            pathChoosen: path_name        
+        }
     })
     .then(function (response) {
-    	console.log(response.data);
-    	console.log(response.xhr);
-
-        // Setting Cookies
-        setCookies('VIDEO_PROSPECT_ID',response.data.data._id);         
-        setCookies('USER_NAME', $('#fname').val());
         
-        // Initiate Visual Functions
-        $(function() {$('.nav-bullet-dot:nth-child(2)').click(function() {this.click();}).click();});
-		$("*").scrollTop(0);
-    })
-    .catch(function (error) {
-    	console.log(error.status); 
-    	console.log(error.statusText);
-        error_show("Oops, There was an unexpected error."); 
-    });	
-}
-
-
-//Check Video Prospect
-function checkVideoProspect() {
-    var unmaskedPhone = Inputmask.unmask($("#phone").val(), { mask: "(999) 999-9999" });
-
-    atomic('https://'+ api_url +'/api/v1/users/company/' + readCookie('ID') +'/videoProspects?phone=' +unmaskedPhone, {
-        method: 'GET',
-    })
-    .then(function (response) {
-        if(response.data.count == 1){
-        
-            setCookies('VIDEO_PROSPECT_ID',response.data.data[0]._id);         
-            setCookies('USER_NAME', $('#fname').val());                                    
-            toggleVideo(response.data.data[0].country);
-
-            $('.success-msg-text').text('Welcome ' + response.data.data[0].firstName + '! Enjoy your video');
-            $(function() {$('.nav-bullet-dot:nth-child(2)').click(function() {this.click();}).click();});
-    		$("*").scrollTop(0);
-        } else {
-            $('.success-msg-text').text('Your details have been verified, Enjoy your video!');
-            createVideoProspect();
-        }     
-    })
-    .catch(function (error) {
-        //console.log(error.status); 
-        //console.log(error.statusText);
-        error_show("Oops, There was an unexpected error."); 
-    });	
-}
-
-// Update watch percentage
-function updateWatchtime(time, percentage){
-atomic('https://'+ api_url +'/api/v1/users/company/' + readCookie("ID") +'/videoProspects/' + readCookie("VIDEO_PROSPECT_ID"), {
-        method: 'PUT',
-        data: {
-            'watchedTime': time,
-            'watchPercentage': percentage,
-            'totalVideoTime': totalDurationTime
-        },
-    })
-    .then(function (response) {
-    	//console.log(response.data);
-    	//console.log(response.xhr);
-    })
-    .catch(function (error) {
-    	//console.log(error.status); 
-    	//console.log(error.statusText);        
-    });
-}
-
-
-// Update path
-function updatepath(path, redirect_url){
-    atomic('https://'+ api_url +'/api/v1/users/company/' + readCookie("ID") +'/videoProspects/' + readCookie("VIDEO_PROSPECT_ID"), {
-            method: 'PUT',
-            data: {
-                "pathChoosen": path
-            },
+        // Getting path options afte a successfull post
+        axios({
+            method: 'get',
+            url: getPathOptionsAPI    
         })
-    .then(function (response) {
-        //console.log(response.data);
-        //console.log(response.xhr);
-        window.location = "/"+redirect_url;
+        .then(function(response) {        
+            options = response.data.data[0].options;      
+            console.log(options);
+            render_options();
+        })
+        .catch(function (error) {
+            console.log(error.status); 
+            console.log(error.statusText);
+            error_show("Oops, There was an unexpected error."); 
+        });   
+
     })
     .catch(function (error) {
-            //console.log(error.status); 
-            //console.log(error.statusText);        
+        console.log(error.status); 
+        console.log(error.statusText);
+        error_show("Oops, There was an unexpected error."); 
     });
-}
+
+    
+});
 
 
-$('#path-1').click(function(){updatepath("Path 1", "path-1")});
-$('#path-2').click(function(){updatepath("Path 2", "path-2")});
-$('#path-3').click(function(){updatepath("Path 3", "path-3")});
+$('.checkbox-field').click(function(){
+    var get_value = $(this).children('.checkbox-label').text();
+    var check_element = $(this).children('.checkbox');
+
+    if(check_element.hasClass('active')) {       
+        mcq.splice(mcq.indexOf(get_value), 1);             
+        check_element.removeClass('active');  
+        console.log(mcq);
+    } else {
+        mcq.push(get_value); 
+        check_element.addClass('active');
+        console.log(mcq);
+    }    
+});
+
+$('.submit.paths').click(function(){
+    var setPathOptionsAPI = "https://" + environment + "/api/v1/users/company/" + readCookie('COMPANY_ID') + "/videoProspects/" +  video_prospect_id;
+
+    if(mcq.length != 0){
+        axios({
+            method: 'put',
+            url: setPathOptionsAPI,
+            data: {
+                interests: mcq        
+            }
+        })
+        .then(function (response) {
+            console.log(response.data);     
+            success_show("Your answers have been sent successfully!");       
+        })
+        .catch(function (error) {
+            console.log(error.status); 
+            console.log(error.statusText);
+            error_show("Oops, There was an unexpected error."); 
+        });      
+    } else {
+        error_show('Please select at least one option');
+    }
+});
