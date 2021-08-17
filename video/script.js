@@ -347,6 +347,25 @@ $('.checkbox-field').hide();
 /*******************************/
 
 
+$('#country-us').click(function () {    
+    Weglot.switchTo('en');
+});
+
+$('#country-es').click(function () {    
+    Weglot.switchTo('es');
+});
+
+$('#country-ca').click(function () {
+    Weglot.switchTo('en');
+});
+
+$('#country-ca-es').click(function () {  
+    Weglot.switchTo('es');
+});
+
+
+
+
 // email help text 
 $('#email').on('focus blur', toggleFocus);
 
