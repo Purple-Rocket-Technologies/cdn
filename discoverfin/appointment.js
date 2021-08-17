@@ -24,7 +24,7 @@ $('.closer-last').click(function(){
 });
 
 
-var video_id = readCookie('VIDEO').trim();
+var video_id = $.trim(readCookie('VIDEO'));
 const aptmturl = new URL(video_id);
 videotokenID = aptmturl.pathname
 videotokenID = videotokenID.replace('/','');
