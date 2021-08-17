@@ -527,7 +527,9 @@ $('.submit.paths').click(function(){
         })
         .then(function (response) {
             console.log(response.data);     
-            success_show("Your answers have been sent successfully!");       
+            success_show("Your answers have been sent successfully!"); 
+            $('.last-popup iframe').attr('src','/appointment');
+            $('.last-popup').addClass('active');            
         })
         .catch(function (error) {
             console.log(error.status); 
@@ -538,3 +540,13 @@ $('.submit.paths').click(function(){
         error_show('Please select at least one option');
     }
 });
+
+$('.iframe-back').click(function(){
+    $('.appointment-iframe .w-iframe iframe').attr('src','/appointment');
+    $('.last-popup').removeClass('active');
+  });
+  
+  $('.closer-last').click(function(){
+    $('.last-popup').removeClass('active');
+    $('.appointment-iframe .w-iframe iframe').attr('src','/appointment');
+  });
