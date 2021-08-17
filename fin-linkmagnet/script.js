@@ -496,7 +496,7 @@ async function stripeTokenHandler(token) {
         qty_bracelets: $('#number-of-bracelets').val(),
         addressLine1: $('#add_1').val(),
         addressLine2: $('#add_2').val(),
-        appartment: "peace towers",
+        appartment: "",
         city: $('#city').val(),
         state: $('#state').find('option:selected').text(),
         stateCode: $('#state').val(),
