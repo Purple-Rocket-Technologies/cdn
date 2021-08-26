@@ -72,6 +72,7 @@ $("#cta_btn").click(function () {
 $(".rep-phoito").css("background-image", "url('" + readCookie("PIC") + "')");
 
 
+$('.appointment-iframe .w-iframe iframe').attr('src','/appointment?company=' + readCookie('URL_COMPANY') + '&user=' + readCookie('URL_USER')); 
 
 // learn more
 $('.slide_cta').click(function(){
@@ -83,11 +84,12 @@ $('.fin_learn_more').click(function(){
 });
 
 $('.iframe-back').click(function(){
-  $('.appointment-iframe .w-iframe iframe').attr('src','/appointment');
-  $('.last-popup').removeClass('active');
+  $('.appointment-iframe .w-iframe iframe').attr('src','/appointment');  
 });
 
 $('.closer-last').click(function(){
   $('.last-popup').removeClass('active');
   $('.appointment-iframe .w-iframe iframe').attr('src','/appointment');
 });
+
+
