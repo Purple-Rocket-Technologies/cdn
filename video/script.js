@@ -529,7 +529,7 @@ $('.submit.paths').click(function(){
         .then(function (response) {
             console.log(response.data);     
             success_show("Your answers have been sent successfully!"); 
-            $('.appointment-iframe .w-iframe iframe').attr('src','/appointment?company=' + getUrlParameter('company') + '&user=' + getUrlParameter('user')); 
+            $('.appointment-iframe .w-iframe iframe').attr('src','https://devdesktop.discoverfin.io/appointment?company=' + getUrlParameter('company') + '&user=' + getUrlParameter('user')); 
             $('.last-popup').addClass('active');            
         })
         .catch(function (error) {
@@ -543,12 +543,11 @@ $('.submit.paths').click(function(){
 });
 
 $('.iframe-back').click(function(){
-    $('.appointment-iframe .w-iframe iframe').attr('src','/appointment');
-    $('.appointment-iframe .w-iframe iframe').attr('src','/appointment?company=' + getUrlParameter('company') + '&user=' + getUrlParameter('user')); 
+    $('.appointment-iframe .w-iframe iframe').attr('src','https://devdesktop.discoverfin.io/appointment?company=' + getUrlParameter('company') + '&user=' + getUrlParameter('user')); 
     $('.last-popup').removeClass('active');
   });
   
   $('.closer-last').click(function(){
     $('.last-popup').removeClass('active');
-    $('.appointment-iframe .w-iframe iframe').attr('src','/appointment?company=' + getUrlParameter('company') + '&user=' + getUrlParameter('user')); 
+    $('.appointment-iframe .w-iframe iframe').attr('src','https://devdesktop.discoverfin.io/appointment?company=' + getUrlParameter('company') + '&user=' + getUrlParameter('user')); 
   });
