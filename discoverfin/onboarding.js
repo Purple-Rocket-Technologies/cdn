@@ -26,6 +26,8 @@ $('#start_over').attr('href', home_link);
 
 var user = getUrlParameter('user');
 var company = getUrlParameter('company');
+setCookies('URL_USER', user);
+setCookies('URL_COMPANY', company);
 
 atomic('https://' + api_url + '/api/v1/users/getCompany/name/' + company + '/' + user, {
     method: 'GET',
