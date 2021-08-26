@@ -399,6 +399,7 @@ $('.non-clicker').click(function(){
     error_show("Please select a language first.");     
 })
 
+
 $('.onboad').click(function(){
     if(country_val != ''){
         if($('#peoplewatching').val() != '' && $('#phone').val() != '' && $('#lname').val() != '' && $('#fname').val() != ''){
@@ -528,7 +529,7 @@ $('.submit.paths').click(function(){
         .then(function (response) {
             console.log(response.data);     
             success_show("Your answers have been sent successfully!"); 
-            $('.last-popup iframe').attr('src','/appointment');
+            $('.appointment-iframe .w-iframe iframe').attr('src','/appointment?company=' + getUrlParameter('company') + '&user=' + getUrlParameter('user')); 
             $('.last-popup').addClass('active');            
         })
         .catch(function (error) {
@@ -543,10 +544,11 @@ $('.submit.paths').click(function(){
 
 $('.iframe-back').click(function(){
     $('.appointment-iframe .w-iframe iframe').attr('src','/appointment');
+    $('.appointment-iframe .w-iframe iframe').attr('src','/appointment?company=' + getUrlParameter('company') + '&user=' + getUrlParameter('user')); 
     $('.last-popup').removeClass('active');
   });
   
   $('.closer-last').click(function(){
     $('.last-popup').removeClass('active');
-    $('.appointment-iframe .w-iframe iframe').attr('src','/appointment');
+    $('.appointment-iframe .w-iframe iframe').attr('src','/appointment?company=' + getUrlParameter('company') + '&user=' + getUrlParameter('user')); 
   });
