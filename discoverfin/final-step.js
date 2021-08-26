@@ -84,12 +84,12 @@ $('.fin_learn_more').click(function(){
 });
 
 $('.iframe-back').click(function(){
-  $('.appointment-iframe .w-iframe iframe').attr('src','/appointment');  
+  $('.appointment-iframe .w-iframe iframe').attr('src','/appointment?company=' + readCookie('URL_COMPANY') + '&user=' + readCookie('URL_USER')); 
 });
 
 $('.closer-last').click(function(){
   $('.last-popup').removeClass('active');
-  $('.appointment-iframe .w-iframe iframe').attr('src','/appointment');
+  $('.appointment-iframe .w-iframe iframe').attr('src','/appointment?company=' + readCookie('URL_COMPANY') + '&user=' + readCookie('URL_USER')); 
 });
 
 
