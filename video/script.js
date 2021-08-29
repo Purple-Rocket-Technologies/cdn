@@ -381,6 +381,15 @@ function toggleFocus(e){
 }
 
 
+$('#phone').on('focus blur', toggleFocusIn);
+
+function toggleFocusIn(e){
+    if( e.type == 'focus' ){ 
+        $('.main-app-container').scrollTop(10000);        
+    }
+}
+
+
 //Setting cookie name
 $('#fname').keyup(function(){
     setCookies('Name', $(this).val());
@@ -528,6 +537,9 @@ $('.submit.paths').click(function(){
         })
         .then(function (response) {
             console.log(response.data);     
+            $('.user_name').text($("#fname").val());
+            $('.rep_name, .rep_name_cta').text(readCookie('REP_NAME'));
+            $('.rep-phoito').css("background-image","url('"+ readCookie('PIC') +"')"); 
             success_show("Your answers have been sent successfully!"); 
             $('.appointment-iframe .w-iframe iframe').attr('src','https://devdesktop.discoverfin.io/appointment?company=' + getUrlParameter('company') + '&user=' + getUrlParameter('user')); 
             $('.last-popup').addClass('active');            
@@ -544,10 +556,9 @@ $('.submit.paths').click(function(){
 
 $('.iframe-back').click(function(){
     $('.appointment-iframe .w-iframe iframe').attr('src','https://devdesktop.discoverfin.io/appointment?company=' + getUrlParameter('company') + '&user=' + getUrlParameter('user')); 
-    $('.last-popup').removeClass('active');
-  });
+});
   
-  $('.closer-last').click(function(){
+$('.closer-last').click(function(){
     $('.last-popup').removeClass('active');
     $('.appointment-iframe .w-iframe iframe').attr('src','https://devdesktop.discoverfin.io/appointment?company=' + getUrlParameter('company') + '&user=' + getUrlParameter('user')); 
-  });
+});
