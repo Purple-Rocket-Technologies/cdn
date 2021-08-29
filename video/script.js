@@ -381,13 +381,7 @@ function toggleFocus(e){
 }
 
 
-$('#phone').on('focus blur', toggleFocusIn);
 
-function toggleFocusIn(e){
-    if( e.type == 'focus' ){ 
-        $('.main-app-container').scrollTop(50);        
-    }
-}
 
 
 //Setting cookie name
