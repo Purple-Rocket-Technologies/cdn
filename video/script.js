@@ -385,7 +385,7 @@ $('#phone').on('focus blur', toggleFocusIn);
 
 function toggleFocusIn(e){
     if( e.type == 'focus' ){ 
-        $('.main-app-container').scrollTop(10000);        
+        $('.main-app-container').scrollTop(200);        
     }
 }
 
