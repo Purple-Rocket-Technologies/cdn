@@ -72,7 +72,7 @@ $("#cta_btn").click(function () {
 $(".rep-phoito").css("background-image", "url('" + readCookie("PIC") + "')");
 
 
-$('.appointment-iframe .w-iframe iframe').attr('src','https://devdesktop.discoverfin.io/appointment?company=' + readCookie('URL_COMPANY') + '&user=' + readCookie('URL_USER')); 
+$('.appointment-iframe .w-iframe iframe').attr('src','https://stagingdesktop.discoverfin.io/appointment?company=' + readCookie('URL_COMPANY') + '&user=' + readCookie('URL_USER')); 
 
 // learn more
 $('.slide_cta').click(function(){
@@ -84,12 +84,12 @@ $('.fin_learn_more').click(function(){
 });
 
 $('.iframe-back').click(function(){
-  $('.appointment-iframe .w-iframe iframe').attr('src','https://devdesktop.discoverfin.io/appointment?company=' + readCookie('URL_COMPANY') + '&user=' + readCookie('URL_USER')); 
+  $('.appointment-iframe .w-iframe iframe').attr('src','https://stagingdesktop.discoverfin.io/appointment?company=' + readCookie('URL_COMPANY') + '&user=' + readCookie('URL_USER')); 
 });
 
 $('.closer-last').click(function(){
   $('.last-popup').removeClass('active');
-  $('.appointment-iframe .w-iframe iframe').attr('src','https://devdesktop.discoverfin.io/appointment?company=' + readCookie('URL_COMPANY') + '&user=' + readCookie('URL_USER')); 
+  $('.appointment-iframe .w-iframe iframe').attr('src','https://stagingdesktop.discoverfin.io/appointment?company=' + readCookie('URL_COMPANY') + '&user=' + readCookie('URL_USER')); 
 });
 
 
