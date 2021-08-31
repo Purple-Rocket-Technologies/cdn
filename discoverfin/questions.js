@@ -249,12 +249,7 @@ $("#guess_back").click(function () {
   $("#guessed_fin").val("skipped");
 });
 
-var country = "United States";
-$(".radio-button-field").click(function () {
-  if ($(this).children("input").prop("checked") == true) {
-    country = $(this).children("input").attr("value");
-  }
-});
+var country = readCookie('country');
 
 $("#submit_btn").click(function () {
   unique_id = $("#unique_id").val();
