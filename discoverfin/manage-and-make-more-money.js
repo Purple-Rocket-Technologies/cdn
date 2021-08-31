@@ -4,6 +4,10 @@ $(".user_name").each(function () {
   $(this).html("" + user_name);
 });
 
+if(readCookie('country') == "Canada"){
+  $('.ans.check.canada').addClass('show');
+}
+
 $("#submit_btn").prop("disabled", true);
 
 var progress_number = 0;
