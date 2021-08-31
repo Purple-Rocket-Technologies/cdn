@@ -80,19 +80,23 @@ setCookies('INITIAL_LINK', window.location.href);
 $('#lang_us').click(function () {
     $('.fin_video').attr('src', 'https://player.vimeo.com/video/445268145');
     Weglot.switchTo('en');
+    setCookies("country","United States");
 });
 
 $('#lang_ca').click(function () {
     $('.fin_video').attr('src', 'https://player.vimeo.com/video/551499288');
     Weglot.switchTo('en');
+    setCookies("country","Canada");
 });
 
 $('#lang_es').click(function () {
     $('.fin_video').attr('src', 'https://player.vimeo.com/video/452754620');
     Weglot.switchTo('es');
+    setCookies("country","United States");
 });
 
 $('#lang_ca_es').click(function () {
     $('.fin_video').attr('src', 'https://player.vimeo.com/video/452754620');
     Weglot.switchTo('es');
+    setCookies("country","Canada");
 });
