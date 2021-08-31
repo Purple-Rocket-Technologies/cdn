@@ -166,8 +166,7 @@ function array_to_string(array_item){
 
 
 //Submitting Form
-
-$("#submit_btn").click(function () {
+function submit_route_answers() {
   unique_id = readCookie("Unique ID");
   user_id = readCookie("User ID");
   name = readCookie("Name");
@@ -231,4 +230,12 @@ $("#submit_btn").click(function () {
   setCookies('question_3', '' + ques_3);
   setCookies('question_4', '' + ques_4);
   setCookies('question_5', '' + ques_5);
+}
+
+$("#submit_btn").click(function () {
+  if(answer_array_1.length == 1 || answer_array_2.length == 1 || answer_array_3.length == 1){
+    alert("Please answer all questions");
+  } else {
+    submit_route_answers();
+  }  
 });
