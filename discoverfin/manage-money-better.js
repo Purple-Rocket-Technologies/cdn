@@ -7,6 +7,10 @@ $('#submit_btn').prop('disabled', true);
 var progress_number = 0;
 var reduction_count = 0;
 
+if(readCookie('country') == "Canada"){
+    $('.ans.check.canada').addClass('show');
+}
+
 function progress() {
     progress_number += 20;
     $('.progress_number').html('' + progress_number);
