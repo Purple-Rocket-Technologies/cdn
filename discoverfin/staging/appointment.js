@@ -10,7 +10,6 @@ var company = getUrlParameter('company');
 
 atomic('https://' + api_url + '/api/v1/users/getCompany/name/' + company + '/' + user, {
     method: 'GET',
-
 })
 .then(function (response) {
     if (response.data.error == true) {
