@@ -8,7 +8,7 @@ if(getUrlParameter('company') && getUrlParameter('user') && getUrlParameter('pro
     user_name = readCookie('Name');
     setPageVariableValue();
 } else {
-    window.location.href = '404';
+    window.location.href = '/404';
 }
 
 //fetching company, user and prospect IDs
@@ -36,7 +36,7 @@ function getAPIparams() {
                 setCookies("Name",user_name);
                 setPageVariableValue();
             } else {
-                window.location.href = '404'
+                window.location.href = '/404'
             }       
 
         }).catch(function (error) {
@@ -328,7 +328,7 @@ function submit_route_answers() {
       ques_4: ques_4
     }   
   }).then(function(response) {     
-    window.location.href = "/route/both/webinar";      
+    window.location.href = "/route/both/video";      
   })
   .catch(function (error) {
       console.log(error);
