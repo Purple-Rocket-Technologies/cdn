@@ -8,18 +8,17 @@ var company = getUrlParameter('company');
 setCookies('URL_USER', user);
 setCookies('URL_COMPANY', company);
 
-atomic('https://' + api_url + '/api/v1/users/getCompany/name/' + company + '/' + user, {
-    method: 'GET',
-
-})
-.then(function (response) {
+axios({
+    method: 'get',
+    url: 'https://' + api_url + '/api/v1/users/getCompany/name/' + company + '/' + user,
+}).then(function(response) {    
     if (response.data.error == true) {
         console.log('Error');
         $('.not_found').addClass('show_not_found');
         $('.page').addClass('pnf');
     }
     else {
-        $('.main_start_div').addClass("show");
+        $('.main_start_div').addClass("show");        
         setCookies('COMPANY_ID', response.data.data.companyId);
         setCookies('COMPANY_URL', response.data.data.companyUrl);
         setCookies('USER_ID', response.data.data.userId);
@@ -32,13 +31,10 @@ atomic('https://' + api_url + '/api/v1/users/getCompany/name/' + company + '/' +
         setCookies('VIDEO', response.data.data.videoProfileLink);           
         $(document).prop('title', 'DiscoverFIN');
     }
-})
-.catch(function (error) {
+}).catch(function (error) {
     console.log(error.status); // xhr.status
     console.log(error.statusText); // xhr.statusText
 });
-
-
 
 var iframe = document.getElementById('video');
 var player = new Vimeo.Player(iframe);
