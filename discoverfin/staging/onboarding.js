@@ -1,4 +1,68 @@
 
+if(getUrlParameter('company') && getUrlParameter('user') && getUrlParameter('prospectEmail')){
+    getAPIparams();    
+} 
+
+//fetching company, user and prospect IDs
+function getAPIparams() {
+    axios({
+        method: 'get',
+        url: 'https://' + api_url + '/api/v1/users/getCompany/name/' + getUrlParameter('company') + '/' + getUrlParameter('user'),
+      })
+      .then(function(response) {    
+        company_id = response.data.data.companyId;       
+        setCookies("COMPANY_ID",company_id);
+
+        // getting prospect id
+        axios({
+            method: 'get',
+            url: 'https://' + api_url + '/api/v1/users/company/'+ company_id +'/prospects?email=' + getUrlParameter('prospectEmail'),
+
+        }).then(function(response) {  
+
+            if(response.data.count > 0){
+                prospect_id = response.data.data[0]._id;
+                user_name = response.data.data[0].first_name;
+                fin_num = response.data.data[0].fin_number;
+                setCookies("prospect_id",prospect_id);
+                setCookies("Name",user_name);
+                setCookies("FIN Number",fin_num);
+
+                var routeChoice = response.data.data[0].route_choice;
+                if(response.data.data[0].route_choice != ''){
+                    if(routeChoice == "Make More Money"){
+                        window.location.href = '/route/make-more-money';
+                    }
+                    if(routeChoice == "Manage Money Better"){
+                        window.location.href = '/route/manage-money-better';
+                    }
+                    if(routeChoice == "Both"){
+                        window.location.href = '/route/both';
+                    }
+                } else {
+                    window.location.href = '/route';
+                }
+
+
+            } else {
+                window.location.href = '/404';
+            }       
+
+        }).catch(function (error) {
+            console.log(error);
+            alert("Oops, There was an unexpected error."); 
+        });
+
+      })
+      .catch(function (error) {
+        console.log(error);
+        alert("Oops, There was an unexpected error."); 
+    });
+}
+
+
+
+
 setCookies('START_OVER_URL', window.location.href);
 var home_link = readCookie('START_OVER_URL');
 $('#start_over').attr('href', home_link);
