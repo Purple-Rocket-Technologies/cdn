@@ -1,19 +1,3 @@
-var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = window.location.search.substring(1),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
-
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
-        }
-    }
-}
-
-
 var user_name = readCookie('Name');
 var appointment_link;
 var rep_name;
@@ -31,12 +15,13 @@ atomic('https://' + api_url + '/api/v1/users/getCompany/name/' + company + '/' +
 .then(function (response) {
     if (response.data.error == true) {
         console.log('Error');            
+        window.location.href = '/404';
     }
     else
     {       
         console.log(response.data);          
         appointment_link = response.data.data.appointmentBookingLink;
-        rep_name = response.data.data.firstName;
+        rep_name = response.data.data.firstName + " " + response.data.data.lastName;
         rep_pic = response.data.data.profilePic;
         rep_phone = response.data.data.phone;
         rep_email = response.data.data.email;
@@ -73,10 +58,7 @@ function map_all_data(){
 
     if(video_id){
         $('.apt-hero-bottomsection').addClass('active');
-        $('.apt-reps-video').append(video_id);
-        /*var video_container_width = (($('.apt-reps-video').width())/16)*9;
-        $('.apt-reps-video iframe').attr('height','100%');
-        $('.apt-reps-video iframe').attr('width','100%');        */
+        $('.apt-reps-video').append(video_id);                
     }    
 }
        
