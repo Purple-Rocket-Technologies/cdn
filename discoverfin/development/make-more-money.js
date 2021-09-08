@@ -8,7 +8,7 @@ if(getUrlParameter('company') && getUrlParameter('user') && getUrlParameter('pro
     user_name = readCookie('Name');
     setPageVariableValue();
 } else {
-    window.location.href = '404';
+    window.location.href = '/404';
 }
 
 //fetching company, user and prospect IDs
@@ -36,7 +36,7 @@ function getAPIparams() {
                 setCookies("Name",user_name);
                 setPageVariableValue();
             } else {
-                window.location.href = '404'
+                window.location.href = '/404'
             }       
 
         }).catch(function (error) {
@@ -226,7 +226,7 @@ function submit_route_answers() {
   ques_1 = array_to_string(answer_array_1);
   ques_2 = array_to_string(answer_array_2);
   ques_3 = array_to_string(answer_array_3);
-  
+
   axios({
     method: 'put',
     url: 'https://' + api_url + '/api/v1/users/company/'+ company_id +'/prospects/' + prospect_id,    
@@ -236,7 +236,7 @@ function submit_route_answers() {
       ques_3: ques_3
     }   
   }).then(function(response) {     
-      window.location.href = "/route/make-more-money/webinar";       
+      window.location.href = "/route/make-more-money/video";       
   })
   .catch(function (error) {
       console.log(error);
