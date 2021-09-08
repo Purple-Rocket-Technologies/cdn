@@ -11,7 +11,7 @@ if(getUrlParameter('company') && getUrlParameter('user') && getUrlParameter('pro
     fin_num = readCookie('FIN Number');
     setPageVariableValue();
 } else {
-    window.location.href = '404';
+    window.location.href = '/404';
 }
 
 //fetching company, user and prospect IDs
@@ -41,7 +41,7 @@ function getAPIparams() {
                 setCookies("FIN Number",fin_num);
                 setPageVariableValue();
             } else {
-                window.location.href = '404'
+                window.location.href = '/404';
             }       
 
         }).catch(function (error) {
