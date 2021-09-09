@@ -278,9 +278,9 @@ function createNewProspect(){
     data: {
       companyId: readCookie('COMPANY_ID'),
       userId: readCookie('USER_ID'),
-      first_name: $("#user_name").val(),     
-      email: $("#email").val(),
-      fin_number: parseInt($("#fin_number").val())
+      prospectName : $("#user_name").val(),     
+      prospectEmail: $("#email").val(),
+      finNumber: parseInt($("#fin_number").val())
     }   
   })
   .then(function(response) {  
