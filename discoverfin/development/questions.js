@@ -268,7 +268,7 @@ function createNewProspect(){
     window.location.href = "/result";
   })
   .catch(function (error) {    
-    alert(error); 
+    alert("Oops, There was an unexpected error."); 
   });  
 }
 
@@ -294,7 +294,7 @@ function updateProspect(prospectID){
     window.location.href = "/result";
   })
   .catch(function (error) {
-    alert(error); 
+    alert("Oops, There was an unexpected error."); 
   });  
 }
 
@@ -312,7 +312,7 @@ $("#submit_btn").click(function () {
     }
   })
   .catch(function (error) {
-    alert(error); 
+    alert("Oops, There was an unexpected error."); 
   });
 });
 
