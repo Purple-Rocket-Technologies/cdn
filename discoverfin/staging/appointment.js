@@ -5,6 +5,8 @@ var rep_phone;
 var rep_email;
 var rep_pic;
 var video_id;
+var company_id;
+var user_id;
 var user = getUrlParameter('user');
 var company = getUrlParameter('company');
 
@@ -23,6 +25,8 @@ atomic('https://' + api_url + '/api/v1/users/getCompany/name/' + company + '/' +
         rep_name = response.data.data.firstName + " " + response.data.data.lastName;
         rep_pic = response.data.data.profilePic;
         rep_phone = response.data.data.phone;
+        user_id = response.data.data.userId;
+        company_id = response.data.data.companyId;
         rep_email = response.data.data.email;
         video_id = $.trim(response.data.data.videoProfileLink);
         map_all_data();
@@ -65,6 +69,30 @@ function map_all_data(){
 $('.closer-last').click(function(){
     $('#window_frame').attr("src","/appointment");
 });
+
+
+$('#getintouchsubmit').click(function(){
+    axios({
+        method: 'put',
+        url: 'https://' + api_url + '/api/v1/users/email/send/getInTouch',    
+        data: {
+            prospectFirstName: $('#first_name').val(),
+            prospectLastName: $('#last_name').val(),
+            prospectEmail: $('#email').val(),
+            prospectPhone: $('#phone_no').val(),
+            prospectMessage: $('#message').val(),
+            userId: company_id,
+            companyId: company_id
+        }   
+      }).then(function(response) {     
+        alert('Your Request has been submitted sucessfully!');
+      })
+      .catch(function (error) {
+          console.log(error);
+          alert("Oops, There was an unexpected error."); 
+      });
+});
+
 
 
 
