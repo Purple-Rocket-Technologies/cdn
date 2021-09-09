@@ -270,6 +270,26 @@ function createNewProspect(){
   .catch(function (error) {    
     alert("Oops, There was an unexpected error."); 
   });  
+
+  //trrigerring the email
+  axios({
+    method: 'post',    
+    url: 'https://'+ api_url +'/api/v1/users/email/send/finResults',
+    data: {
+      companyId: readCookie('COMPANY_ID'),
+      userId: readCookie('USER_ID'),
+      first_name: $("#user_name").val(),     
+      email: $("#email").val(),
+      fin_number: parseInt($("#fin_number").val())
+    }   
+  })
+  .then(function(response) {  
+    console.log(response.data);
+  })
+  .catch(function (error) {    
+    alert("Oops, There was an unexpected error."); 
+  });  
+  
 }
 
 function updateProspect(prospectID){
