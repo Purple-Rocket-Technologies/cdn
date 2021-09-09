@@ -305,7 +305,7 @@ $("#submit_btn").click(function () {
     url: 'https://' + api_url + '/api/v1/users/company/'+ readCookie('COMPANY_ID') +'/prospects?email='+$("#email").val(),
   })
   .then(function(response) {    
-    if(response.data.count == 0){
+    if(response.data.count == 0){      
       createNewProspect();
     } else {
       updateProspect(response.data.data[0]._id);
