@@ -1,7 +1,20 @@
-// Reading name cookie
-var user_name = readCookie('Name');
-$('.user_name').each(function () { $(this).html('' + user_name); });
-$('#user_name').html('' + user_name);
+var company_id, prospect_id, user_name;
+
+if(readCookie('COMPANY_ID') && readCookie('prospect_id') && readCookie('Name') && readCookie('FIN Number')){
+    company_id = readCookie('COMPANY_ID');     
+    prospect_id = readCookie('prospect_id');
+    user_name = readCookie('Name');
+    setPageVariableValue();
+} else {
+    window.location.href = '/404';
+}
+
+
+function setPageVariableValue() {
+    $('.user_name').each(function () { $(this).html('' + user_name); });
+    $('#user_name').html('' + user_name);
+}
+
 $('#submit_btn').prop('disabled', true);
 
 var progress_number = 0;
@@ -226,70 +239,30 @@ function array_to_string(array_item){
 
 //Submitting Form
 function submit_route_answers() {
-    unique_id = readCookie('Unique ID');
-    user_id = readCookie('User ID');
-    user_name = readCookie('Name');
-    age = readCookie('Age');
-    retirement_age = readCookie('Retirement Age');
-    income_after_inflation = readCookie('Income After Inflation');
-    income_befor_inflation = readCookie('Income Before Inflation');
-    pension_choice = readCookie('Pension Choice');
-    guessed_fin = readCookie('Guessed FIN');
-    email = readCookie('Email');
-    fin_number = readCookie('FIN Number');
-    country_name = readCookie('Country');
-    route_selection = readCookie('Route Selection');
     ques_1 = array_to_string(answer_array_1);
     ques_2 = array_to_string(answer_array_2);
     ques_3 = array_to_string(answer_array_3);
     ques_4 = array_to_string(answer_array_4);
     ques_5 = array_to_string(answer_array_5);
-
-    atomic('https://' + api_url + '/api/v1/users/submit/form', {
-        method: 'POST',
-        data: {
-            'Unique-Id': unique_id,
-            'User-Id': user_id,
-            'Name': name,
-            'Age': age,
-            'Retirement-Age': retirement_age,
-            'Annual-Income-after-inflation': income_after_inflation,
-            'Annual-Income-before-Inflation': income_befor_inflation,
-            'Pension-Choice': pension_choice,
-            'Guessed-FIN': guessed_fin,
-            'Email': email,
-            'Fin-Number': fin_number,
-            'country': country_name,
-            'route_choice': route_selection,
-            'ques_1': ques_1,
-            'ques_2': ques_2,
-            'ques_3': ques_3,
-            'ques_4': ques_4,
-            'ques_5': ques_5
-        },
+  
+    axios({
+      method: 'put',
+      url: 'https://' + api_url + '/api/v1/users/company/'+ company_id +'/prospects/' + prospect_id,    
+      data: {
+        ques_1: ques_1,
+        ques_2: ques_2,
+        ques_3: ques_3,
+        ques_4: ques_4,
+        ques_5: ques_5
+      }   
+    }).then(function(response) {     
+        window.location.href = "/route/make-more-money/video";       
     })
-        .then(function (response) {
-            window.location.href = "/route/manage-money-better/webinar";
-            console.log(response.data); // xhr.responseText
-            console.log(response.xhr);  // full response
-        })
-        .catch(function (error) {
-            alert('Oops, something went wrong!');
-            console.log(error.status); // xhr.status
-            console.log(error.statusText); // xhr.statusText
-        });
-
-    //passsing form in cookie
-    function setCookies(field1, value1) {
-        document.cookie = field1 + "=" + value1 + ";path=/";
-    }
-
-    setCookies('question_1', '' + ques_1);
-    setCookies('question_2', '' + ques_2);
-    setCookies('question_3', '' + ques_3);
-    setCookies('question_4', '' + ques_4);
-    setCookies('question_5', '' + ques_5);
-}
+    .catch(function (error) {
+        console.log(error);
+        alert("Oops, There was an unexpected error."); 
+    });
+}   
 
 
 $("#submit_btn").click(function () {
