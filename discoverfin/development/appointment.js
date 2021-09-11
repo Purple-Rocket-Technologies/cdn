@@ -73,7 +73,7 @@ $('.closer-last').click(function(){
 
 $('#getintouchsubmit').click(function(){
     axios({
-        method: 'put',
+        method: 'post',
         url: 'https://' + api_url + '/api/v1/users/email/send/getInTouch',    
         data: {
             prospectFirstName: $('#first_name').val(),
