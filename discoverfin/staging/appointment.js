@@ -82,7 +82,7 @@ $('#getintouchsubmit').click(function(){
             prospectEmail: $('#email').val(),
             prospectPhone: $('#phone_no').val(),
             prospectMessage: $('#message').val(),
-            userId: userId,
+            userId: user_id,
             companyId: company_id
         }   
       }).then(function(response) {     
