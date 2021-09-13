@@ -76,11 +76,13 @@ $('#getintouchsubmit').click(function(){
         method: 'post',
         url: 'https://' + api_url + '/api/v1/users/email/send/getInTouch',    
         data: {
+            prospectFirstName: $('#first_name').val(),
+            prospectLastName: $('#last_name').val(),
             prospectName: $('#first_name').val()+" "+$('#last_name').val(),
             prospectEmail: $('#email').val(),
             prospectPhone: $('#phone_no').val(),
             prospectMessage: $('#message').val(),
-            userId: company_id,
+            userId: userId,
             companyId: company_id
         }   
       }).then(function(response) {     
