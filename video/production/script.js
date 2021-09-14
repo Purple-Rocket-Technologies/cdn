@@ -69,7 +69,7 @@ function format(time) {
 
 //Validating URL
 function validateUrl(company, user){
-    validateCompanyUserAPI = "https://"+environment+"/api/v1/users/getCompany/name/"+company+'/'+user;
+    validateCompanyUserAPI = "https://"+api_url+"/api/v1/users/getCompany/name/"+company+'/'+user;
     axios({
         method: 'get',
         url: validateCompanyUserAPI
@@ -97,7 +97,7 @@ function validateUrl(company, user){
 
 //Validating video type
 function validateVideoType(typeName){
-    validateVideoTypeAPI = "https://"+environment+"/api/v1/users/videoProspects/leadCapturingVideos?type=" + typeName;
+    validateVideoTypeAPI = "https://"+api_url+"/api/v1/users/videoProspects/leadCapturingVideos?type=" + typeName;
     axios({
         method: 'get',
         url: validateVideoTypeAPI
@@ -119,7 +119,7 @@ function validateVideoType(typeName){
 
 //Setting paths content variable
 function setPathsContentVariable(videoType){
-    pathsContentAPI = "https://"+environment+"/api/v1/users/videoProspects/paths?type=" + videoType;
+    pathsContentAPI = "https://"+api_url+"/api/v1/users/videoProspects/paths?type=" + videoType;
 
     axios({
         method: 'get',
@@ -155,7 +155,7 @@ function renderVideo(videoID){
 
 //fetch video
 function fetchVideo(type, country, lang){
-    var fetchVideoAPI = "https://" + environment + "/api/v1/users/videoProspects/leadCapturingVideos?type=" + type + "&countryCode=" + country + "&language=" + lang;
+    var fetchVideoAPI = "https://" + api_url + "/api/v1/users/videoProspects/leadCapturingVideos?type=" + type + "&countryCode=" + country + "&language=" + lang;
     axios({
         method: 'get',
         url: fetchVideoAPI
@@ -173,7 +173,7 @@ function fetchVideo(type, country, lang){
 // Check Video Prospect
 function checkVideoProspect() {
     var email = $("#email").val();
-    var checkVideoProspectAPI = 'https://'+ environment +'/api/v1/users/company/' + readCookie('COMPANY_ID') +'/videoProspects?email=' + email;
+    var checkVideoProspectAPI = 'https://'+ api_url +'/api/v1/users/company/' + readCookie('COMPANY_ID') +'/videoProspects?email=' + email;
 
     axios({
         method: 'get',
@@ -199,7 +199,7 @@ function checkVideoProspect() {
 
 // Create Video Prospect
 function createVideoProspect(){
-    var createVideoProspectID = 'https://'+ environment +'/api/v1/users/company/' + readCookie('COMPANY_ID') +'/videoProspects';
+    var createVideoProspectID = 'https://'+ api_url +'/api/v1/users/company/' + readCookie('COMPANY_ID') +'/videoProspects';
     axios({
         method: 'post',
         url: createVideoProspectID,
@@ -243,7 +243,7 @@ function letsStart(){
 
 // Update watch percentage
 function updateWatchtime(time, percentage){
-    var updateWatchTimeAPI = 'https://'+ environment +'/api/v1/users/company/' + readCookie("COMPANY_ID") +'/videoProspects/' + video_prospect_id;
+    var updateWatchTimeAPI = 'https://'+ api_url +'/api/v1/users/company/' + readCookie("COMPANY_ID") +'/videoProspects/' + video_prospect_id;
     axios({
         method: 'put',
         url: updateWatchTimeAPI,
@@ -465,8 +465,8 @@ var set75 = setInterval(function() {
 $('.path-option').click(function(){
     var path_name = $(this).children(".heading").text();
     $('.path-heading').text(path_name);
-    var getPathOptionsAPI = "https://" + environment + "/api/v1/users/videoProspects/paths/?name=" + path_name;
-    var setPathAPI = "https://" + environment + "/api/v1/users/company/" + readCookie('COMPANY_ID') + "/videoProspects/" +  video_prospect_id;
+    var getPathOptionsAPI = "https://" + api_url + "/api/v1/users/videoProspects/paths/?name=" + path_name;
+    var setPathAPI = "https://" + api_url + "/api/v1/users/company/" + readCookie('COMPANY_ID') + "/videoProspects/" +  video_prospect_id;
     
     axios({
         method: 'put',
@@ -520,7 +520,7 @@ $('.checkbox-field').click(function(){
 });
 
 $('.submit.paths').click(function(){
-    var setPathOptionsAPI = "https://" + environment + "/api/v1/users/company/" + readCookie('COMPANY_ID') + "/videoProspects/" +  video_prospect_id;
+    var setPathOptionsAPI = "https://" + api_url + "/api/v1/users/company/" + readCookie('COMPANY_ID') + "/videoProspects/" +  video_prospect_id;
 
     if(mcq.length != 0){
         axios({
