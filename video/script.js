@@ -204,7 +204,7 @@ function createVideoProspect(){
         method: 'post',
         url: createVideoProspectID,
         data: {
-            videoName: videoType,
+            videoName: document.title,
             firstName: $("#fname").val(),
             lastName: $("#lname").val(),
             email: $("#email").val(),
