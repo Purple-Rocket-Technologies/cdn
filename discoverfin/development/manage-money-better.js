@@ -256,7 +256,7 @@ function submit_route_answers() {
         ques_5: ques_5
       }   
     }).then(function(response) {     
-        window.location.href = "/route/make-more-money/video";       
+        window.location.href = "/route/manage-money-better/video";       
     })
     .catch(function (error) {
         console.log(error);
