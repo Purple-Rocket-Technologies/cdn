@@ -108,7 +108,7 @@ function continuationCheck(){
                 prospect_pathChoosen = response.data.data[0].pathChoosen;
                 redirectContinuer();
             } else {
-                $('.fourofour').addClass('show');
+                $('.main-app-container').addClass("show"); 
             }
         }).catch(function (error) {
             console.log(error);
