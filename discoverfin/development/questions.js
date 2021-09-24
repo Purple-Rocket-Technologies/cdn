@@ -240,8 +240,19 @@ $("#guess_back").click(function () {
 
 var country_val = readCookie('country');
 
+async function translateToLanguage(value, language="es"){
+  var translatedValue = await Weglot.translate(
+      {
+      'words':[ { "t":1,"w":value} ],
+      'languageTo':language
+      }          
+  );  
+  return translatedValue[0];
+}
 
-function createNewProspect(){
+async function createNewProspect(){
+  const [retirement_age, pension_choice, guessed_fin] = await translateToLanguage([$("#retirement_age").val(), $("#pension_choice").val(), $("#guessed_fin").val()]) 
+  
   axios({
     method: 'post',
     url: 'https://' + api_url + '/api/v1/users/company/'+ readCookie('COMPANY_ID') +'/prospects',
@@ -250,11 +261,11 @@ function createNewProspect(){
       userId: readCookie('USER_ID'),
       first_name: $("#user_name").val(),
       age: $("#user_age").val(),
-      retirement_age: $("#retirement_age").val(),
+      retirement_age,
       annual_income_after_inflation: parseInt($("#income_after_inflation").val()),
       annual_income_before_inflation: parseInt($("#user_income").val().replace(/,/g, "")),
-      pension_choice: $("#pension_choice").val(),
-      guessed_fin: $("#guessed_fin").val(),
+      pension_choice,
+      guessed_fin,
       email: $("#email").val(),
       fin_number: parseInt($("#fin_number").val()),
       country: country_val,        
@@ -338,6 +349,3 @@ $("#submit_btn").click(function () {
 
 
 
-
-
-  
