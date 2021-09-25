@@ -240,7 +240,7 @@ function checkVideoProspect(email_val) {
         }    
     })
     .catch(function (error) {
-        error_show("Oops, There was an unexpected error.");     
+        error_show(error.text);     
     }); 
 }
 
@@ -274,7 +274,7 @@ function createVideoProspect(){
         letsStart();
     })
     .catch(function (error) {
-        error_show("Oops, There was an unexpected error.");     
+        error_show(error.text);     
         console.log("error");
     }); 
 }
