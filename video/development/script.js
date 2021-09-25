@@ -240,7 +240,9 @@ function checkVideoProspect(email_val) {
         }    
     })
     .catch(function (error) {
-        console.log(error);     
+        console.log(error.status); 
+        console.log(error.statusText);
+        error_show(error.statusText);     
     }); 
 }
 
@@ -274,8 +276,9 @@ function createVideoProspect(){
         letsStart();
     })
     .catch(function (error) {
-        error_show(error.text);     
-        console.log(error);
+        console.log(error.status); 
+        console.log(error.statusText);
+        error_show(error.statusText); 
     }); 
 }
 
