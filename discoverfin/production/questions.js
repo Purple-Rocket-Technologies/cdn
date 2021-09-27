@@ -268,7 +268,7 @@ function createNewProspect(){
     window.location.href = "/result";
   })
   .catch(function (error) {    
-    alert("Oops, There was an unexpected error."); 
+    alert(error.response.data.message); 
   });  
 
   //trrigerring the email
