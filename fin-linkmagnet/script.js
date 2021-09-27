@@ -482,12 +482,12 @@ async function stripeTokenHandler(token) {
 
     var todo = {
         advisorEmail: $('#business-email').val(),
-        advisorName: $('#business-name').val(),
+        advisorName: ($('#business-name').val()).trim(),
         phone: $('#business-phone').val(),
-        firstName: $('#first-name').val(),
-        lastName: $('#last-name').val(),
+        firstName: ($('#first-name').val()).trim(),
+        lastName: ($('#last-name').val()).trim(),
         companyEmail: $('#business-email').val(),
-        companyName: $('#business-name').val(),
+        companyName: ($('#business-name').val()).trim(),
         desc: "payment",
         pay: "usd",
         plan: stripeId,
