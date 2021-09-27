@@ -240,9 +240,7 @@ function checkVideoProspect(email_val) {
         }    
     })
     .catch(function (error) {
-        console.log(error.status); 
-        console.log(error.statusText);
-        error_show(error.statusText);     
+        error_show(error.response.data.message); 
     }); 
 }
 
@@ -275,10 +273,8 @@ function createVideoProspect(){
         success_show('Your details have been verified, Enjoy your video!');
         letsStart();
     })
-    .catch(function (error) {
-        console.log(error.status); 
-        console.log(error.statusText);
-        error_show(error.statusText); 
+    .catch(function(error) {
+        error_show(error.response.data.message); 
     }); 
 }
 
