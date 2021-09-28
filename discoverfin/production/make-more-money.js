@@ -1,12 +1,17 @@
 var company_id, prospect_id, user_name;
 
-if(readCookie('COMPANY_ID') && readCookie('prospect_id') && readCookie('Name') && readCookie('FIN Number')){
-    company_id = readCookie('COMPANY_ID');     
-    prospect_id = readCookie('prospect_id');
-    user_name = readCookie('Name');
-    setPageVariableValue();
+if (
+  readCookie("COMPANY_ID") &&
+  readCookie("prospect_id") &&
+  readCookie("Name") &&
+  readCookie("FIN Number")
+) {
+  company_id = readCookie("COMPANY_ID");
+  prospect_id = readCookie("prospect_id");
+  user_name = readCookie("Name");
+  setPageVariableValue();
 } else {
-    window.location.href = '/404';
+  window.location.href = "/404";
 }
 
 function setPageVariableValue() {
@@ -14,7 +19,6 @@ function setPageVariableValue() {
     $(this).html("" + user_name);
   });
 }
-
 
 $("#submit_btn").prop("disabled", true);
 
@@ -41,12 +45,9 @@ $("#Slide_1 .slide_cta").click(function () {
   progress();
 });
 
-
-
 var answer_array_1 = [$("#ques_1").text()];
 var answer_array_2 = [$("#ques_2").text()];
 var answer_array_3 = [$("#ques_3").text()];
-
 
 $("#Slide_2 .check").click(function () {
   var get_value = $(this).children(".check_box").siblings("div").html();
@@ -76,7 +77,6 @@ $("#Slide_2 .check").click(function () {
   }
 });
 
-
 $("#Slide_3 .check").click(function () {
   var get_value = $(this).children(".check_box").siblings("div").html();
   check_element = $(this).children(".check_box").children(".extended_tick");
@@ -104,7 +104,6 @@ $("#Slide_3 .check").click(function () {
     }
   }
 });
-
 
 $("#Slide_4 .check").click(function () {
   var get_value = $(this).children(".check_box").siblings("div").html();
@@ -134,8 +133,6 @@ $("#Slide_4 .check").click(function () {
   }
 });
 
-
-
 $("#Slide_2 .next_btn").click(function () {
   if ($(this).attr("data-clicked") == "no") {
     progress();
@@ -164,19 +161,17 @@ $("#Slide_4 .next_btn").click(function () {
 var user_name = readCookie("Name");
 $("#user_name").html("" + user_name);
 
-
 //turning arrays into strings
-function array_to_string(array_item){
+function array_to_string(array_item) {
   var stringy = "";
-  for(i=0;i<array_item.length;i++){
-      stringy = stringy + array_item[i];
-      if(i < array_item.length-1){
-          stringy = stringy + " * ";    
-      }
+  for (i = 0; i < array_item.length; i++) {
+    stringy = stringy + array_item[i];
+    if (i < array_item.length - 1) {
+      stringy = stringy + " * ";
+    }
   }
   return stringy;
 }
-
 
 //Submitting Form
 function submit_route_answers() {
@@ -185,26 +180,38 @@ function submit_route_answers() {
   ques_3 = array_to_string(answer_array_3);
 
   axios({
-    method: 'put',
-    url: 'https://' + api_url + '/api/v1/users/company/'+ company_id +'/prospects/' + prospect_id,    
+    method: "put",
+    url:
+      "https://" +
+      api_url +
+      "/api/v1/users/company/" +
+      company_id +
+      "/prospects/" +
+      prospect_id,
     data: {
       ques_1: ques_1,
       ques_2: ques_2,
-      ques_3: ques_3
-    }   
-  }).then(function(response) {     
-      window.location.href = "/route/make-more-money/video";       
+      ques_3: ques_3,
+    },
   })
-  .catch(function (error) {
+    .then(function () {
+      window.location.href = "/route/make-more-money/video";
+    })
+    .catch(function (error) {
       console.log(error);
-      alert("Oops, There was an unexpected error."); 
-  });
+      catchExceptionToSentry("error", error);
+      alert("Oops, There was an unexpected error.");
+    });
 }
 
 $("#submit_btn").click(function () {
-  if(answer_array_1.length == 1 || answer_array_2.length == 1 || answer_array_3.length == 1){
+  if (
+    answer_array_1.length == 1 ||
+    answer_array_2.length == 1 ||
+    answer_array_3.length == 1
+  ) {
     alert("Please answer all questions");
   } else {
     submit_route_answers();
-  }  
+  }
 });
