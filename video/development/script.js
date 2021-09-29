@@ -165,14 +165,14 @@ function validateVideoType(typeName){
 
 
 //Setting paths content variable
-async function setPathsContentVariable(videoType){
+function setPathsContentVariable(videoType){
     pathsContentAPI = "https://"+api_url+"/api/v1/users/videoProspects/paths?type=" + videoType;
 
     axios({
         method: 'get',
         url: pathsContentAPI
     })
-    .then(function(response) { 
+    .then(async function(response) { 
 
         for(i=0; i < response.data.data.length; i++){
             var description_array = await translateToLanguage(response.data.data[i].description, 'en', Weglot.getCurrentLang());           
