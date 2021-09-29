@@ -165,7 +165,7 @@ function validateVideoType(typeName){
 
 
 //Setting paths content variable
-function setPathsContentVariable(videoType){
+async function setPathsContentVariable(videoType){
     pathsContentAPI = "https://"+api_url+"/api/v1/users/videoProspects/paths?type=" + videoType;
 
     axios({
