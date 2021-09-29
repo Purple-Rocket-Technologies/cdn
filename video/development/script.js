@@ -165,29 +165,30 @@ function validateVideoType(typeName){
 
 
 //Setting paths content variable
-function setPathsContentVariable(videoType){
+async function setPathsContentVariable(videoType){
     pathsContentAPI = "https://"+api_url+"/api/v1/users/videoProspects/paths?type=" + videoType;
+    let gotResponse;
 
     axios({
         method: 'get',
         url: pathsContentAPI
     })
-    .then(async function(response) { 
-
-        for(i=0; i < response.data.data.length; i++){
-            var description_array = await translateToLanguage(response.data.data[i].description, 'en', Weglot.getCurrentLang());           
-            $('.path-option:nth-child('+ (i+1) +') .heading').text(response.data.data[i].name);
-
-            for(j=0; j < description_array.length; j++){
-                var description_item = "<div class='path-text'>"+ await translateToLanguage(description_array[j], 'en', Weglot.getCurrentLang()) +"</div>";
-                $('.path-option:nth-child('+ (i+1) +')').append(description_item);
-            }    
-        }
-
+    .then( function(response) {
+        gotResponse = response;
     })
     .catch(function (error) {
         error_show("Oops, There was an unexpected error."); 
     }); 
+
+    for(i=0; i < gotResponse.data.data.length; i++){
+        var description_array = await translateToLanguage(gotResponse.data.data[i].description, 'en', Weglot.getCurrentLang());           
+        $('.path-option:nth-child('+ (i+1) +') .heading').text(gotResponse.data.data[i].name);
+
+        for(j=0; j < description_array.length; j++){
+            var description_item = "<div class='path-text'>"+ await translateToLanguage(description_array[j], 'en', Weglot.getCurrentLang()) +"</div>";
+            $('.path-option:nth-child('+ (i+1) +')').append(description_item);
+        }    
+    }
 }
 
 
