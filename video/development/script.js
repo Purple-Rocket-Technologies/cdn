@@ -176,11 +176,11 @@ function setPathsContentVariable(videoType){
     .then( function(response) {
 
          for(i=0; i < response.data.data.length; i++){
-            async var description_array = await translateToLanguage(response.data.data[i].description, 'en', Weglot.getCurrentLang());           
-            $('.path-option:nth-child('+ (i+1) +') .heading').text(response.data.data[i].name);
+            var description_array = response.data.data[i].description;           
+            $('.path-option:nth-child('+ (i+1) +') .heading').text(await translateToLanguage(response.data.data[i].name, 'en', Weglot.getCurrentLang()));
     
             for(j=0; j < description_array.length; j++){
-                async var description_item = "<div class='path-text'>"+ await translateToLanguage(description_array[j], 'en', Weglot.getCurrentLang()) +"</div>";
+                var description_item = "<div class='path-text'>"+ description_array[j] +"</div>";
                 $('.path-option:nth-child('+ (i+1) +')').append(description_item);
             }    
         }
