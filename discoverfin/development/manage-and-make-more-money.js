@@ -271,11 +271,7 @@ function array_to_string(array_item){
 
 //Submitting Form
 async function submit_route_answers() {
-  const ques_1 = array_to_string(await translateToLanguage(answer_array_1));
-  const ques_2 = array_to_string(await translateToLanguage(answer_array_2));
-  const ques_3 = array_to_string(await translateToLanguage(answer_array_3));
-  const ques_4 = array_to_string(await translateToLanguage(answer_array_4));
-  
+   
   if(Weglot.getCurrentLang() == 'es'){
     ques_1 = array_to_string(await translateToLanguage(answer_array_1));
     ques_2 = array_to_string(await translateToLanguage(answer_array_2));
