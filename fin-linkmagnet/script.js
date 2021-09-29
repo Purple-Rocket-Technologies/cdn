@@ -548,37 +548,22 @@ async function stripeTokenHandler(token) {
     postalCode: $("#zip").val(),
     couponCode: $("#coupon").val(),
   };
-
-  const addedTodo = await addTodo(todo);
-
-  if (
-    (addedTodo.status === 200 &&
-      addedTodo.data.success !== undefined &&
-      addedTodo.data.success === "success" &&
-      addedTodo.data.url !== "") ||
-    (addedTodo.status === 204 &&
-      addedTodo.data.success !== undefined &&
-      addedTodo.data.success === "success" &&
-      addedTodo.data.url !== "")
-  ) {
-    const redirect_url = addedTodo.data.url;
-    console.log(redirect_url);
-    window.parent.location = redirect_url;
-    window.location.replace(redirect_url);
-  } else if (addedTodo.status !== 200 && addedTodo.error === true) {
-    $(".payment_loader").removeClass("show");
-    alert("Your payment was declined. Please try again.");
-  }
+  await addTodo(todo);
 }
 
 const BASE_URL = createCharge;
 const addTodo = async (todo) => {
-  try {
-    console.log("CreateCharge API called");
-    const res = await axios.post(`${BASE_URL}`, todo);
-    return res.data;
-  } catch (e) {
-    catchExceptionToSentry("error", e);
-    console.error(e);
-  }
+  await axios
+    .post(`${BASE_URL}`, todo)
+    .then((addedTodo) => {
+      const redirect_url = addedTodo.data.url;
+      console.log(redirect_url);
+      window.parent.location = redirect_url;
+      window.location.replace(redirect_url);
+    })
+    .catch((e) => {
+      $(".payment_loader").removeClass("show");
+      catchExceptionToSentry("error", e);
+      alert("Your payment was declined. Please try again.");
+    });
 };
