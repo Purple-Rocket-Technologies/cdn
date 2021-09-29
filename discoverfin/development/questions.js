@@ -241,7 +241,7 @@ $("#guess_back").click(function () {
 var country_val = readCookie('country');
 
 async function createNewProspect(){
-  const [retirement_age, pension_choice, guessed_fin] = await translateToLanguage([$("#retirement_age").val(), $("#pension_choice").val(), $("#guessed_fin").val()]) 
+  const [retirement_age, pension_choice, guessed_fin] = await translateToLanguage([$("#retirement_age").val(), $("#pension_choice").val(), $("#guessed_fin").val()]);
    
   axios({
     method: 'post',
