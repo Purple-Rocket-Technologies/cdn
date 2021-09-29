@@ -293,7 +293,6 @@ function submit_route_answers() {
       window.location.href = "/route/both/video";
     })
     .catch(function (error) {
-      console.log(error);
       catchExceptionToSentry("error", error);
       alert("Oops, There was an unexpected error.");
     });

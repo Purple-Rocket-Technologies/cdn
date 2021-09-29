@@ -95,7 +95,6 @@ $("#getintouchsubmit").click(function () {
       alert("Your Request has been submitted sucessfully!");
     })
     .catch(function (error) {
-      console.log(error);
       catchExceptionToSentry("error", error);
       alert("Oops, There was an unexpected error.");
     });
