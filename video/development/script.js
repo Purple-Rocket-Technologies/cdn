@@ -177,7 +177,12 @@ function setPathsContentVariable(videoType){
 
          for(i=0; i < response.data.data.length; i++){
             var description_array = response.data.data[i].description;
-            $('.path-option:nth-child('+ (i+1) +') .heading').text(   await translateToLanguage(response.data.data[i].name, 'en', Weglot.getCurrentLang()) );
+
+            async function translateResponse(){
+                return await translateToLanguage(response.data.data[i].name, 'en', Weglot.getCurrentLang());                
+            }
+            
+            $('.path-option:nth-child('+ (i+1) +') .heading').text(translateResponse());
     
             for(j=0; j < description_array.length; j++){
                 var description_item = "<div class='path-text'>"+ description_array[j] +"</div>";
