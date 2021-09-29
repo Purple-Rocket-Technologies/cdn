@@ -180,12 +180,10 @@ function array_to_string(array_item){
 
 //Submitting Form
 async function submit_route_answers() {
-  ques_1_string = array_to_string(answer_array_1);
-  ques_2_string = array_to_string(answer_array_2);
-  ques_3_string = array_to_string(answer_array_3);
-
-  const [ques_1, ques_2, ques_3] = await translateToLanguage([ques_1_string, ques_2_string, ques_3_string]);
-
+  ques_1_string = array_to_string(await translateToLanguage(answer_array_1));
+  ques_2_string = array_to_string(await translateToLanguage(answer_array_2));
+  ques_3_string = array_to_string(await translateToLanguage(answer_array_3));
+  
   axios({
     method: 'put',
     url: 'https://' + api_url + '/api/v1/users/company/'+ company_id +'/prospects/' + prospect_id,    
