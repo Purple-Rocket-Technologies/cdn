@@ -174,22 +174,20 @@ async function setPathsContentVariable(videoType){
     })
     .then( function(response) {
         gotResponse = response.data;
+        console.log(gotResponse);
+        for(i=0; i < gotResponse.data.length; i++){
+            var description_array = await translateToLanguage(gotResponse.data[i].description, 'en', Weglot.getCurrentLang());           
+            $('.path-option:nth-child('+ (i+1) +') .heading').text(gotResponse.data[i].name);
+    
+            for(j=0; j < description_array.length; j++){
+                var description_item = "<div class='path-text'>"+ await translateToLanguage(description_array[j], 'en', Weglot.getCurrentLang()) +"</div>";
+                $('.path-option:nth-child('+ (i+1) +')').append(description_item);
+            }    
+        }
     })
     .catch(function (error) {
         error_show("Oops, There was an unexpected error."); 
-    }); 
-
-    console.log(gotResponse);
-
-    for(i=0; i < gotResponse.data.length; i++){
-        var description_array = await translateToLanguage(gotResponse.data[i].description, 'en', Weglot.getCurrentLang());           
-        $('.path-option:nth-child('+ (i+1) +') .heading').text(gotResponse.data[i].name);
-
-        for(j=0; j < description_array.length; j++){
-            var description_item = "<div class='path-text'>"+ await translateToLanguage(description_array[j], 'en', Weglot.getCurrentLang()) +"</div>";
-            $('.path-option:nth-child('+ (i+1) +')').append(description_item);
-        }    
-    }
+    });     
 }
 
 
