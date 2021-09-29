@@ -174,15 +174,17 @@ async function setPathsContentVariable(videoType){
         url: pathsContentAPI
     })
     .then( function(response) {
-        gotResponse = response;
+        gotResponse = response.data;
     })
     .catch(function (error) {
         error_show("Oops, There was an unexpected error."); 
     }); 
 
-    for(i=0; i < gotResponse.data.data.length; i++){
-        var description_array = await translateToLanguage(gotResponse.data.data[i].description, 'en', Weglot.getCurrentLang());           
-        $('.path-option:nth-child('+ (i+1) +') .heading').text(gotResponse.data.data[i].name);
+    console.log(gotResponse);
+
+    for(i=0; i < gotResponse.data.length; i++){
+        var description_array = await translateToLanguage(gotResponse.data[i].description, 'en', Weglot.getCurrentLang());           
+        $('.path-option:nth-child('+ (i+1) +') .heading').text(gotResponse.data[i].name);
 
         for(j=0; j < description_array.length; j++){
             var description_item = "<div class='path-text'>"+ await translateToLanguage(description_array[j], 'en', Weglot.getCurrentLang()) +"</div>";
