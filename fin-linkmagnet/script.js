@@ -525,6 +525,7 @@ const addTodo = async (todo) => {
     await axios
         .post(`${BASE_URL}`, todo)
         .then((addedTodo) => {
+            addedTodo = addedTodo.data;
             const redirect_url = addedTodo.data.url;
             window.parent.location = redirect_url;
             window.location.replace(redirect_url);
