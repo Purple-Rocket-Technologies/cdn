@@ -173,7 +173,7 @@ async function setPathsContentVariable(videoType){
         method: 'get',
         url: pathsContentAPI
     })
-    .then( function(response) {
+    .then(async function(response) {
 
          for(i=0; i < response.data.data.length; i++){
             var description_array = response.data.data[i].description;
