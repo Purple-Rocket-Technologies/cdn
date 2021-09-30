@@ -1,17 +1,17 @@
 //Variable Declaration
-var statesList = [];
-var selectedCountry;
-var selectedCountryName;
-var price_array = [];
-var stripeId;
+let statesList = [];
+let selectedCountry;
+let selectedCountryName;
+let price_array = [];
+let stripeId;
 
 
 //api list
-var get_states_api = "https://" + api_url + "/api/v1/users/countriesAndStates/?abbreviation=";
-var get_pricing = "https://" + api_url + "/api/v1/users/assets/calculateTotal";
-var checkCompanyEmail = "https://" + api_url + "/api/v1/users/checkCompanyUserEmail";
-var createCharge = "https://" + api_url + "/api/v1/users/createCharge";
-var fetchPlan = "https://" + api_url + "/api/v1/users/plans?planName=";
+const get_states_api = "https://" + api_url + "/api/v1/users/countriesAndStates/?abbreviation=";
+const get_pricing = "https://" + api_url + "/api/v1/users/assets/calculateTotal";
+const checkCompanyEmail = "https://" + api_url + "/api/v1/users/checkCompanyUserEmail";
+const createCharge = "https://" + api_url + "/api/v1/users/createCharge";
+const fetchPlan = "https://" + api_url + "/api/v1/users/plans?planName=";
 
 $('#select-billing option:nth-child(1)').attr("data-stripe", "FINTap Monthly");
 $('#select-billing option:nth-child(2)').attr("data-stripe", "FINTap Yearly");
@@ -31,9 +31,10 @@ axios({
 }).then(function (response) {
     console.log("fetched started");
     stripeId = response.data.data[0].stripeId;
-    
+
 }).catch(function (error) {
     console.log(error.status);
+    catchExceptionToSentry("error", error);
     console.log(error.statusText);
 });
 
@@ -68,6 +69,7 @@ function setSelectStates(country) {
         .catch(function (error) {
             console.log(error.status);
             console.log(error.statusText);
+            catchExceptionToSentry("error", error);
             alert("Oops, There was an unexpected error.");
         });
 }
@@ -91,6 +93,7 @@ function updatePricing() {
         })
         .catch(function (error) {
             console.log(error.status);
+            catchExceptionToSentry("error", error);
             console.log(error.statusText);
             alert("Oops, There was an unexpected error.");
         });
@@ -193,6 +196,7 @@ $('#no-of-links').change(function () {
         .catch(function (error) {
             console.log(error.status);
             console.log(error.statusText);
+            catchExceptionToSentry("error", error);
             alert("Oops, There was an unexpected error.");
         });
 });
@@ -215,6 +219,7 @@ $('#select-billing').change(function () {
     }).catch(function (error) {
         console.log(error.status);
         console.log(error.statusText);
+        catchExceptionToSentry("error", error);
         alert("Oops, There was an unexpected error.");
     });
 
@@ -226,8 +231,8 @@ $('#select-billing').change(function () {
 });
 
 $('#select-billing').change(function () {
-    var selected_element = $(this).find('option:selected');
-    var active_plan = selected_element.attr("data-stripe");
+    const selected_element = $(this).find('option:selected');
+    const active_plan = selected_element.attr("data-stripe");
 
     axios({
         method: 'get',
@@ -236,6 +241,7 @@ $('#select-billing').change(function () {
         stripeId = response.data.data[0].stripeId;
     }).catch(function (error) {
         console.log(error.status);
+        catchExceptionToSentry("error", error);
         console.log(error.statusText);
     });
 });
@@ -253,11 +259,12 @@ $('#number-of-bracelets').keyup(function () {
         }
     })
         .then(function (response) {
-            braceletprice = parseInt(response.data.data.data.braceletsTotal).toFixed(2);
+            let braceletprice = parseInt(response.data.data.data.braceletsTotal).toFixed(2);
             $('.pmt-price-hightlight.bracelet').text("$" + braceletprice);
         })
         .catch(function (error) {
             console.log(error.status);
+            catchExceptionToSentry("error", error);
             console.log(error.statusText);
             alert("Oops, There was an unexpected error.");
         });
@@ -268,13 +275,13 @@ $('.continue_btn').click(function () {
     isEmail($('#business-email').val());
     //validate all fields
     if ($('#no-of-links').val() >= 5) {
-        if ($('#number-of-bracelets').val() != '') {
-            if ($('#first-name').val() != '' && $('#last-name').val() != '') {
-                if ($('#business-name').val() != '') {
+        if ($('#number-of-bracelets').val() !== '') {
+            if ($('#first-name').val() !== '' && $('#last-name').val() !== '') {
+                if ($('#business-name').val() !== '') {
                     if (isEmail($('#business-email').val())) {
-                        if ($('#add_1').val() != '') {
-                            if ($('#city').val() != '') {
-                                if ($('#zip').val() != '') {
+                        if ($('#add_1').val() !== '') {
+                            if ($('#city').val() !== '') {
+                                if ($('#zip').val() !== '') {
                                     movetocart();
                                 } else {
                                     alert('Please enter your zip code.');
@@ -348,10 +355,10 @@ $('#checkout_btn').click(function () {
             'email': email
         },
     }).then(function (response) {
-        if (response.data.status == 200) {
-            var checkout_name = $('#first-name').val() + " " + $('#last-name').val();
-            var checkout_company = $('#business-name').val();
-            var checkout_email = $('#business-email').val();
+        if (response.data.status === 200) {
+            const checkout_name = $('#first-name').val() + " " + $('#last-name').val();
+            const checkout_company = $('#business-name').val();
+            const checkout_email = $('#business-email').val();
             $('#checkout_name').text(checkout_name);
             $('#checkout_company').text(checkout_company);
             $('#checkout_email').text(checkout_email.toString().toLowerCase());
@@ -362,6 +369,7 @@ $('#checkout_btn').click(function () {
             return false;
         }
     }).catch(function (error) {
+        catchExceptionToSentry("error", error);
         console.log(error.status);
         console.log(error.statusText);
     });
@@ -382,10 +390,10 @@ $('#payment_submit_btn').click(function () {
 
 $('#payment_submit_btn').click(function () {
     setTimeout(function () {
-        if ($('.StripeElement').hasClass('StripeElement--invalid') == true) {
+        if ($('.StripeElement').hasClass('StripeElement--invalid') === true) {
             // Do nothing
         } else {
-            if ($('#checkbox').prop('checked') == true) {
+            if ($('#checkbox').prop('checked') === true) {
                 $('.payment_loader').addClass('show');
             } else {
                 alert('Please agree to the terms and conditions.');
@@ -395,11 +403,11 @@ $('#payment_submit_btn').click(function () {
 });
 
 
-var stripe = Stripe('pk_test_51H9OieCKHZ8kusjLzWw353ZdzHc9Atug0VunuxSd7dR8Dl1e0LDFRGq5GGp4IfjTqQJSRdDKfNtgMSuuyC9P3HpI00OUJLyPof');
-var elements = stripe.elements();
+const stripe = Stripe('pk_test_51H9OieCKHZ8kusjLzWw353ZdzHc9Atug0VunuxSd7dR8Dl1e0LDFRGq5GGp4IfjTqQJSRdDKfNtgMSuuyC9P3HpI00OUJLyPof');
+const elements = stripe.elements();
 
 // Custom styling can be passed to options when creating an Element.
-var style = {
+const style = {
     base: {
         // Add your base input styles here. For example:
         fontSize: '16px',
@@ -408,20 +416,20 @@ var style = {
 };
 
 // Create an instance of the card Element.
-var card = elements.create('card', { style: style });
+const card = elements.create('card', { style: style });
 
 // Add an instance of the card Element into the `card-element` <div>.
 card.mount('#card-element');
 
 // Create a token or display an error when the form is submitted.
-var form = document.getElementById('payment_form');
+const form = document.getElementById('payment_form');
 
 form.addEventListener('submit', function (event) {
     event.preventDefault();
-    var email = document.getElementById('business-email').value
+    const email = document.getElementById('business-email').value;
     console.log(email)
 
-    if (email == '') {
+    if (email === '') {
         // console.log("error")
         alert("Enter Email");
     } else if (!validateEmail(email)) {
@@ -432,18 +440,21 @@ form.addEventListener('submit', function (event) {
             type: 'card',
             card: card,
             billing_details: {
-                name: $('#name-on-card').val(),               
+                name: $('#name-on-card').val(),
             },
         }).then(function (result) {
             // Handle result.error or result.paymentMethod
-            if(result.error){
-                var errorElement = document.getElementById('card-errors');
+            if (result.error) {
+                const errorElement = document.getElementById('card-errors');
                 errorElement.textContent = result.error.message;
+                catchExceptionToSentry("error", result.error);
             } else {
                 console.log(result.paymentMethod);
-                var apiResult = stripeTokenHandler(result.paymentMethod);                
+                const apiResult = stripeTokenHandler(result.paymentMethod);
             }
-        });
+        }).catch((error) => {
+            catchExceptionToSentry("error", error);
+        })
 
         // console.log("No error")
         // stripe.createToken(card).then(function (result) {
@@ -472,15 +483,15 @@ async function stripeTokenHandler(token) {
     // Insert the token ID into the form so it gets submitted to the server
     console.log("Token handler started");
 
-    var form = document.getElementById('payment_form');
+    const form = document.getElementById('payment_form');
     // var hiddenInput = document.createElement('input');
     // hiddenInput.setAttribute('type', 'hidden');
     // hiddenInput.setAttribute('name', 'stripeToken');
     // hiddenInput.setAttribute('value', token.id);
     // form.appendChild(hiddenInput);
-    var email = document.getElementById('business-email').value
+    const email = document.getElementById('business-email').value;
 
-    var todo = {
+    const todo = {
         advisorEmail: $('#business-email').val(),
         advisorName: ($('#business-name').val()).trim(),
         phone: $('#business-phone').val(),
@@ -504,31 +515,25 @@ async function stripeTokenHandler(token) {
         countryCode: selectedCountry,
         postalCode: $('#zip').val(),
         couponCode: $('#coupon').val()
-    }
+    };
 
-    const addedTodo = await addTodo(todo);
-
-    if (addedTodo.status === 200 && addedTodo.data.success != undefined && addedTodo.data.success == 'success' && addedTodo.data.url != '' || addedTodo.status === 204 && addedTodo.data.success != undefined && addedTodo.data.success == 'success' && addedTodo.data.url != '') {
-        var redirect_url = addedTodo.data.url;
-        console.log(redirect_url);
-        window.parent.location = redirect_url;
-        window.location.replace(redirect_url);
-    } else if (addedTodo.status != 200 && addedTodo.error == true) {
-        $('.payment_loader').removeClass('show');
-        alert('Your payment was declined. Please try again.');
-    }
+    await addTodo(todo);
 }
 
 const BASE_URL = createCharge;
-const addTodo = async todo => {
-    try {
-        console.log("CreateCharge API called");
-        const res = await axios.post(`${BASE_URL}`, todo);
-        const addedTodo = res.data;
-        return addedTodo;
-    } catch (e) {
-        console.error(e);
-    }
+const addTodo = async (todo) => {
+    await axios
+        .post(`${BASE_URL}`, todo)
+        .then((addedTodo) => {
+            const redirect_url = addedTodo.data.url;
+            window.parent.location = redirect_url;
+            window.location.replace(redirect_url);
+        })
+        .catch((e) => {
+            $(".payment_loader").removeClass("show");
+            catchExceptionToSentry("error", e);
+            alert("Your payment was declined. Please try again.");
+        });
 };
 
 

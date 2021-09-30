@@ -110,6 +110,7 @@ function validateUrl(company, user) {
       }
     })
     .catch(function (error) {
+      catchExceptionToSentry("error", error);
       //error_show("Oops, There was an unexpected error.");
     });
 }
@@ -138,6 +139,7 @@ function continuationCheck() {
       })
       .catch(function (error) {
         console.log(error);
+        catchExceptionToSentry("error", error);
         alert("Oops, There was an unexpected error.");
       });
   } else {
@@ -193,6 +195,7 @@ function validateVideoType(typeName) {
       }
     })
     .catch(function (error) {
+      catchExceptionToSentry("error", error);
       $(".fourofour").addClass("show");
     });
 }
@@ -260,6 +263,7 @@ async function setPathsContentVariable(videoType) {
       }
     })
     .catch(function (error) {
+      catchExceptionToSentry("error", error);
       error_show("Oops, There was an unexpected error.");
       console.error(error);
     });
@@ -275,7 +279,7 @@ function renderVideo(videoID) {
       setTotalDuration();
       playerinitialized = 1;
     })
-    .catch(function (error) {});
+    .catch(function (error) { catchExceptionToSentry("error", error);});
   player.pause();
   setFinalFunction();
 }
@@ -300,6 +304,7 @@ function fetchVideo(type, country, lang) {
       renderVideo(video_id);
     })
     .catch(function (error) {
+      catchExceptionToSentry("error", error);
       error_show("Oops, There was an unexpected error.");
     });
 }
@@ -335,6 +340,7 @@ function checkVideoProspect(email_val) {
       }
     })
     .catch(function (error) {
+      catchExceptionToSentry("error", error);
       error_show(error.response.data.message);
     });
 }
@@ -373,6 +379,7 @@ function createVideoProspect() {
       letsStart();
     })
     .catch(function (error) {
+      catchExceptionToSentry("error", error);
       error_show(error.response.data.message);
     });
 }
@@ -413,6 +420,7 @@ function updateWatchtime(time, percentage) {
       //console.log(response.xhr);
     })
     .catch(function (error) {
+      catchExceptionToSentry("error", error);
       //console.log(response.data);
       //console.log(response.xhr);
     });
@@ -689,10 +697,10 @@ async function triggerRenderOptions(path_name) {
   path_name = path_name.includes("1")
     ? "Path 1"
     : path_name.includes("2")
-    ? "Path 2"
-    : path_name.includes("3")
-    ? "Path 3"
-    : "";
+      ? "Path 2"
+      : path_name.includes("3")
+        ? "Path 3"
+        : "";
   var getPathOptionsAPI =
     "https://" +
     api_url +
@@ -731,6 +739,7 @@ async function triggerRenderOptions(path_name) {
     })
     .catch(function (error) {
       console.log(error.status);
+      catchExceptionToSentry("error", error);
       console.log(error.statusText);
       error_show("Oops, There was an unexpected error.");
     });
@@ -782,14 +791,15 @@ $(".submit.paths").click(async () => {
         $(".appointment-iframe .w-iframe iframe").attr(
           "src",
           "https://dev.discoverfin.io/appointment?company=" +
-            getUrlParameter("company") +
-            "&user=" +
-            getUrlParameter("user")
+          getUrlParameter("company") +
+          "&user=" +
+          getUrlParameter("user")
         );
         $(".last-popup").addClass("active");
       })
       .catch(function (error) {
         console.log(error.status);
+        catchExceptionToSentry("error", error);
         console.log(error.statusText);
         error_show("Oops, There was an unexpected error.");
       });
@@ -802,9 +812,9 @@ $(".iframe-back").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
     "https://dev.discoverfin.io/appointment?company=" +
-      getUrlParameter("company") +
-      "&user=" +
-      getUrlParameter("user")
+    getUrlParameter("company") +
+    "&user=" +
+    getUrlParameter("user")
   );
 });
 
@@ -813,8 +823,8 @@ $(".closer-last").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
     "https://dev.discoverfin.io/appointment?company=" +
-      getUrlParameter("company") +
-      "&user=" +
-      getUrlParameter("user")
+    getUrlParameter("company") +
+    "&user=" +
+    getUrlParameter("user")
   );
 });
