@@ -167,26 +167,43 @@ function validateVideoType(typeName){
 //Setting paths content variable
 async function setPathsContentVariable(videoType){
     pathsContentAPI = "https://"+api_url+"/api/v1/users/videoProspects/paths?type=" + videoType;
-    
-
     axios({
         method: 'get',
         url: pathsContentAPI
     })
     .then(async function(response) {
 
-         for(i=0; i < response.data.data.length; i++){
-            var description_array = response.data.data[i].description;
-            $('.path-option:nth-child('+ (i+1) +') .heading').text( await translateToLanguage(response.data.data[i].name, 'en', Weglot.getCurrentLang()));
-    
+        for(i=0; i < response.data.data.length; i++){
+            //setting title of path
+            if(Weglot.getCurrentLang() == 'es'){
+                path_name = await translateToLanguage([response.data.data[i].name], 'en', 'es');
+            } else {
+                path_name = response.data.data[i].name;
+            }
+            
+            console.log(path_name);
+            $('.path-option:nth-child('+ (i+1) +') .heading').text(path_name);
+
+            //setting description of path
+            var description_array = description_array = response.data.data[i].description;   
+            console.log(description_array);
+
             for(j=0; j < description_array.length; j++){
-                var description_item = "<div class='path-text'>"+ await translateToLanguage(description_array[j], 'en', Weglot.getCurrentLang()) +"</div>";
-                $('.path-option:nth-child('+ (i+1) +')').append(description_item);
+
+                if(Weglot.getCurrentLang() == 'es'){
+                    description_item_text = await translateToLanguage([description_array[j]], 'en', 'es');
+                } else {
+                    description_item_text = description_array[j];
+                }
+                console.log(description_item_text);
+                var description_item_markup = "<div class='path-text'>"+description_item_text+"</div>";
+                $('.path-option:nth-child('+ (i+1) +')').append(description_item_markup);
             }    
         }
     })
     .catch(function (error) {
         error_show("Oops, There was an unexpected error."); 
+        console.log('asd');
     });     
 }
 
@@ -397,18 +414,22 @@ validateVideoType(videoType); //validating video type from the url
 
 $('#country-us').click(function () {    
     Weglot.switchTo('en');
+    validateVideoType(videoType);
 });
 
 $('#country-es').click(function () {    
     Weglot.switchTo('es');
+    validateVideoType(videoType);
 });
 
 $('#country-ca').click(function () {
     Weglot.switchTo('en');
+    validateVideoType(videoType);
 });
 
 $('#country-ca-es').click(function () {  
     Weglot.switchTo('es');
+    validateVideoType(videoType);
 });
 
 
