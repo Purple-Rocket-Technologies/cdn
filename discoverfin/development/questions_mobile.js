@@ -242,7 +242,7 @@ var country_val = readCookie('country');
 
 
 async function createNewProspect(){
-  
+
   if(Weglot.getCurrentLang() == 'es'){
     [retirement_age, pension_choice, guessed_fin] = await translateToLanguage([$("#retirement_age").val(), $("#pension_choice").val(), $("#guessed_fin").val()]);  
   } else {
@@ -302,9 +302,9 @@ async function createNewProspect(){
 
 async function updateProspect(prospectID){
   if(Weglot.getCurrentLang() == 'es'){
-    const [retirement_age, pension_choice, guessed_fin] = await translateToLanguage([$("#retirement_age").val(), $("#pension_choice").val(), $("#guessed_fin").val()]);  
+    [retirement_age, pension_choice, guessed_fin] = await translateToLanguage([$("#retirement_age").val(), $("#pension_choice").val(), $("#guessed_fin").val()]);  
   } else {
-    const [retirement_age, pension_choice, guessed_fin] = [$("#retirement_age").val(), $("#pension_choice").val(), $("#guessed_fin").val()]; 
+    [retirement_age, pension_choice, guessed_fin] = [$("#retirement_age").val(), $("#pension_choice").val(), $("#guessed_fin").val()]; 
   }
 
   axios({
