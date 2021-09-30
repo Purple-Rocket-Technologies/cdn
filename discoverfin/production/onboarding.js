@@ -75,11 +75,11 @@ function getAPIparams() {
 }
 
 setCookies("START_OVER_URL", window.location.href);
-const home_link = readCookie("START_OVER_URL");
+home_link = readCookie("START_OVER_URL");
 $("#start_over").attr("href", home_link);
 
 const user = getUrlParameter("user");
-var company = getUrlParameter("company");
+const company = getUrlParameter("company");
 setCookies("URL_USER", user);
 setCookies("URL_COMPANY", company);
 
