@@ -1,25 +1,25 @@
 //*******************************/
 //**ALL VARIABLES DECLARATIONS***/
 //*******************************/
-var videoType = window.location.pathname.replace("/", "");
-var country_val;
-var lang_val;
-var video_id;
-var video_prospect_id;
-var totalDurationTime;
-var playerinitialized = 0;
-var currentTiming;
-var watchpercentage;
-var options;
-var mcq = [];
+const videoType = window.location.pathname.replace("/", "");
+let country_val;
+let lang_val;
+let video_id;
+let video_prospect_id;
+let totalDurationTime;
+let playerinitialized = 0;
+let currentTiming;
+let watchpercentage;
+let options;
+let mcq = [];
 
 //*******************************/
 //********ALL FUNCTIONS *********/
 //*******************************/
 
 // reading url parameters
-var getUrlParameter = function getUrlParameter(sParam) {
-  var sPageURL = window.location.search.substring(1),
+const getUrlParameter = function getUrlParameter(sParam) {
+  let sPageURL = window.location.search.substring(1),
     sURLVariables = sPageURL.split("&"),
     sParameterName,
     i;
@@ -68,10 +68,10 @@ function success_show(msg) {
 
 //formating seconds into time
 function format(time) {
-  var hrs = ~~(time / 3600);
-  var mins = ~~((time % 3600) / 60);
-  var secs = ~~time % 60;
-  var ret = "";
+  const hrs = ~~(time / 3600);
+  const mins = ~~((time % 3600) / 60);
+  const secs = ~~time % 60;
+  let ret = "";
   if (hrs > 0) {
     ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
   }
@@ -82,7 +82,7 @@ function format(time) {
 
 //Validating URL
 function validateUrl(company, user) {
-  validateCompanyUserAPI =
+  let validateCompanyUserAPI =
     "https://" +
     api_url +
     "/api/v1/users/getCompany/name/" +
@@ -94,7 +94,7 @@ function validateUrl(company, user) {
     url: validateCompanyUserAPI,
   })
     .then(function (response) {
-      if (response.data.status == 200) {
+      if (response.data.status === 200) {
         //setting necessary cookies
         setCookies("COMPANY_ID", response.data.data.companyId);
         setCookies("USER_ID", response.data.data.userId);
@@ -150,7 +150,7 @@ function redirectContinuer() {
   if (prospect_watchpercentage < 90) {
     checkVideoProspect(getUrlParameter("prospectEmail"));
     $(".main-app-container").addClass("show");
-  } else if (prospect_pathChoosen == undefined) {
+  } else if (prospect_pathChoosen === undefined) {
     checkVideoProspect(getUrlParameter("prospectEmail"));
     $(function () {
       $(".nav-bullet-dot:nth-child(3)")
@@ -174,7 +174,7 @@ function redirectContinuer() {
 
 //Validating video type
 function validateVideoType(typeName) {
-  validateVideoTypeAPI =
+  let validateVideoTypeAPI =
     "https://" +
     api_url +
     "/api/v1/users/videoProspects/leadCapturingVideos?type=" +
@@ -199,7 +199,7 @@ function validateVideoType(typeName) {
 
 //Setting paths content variable
 async function setPathsContentVariable(videoType) {
-  pathsContentAPI =
+  let pathsContentAPI =
     "https://" +
     api_url +
     "/api/v1/users/videoProspects/paths?type=" +
@@ -210,16 +210,26 @@ async function setPathsContentVariable(videoType) {
   })
     .then(async function (response) {
       [...$(".path-option")].forEach((elem) => {
-        elem.childNodes.forEach((item) => {
-          if (item.classList[0] === "path-text") {
-            elem.removeChild(item);
+        let temp = [];
+        for (let i = 0; i < elem.childNodes.length; i++) {
+          const item = elem.childNodes[i];
+          if (!item.className.includes("path-text")) {
+            temp.push(item);
           }
+        }
+        elem.innerHTML = "";
+        temp.forEach((item) => {
+          elem.append(item);
         });
       });
 
-      response.data.data.forEach(async (it, i) => {
+      let description_item_text;
+      let description_array;
+      let path_name;
+      for (let i = 0; i < response.data.data.length; i++) {
+        let it = response.data.data[i];
         //setting title of path
-        if ((await Weglot.getCurrentLang()) == "es") {
+        if ((await Weglot.getCurrentLang()) === "es") {
           path_name = await translateToLanguage([it.name], "en", "es");
         } else {
           path_name = it.name;
@@ -227,10 +237,11 @@ async function setPathsContentVariable(videoType) {
         $(".path-option:nth-child(" + (i + 1) + ") .heading").text(path_name);
 
         //setting description of path
-        var description_array = (description_array = it.description);
+        description_array = it.description;
 
-        description_array.forEach(async (elem, index) => {
-          if ((await Weglot.getCurrentLang()) == "es") {
+        for (let j = 0; j < description_array.length; j++) {
+          let elem = description_array[j];
+          if ((await Weglot.getCurrentLang()) === "es") {
             description_item_text = await translateToLanguage(
               [elem],
               "en",
@@ -239,17 +250,14 @@ async function setPathsContentVariable(videoType) {
           } else {
             description_item_text = elem;
           }
-          if (
-            !$(`.path-option:nth-child(${index + 1})`)[0].innerHTML.includes(
-              description_item_text
-            )
-          ) {
-            $(`.path-option:nth-child(${index + 1})`).append(
-              "<div class='path-text'>" + description_item_text + "</div>"
+          const html_elem = $(`.path-option:nth-child(${i + 1})`);
+          if (!html_elem[0].innerHTML.includes(description_item_text)) {
+            html_elem.append(
+              `<div class='path-text'>${description_item_text}</div>`
             );
           }
-        });
-      });
+        }
+      }
     })
     .catch(function (error) {
       error_show("Oops, There was an unexpected error.");
@@ -274,7 +282,7 @@ function renderVideo(videoID) {
 
 //fetch video
 function fetchVideo(type, country, lang) {
-  var fetchVideoAPI =
+  const fetchVideoAPI =
     "https://" +
     api_url +
     "/api/v1/users/videoProspects/leadCapturingVideos?type=" +
@@ -311,7 +319,7 @@ function checkVideoProspect(email_val) {
     url: checkVideoProspectAPI,
   })
     .then(function (response) {
-      if (response.data.count == 1) {
+      if (response.data.count === 1) {
         video_prospect_id = response.data.data[0]._id;
         if (!getUrlParameter("prospectEmail")) {
           success_show(
@@ -333,7 +341,7 @@ function checkVideoProspect(email_val) {
 
 // Create Video Prospect
 function createVideoProspect() {
-  var createVideoProspectID =
+  const createVideoProspectID =
     "https://" +
     api_url +
     "/api/v1/users/company/" +
@@ -385,7 +393,7 @@ function letsStart() {
 
 // Update watch percentage
 function updateWatchtime(time, percentage) {
-  var updateWatchTimeAPI =
+  const updateWatchTimeAPI =
     "https://" +
     api_url +
     "/api/v1/users/company/" +
@@ -438,7 +446,7 @@ function setTotalDuration() {
 
 // Progress bar update
 setInterval(function () {
-  if (playerinitialized == 1) {
+  if (playerinitialized === 1) {
     player.getCurrentTime().then(function (seconds) {
       watchpercentage = (seconds / totalDurationTime) * 100;
     });
@@ -448,7 +456,7 @@ setInterval(function () {
 
 // Current timing
 setInterval(function () {
-  if (playerinitialized == 1) {
+  if (playerinitialized === 1) {
     player.getCurrentTime().then(function (seconds) {
       $(".elapsedtime").text(format(seconds));
       currentTiming = seconds;
@@ -476,12 +484,16 @@ async function render_options() {
   for (i = 0; i <= options.length; i++) {
     $(".checkbox-field:nth-child(" + i + ")").show();
     let text = options[i];
-    if ((await Weglot.getCurrentLang()) == "es") {
+    if ((await Weglot.getCurrentLang()) === "es") {
       if (text) {
         text = await translateToLanguage([text], "en", "es");
       }
     }
     $(".checkbox-field:nth-child(" + (i + 1) + ") .checkbox-label").text(text);
+    $(".checkbox-field:nth-child(" + (i + 1) + ") .checkbox-label").attr(
+      "en",
+      options[i]
+    );
   }
   $(function () {
     $(".nav-bullet-dot:nth-child(4)")
@@ -531,7 +543,7 @@ $("#email").on("focus blur", toggleFocus);
 function toggleFocus(e) {
   console.log(e.type);
 
-  if (e.type == "focus") {
+  if (e.type === "focus") {
     $(".email_help_text").addClass("active");
   } else {
     $(".email_help_text").removeClass("active");
@@ -557,7 +569,7 @@ $(".non-clicker").click(function () {
 });
 
 $(".onboad").click(function () {
-  if (country_val != "") {
+  if (country_val !== "") {
     if (
       $("#peoplewatching").val() != "" &&
       $("#phone").val() != "" &&
@@ -578,61 +590,61 @@ $(".onboad").click(function () {
 });
 
 // Updating watch time percentage thorough api
-var set10 = setInterval(function () {
+const set10 = setInterval(function () {
   if (watchpercentage > 10) {
     updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
     clearInterval(set10);
   }
 }, 1000);
-var set20 = setInterval(function () {
+const set20 = setInterval(function () {
   if (watchpercentage > 20) {
     updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
     clearInterval(set20);
   }
 }, 1000);
-var set30 = setInterval(function () {
+const set30 = setInterval(function () {
   if (watchpercentage > 30) {
     updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
     clearInterval(set30);
   }
 }, 1000);
-var set40 = setInterval(function () {
+const set40 = setInterval(function () {
   if (watchpercentage > 40) {
     updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
     clearInterval(set40);
   }
 }, 1000);
-var set50 = setInterval(function () {
+const set50 = setInterval(function () {
   if (watchpercentage > 50) {
     updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
     clearInterval(set50);
   }
 }, 1000);
-var set60 = setInterval(function () {
+const set60 = setInterval(function () {
   if (watchpercentage > 60) {
     updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
     clearInterval(set60);
   }
 }, 1000);
-var set70 = setInterval(function () {
+const set70 = setInterval(function () {
   if (watchpercentage > 70) {
     updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
     clearInterval(set70);
   }
 }, 1000);
-var set80 = setInterval(function () {
+const set80 = setInterval(function () {
   if (watchpercentage > 80) {
     updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
     clearInterval(set80);
   }
 }, 1000);
-var set90 = setInterval(function () {
+const set90 = setInterval(function () {
   if (watchpercentage > 90) {
     updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
     clearInterval(set90);
   }
 }, 1000);
-var set96 = setInterval(function () {
+const set96 = setInterval(function () {
   if (watchpercentage > 96) {
     updateWatchtime(totalDurationTime, 100);
     clearInterval(set96);
@@ -640,7 +652,7 @@ var set96 = setInterval(function () {
 }, 1000);
 
 // Changing the video text based on progress
-var set32 = setInterval(function () {
+const set32 = setInterval(function () {
   if (watchpercentage < 32) {
     $(".interval_text_item:nth-child(1)").addClass("active");
     $(".interval_text_item:nth-child(2)").removeClass("active");
@@ -649,7 +661,7 @@ var set32 = setInterval(function () {
   }
 }, 1000);
 
-var set35 = setInterval(function () {
+const set35 = setInterval(function () {
   if (watchpercentage > 67) {
     $(".interval_text_item:nth-child(2)").addClass("active");
     $(".interval_text_item:nth-child(1)").removeClass("active");
@@ -658,7 +670,7 @@ var set35 = setInterval(function () {
   }
 }, 1000);
 
-var set75 = setInterval(function () {
+const set75 = setInterval(function () {
   if (watchpercentage > 96) {
     $(".interval_text_item:nth-child(3)").addClass("active");
     $(".interval_text_item:nth-child(2)").removeClass("active");
@@ -673,13 +685,7 @@ $(".path-option").click(function () {
 });
 
 async function triggerRenderOptions(path_name) {
-  if ((await Weglot.getCurrentLang()) === "es") {
-    const heading = await translateToLanguage([path_name], "en", "es");
-    $(".path-heading").text(heading);
-  } else {
-    $(".path-heading").text(path_name);
-  }
-
+  $(".path-heading").text(path_name);
   path_name = path_name.includes("1")
     ? "Path 1"
     : path_name.includes("2")
@@ -687,7 +693,6 @@ async function triggerRenderOptions(path_name) {
     : path_name.includes("3")
     ? "Path 3"
     : "";
-  console.log("triggerRenderOptions", $(".path-heading").text(path_name));
   var getPathOptionsAPI =
     "https://" +
     api_url +
@@ -732,8 +737,8 @@ async function triggerRenderOptions(path_name) {
 }
 
 $(".checkbox-field").click(function () {
-  var get_value = $(this).children(".checkbox-label").text();
-  var check_element = $(this).children(".checkbox");
+  const get_value = $(this).children(".checkbox-label").attr("en");
+  const check_element = $(this).children(".checkbox");
 
   if (check_element.hasClass("active")) {
     if (typeof get_value === "string") {
@@ -749,17 +754,7 @@ $(".checkbox-field").click(function () {
 });
 
 $(".submit.paths").click(async () => {
-  const translateMCQ = async (array) => {
-    const temp = [];
-    array.forEach(async (item) => {
-      if (item) {
-        const text = await translateToLanguage([item], "en", "es");
-        temp.push(text);
-      }
-    });
-    return temp;
-  };
-  var setPathOptionsAPI =
+  const setPathOptionsAPI =
     "https://" +
     api_url +
     "/api/v1/users/company/" +
@@ -767,10 +762,7 @@ $(".submit.paths").click(async () => {
     "/videoProspects/" +
     video_prospect_id;
 
-  if (mcq.length != 0) {
-    if ((await Weglot.getCurrentLang()) === "es") {
-      mcq = await translateMCQ(mcq);
-    }
+  if (mcq.length !== 0) {
     axios({
       method: "put",
       url: setPathOptionsAPI,
