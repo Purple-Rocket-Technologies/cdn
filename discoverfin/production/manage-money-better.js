@@ -229,12 +229,20 @@ function array_to_string(array_item) {
 }
 
 //Submitting Form
-function submit_route_answers() {
-  ques_1 = array_to_string(answer_array_1);
-  ques_2 = array_to_string(answer_array_2);
-  ques_3 = array_to_string(answer_array_3);
-  ques_4 = array_to_string(answer_array_4);
-  ques_5 = array_to_string(answer_array_5);
+async function submit_route_answers() {
+  if (Weglot.getCurrentLang() == "es") {
+    ques_1 = array_to_string(await translateToLanguage(answer_array_1));
+    ques_2 = array_to_string(await translateToLanguage(answer_array_2));
+    ques_3 = array_to_string(await translateToLanguage(answer_array_3));
+    ques_4 = array_to_string(await translateToLanguage(answer_array_4));
+    ques_5 = array_to_string(await translateToLanguage(answer_array_5));
+  } else {
+    ques_1 = array_to_string(answer_array_1);
+    ques_2 = array_to_string(answer_array_2);
+    ques_3 = array_to_string(answer_array_3);
+    ques_4 = array_to_string(answer_array_4);
+    ques_5 = array_to_string(answer_array_5);
+  }
 
   axios({
     method: "put",
@@ -246,11 +254,11 @@ function submit_route_answers() {
       "/prospects/" +
       prospect_id,
     data: {
-      ques_1: ques_1,
-      ques_2: ques_2,
-      ques_3: ques_3,
-      ques_4: ques_4,
-      ques_5: ques_5,
+      ques_1,
+      ques_2,
+      ques_3,
+      ques_4,
+      ques_5,
     },
   })
     .then(function (response) {

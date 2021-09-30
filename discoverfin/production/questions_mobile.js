@@ -240,7 +240,20 @@ $("#guess_back").click(function () {
 
 var country_val = readCookie("country");
 
-function createNewProspect() {
+async function createNewProspect() {
+  let [retirement_age, pension_choice, guessed_fin] = [
+    $("#retirement_age").val(),
+    $("#pension_choice").val(),
+    $("#guessed_fin").val(),
+  ];
+  if (Weglot.getCurrentLang() == "es") {
+    [retirement_age, pension_choice, guessed_fin] = await translateToLanguage([
+      $("#retirement_age").val(),
+      $("#pension_choice").val(),
+      $("#guessed_fin").val(),
+    ]);
+  }
+
   axios({
     method: "post",
     url:
@@ -254,15 +267,15 @@ function createNewProspect() {
       userId: readCookie("USER_ID"),
       first_name: $("#user_name").val(),
       age: $("#user_age").val(),
-      retirement_age: $("#retirement_age").val(),
       annual_income_after_inflation: parseInt(
         $("#income_after_inflation").val()
       ),
       annual_income_before_inflation: parseInt(
         $("#user_income").val().replace(/,/g, "")
       ),
-      pension_choice: $("#pension_choice").val(),
-      guessed_fin: $("#guessed_fin").val(),
+      retirement_age,
+      pension_choice,
+      guessed_fin,
       email: $("#email").val(),
       fin_number: parseInt($("#fin_number").val()),
       country: country_val,
@@ -276,8 +289,7 @@ function createNewProspect() {
       window.location.href = "/result";
     })
     .catch(function (error) {
-      catchExceptionToSentry("error", error);
-      alert("Oops, There was an unexpected error.");
+      alert(error.response.data.message);
     });
 
   //trrigerring the email
@@ -291,17 +303,25 @@ function createNewProspect() {
       prospectEmail: $("#email").val(),
       finNumber: parseInt($("#fin_number").val()),
     },
-  })
-    .then(function (response) {
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      catchExceptionToSentry("error", error);
-      alert(error.response.data.message);
-    });
+  }).catch(function (error) {
+    alert("Oops, There was an unexpected error.");
+  });
 }
 
-function updateProspect(prospectID) {
+async function updateProspect(prospectID) {
+  let [retirement_age, pension_choice, guessed_fin] = [
+    $("#retirement_age").val(),
+    $("#pension_choice").val(),
+    $("#guessed_fin").val(),
+  ];
+  if (Weglot.getCurrentLang() == "es") {
+    [retirement_age, pension_choice, guessed_fin] = await translateToLanguage([
+      $("#retirement_age").val(),
+      $("#pension_choice").val(),
+      $("#guessed_fin").val(),
+    ]);
+  }
+
   axios({
     method: "put",
     url:
@@ -313,15 +333,15 @@ function updateProspect(prospectID) {
       prospectID,
     data: {
       age: $("#user_age").val(),
-      retirement_age: $("#retirement_age").val(),
+      retirement_age,
       annual_income_after_inflation: parseInt(
         $("#income_after_inflation").val()
       ),
       annual_income_before_inflation: parseInt(
         $("#user_income").val().replace(/,/g, "")
       ),
-      pension_choice: $("#pension_choice").val(),
-      guessed_fin: $("#guessed_fin").val(),
+      pension_choice,
+      guessed_fin,
       fin_number: parseInt($("#fin_number").val()),
     },
   })
