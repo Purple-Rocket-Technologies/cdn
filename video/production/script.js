@@ -409,6 +409,13 @@ function updateWatchtime(time, percentage) {
     },
   })
     .then(function (response) {
+      trackMixPanelEvent(`Watched ${videoType} ${parseInt(percentage)}%`, {
+        video_prospect_id,
+        company_id: readCookie("COMPANY_ID"),
+        videoType,
+        percentage: parseInt(percentage),
+        watchedTime: format(time),
+      });
       //console.log(response.data);
       //console.log(response.xhr);
     })
@@ -553,6 +560,7 @@ function toggleFocus(e) {
 //Setting cookie name
 $("#fname").keyup(function () {
   setCookies("Name", $(this).val());
+  trackMixPanelEvent(`Video Prospect Journey Started`, { prospectName: $(this).val() });
 });
 
 //Country Button functions
@@ -693,6 +701,14 @@ async function triggerRenderOptions(path_name) {
     : path_name.includes("3")
     ? "Path 3"
     : "";
+
+  // track path clicked event to mixpanel
+  trackMixPanelEvent(`${videoType}: ${path_name} Clicked`, {
+    companyId: readCookie("COMPANY_ID"),
+    video_prospect_id,
+    pathChoosen: path_name,
+  });
+
   var getPathOptionsAPI =
     "https://" +
     api_url +
@@ -772,6 +788,8 @@ $(".submit.paths").click(async () => {
     })
       .then(function (response) {
         console.log(response.data);
+        // track path clicked event to mixpanel
+        trackMixPanelEvent(`Video Prospect Journey Completed`, response.data.data);
         $(".user_name").text($("#fname").val());
         $(".rep_name, .rep_name_cta").text(readCookie("REP_NAME"));
         $(".rep-phoito").css(
