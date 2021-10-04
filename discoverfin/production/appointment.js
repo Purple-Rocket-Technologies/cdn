@@ -76,6 +76,8 @@ $(".closer-last").click(function () {
   $("#window_frame").attr("src", "/appointment");
 });
 
+throw new SentryError('Test);
+
 // track appointment button clicks to mixpanel
 
 $("#aptmt_link1").click(handleAppointmentButtonClick);
@@ -126,5 +128,6 @@ $("#getintouchsubmit").click(function () {
     .catch(function (error) {
       console.log(error);
       alert("Oops, There was an unexpected error.");
+      throw new SentryError(error);
     });
 });
