@@ -23,6 +23,9 @@ $("#select-billing option:nth-child(2)").attr("data-stripe", "FINTap Yearly");
 //Masking phone field
 $("#business-phone").inputmask("(999) 999-9999");
 
+const removSpecialCharactersFromName = (name) =>
+  name !== "" ? name.replace(/[^a-zA-Z0-9]/g, "") : name;
+
 // Setting plan on page load
 axios({
   method: "get",
@@ -504,8 +507,8 @@ async function stripeTokenHandler(token) {
     advisorEmail: $("#business-email").val(),
     advisorName: $("#business-name").val().trim(),
     phone: $("#business-phone").val(),
-    firstName: $("#first-name").val().trim(),
-    lastName: $("#last-name").val().trim(),
+    firstName: removSpecialCharactersFromName($("#first-name").val().trim()),
+    lastName: removSpecialCharactersFromName($("#last-name").val().trim()),
     companyEmail: $("#business-email").val(),
     companyName: $("#business-name").val().trim(),
     desc: "payment",
@@ -526,36 +529,22 @@ async function stripeTokenHandler(token) {
     couponCode: $("#coupon").val(),
   };
 
-  const addedTodo = await addTodo(todo);
-
-  if (
-    (addedTodo.status === 200 &&
-      addedTodo.data.success != undefined &&
-      addedTodo.data.success == "success" &&
-      addedTodo.data.url != "") ||
-    (addedTodo.status === 204 &&
-      addedTodo.data.success != undefined &&
-      addedTodo.data.success == "success" &&
-      addedTodo.data.url != "")
-  ) {
-    var redirect_url = addedTodo.data.url;
-    console.log(redirect_url);
-    window.parent.location = redirect_url;
-    window.location.replace(redirect_url);
-  } else if (addedTodo.status != 200 && addedTodo.error == true) {
-    $(".payment_loader").removeClass("show");
-    alert("Your payment was declined. Please try again.");
-  }
+  await addTodo(todo);
 }
 
 const BASE_URL = createCharge;
 const addTodo = async (todo) => {
-  try {
-    console.log("CreateCharge API called");
-    const res = await axios.post(`${BASE_URL}`, todo);
-    const addedTodo = res.data;
-    return addedTodo;
-  } catch (e) {
-    console.error(e);
-  }
+  await axios
+    .post(`${BASE_URL}`, todo)
+    .then((addedTodo) => {
+      addedTodo = addedTodo.data;
+      const redirect_url = addedTodo.data.url;
+      window.parent.location = redirect_url;
+      window.location.replace(redirect_url);
+    })
+    .catch((e) => {
+      $(".payment_loader").removeClass("show");
+      alert("Your payment was declined. Please try again.");
+      throw new SentryError("Payment was declined", e);
+    });
 };
