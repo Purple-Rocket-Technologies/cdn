@@ -56,6 +56,7 @@ function map_all_data(){
     $('#phone').text(rep_phone);
     
     $('#email_id').text(rep_email);
+    $('.div-block-27-copy a:nth-child(2)').attr('href','mailto:'+rep_email);
     
     $('.apt-rep-image').css("background-image","url('"+ rep_pic +"')");    
 
