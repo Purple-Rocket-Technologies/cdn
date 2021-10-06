@@ -799,7 +799,7 @@ $(".submit.paths").click(async () => {
         success_show("Your answers have been sent successfully!");
         $(".appointment-iframe .w-iframe iframe").attr(
           "src",
-          "https://dev.discoverfin.io/appointment?company=" +
+          "https://discoverfin.io/appointment?company=" +
             getUrlParameter("company") +
             "&user=" +
             getUrlParameter("user")
@@ -819,7 +819,7 @@ $(".submit.paths").click(async () => {
 $(".iframe-back").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-    "https://dev.discoverfin.io/appointment?company=" +
+    "https://discoverfin.io/appointment?company=" +
       getUrlParameter("company") +
       "&user=" +
       getUrlParameter("user")
@@ -830,7 +830,7 @@ $(".closer-last").click(function () {
   $(".last-popup").removeClass("active");
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-    "https://dev.discoverfin.io/appointment?company=" +
+    "https://discoverfin.io/appointment?company=" +
       getUrlParameter("company") +
       "&user=" +
       getUrlParameter("user")
