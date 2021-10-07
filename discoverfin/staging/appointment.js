@@ -87,7 +87,8 @@ $('#getintouchsubmit').click(function(){
             companyId: company_id
         }   
       }).then(function(response) {     
-        alert('Your Request has been submitted sucessfully!');
+        $('.form-2').addClass('hide');
+        $('.successmessage').addClass('displayshow');
       })
       .catch(function (error) {
           console.log(error);
