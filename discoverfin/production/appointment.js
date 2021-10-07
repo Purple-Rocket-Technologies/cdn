@@ -78,11 +78,6 @@ $(".closer-last").click(function () {
 });
 
 // track appointment button clicks to mixpanel
-
-$("#aptmt_link1").click(handleAppointmentButtonClick);
-$("#aptmt_link2").click(handleAppointmentButtonClick);
-$("#aptmt_link3").click(handleAppointmentButtonClick);
-
 const handleAppointmentButtonClick = () => {
   if (appointment_button_clicked) {
     return;
@@ -97,6 +92,12 @@ const handleAppointmentButtonClick = () => {
   });
   appointment_button_clicked = true;
 };
+
+
+$("#aptmt_link1").click(handleAppointmentButtonClick);
+$("#aptmt_link2").click(handleAppointmentButtonClick);
+$("#aptmt_link3").click(handleAppointmentButtonClick);
+
 
 $("#getintouchsubmit").click(function () {
   axios({
