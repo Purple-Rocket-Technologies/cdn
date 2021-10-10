@@ -128,6 +128,8 @@ $('#lang_ca').click(function () {
 
 $('#lang_es').click(function () {
     $('.fin_video').attr('src', 'https://player.vimeo.com/video/452754620');
+    $('#temp_es').removeClass('hide');
+    $('#temp_en').addClass('hide');
     Weglot.switchTo('es');
     setCookies("country","United States");
 });
