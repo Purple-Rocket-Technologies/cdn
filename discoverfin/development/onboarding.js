@@ -126,10 +126,10 @@ $('#lang_ca').click(function () {
     setCookies("country","Canada");
 });
 
-$('#lang_es').click(function () {
-    $('.fin_video').attr('src', 'https://player.vimeo.com/video/452754620');
-    $('#temp_es').removeClass('hide');
+$('#lang_es').click(function () {        
     $('#temp_en').addClass('hide');
+    $('#temp_es').removeClass('hide');
+    $('.fin_video').attr('src', 'https://player.vimeo.com/video/452754620');
     Weglot.switchTo('es');
     setCookies("country","United States");
 });
