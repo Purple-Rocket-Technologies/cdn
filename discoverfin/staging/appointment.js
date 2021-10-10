@@ -47,9 +47,7 @@ function map_all_data(){
         $('.user_name').addClass('hide');
     }    
     
-    $('#aptmt_link1').attr('href',appointment_link);
-    $('#aptmt_link2').attr('href',appointment_link);
-    $('#aptmt_link3').attr('href',appointment_link);
+    $('#calendly_iframe').attr('src',appointment_link);
     
     $('.rep_name').text(rep_name);
     
