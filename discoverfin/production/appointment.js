@@ -45,6 +45,11 @@ atomic(
     console.log(error.statusText); // xhr.statusText
   });
 
+
+  $('#aptmt_link1, #aptmt_link2, #aptmt_link3').click(function(){
+    $('#calendly_iframe').attr('src',appointment_link);
+});
+
 function map_all_data() {
   if (user_name) {
     $(".user_name").each(function () {
