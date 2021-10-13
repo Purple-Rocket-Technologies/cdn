@@ -22,7 +22,7 @@ $('.slide_cta').click(function(){
 });
 
 $('.fin_learn_more').click(function(){
-  $('.last-popup').addClass('active');
+  $("#video").attr("src",$("#video").attr("src")+"?autoplay=1");
 });
 
 $('.iframe-back').click(function(){
