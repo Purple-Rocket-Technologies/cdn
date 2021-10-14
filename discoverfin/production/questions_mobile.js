@@ -295,6 +295,10 @@ async function createNewProspect() {
     })
     .catch(function (error) {
       alert(error.response.data.message);
+      throw new SentryError(
+        `Error while creating a prospect email: ${$("#email").val()}`,
+        error
+      );
     });
 
   //trrigerring the email
@@ -314,6 +318,10 @@ async function createNewProspect() {
     })
     .catch(function (error) {
       alert("Oops, There was an unexpected error.");
+      throw new SentryError(
+        `Error while user sending finResults email: ${$("#email").val()}`,
+        error
+      );
     });
 }
 
@@ -364,6 +372,10 @@ async function updateProspect(prospectID) {
     })
     .catch(function (error) {
       alert(error.response.data.message);
+      throw new SentryError(
+        `Error while user submitting answers: ${$("#email").val()}`,
+        error
+      );
     });
 }
 
@@ -387,6 +399,10 @@ $("#submit_btn").click(function () {
     })
     .catch(function (error) {
       alert("Oops, There was an unexpected error.");
+      throw new SentryError(
+        `Error while user submitting answers: ${$("#email").val()}`,
+        error
+      );
     });
 });
 

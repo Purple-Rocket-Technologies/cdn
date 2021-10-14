@@ -262,12 +262,19 @@ async function submit_route_answers() {
     },
   })
     .then(function (response) {
-      trackMixPanelEvent("Prospect's FIN Journey Completed", response.data.data);
+      trackMixPanelEvent(
+        "Prospect's FIN Journey Completed",
+        response.data.data
+      );
       window.location.href = "/route/manage-money-better/video";
     })
     .catch(function (error) {
       console.log(error);
       alert("Oops, There was an unexpected error.");
+      throw new SentryError(
+        `Oops, There was an unexpected error mmb.js`,
+        error
+      );
     });
 }
 

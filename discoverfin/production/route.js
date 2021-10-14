@@ -62,5 +62,9 @@ function submitRoute(redirectUrl) {
     .catch(function (error) {
       console.log(error);
       alert("Oops, There was an unexpected error.");
+      throw new SentryError(
+        `Error while user selecting a route: ${prospect_id}`,
+        error
+      );
     });
 }

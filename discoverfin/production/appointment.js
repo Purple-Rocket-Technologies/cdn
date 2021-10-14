@@ -26,6 +26,10 @@ atomic(
     if (response.data.error == true) {
       console.log("Error");
       window.location.href = "/404";
+      throw new SentryError(
+        `Oops, There was an unexpected error appointment.js`,
+        response.data
+      );
     } else {
       console.log(response.data);
       appointment_link = response.data.data.appointmentBookingLink;
@@ -43,11 +47,14 @@ atomic(
   .catch(function (error) {
     console.log(error.status); // xhr.status
     console.log(error.statusText); // xhr.statusText
+    throw new SentryError(
+      `Oops, There was an unexpected error appointment.js`,
+      error
+    );
   });
 
-
-  $('#aptmt_link1, #aptmt_link2, #aptmt_link3').click(function(){
-    $('#calendly_iframe').attr('src',appointment_link);
+$("#aptmt_link1, #aptmt_link2, #aptmt_link3").click(function () {
+  $("#calendly_iframe").attr("src", appointment_link);
 });
 
 function map_all_data() {
@@ -59,14 +66,14 @@ function map_all_data() {
     $(".user_name").addClass("hide");
   }
 
-  $('#calendly_iframe').attr('src',appointment_link);
+  $("#calendly_iframe").attr("src", appointment_link);
 
   $(".rep_name").text(rep_name);
 
   $("#phone").text(rep_phone);
 
   $("#email_id").text(rep_email);
-  $('.div-block-27-copy a:nth-child(2)').attr('href','mailto:'+rep_email);
+  $(".div-block-27-copy a:nth-child(2)").attr("href", "mailto:" + rep_email);
 
   $(".apt-rep-image").css("background-image", "url('" + rep_pic + "')");
 
@@ -96,11 +103,9 @@ const handleAppointmentButtonClick = () => {
   appointment_button_clicked = true;
 };
 
-
 $("#aptmt_link1").click(handleAppointmentButtonClick);
 $("#aptmt_link2").click(handleAppointmentButtonClick);
 $("#aptmt_link3").click(handleAppointmentButtonClick);
-
 
 $("#getintouchsubmit").click(function () {
   axios({
@@ -126,12 +131,15 @@ $("#getintouchsubmit").click(function () {
         prospectName: $("#first_name").val() + " " + $("#last_name").val(),
         prospectEmail: $("#email").val(),
       });
-      $('.form-2').addClass('hide');
-      $('.successmessage').addClass('displayshow');
+      $(".form-2").addClass("hide");
+      $(".successmessage").addClass("displayshow");
     })
     .catch(function (error) {
       console.log(error);
       alert("Oops, There was an unexpected error.");
-      throw new SentryError("Oops, Error while submiting getInTouch form :(", e);
+      throw new SentryError(
+        "Oops, Error while submiting getInTouch form :(",
+        error
+      );
     });
 });

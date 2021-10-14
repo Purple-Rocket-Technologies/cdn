@@ -63,11 +63,23 @@ function getAPIparams() {
         .catch(function (error) {
           console.log(error);
           alert("Oops, There was an unexpected error.");
+          throw new SentryError(
+            `Oops, There was an unexpected error onboarding.js: ${getUrlParameter(
+              "prospectEmail"
+            )}`,
+            error
+          );
         });
     })
     .catch(function (error) {
       console.log(error);
       alert("Oops, There was an unexpected error.");
+      throw new SentryError(
+        `Oops, There was an unexpected error onboarding.js: ${getUrlParameter(
+          "prospectEmail"
+        )}`,
+        error
+      );
     });
 }
 
@@ -142,9 +154,9 @@ $("#lang_ca").click(function () {
 });
 
 $("#lang_es").click(function () {
-  $('#temp_en').addClass('hide');
-  $('#temp_es').removeClass('hide');
-  $('.fin_video').attr('src', 'https://player.vimeo.com/video/452754620');
+  $("#temp_en").addClass("hide");
+  $("#temp_es").removeClass("hide");
+  $(".fin_video").attr("src", "https://player.vimeo.com/video/452754620");
   Weglot.switchTo("es");
   setCookies("country", "United States");
 });
