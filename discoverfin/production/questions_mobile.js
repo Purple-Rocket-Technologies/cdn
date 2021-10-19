@@ -302,27 +302,27 @@ async function createNewProspect() {
     });
 
   //trrigerring the email
-  axios({
-    method: "post",
-    url: "https://" + api_url + "/api/v1/users/email/send/finResults",
-    data: {
-      companyId: readCookie("COMPANY_ID"),
-      userId: readCookie("USER_ID"),
-      prospectName: $("#user_name").val(),
-      prospectEmail: $("#email").val(),
-      finNumber: parseInt($("#fin_number").val()),
-    },
-  })
-    .then(function (response) {
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      alert("Oops, There was an unexpected error.");
-      throw new SentryError(
-        `Error while user sending finResults email: ${$("#email").val()}`,
-        error
-      );
-    });
+  // axios({
+  //   method: "post",
+  //   url: "https://" + api_url + "/api/v1/users/email/send/finResults",
+  //   data: {
+  //     companyId: readCookie("COMPANY_ID"),
+  //     userId: readCookie("USER_ID"),
+  //     prospectName: $("#user_name").val(),
+  //     prospectEmail: $("#email").val(),
+  //     finNumber: parseInt($("#fin_number").val()),
+  //   },
+  // })
+  //   .then(function (response) {
+  //     console.log(response.data);
+  //   })
+  //   .catch(function (error) {
+  //     alert("Oops, There was an unexpected error.");
+  //     throw new SentryError(
+  //       `Error while user sending finResults email: ${$("#email").val()}`,
+  //       error
+  //     );
+  //   });
 }
 
 async function updateProspect(prospectID) {
