@@ -267,6 +267,10 @@ async function setPathsContentVariable(videoType) {
 
 // Render Video
 function renderVideo(videoID) {
+  
+  const video = document.querySelector('.video-container');
+  video.style.height = video.getBoundingClientRect().width/(16/9);
+  
   iframe = document.getElementById("video");
   player = new Vimeo.Player(iframe);
   player
