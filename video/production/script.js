@@ -298,9 +298,7 @@ function fetchVideo(type, country, lang) {
   })
     .then(function (response) {
       video_id = response.data.data[0].url;
-      const video = document.querySelector('.video-container');
-      video.style.height = video.getBoundingClientRect().width/(16/9);
-      console.log("video", video.style);
+      $(".video-container").css("height",$(".video-container").width()/(16/9));
       renderVideo(video_id);
     })
     .catch(function (error) {
