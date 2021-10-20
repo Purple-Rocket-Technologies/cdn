@@ -274,9 +274,6 @@ function renderVideo(videoID) {
     .loadVideo(videoID)
     .then(function (id) {
       setTotalDuration();
-      const video = document.querySelector('.video-container');
-      video.style.height = video.getBoundingClientRect().width/(16/9);
-      console.log("video", video);
       playerinitialized = 1;
     })
     .catch(function (error) {});
@@ -301,6 +298,9 @@ function fetchVideo(type, country, lang) {
   })
     .then(function (response) {
       video_id = response.data.data[0].url;
+      const video = document.querySelector('.video-container');
+      video.style.height = video.getBoundingClientRect().width/(16/9);
+      console.log("video", video.style);
       renderVideo(video_id);
     })
     .catch(function (error) {
