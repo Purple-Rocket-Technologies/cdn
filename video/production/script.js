@@ -95,6 +95,9 @@ function validateUrl(company, user) {
   })
     .then(function (response) {
       if (response.data.status === 200) {
+        trackMixPanelEvent("Prospect Visited Appointment page", {
+          rep: response.data.data.firstName,
+        });
         //setting necessary cookies
         setCookies("COMPANY_ID", response.data.data.companyId);
         setCookies("USER_ID", response.data.data.userId);
@@ -267,7 +270,6 @@ async function setPathsContentVariable(videoType) {
 
 // Render Video
 function renderVideo(videoID) {
-  
   iframe = document.getElementById("video");
   player = new Vimeo.Player(iframe);
   player
@@ -298,7 +300,10 @@ function fetchVideo(type, country, lang) {
   })
     .then(function (response) {
       video_id = response.data.data[0].url;
-      $(".video-container").css("height",$(".video-container").width()/(16/9));
+      $(".video-container").css(
+        "height",
+        $(".video-container").width() / (16 / 9)
+      );
       renderVideo(video_id);
     })
     .catch(function (error) {
@@ -562,7 +567,9 @@ function toggleFocus(e) {
 //Setting cookie name
 $("#fname").keyup(function () {
   setCookies("Name", $(this).val());
-  trackMixPanelEvent(`Video Prospect Journey Started`, { prospectName: $(this).val() });
+  trackMixPanelEvent(`Video Prospect Journey Started`, {
+    prospectName: $(this).val(),
+  });
 });
 
 //Country Button functions
@@ -791,7 +798,10 @@ $(".submit.paths").click(async () => {
       .then(function (response) {
         console.log(response.data);
         // track path clicked event to mixpanel
-        trackMixPanelEvent(`Video Prospect Journey Completed`, response.data.data);
+        trackMixPanelEvent(
+          `Video Prospect Journey Completed`,
+          response.data.data
+        );
         $(".user_name").text($("#fname").val());
         $(".rep_name, .rep_name_cta").text(readCookie("REP_NAME"));
         $(".rep-phoito").css(
