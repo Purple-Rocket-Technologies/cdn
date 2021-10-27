@@ -1,12 +1,17 @@
 var company_id, prospect_id, user_name;
 
-if(readCookie('COMPANY_ID') && readCookie('prospect_id') && readCookie('Name') && readCookie('FIN Number')){
-    company_id = readCookie('COMPANY_ID');     
-    prospect_id = readCookie('prospect_id');
-    user_name = readCookie('Name');
-    setPageVariableValue();
+if (
+  readCookie("COMPANY_ID") &&
+  readCookie("prospect_id") &&
+  readCookie("Name") &&
+  readCookie("FIN Number")
+) {
+  company_id = readCookie("COMPANY_ID");
+  prospect_id = readCookie("prospect_id");
+  user_name = readCookie("Name");
+  setPageVariableValue();
 } else {
-    window.location.href = '/404';
+  window.location.href = "/404";
 }
 
 function setPageVariableValue() {
@@ -15,38 +20,26 @@ function setPageVariableValue() {
   });
 }
 
-
 $("#submit_btn").prop("disabled", true);
 
 var progress_number = 0;
 var reduction_count = 0;
 
 function progress() {
-  progress_number += 25;
-  $(".progress_number").html("" + progress_number);
-  $(".inner_prog_bar").css("width", progress_number + "%");
-  if (progress_number == 100) {
-    $("#submit_btn").prop("disabled", false);
-  }
+  calculateProgress();
 }
 
 function progress_reduce() {
-  progress_number -= 25;
-  $(".progress_number").html("" + progress_number);
-  $(".inner_prog_bar").css("width", progress_number + "%");
-  $("#submit_btn").prop("disabled", true);
+  calculateProgress();
 }
 
 $("#Slide_1 .slide_cta").click(function () {
-  progress();
+  calculateProgress();
 });
-
-
 
 var answer_array_1 = [$("#ques_1").text()];
 var answer_array_2 = [$("#ques_2").text()];
 var answer_array_3 = [$("#ques_3").text()];
-
 
 $("#Slide_2 .check").click(function () {
   var get_value = $(this).children(".check_box").siblings("div").html();
@@ -68,14 +61,13 @@ $("#Slide_2 .check").click(function () {
     $("#Slide_2 .next_btn").removeClass("active");
     if (progress_number > 50) {
       if (reduction_count == 0) {
-        progress_reduce();
+        calculateProgress();
         $("#Slide_2 .next_btn").attr("data-clicked", "no");
       }
       reduction_count = 1;
     }
   }
 });
-
 
 $("#Slide_3 .check").click(function () {
   var get_value = $(this).children(".check_box").siblings("div").html();
@@ -97,14 +89,13 @@ $("#Slide_3 .check").click(function () {
     $("#Slide_3 .next_btn").removeClass("active");
     if (progress_number > 50) {
       if (reduction_count == 0) {
-        progress_reduce();
+        calculateProgress();
         $("#Slide_3 .next_btn").attr("data-clicked", "no");
       }
       reduction_count = 1;
     }
   }
 });
-
 
 $("#Slide_4 .check").click(function () {
   var get_value = $(this).children(".check_box").siblings("div").html();
@@ -126,15 +117,13 @@ $("#Slide_4 .check").click(function () {
     $("#Slide_4 .next_btn").removeClass("active");
     if (progress_number > 75) {
       if (reduction_count == 0) {
-        progress_reduce();
+        calculateProgress();
         $("#Slide_4 .next_btn").attr("data-clicked", "no");
       }
       reduction_count = 1;
     }
   }
 });
-
-
 
 $("#Slide_2 .next_btn").click(function () {
   if ($(this).attr("data-clicked") == "no") {
@@ -164,24 +153,21 @@ $("#Slide_4 .next_btn").click(function () {
 var user_name = readCookie("Name");
 $("#user_name").html("" + user_name);
 
-
 //turning arrays into strings
-function array_to_string(array_item){
+function array_to_string(array_item) {
   var stringy = "";
-  for(i=0;i<array_item.length;i++){
-      stringy = stringy + array_item[i];
-      if(i < array_item.length-1){
-          stringy = stringy + " * ";    
-      }
+  for (i = 0; i < array_item.length; i++) {
+    stringy = stringy + array_item[i];
+    if (i < array_item.length - 1) {
+      stringy = stringy + " * ";
+    }
   }
   return stringy;
 }
 
-
 //Submitting Form
 async function submit_route_answers() {
-
-  if(Weglot.getCurrentLang() == 'es'){
+  if (Weglot.getCurrentLang() == "es") {
     ques_1 = array_to_string(await translateToLanguage(answer_array_1));
     ques_2 = array_to_string(await translateToLanguage(answer_array_2));
     ques_3 = array_to_string(await translateToLanguage(answer_array_3));
@@ -189,29 +175,62 @@ async function submit_route_answers() {
     ques_1 = array_to_string(answer_array_1);
     ques_2 = array_to_string(answer_array_2);
     ques_3 = array_to_string(answer_array_3);
-  }  
+  }
 
   axios({
-    method: 'put',
-    url: 'https://' + api_url + '/api/v1/users/company/'+ company_id +'/prospects/' + prospect_id,    
+    method: "put",
+    url:
+      "https://" +
+      api_url +
+      "/api/v1/users/company/" +
+      company_id +
+      "/prospects/" +
+      prospect_id,
     data: {
       ques_1,
       ques_2,
-      ques_3
-    }   
-  }).then(function(response) {     
-      window.location.href = "/route/make-more-money/video";       
+      ques_3,
+    },
   })
-  .catch(function (error) {
+    .then(function (response) {
+      window.location.href = "/route/make-more-money/video";
+    })
+    .catch(function (error) {
       console.log(error);
-      alert("Oops, There was an unexpected error."); 
+      alert("Oops, There was an unexpected error.");
+    });
+}
+
+function calculateProgress() {
+  const toCheck = [
+    answer_array_1.length,
+    answer_array_2.length,
+    answer_array_3.length,
+  ];
+  let percent = 0;
+  toCheck.forEach((elem) => {
+    if (elem > 1) {
+      percent += 33.3333333;
+    }
   });
+  $(".progress_number").html("" + percent);
+  $(".inner_prog_bar").css("width", percent + "%");
+  if (parseInt(percent) === 100) {
+    $("#submit_btn").prop("disabled", false);
+  } else {
+    $("#submit_btn").prop("disabled", true);
+  }
 }
 
 $("#submit_btn").click(function () {
-  if(answer_array_1.length == 1 || answer_array_2.length == 1 || answer_array_3.length == 1){
+  calculateProgress();
+  if (
+    answer_array_1.length == 1 ||
+    answer_array_2.length == 1 ||
+    answer_array_3.length == 1
+  ) {
     alert("Please answer all questions");
   } else {
     submit_route_answers();
-  }  
+  }
 });
