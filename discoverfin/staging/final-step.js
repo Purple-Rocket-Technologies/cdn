@@ -33,7 +33,7 @@ setTimeout(() => {
     $("#email-sent-text").css("display", "none");
     $(".last-popup").addClass("active");
   }
-}, 180000);
+}, 30000);
 
 // learn more
 $(".slide_cta").click(function () {
