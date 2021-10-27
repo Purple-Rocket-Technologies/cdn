@@ -4,6 +4,7 @@
 var URL_COMPANY = readCookie("URL_COMPANY");
 var URL_USER = readCookie("URL_USER");
 
+let lastPopupShown = false;
 // Reading name cookie
 var user_name = readCookie("Name");
 $(".user_name").each(function () {
@@ -27,8 +28,17 @@ $(".appointment-iframe .w-iframe iframe").attr(
     URL_USER
 );
 
+setTimeout(() => {
+  if (!lastPopupShown) {
+    $("#email-sent-text").css("display", "none");
+    $(".last-popup").addClass("active");
+  }
+}, 180000);
+
 // learn more
 $(".slide_cta").click(function () {
+  lastPopupShown = true;
+  $("#email-sent-text").css("display", "block");
   $(".last-popup").addClass("active");
 });
 
