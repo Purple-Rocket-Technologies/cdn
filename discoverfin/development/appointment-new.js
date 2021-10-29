@@ -50,8 +50,7 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
           user
       );
       if (JSON.parse(response.data.error)) {
-        console.log(response.data);
-        // window.location.href = "/404";
+        window.location.href = "/404";
       } else {
         appointment_link = response.data.data.appointmentBookingLink;
         rep_name = `${response.data.data.firstName} ${response.data.data.lastName}`;
