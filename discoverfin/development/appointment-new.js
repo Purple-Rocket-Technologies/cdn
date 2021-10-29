@@ -7,10 +7,6 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
   let video_id;
   let company_id;
   let user_id;
-  let user = getUrlParameter("user");
-  let company = getUrlParameter("company");
-
-  console.log(user, company);
 
   function map_all_data() {
     $("#rep-name").text(rep_name);
@@ -45,9 +41,9 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
         "https://" +
           api_url +
           "/api/v1/users/getCompany/name/" +
-          company +
+          getUrlParameter("company") +
           "/" +
-          user
+          getUrlParameter("user")
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
