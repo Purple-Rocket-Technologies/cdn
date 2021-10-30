@@ -97,11 +97,11 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
 
   const getBaseUrl = () => {
     if (window.location.host === "dev.discoverfin.io") {
-      return "devvideo.discoverfin.io/video_type?company=";
+      return "https://devvideo.discoverfin.io/video_type?company=";
     } else if (window.location.host === "staging.discoverfin.io") {
-      return "stagingvideo.discoverfin.io/video_type?company=";
+      return "https://stagingvideo.discoverfin.io/video_type?company=";
     } else if (window.location.host === "discoverfin.io") {
-      return "video.discoverfin.io/video_type?company=";
+      return "https://video.discoverfin.io/video_type?company=";
     }
   };
 
