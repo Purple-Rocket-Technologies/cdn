@@ -89,5 +89,9 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
       });
   });
 
+  $(window).scroll(() => {
+    $(".button-pattern").css("display", "block");
+  });
+
   getCompany();
 }
