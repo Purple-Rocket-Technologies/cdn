@@ -19,7 +19,7 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
       $("#profile-video iframe").attr("class", "appointment-page-video");
       $("#watch-profile-video").css("display", "flex");
       $("#watch-profile-video").click(() => {
-        window.open("#profile-video-area");
+        window.open("#profile-video-area", "_self");
       });
     }
 
