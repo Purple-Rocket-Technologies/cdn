@@ -17,6 +17,8 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
       $("#profile-video").html(video_id);
       $("#profile-video iframe").attr("width", "100%");
       $("#profile-video iframe").attr("class", "appointment-page-video");
+      $("#watch-profile-video").css("display", "flex");
+      $("#watch-profile-video").href("#profile-video-area");
     }
 
     $("#appointment-schedule-url .calender-embedd").attr(
@@ -92,6 +94,46 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
   $(window).scroll(() => {
     $(".button-pattern").css("display", "block");
   });
+
+  const getBaseUrl = () => {
+    if (window.location.host === "dev.discoverfin.io") {
+      return "devvideo.discoverfin.io/video_type?company=";
+    } else if (window.location.host === "staging.discoverfin.io") {
+      return "stagingvideo.discoverfin.io/video_type?company=";
+    } else if (window.location.host === "discoverfin.io") {
+      return "video.discoverfin.io/video_type?company=";
+    }
+  };
+
+  const finBusinessVideoAppLink = () => {
+    return (
+      getBaseUrl() +
+      getUrlParameter("company") +
+      "&user=" +
+      getUrlParameter("user")
+    ).replace("video_type", "businessOverview");
+  };
+
+  const finFinancialSuccessVideoAppLink = () => {
+    return (
+      getBaseUrl() +
+      getUrlParameter("company") +
+      "&user=" +
+      getUrlParameter("user")
+    ).replace("video_type", "financialHouse");
+  };
+
+  $("#financial-video").click(() => {
+    window.open(finFinancialSuccessVideoAppLink(), "_blank");
+  });
+
+  $("#business-video").click(() => {
+    window.open(finBusinessVideoAppLink(), "_blank");
+  });
+
+  const isVideoApp = () => {};
+
+  const isFinApp = () => {};
 
   getCompany();
 }
