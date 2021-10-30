@@ -17,8 +17,12 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
       $("#profile-video").html(video_id);
       $("#profile-video iframe").attr("width", "100%");
       $("#profile-video iframe").attr("class", "appointment-page-video");
-      $("#watch-profile-video").css("display", "flex");
-      $("#watch-profile-video").attr("href", "#profile-video-area");
+      $("#watch-profile-video")
+        .replaceWith($("<a/>").html($("#watch-profile-video").html()))
+        .attr("href", "#profile-video-area")
+        .attr("id", "watch-profile-video")
+        .attr("class", "div-block-41 videowatch")
+        .css("display", "flex");
     }
 
     $("#appointment-schedule-url .calender-embedd").attr(
