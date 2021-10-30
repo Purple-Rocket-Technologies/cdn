@@ -18,7 +18,7 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
       $("#profile-video iframe").attr("width", "100%");
       $("#profile-video iframe").attr("class", "appointment-page-video");
       $("#watch-profile-video").css("display", "flex");
-      $("#watch-profile-video").href("#profile-video-area");
+      $("#watch-profile-video").attr("href", "#profile-video-area");
     }
 
     $("#appointment-schedule-url .calender-embedd").attr(
