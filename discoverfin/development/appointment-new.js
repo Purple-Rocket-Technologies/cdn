@@ -93,8 +93,20 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
       });
   });
 
-  $(window).scroll(() => {
-    $(".button-pattern").css("display", "block");
+  let scroll_position = 0;
+  let scroll_direction;
+
+  window.addEventListener("scroll", function () {
+    scroll_direction =
+      document.body.getBoundingClientRect().top > scroll_position
+        ? "up"
+        : "down";
+    scroll_position = document.body.getBoundingClientRect().top;
+    if (scroll_direction === "up") {
+      $(".button-pattern").css("display", "block");
+    } else {
+      $(".button-pattern").css("display", "none");
+    }
   });
 
   const getBaseUrl = () => {
