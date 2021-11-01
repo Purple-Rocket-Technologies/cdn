@@ -788,7 +788,8 @@ $(".submit.paths").click(async () => {
           "https://dev.discoverfin.io/appointment-copy?company=" +
             getUrlParameter("company") +
             "&user=" +
-            getUrlParameter("user")
+            getUrlParameter("user") +
+            "&video=true"
         );
         $(".last-popup").addClass("active");
       })
@@ -808,7 +809,8 @@ $(".iframe-back").click(function () {
     "https://dev.discoverfin.io/appointment-copy?company=" +
       getUrlParameter("company") +
       "&user=" +
-      getUrlParameter("user")
+      getUrlParameter("user") +
+      "&video=true"
   );
 });
 
@@ -819,6 +821,7 @@ $(".closer-last").click(function () {
     "https://dev.discoverfin.io/appointment-copy?company=" +
       getUrlParameter("company") +
       "&user=" +
-      getUrlParameter("user")
+      getUrlParameter("user") +
+      "&video=true"
   );
 });

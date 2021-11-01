@@ -7,6 +7,7 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
   let video_id;
   let company_id;
   let user_id;
+  let isVideoApp = JSON.parse(getUrlParameter("video"));
 
   function map_all_data() {
     $("#rep-name").text(rep_name);
@@ -137,17 +138,18 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
     ).replace("video_type", "financialHouse");
   };
 
-  $("#financial-video").click(() => {
-    window.open(finFinancialSuccessVideoAppLink(), "_blank");
-  });
+  if (!isVideoApp) {
+    $("#only-video-app").css("display", "none");
+    $("#financial-video").click(() => {
+      window.open(finFinancialSuccessVideoAppLink(), "_blank");
+    });
 
-  $("#business-video").click(() => {
-    window.open(finBusinessVideoAppLink(), "_blank");
-  });
-
-  const isVideoApp = () => {};
-
-  const isFinApp = () => {};
+    $("#business-video").click(() => {
+      window.open(finBusinessVideoAppLink(), "_blank");
+    });
+  } else {
+    $("#only-fin-app").css("display", "none");
+  }
 
   getCompany();
 }

@@ -12,8 +12,6 @@ $(".user_name").each(function () {
   $(this).html("" + user_name);
 });
 
-console.log(URL_COMPANY, URL_USER);
-
 var appointment_link = "https://" + readCookie("APTMT_LINK");
 $("#aptmt_link").attr("href", appointment_link);
 
@@ -26,7 +24,8 @@ $(".appointment-iframe .w-iframe iframe").attr(
   "https://dev.discoverfin.io/appointment-copy?company=" +
     URL_COMPANY +
     "&user=" +
-    URL_USER
+    URL_USER +
+    "&video=false"
 );
 
 setTimeout(() => {
@@ -53,7 +52,8 @@ $(".iframe-back").click(function () {
     "https://dev.discoverfin.io/appointment-copy?company=" +
       URL_COMPANY +
       "&user=" +
-      URL_USER
+      URL_USER +
+      "&video=false"
   );
 });
 
@@ -64,6 +64,7 @@ $(".closer-last").click(function () {
     "https://dev.discoverfin.io/appointment-copy?company=" +
       URL_COMPANY +
       "&user=" +
-      URL_USER
+      URL_USER +
+      "&video=false"
   );
 });
