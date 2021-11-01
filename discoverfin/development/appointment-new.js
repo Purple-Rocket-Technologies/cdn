@@ -120,6 +120,10 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
     }
   };
 
+  const finBaseUrl = () => {
+    return `https://${window.location.host}/en?company=`;
+  };
+
   const finBusinessVideoAppLink = () => {
     return (
       getBaseUrl() +
@@ -127,6 +131,15 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
       "&user=" +
       getUrlParameter("user")
     ).replace("video_type", "businessOverview");
+  };
+
+  const finAppLink = () => {
+    return (
+      finBaseUrl() +
+      getUrlParameter("company") +
+      "&user=" +
+      getUrlParameter("user")
+    );
   };
 
   const finFinancialSuccessVideoAppLink = () => {
@@ -149,6 +162,9 @@ if (window.location.pathname.startsWith("/appointment-copy")) {
     });
   } else {
     $("#only-fin-app").css("display", "none");
+    $("#do-you-know-fin").click(() => {
+      window.open(finAppLink(), "_blank");
+    });
   }
 
   getCompany();
