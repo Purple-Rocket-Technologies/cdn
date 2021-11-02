@@ -1,5 +1,8 @@
+const { pathname } = window.location;
+
 if (
-  !window.location.pathname.startsWith("/questions") &&
+  !pathname.startsWith("/questions") &&
+  !pathname.includes("/en?") &&
   window.location.hostname === "dev.discoverfin.io"
 ) {
   const URL_COMPANY = readCookie("URL_COMPANY");
