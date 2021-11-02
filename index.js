@@ -3,6 +3,7 @@ const { pathname } = window.location;
 if (
   !pathname.startsWith("/questions") &&
   !pathname.startsWith("/en") &&
+  !pathname.endsWith("/video") &&
   window.location.hostname === "dev.discoverfin.io"
 ) {
   const URL_COMPANY = readCookie("URL_COMPANY");
@@ -16,6 +17,9 @@ if (
         "src",
         `https://${window.location.hostname}/appointment-copy?company=${URL_COMPANY}&user=${URL_USER}&video=false`
       );
+    });
+    $(".iframe-back").click(() => {
+      $(".last-popup").css("display", "none");
     });
   }
 }
