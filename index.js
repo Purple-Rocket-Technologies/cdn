@@ -19,11 +19,11 @@ if (
       $(".last-popup").css("display", "flex");
     });
     $(".iframe-back").click(() => {
-      $(".appointment-iframe").css("display", "flex !important");
-      $(".appointment-iframe").css("opacity", "1 !important");
+      $(".appointment-iframe").css("display", "flex");
+      $(".appointment-iframe").css("opacity", "1");
       $(".appointment-iframe").css(
         "transform",
-        "translate3d(0px, 0, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg) !important"
+        "translate3d(0px, 0, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)"
       );
       $(".last-popup").css("display", "none");
     });
