@@ -1,5 +1,5 @@
 const { pathname } = window.location;
-
+let openedOneTime = false;
 if (
   !pathname.startsWith("/questions") &&
   !pathname.startsWith("/en") &&
@@ -12,11 +12,21 @@ if (
   if ($("#schedule_btn").length > 0) {
     $("#schedule_btn").css("display", "flex");
     $("#schedule_btn").click(() => {
-      $(".last-popup").css("display", "flex");
       $(".appointment-iframe .w-iframe iframe").attr(
         "src",
         `https://${window.location.hostname}/appointment-copy?company=${URL_COMPANY}&user=${URL_USER}&video=false`
       );
+
+      if (openedOneTime) {
+        $(".appointment-iframe").css("display", "flex !important");
+        $(".appointment-iframe").css("opacity", "1 !important");
+        $(".appointment-iframe").css(
+          "transform",
+          "translate3d(0px, 0, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg) !important"
+        );
+      }
+      $(".last-popup").css("display", "flex");
+      openedOneTime = true;
     });
     $(".iframe-back").click(() => {
       $(".last-popup").css("display", "none");
