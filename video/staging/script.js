@@ -297,7 +297,10 @@ function fetchVideo(type, country, lang) {
   })
     .then(function (response) {
       video_id = response.data.data[0].url;
-      $(".video-container").css("height",$(".video-container").width()/(16/9));
+      $(".video-container").css(
+        "height",
+        $(".video-container").width() / (16 / 9)
+      );
       renderVideo(video_id);
     })
     .catch(function (error) {
@@ -782,10 +785,11 @@ $(".submit.paths").click(async () => {
         success_show("Your answers have been sent successfully!");
         $(".appointment-iframe .w-iframe iframe").attr(
           "src",
-          "https://staging.discoverfin.io/appointment?company=" +
+          "https://staging.discoverfin.io/appointment-copy?company=" +
             getUrlParameter("company") +
             "&user=" +
-            getUrlParameter("user")
+            getUrlParameter("user") +
+            "&video=true"
         );
         $(".last-popup").addClass("active");
       })
@@ -802,10 +806,11 @@ $(".submit.paths").click(async () => {
 $(".iframe-back").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-    "https://staging.discoverfin.io/appointment?company=" +
+    "https://staging.discoverfin.io/appointment-copy?company=" +
       getUrlParameter("company") +
       "&user=" +
-      getUrlParameter("user")
+      getUrlParameter("user") +
+      "&video=true"
   );
 });
 
@@ -813,9 +818,10 @@ $(".closer-last").click(function () {
   $(".last-popup").removeClass("active");
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-    "https://staging.discoverfin.io/appointment?company=" +
+    "https://staging.discoverfin.io/appointment-copy?company=" +
       getUrlParameter("company") +
       "&user=" +
-      getUrlParameter("user")
+      getUrlParameter("user") +
+      "&video=true"
   );
 });
