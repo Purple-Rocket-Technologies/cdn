@@ -24,9 +24,10 @@ $(".rep-phoito").css("background-image", "url('" + readCookie("PIC") + "')");
 $(".appointment-iframe .w-iframe iframe").attr(
   "src",
   "https://discoverfin.io/appointment?company=" +
-    URL_COMPANY +
-    "&user=" +
-    URL_USER
+  URL_COMPANY +
+  "&user=" +
+  URL_USER +
+  "&video=false"
 );
 
 setTimeout(() => {
@@ -51,9 +52,10 @@ $(".iframe-back").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
     "https://discoverfin.io/appointment?company=" +
-      URL_COMPANY +
-      "&user=" +
-      URL_USER
+    URL_COMPANY +
+    "&user=" +
+    URL_USER +
+    "&video=false"
   );
 });
 
@@ -62,8 +64,9 @@ $(".closer-last").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
     "https://discoverfin.io/appointment?company=" +
-      URL_COMPANY +
-      "&user=" +
-      URL_USER
+    URL_COMPANY +
+    "&user=" +
+    URL_USER +
+    "&video=false"
   );
 });

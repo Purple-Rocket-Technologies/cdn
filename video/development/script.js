@@ -275,7 +275,7 @@ function renderVideo(videoID) {
       setTotalDuration();
       playerinitialized = 1;
     })
-    .catch(function (error) {});
+    .catch(function (error) { });
   player.pause();
   setFinalFunction();
 }
@@ -693,10 +693,10 @@ async function triggerRenderOptions(path_name) {
   path_name = path_name.includes("1")
     ? "Path 1"
     : path_name.includes("2")
-    ? "Path 2"
-    : path_name.includes("3")
-    ? "Path 3"
-    : "";
+      ? "Path 2"
+      : path_name.includes("3")
+        ? "Path 3"
+        : "";
   var getPathOptionsAPI =
     "https://" +
     api_url +
@@ -785,11 +785,11 @@ $(".submit.paths").click(async () => {
         success_show("Your answers have been sent successfully!");
         $(".appointment-iframe .w-iframe iframe").attr(
           "src",
-          "https://dev.discoverfin.io/appointment-copy?company=" +
-            getUrlParameter("company") +
-            "&user=" +
-            getUrlParameter("user") +
-            "&video=true"
+          "https://dev.discoverfin.io/appointment?company=" +
+          getUrlParameter("company") +
+          "&user=" +
+          getUrlParameter("user") +
+          "&video=true"
         );
         $(".last-popup").addClass("active");
       })
@@ -806,11 +806,11 @@ $(".submit.paths").click(async () => {
 $(".iframe-back").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-    "https://dev.discoverfin.io/appointment-copy?company=" +
-      getUrlParameter("company") +
-      "&user=" +
-      getUrlParameter("user") +
-      "&video=true"
+    "https://dev.discoverfin.io/appointment?company=" +
+    getUrlParameter("company") +
+    "&user=" +
+    getUrlParameter("user") +
+    "&video=true"
   );
 });
 
@@ -818,10 +818,10 @@ $(".closer-last").click(function () {
   $(".last-popup").removeClass("active");
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-    "https://dev.discoverfin.io/appointment-copy?company=" +
-      getUrlParameter("company") +
-      "&user=" +
-      getUrlParameter("user") +
-      "&video=true"
+    "https://dev.discoverfin.io/appointment?company=" +
+    getUrlParameter("company") +
+    "&user=" +
+    getUrlParameter("user") +
+    "&video=true"
   );
 });

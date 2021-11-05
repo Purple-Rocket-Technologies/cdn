@@ -1,28 +1,57 @@
-var user_name = readCookie('Name');
-var appointment_link;
-var rep_name;
-var rep_phone;
-var rep_email;
-var rep_pic;
-var video_id;
-var company_id;
-var user_id;
-var user = getUrlParameter('user');
-var company = getUrlParameter('company');
+if (window.location.pathname.startsWith("/appointment")) {
+  let appointment_link;
+  let rep_name;
+  let rep_phone;
+  let rep_email;
+  let rep_pic;
+  let video_id;
+  let company_id;
+  let user_id;
+  let isVideoApp = JSON.parse(getUrlParameter("video"));
 
-atomic('https://' + api_url + '/api/v1/users/getCompany/name/' + company + '/' + user, {
-    method: 'GET',
-})
-.then(function (response) {
-    if (response.data.error == true) {
-        console.log('Error');            
-        window.location.href = '/404';
+  function map_all_data() {
+    $("#rep-name").text(rep_name);
+    $("#rep-image-container").css("background-image", `url(${rep_pic})`);
+    if (video_id === "" || !video_id) {
+      $("#profile-video-area").css("display", "none");
+    } else {
+      $("#profile-video").html(video_id);
+      $("#profile-video iframe").attr("width", "100%");
+      $("#profile-video iframe").attr("class", "appointment-page-video");
+      $("#watch-profile-video").css("display", "flex");
     }
-    else
-    {       
-        console.log(response.data);          
+
+    $("#appointment-schedule-url .calender-embedd").attr(
+      "src",
+      appointment_link
+    );
+    $("#rep-email").text(rep_email);
+    $("#rep-phone").text(rep_phone);
+    $("#rep-phone").attr("href", `tel:${rep_phone}`);
+    $("#rep-email").attr("href", `mailto:${rep_email}`);
+    $("#phone-btn").click(() => {
+      window.open(`tel:${rep_phone}`, "_blank");
+    });
+    $("#email-btn").click(() => {
+      window.open(`mailto:${rep_email}`, "_blank");
+    });
+  }
+
+  async function getCompany() {
+    try {
+      const response = await axios.get(
+        "https://" +
+        api_url +
+        "/api/v1/users/getCompany/name/" +
+        getUrlParameter("company") +
+        "/" +
+        getUrlParameter("user")
+      );
+      if (JSON.parse(response.data.error)) {
+        window.location.href = "/404";
+      } else {
         appointment_link = response.data.data.appointmentBookingLink;
-        rep_name = response.data.data.firstName + " " + response.data.data.lastName;
+        rep_name = `${response.data.data.firstName} ${response.data.data.lastName}`;
         rep_pic = response.data.data.profilePic;
         rep_phone = response.data.data.phone;
         user_id = response.data.data.userId;
@@ -30,73 +59,110 @@ atomic('https://' + api_url + '/api/v1/users/getCompany/name/' + company + '/' +
         rep_email = response.data.data.email;
         video_id = $.trim(response.data.data.videoProfileLink);
         map_all_data();
+      }
+    } catch (error) {
+      console.error(error.message);
     }
-})
-.catch(function (error) {
-    console.log(error.status); // xhr.status
-    console.log(error.statusText); // xhr.statusText
-});
+  }
 
-$('#aptmt_link1, #aptmt_link2, #aptmt_link3').click(function(){
-    $('#calendly_iframe').attr('src',appointment_link);
-});
-
-function map_all_data(){
-    if(user_name){
-        $('.user_name').each(function(){
-            $(this).html(''+user_name);
-        });
-    } else {
-        $('.user_name').addClass('hide');
-    }    
-    
-    $('#calendly_iframe').attr('src',appointment_link);
-    
-    $('.rep_name').text(rep_name);
-    
-    $('#phone').text(rep_phone);
-    
-    $('#email_id').text(rep_email);
-    $('.div-block-27-copy a:nth-child(2)').attr('href','mailto:'+rep_email);
-    
-    $('.apt-rep-image').css("background-image","url('"+ rep_pic +"')");    
-
-    if(video_id){
-        $('.apt-hero-bottomsection').addClass('active');
-        $('.apt-reps-video').append(video_id);                
-    }    
-}
-       
-
-$('.closer-last').click(function(){
-    $('#window_frame').attr("src","/appointment");
-});
-
-
-$('#getintouchsubmit').click(function(){
+  $("#getintouch").submit((e) => {
+    e.preventDefault();
     axios({
-        method: 'post',
-        url: 'https://' + api_url + '/api/v1/users/email/send/getInTouch',    
-        data: {
-            prospectFirstName: $('#first_name').val(),
-            prospectLastName: $('#last_name').val(),
-            prospectName: $('#first_name').val()+" "+$('#last_name').val(),
-            prospectEmail: $('#email').val(),
-            prospectPhone: $('#phone_no').val(),
-            prospectMessage: $('#message').val(),
-            userId: user_id,
-            companyId: company_id
-        }   
-      }).then(function(response) {     
-        $('.form-2').addClass('hide');
-        $('.successmessage').addClass('displayshow');
+      method: "post",
+      url: "https://" + api_url + "/api/v1/users/email/send/getInTouch",
+      data: {
+        prospectFirstName: $("#first_name").val(),
+        prospectLastName: $("#last_name").val(),
+        prospectName: $("#first_name").val() + " " + $("#last_name").val(),
+        prospectEmail: $("#email").val(),
+        prospectPhone: $("#phone_no").val(),
+        prospectMessage: $("#message").val(),
+        userId: user_id,
+        companyId: company_id,
+      },
+    })
+      .then(() => {
+        $(".getintouch").addClass("hide");
+        $(".successmessage").addClass("displayshow");
       })
-      .catch(function (error) {
-          console.log(error);
-          alert("Oops, There was an unexpected error."); 
+      .catch((error) => {
+        console.log(error);
+        alert("Oops, There was an unexpected error.");
       });
-});
+  });
 
+  let scroll_position = 0;
+  let scroll_direction;
 
+  window.addEventListener("scroll", function () {
+    scroll_direction =
+      document.body.getBoundingClientRect().top > scroll_position
+        ? "up"
+        : "down";
+    scroll_position = document.body.getBoundingClientRect().top;
+    if (scroll_direction === "up") {
+      $(".button-pattern").css("display", "block");
+    } else {
+      $(".button-pattern").css("display", "none");
+    }
+  });
 
+  const getBaseUrl = () => {
+    if (window.location.host === "dev.discoverfin.io") {
+      return "https://devvideo.discoverfin.io/video_type?company=";
+    } else if (window.location.host === "staging.discoverfin.io") {
+      return "https://stagingvideo.discoverfin.io/video_type?company=";
+    } else if (window.location.host === "discoverfin.io") {
+      return "https://video.discoverfin.io/video_type?company=";
+    }
+  };
 
+  const finBaseUrl = () => {
+    return `https://${window.location.host}/en?company=`;
+  };
+
+  const finBusinessVideoAppLink = () => {
+    return (
+      getBaseUrl() +
+      getUrlParameter("company") +
+      "&user=" +
+      getUrlParameter("user")
+    ).replace("video_type", "businessOverview");
+  };
+
+  const finAppLink = () => {
+    return (
+      finBaseUrl() +
+      getUrlParameter("company") +
+      "&user=" +
+      getUrlParameter("user")
+    );
+  };
+
+  const finFinancialSuccessVideoAppLink = () => {
+    return (
+      getBaseUrl() +
+      getUrlParameter("company") +
+      "&user=" +
+      getUrlParameter("user")
+    ).replace("video_type", "financialHouse");
+  };
+
+  if (!isVideoApp) {
+    $("#only-video-app").css("display", "none");
+    $("#financial-video").click(() => {
+      window.open(finFinancialSuccessVideoAppLink(), "_blank");
+    });
+
+    $("#business-video").click(() => {
+      window.open(finBusinessVideoAppLink(), "_blank");
+    });
+  } else {
+    $("#only-fin-app").css("display", "none");
+    $("#do-you-know-fin").click(() => {
+      window.open(finAppLink(), "_blank");
+    });
+  }
+
+  getCompany();
+}
