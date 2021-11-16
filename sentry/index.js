@@ -10,7 +10,7 @@ class SentryError extends Error {
     }
 
     this.name = "SentryError";
-
+    /*
     Sentry.addBreadcrumb({
       category: "data",
       message: errMessage,
@@ -18,7 +18,10 @@ class SentryError extends Error {
       type: type,
       level: Sentry.Severity.Debug,
     });
+    */
 
-    Sentry.captureException(errMessage);
+    //Sentry.captureException(errMessage);
+    
+    console.error(errMessage);
   }
 }
