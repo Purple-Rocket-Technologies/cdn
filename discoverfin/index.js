@@ -471,7 +471,7 @@ function autoFill() {
   $("#zip-code").val("213123");
 }
 
-autoFill();
+// autoFill();
 
 const buttonsToListen = [
   $("#fin_sys"),
