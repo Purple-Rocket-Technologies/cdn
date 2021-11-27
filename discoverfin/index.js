@@ -15,10 +15,10 @@ var createCharge = "https://" + api_url + "/api/v1/users/createCharge";
 var fetchPlan = "https://" + api_url + "/api/v1/users/plans?limit=100";
 let allPlans = [];
 
-$("#Billing option:nth-child(1)").attr("value", "FINTap Monthly");
-$("#Billing option:nth-child(2)").attr("value", "FINTap Yearly");
+// $("#Billing option:nth-child(1)").attr("value", "FINTap Monthly");
+// $("#Billing option:nth-child(2)").attr("value", "FINTap Yearly");
 
-$("#billing_freq").text("Monthly");
+// $("#billing_freq").text("Monthly");
 
 function openStripeModal() {
   //*************************************************//
@@ -110,8 +110,10 @@ function openStripeModal() {
       country: selectedCountryName,
       countryCode: selectedCountry,
       postalCode: $("#zip-code").val(),
-      couponCode: price_array.coupon.couponCode,
     };
+    if (price_array.coupon) {
+      reqBody.couponCode = price_array.coupon.couponCode;
+    }
     await axios
       .post(`${createCharge}`, reqBody)
       .then((addedTodo) => {
@@ -135,15 +137,19 @@ function openStripeModal() {
 const removSpecialCharactersFromName = (name) =>
   name !== "" ? name.replace(/[^a-zA-Z0-9]/g, "") : name;
 
+function fetchPlansUrl() {
+  return `${fetchPlan}`;
+}
+
 // Setting plan on page load
 axios({
   method: "get",
-  url: fetchPlan,
+  url: fetchPlansUrl(),
 })
   .then(function (response) {
     allPlans = response.data.data;
     stripeId = response.data.data.filter(
-      (plan) => plan.planName === "FINTap Monthly"
+      (plan) => plan.planName === "The FIN System Monthly"
     )[0].stripeId;
   })
   .catch(function (error) {
@@ -151,22 +157,28 @@ axios({
     console.log(error.statusText);
   });
 
+function filterPlan(planName, duration) {
+  return allPlans.filter(
+    (plan) => plan.planName === `${planName} ${duration}`
+  )[0];
+}
+
 function calculatePricing() {
-  const links = $("#no-of-links").val();
-  const bracelets = $("#number-of-bracelets").val();
+  const links = $("#no-of-links").val() || 1;
+  console.log(links);
+  const bracelets = $("#number-of-bracelets").val() || 0;
   const billingFrequency = $("#Billing").val();
   axios({
     method: "post",
     url: get_pricing,
     data: {
-      planType: billingFrequency.replace(" ", "_"),
+      planType: billingFrequency.replace(/\s/g, "_"),
       shippingType: selectedCountry,
       qty_links: parseInt(links),
       qty_bracelets: parseInt(bracelets),
     },
   })
     .then(function (response) {
-      console.log(response.data.data.data);
       price_array = response.data.data.data;
       setPriceValues();
     })
@@ -205,6 +217,10 @@ function setPriceValues() {
     },
     {
       elem: $("#recurring-price"),
+      value: "$" + price_array.subscriptionTotal,
+    },
+    {
+      elem: $(".recurring-price"),
       value: "$" + price_array.subscriptionTotal,
     },
     {
@@ -286,29 +302,34 @@ $(".pmt-radio-field").click(function () {
   selectedCountry = $(this).children("input").val();
   selectedCountryName = $(this).children("input").attr("data-country-name");
   $(".disable-product").addClass("hide");
+  if (planSelected.includes("Social Media")) {
+    calculatePricing();
+  }
 });
 
-// Not letting user enter link number above 100
+// Not letting user enter bracelets number above 100
 $("#number-of-bracelets").keyup(function () {
   if ($(this).val() > 100) {
     $(this).val(100);
   }
 });
 
-const plans = {
-  "FINTap Monthly": "/month",
-  "FINTap Yearly": "/year",
-};
-
 const fieldsToWatch = [
   $("#no-of-links"),
   $("#number-of-bracelets"),
   $("#Billing"),
 ];
+
 fieldsToWatch[2].on("input change", () => {
-  $("#biling_type").text(plans[fieldsToWatch[2].val()]);
-  $("#billing_freq").text(fieldsToWatch[2].val().split(" ")[1]);
+  const val = fieldsToWatch[2].val();
+  const plan = val.substring(0, val.lastIndexOf(" ") + 1).trim();
+  const freq = val.substring(val.lastIndexOf(" ") + 1, val.length).trim();
+  $("#biling_type").text(`/${freq.toLowerCase()}`);
+  $("#plan-name").text(plan);
+  $("#billing_freq").text(freq);
+  stripeId = filterPlan(plan, freq).stripeId;
 });
+
 fieldsToWatch.forEach((element) => {
   element.on("input change", (e) => {
     if (!selectedCountry) {
@@ -321,7 +342,11 @@ fieldsToWatch.forEach((element) => {
         allCount += 1;
       }
     });
+    const val = $("#Billing").val();
+    const plan = val.substring(0, val.lastIndexOf(" ") + 1).trim();
     if (allCount === fieldsToWatch.length && selectedCountry) {
+      calculatePricing();
+    } else if (plan === "Social Media") {
       calculatePricing();
     }
   });
@@ -366,8 +391,12 @@ $(".pmt-coupon-button").click(function () {
 $("#go-t-2-dummy").click(() => {
   const links = $("#no-of-links").val();
   const bracelets = $("#number-of-bracelets").val();
+  const val = $("#Billing").val();
+  const plan = val.substring(0, val.lastIndexOf(" ") + 1).trim();
   if (!selectedCountry) {
     alert("Please select a country");
+  } else if (plan === "Social Media") {
+    $("#goToSecondStep").click();
   } else {
     if (!links || !bracelets) {
       if (!links) {
@@ -482,30 +511,60 @@ const buttonsToListen = [
   $("#social_media_trial"),
 ];
 
+function hideElemetsForSocialPlan() {
+  $(".social-only").each(function () {
+    $(this).css("display", "flex");
+  });
+  $(".hide_social").each(function () {
+    $(this).css("display", "none");
+  });
+}
+
+function populatePlansInBillingFrequency(planName) {
+  $("#plan-name").text(planName);
+  $("#billing_freq").text("Monthly");
+  $("#Billing option:nth-child(1)").attr("value", `${planName} Monthly`);
+  $("#Billing option:nth-child(2)").attr("value", `${planName} Yearly`);
+}
+
 buttonsToListen.forEach((element) => {
   element.on("click", () => {
     const id = element.attr("id");
     switch (id) {
       case "fin_sys":
-        console.log("allPlans: fin_sys", allPlans);
+        planSelected = "The FIN System";
+        populatePlansInBillingFrequency(planSelected);
+        stripeId = filterPlan("The FIN System", "Monthly").stripeId;
         break;
       case "social_media":
-        console.log("allPlans: social_media", allPlans);
+        hideElemetsForSocialPlan();
+        planSelected = "Social Media";
+        populatePlansInBillingFrequency(planSelected);
+        stripeId = filterPlan("Social Media", "Monthly").stripeId;
         break;
       case "fin":
-        console.log("allPlans: fin", allPlans);
+        planSelected = "FIN";
+        populatePlansInBillingFrequency(planSelected);
+        stripeId = filterPlan("FIN", "Monthly").stripeId;
         break;
       case "fin_sys_trial":
         trailMode = true;
-        console.log("allPlans: fin_sys_trial", trailMode);
+        planSelected = "Social Media";
+        populatePlansInBillingFrequency(planSelected);
+        stripeId = filterPlan("The FIN System", "Monthly").stripeId;
         break;
       case "fin_trial":
         trailMode = true;
-        console.log("allPlans: fin_trial", trailMode);
+        planSelected = "FIN";
+        populatePlansInBillingFrequency(planSelected);
+        stripeId = filterPlan("FIN", "Monthly").stripeId;
         break;
       case "social_media_trial":
+        hideElemetsForSocialPlan();
+        planSelected = "The FIN System";
+        populatePlansInBillingFrequency(planSelected);
         trailMode = true;
-        console.log("allPlans: social_media_trial", trailMode);
+        stripeId = filterPlan("Social Media", "Monthly").stripeId;
         break;
       default:
         break;
