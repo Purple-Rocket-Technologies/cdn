@@ -196,6 +196,10 @@ function setPriceValues() {
       value: "$" + price_array.setupFee,
     },
     {
+      element: $("#price-setupfee-another"),
+      value: "$" + price_array.setupFee,
+    },
+    {
       elem: $("#price-link"),
       value: "$" + price_array.subscriptionTotal,
     },
