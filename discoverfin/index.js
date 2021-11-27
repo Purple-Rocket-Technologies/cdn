@@ -511,12 +511,12 @@ const buttonsToListen = [
   $("#social_media_trial"),
 ];
 
-function hideElemetsForSocialPlan() {
+function hideElemetsForSocialPlan(hide = true) {
   $(".social-only").each(function () {
-    $(this).css("display", "flex");
+    $(this).css("display", hide ? "flex" : "none");
   });
   $(".hide_social").each(function () {
-    $(this).css("display", "none");
+    $(this).css("display", !hide ? "flex" : "none");
   });
 }
 
@@ -532,6 +532,7 @@ buttonsToListen.forEach((element) => {
     const id = element.attr("id");
     switch (id) {
       case "fin_sys":
+        hideElemetsForSocialPlan(false);
         planSelected = "The FIN System";
         $(".social-only").css("display", "none");
         populatePlansInBillingFrequency(planSelected);
@@ -545,12 +546,16 @@ buttonsToListen.forEach((element) => {
         break;
       case "fin":
         planSelected = "FIN";
+        hideElemetsForSocialPlan(false);
+
         $(".social-only").css("display", "none");
 
         populatePlansInBillingFrequency(planSelected);
         stripeId = filterPlan("FIN", "Monthly").stripeId;
         break;
       case "fin_sys_trial":
+        hideElemetsForSocialPlan(false);
+
         trailMode = true;
         $(".social-only").css("display", "none");
 
@@ -559,6 +564,8 @@ buttonsToListen.forEach((element) => {
         stripeId = filterPlan("The FIN System", "Monthly").stripeId;
         break;
       case "fin_trial":
+        hideElemetsForSocialPlan(false);
+
         trailMode = true;
         planSelected = "FIN";
         $(".social-only").css("display", "none");
@@ -567,6 +574,8 @@ buttonsToListen.forEach((element) => {
         stripeId = filterPlan("FIN", "Monthly").stripeId;
         break;
       case "social_media_trial":
+        hideElemetsForSocialPlan(false);
+
         hideElemetsForSocialPlan();
         planSelected = "The FIN System";
         populatePlansInBillingFrequency(planSelected);
