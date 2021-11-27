@@ -533,6 +533,7 @@ buttonsToListen.forEach((element) => {
     switch (id) {
       case "fin_sys":
         planSelected = "The FIN System";
+        $(".social-only").css("display", "none");
         populatePlansInBillingFrequency(planSelected);
         stripeId = filterPlan("The FIN System", "Monthly").stripeId;
         break;
@@ -544,11 +545,15 @@ buttonsToListen.forEach((element) => {
         break;
       case "fin":
         planSelected = "FIN";
+        $(".social-only").css("display", "none");
+
         populatePlansInBillingFrequency(planSelected);
         stripeId = filterPlan("FIN", "Monthly").stripeId;
         break;
       case "fin_sys_trial":
         trailMode = true;
+        $(".social-only").css("display", "none");
+
         planSelected = "Social Media";
         populatePlansInBillingFrequency(planSelected);
         stripeId = filterPlan("The FIN System", "Monthly").stripeId;
@@ -556,6 +561,8 @@ buttonsToListen.forEach((element) => {
       case "fin_trial":
         trailMode = true;
         planSelected = "FIN";
+        $(".social-only").css("display", "none");
+
         populatePlansInBillingFrequency(planSelected);
         stripeId = filterPlan("FIN", "Monthly").stripeId;
         break;
