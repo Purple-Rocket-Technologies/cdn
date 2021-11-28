@@ -4,7 +4,7 @@ var selectedCountryName;
 var price_array = [];
 var stripeId;
 let trailMode = false;
-
+let planSelected;
 //api list
 var get_states_api =
   "https://" + api_url + "/api/v1/users/countriesAndStates/?abbreviation=";
@@ -538,6 +538,7 @@ buttonsToListen.forEach((element) => {
       case "fin_sys":
         // hideElemetsForSocialPlan(false);
         planSelected = "The FIN System";
+        $("#price-link").text("$149");
         $(".social-only").css("display", "none");
         populatePlansInBillingFrequency(planSelected);
         stripeId = filterPlan("The FIN System", "Monthly").stripeId;
@@ -551,9 +552,8 @@ buttonsToListen.forEach((element) => {
       case "fin":
         planSelected = "FIN";
         // hideElemetsForSocialPlan(false);
-
+        $("#price-link").text("$99");
         $(".social-only").css("display", "none");
-
         populatePlansInBillingFrequency(planSelected);
         stripeId = filterPlan("FIN", "Monthly").stripeId;
         break;
