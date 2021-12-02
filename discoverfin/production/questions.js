@@ -61,11 +61,14 @@ $("#user_name").on("keypress", function (e) {
     e.preventDefault();
     if ($("#ques_1_btn").hasClass("go_ahead")) {
       $("#ques_1_btn")[0].click();
-      trackMixPanelEvent("FIN Prospect Started Journey", {
-        first_name: $("#user_name").val(),
-      });
     }
   }
+});
+
+$("#ques_1_btn").on("click", function () {
+  trackMixPanelEvent("FIN Prospect Started Journey", {
+    first_name: $("#user_name").val(),
+  });
 });
 
 $("#user_age").keyup(function () {

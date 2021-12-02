@@ -9,6 +9,34 @@ if (window.location.pathname.startsWith("/appointment")) {
   let user_id;
   let isVideoApp = JSON.parse(getUrlParameter("video"));
 
+  trackMixpanel("Prospect visited Appointment Page", {
+    rep_name,
+    page_type: isVideoApp ? "Video App" : "FIN App",
+  });
+
+  let appointment_button_clicked = false;
+
+  // track appointment button clicks to mixpanel
+  const handleAppointmentButtonClick = () => {
+    if (appointment_button_clicked) {
+      return;
+    }
+    trackMixPanelEvent("Clicked Schedule Appointment button", {
+      rep_name,
+      company_id,
+      user_id,
+      user,
+      company,
+      page_type: isVideoApp ? "Video App" : "FIN App",
+      rep_email,
+    });
+    appointment_button_clicked = true;
+  };
+
+  $("#aptmt_link1").click(handleAppointmentButtonClick);
+  $("#aptmt_link2").click(handleAppointmentButtonClick);
+  $("#aptmt_link3").click(handleAppointmentButtonClick);
+
   function map_all_data() {
     $("#rep-name").text(rep_name);
     $("#rep-image-container").css("background-image", `url(${rep_pic})`);
@@ -41,11 +69,11 @@ if (window.location.pathname.startsWith("/appointment")) {
     try {
       const response = await axios.get(
         "https://" +
-        api_url +
-        "/api/v1/users/getCompany/name/" +
-        getUrlParameter("company") +
-        "/" +
-        getUrlParameter("user")
+          api_url +
+          "/api/v1/users/getCompany/name/" +
+          getUrlParameter("company") +
+          "/" +
+          getUrlParameter("user")
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
@@ -82,6 +110,15 @@ if (window.location.pathname.startsWith("/appointment")) {
       },
     })
       .then(() => {
+        trackMixPanelEvent("Prospect filled getInTouch form", {
+          rep_name,
+          user_id,
+          rep_email,
+          company_id,
+          page_type: isVideoApp ? "Video App" : "FIN App",
+          prospectName: $("#first_name").val() + " " + $("#last_name").val(),
+          prospectEmail: $("#email").val(),
+        });
         $(".getintouch").addClass("hide");
         $(".successmessage").addClass("displayshow");
       })
