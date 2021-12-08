@@ -119,6 +119,7 @@ function setPriceValues() {
     "$" + (price_array.subscriptionTotal / $("#no-of-links").val()).toFixed(2)
   );
   $("#next-billing-date").text();
+  $(".copy-code").click();
 }
 
 //coupon add in field
@@ -526,8 +527,12 @@ async function stripeTokenHandler(token) {
     countryCode: selectedCountry,
     postalCode: $("#zip").val(),
   };
-  
-  if(price_array.coupon && price_array.coupon.couponCode && price_array.coupon !== null){
+
+  if (
+    price_array.coupon &&
+    price_array.coupon.couponCode &&
+    price_array.coupon !== null
+  ) {
     todo.couponCode = price_array.coupon.couponCode;
   }
 
