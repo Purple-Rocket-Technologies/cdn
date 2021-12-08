@@ -71,7 +71,6 @@ function setSelectStates(country) {
     .catch(function (error) {
       console.log(error.status);
       console.log(error.statusText);
-      alert("Oops, There was an unexpected error.");
     });
 }
 
@@ -526,7 +525,7 @@ async function stripeTokenHandler(token) {
     country: selectedCountryName,
     countryCode: selectedCountry,
     postalCode: $("#zip").val(),
-    couponCode: $("#coupon").val(),
+    couponCode: price_array.coupon.couponCode,
   };
 
   await addTodo(todo);
@@ -536,11 +535,18 @@ const BASE_URL = createCharge;
 const addTodo = async (todo) => {
   await axios
     .post(`${BASE_URL}`, todo)
-    .then((addedTodo) => {
-      addedTodo = addedTodo.data;
-      const redirect_url = addedTodo.data.url;
-      window.parent.location = redirect_url;
-      window.location.replace(redirect_url);
+    .then((res) => {
+      if (!res.data.error && parseInt(res.data.status) === 200) {
+        const redirect_url = res.data.data.url;
+        if (redirect_url) {
+          window.parent.location = redirect_url;
+          window.location.replace(redirect_url);
+        }
+      } else if (res.data.error) {
+        alert(res.data.message);
+        $(".payment_loader").removeClass("show");
+        throw new SentryError(res.data.message, res.data);
+      }
     })
     .catch((e) => {
       $(".payment_loader").removeClass("show");
@@ -548,3 +554,19 @@ const addTodo = async (todo) => {
       throw new SentryError("Payment was declined", e);
     });
 };
+
+// function autoFill() {
+//   let randomInt = Math.floor(Math.random() * 1000000);
+//   $("#first-name").val("john");
+//   $("#last-name").val(`doe${randomInt}`);
+//   $("#business-email").val(`johndoe${randomInt}@yopmail.com`);
+//   $("#business-name").val(`john doe${randomInt}`);
+//   $("#business-phone").val(9582142914);
+//   $("#add_1").val("Moradabad");
+//   $("#add_2").val("Moradabad");
+//   $("#state").val("AL");
+//   $("#city").val("Moradabad");
+//   $("#zip").val("213123");
+// }
+
+// autoFill();
