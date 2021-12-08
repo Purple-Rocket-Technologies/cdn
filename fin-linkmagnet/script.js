@@ -525,8 +525,11 @@ async function stripeTokenHandler(token) {
     country: selectedCountryName,
     countryCode: selectedCountry,
     postalCode: $("#zip").val(),
-    couponCode: price_array.coupon.couponCode,
   };
+  
+  if(price_array.coupon && price_array.coupon.couponCode && price_array.coupon !== null){
+    todo.couponCode = price_array.coupon.couponCode;
+  }
 
   await addTodo(todo);
 }
