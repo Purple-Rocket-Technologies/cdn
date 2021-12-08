@@ -196,7 +196,7 @@ function setPriceValues() {
       value: "$" + price_array.setupFee,
     },
     {
-      element: $("#price-setupfee-another"),
+      elem: $("#price-setupfee-another"),
       value: "$" + price_array.setupFee,
     },
     {
