@@ -146,8 +146,10 @@ $(".pmt-coupon-button").click(function () {
     $(".coupon-message").addClass("active");
 
     var discount_percentage = $("#coupon").attr("data-discount");
-    var discount_price =
-      (price_array.braceletsTotal / 100) * discount_percentage;
+    var discount_price = (
+      (price_array.braceletsTotal / 100) *
+      discount_percentage
+    ).toFixed(2);
     var discounted_price_on_bracelet =
       price_array.invoiceTotal - discount_price;
     price_array.payblePrice = discounted_price_on_bracelet;
