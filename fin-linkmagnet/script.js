@@ -118,8 +118,15 @@ function setPriceValues() {
   $("#price-single-link").text(
     "$" + (price_array.subscriptionTotal / $("#no-of-links").val()).toFixed(2)
   );
+  if (
+    price_array.coupon &&
+    price_array.coupon.couponCode &&
+    price_array.coupon.valid
+  ) {
+    $(".copy-code").click();
+    $(".pmt-coupon-button").click();
+  }
   $("#next-billing-date").text();
-  $(".copy-code").click();
 }
 
 //coupon add in field
@@ -531,9 +538,11 @@ async function stripeTokenHandler(token) {
   if (
     price_array.coupon &&
     price_array.coupon.couponCode &&
-    price_array.coupon !== null
+    price_array.coupon !== null &&
+    price_array.coupon !== undefined &&
+    price_array.coupon.valid
   ) {
-    todo.couponCode = price_array.coupon.couponCode;
+    todo["couponCode"] = price_array.coupon.couponCode;
   }
 
   await addTodo(todo);
