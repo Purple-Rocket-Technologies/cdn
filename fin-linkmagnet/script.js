@@ -106,8 +106,14 @@ function setPriceValues() {
     "$" + parseFloat(price_array.invoiceTotal).toFixed(2)
   );
   $("#recurring-price").text("$" + price_array.subscriptionTotal);
-  $(".pmt-discount-percentage").text(price_array.coupon.discountPercent);
-  $(".pmt-coupon-code").text(price_array.coupon.couponCode);
+  if (
+    price_array.coupon &&
+    price_array.coupon.couponCode &&
+    price_array.coupon.valid
+  ) {
+    $(".pmt-discount-percentage").text(price_array.coupon.discountPercent);
+    $(".pmt-coupon-code").text(price_array.coupon.couponCode);
+  }
 
   $("#link-qty").text($("#no-of-links").val());
   $("#bracelet-qty").text($("#number-of-bracelets").val());
