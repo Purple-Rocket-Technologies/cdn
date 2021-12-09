@@ -200,6 +200,7 @@ $("#no-of-links").change(function () {
       planType: $("#select-billing").val(),
       shippingType: selectedCountry,
       qty_links: parseInt($("#no-of-links").val()),
+      qty_bracelets: parseInt($("#number-of-bracelets").val()),
     },
   })
     .then(function (response) {
@@ -226,6 +227,7 @@ $("#select-billing").change(function () {
     data: {
       planType: $("#select-billing").val(),
       shippingType: selectedCountry,
+      qty_bracelets: parseInt($("#number-of-bracelets").val()),
       qty_links: parseInt($("#no-of-links").val()),
     },
   })
