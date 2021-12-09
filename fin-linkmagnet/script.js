@@ -91,7 +91,7 @@ function updatePricing() {
       setPriceValues();
     })
     .catch(function (error) {
-      console.log(error.status);
+      console.log(error);
       console.log(error.statusText);
       alert("Oops, There was an unexpected error.");
     });
@@ -214,7 +214,7 @@ $("#no-of-links").change(function () {
       }
     })
     .catch(function (error) {
-      console.log(error.status);
+      console.log(error);
       console.log(error.statusText);
       alert("Oops, There was an unexpected error.");
     });
@@ -241,7 +241,7 @@ $("#select-billing").change(function () {
       );
     })
     .catch(function (error) {
-      console.log(error.status);
+      console.log(error);
       console.log(error.statusText);
       alert("Oops, There was an unexpected error.");
     });
@@ -288,7 +288,7 @@ $("#number-of-bracelets").keyup(function () {
       $(".pmt-price-hightlight.bracelet").text("$" + braceletprice);
     })
     .catch(function (error) {
-      console.log(error.status);
+      console.log(error);
       console.log(error.statusText);
       alert("Oops, There was an unexpected error.");
     });
