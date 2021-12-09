@@ -396,7 +396,10 @@ $("#checkout_btn").click(function () {
         $("#checkout_company").text(checkout_company);
         $("#checkout_email").text(checkout_email.toString().toLowerCase());
         $("#checkout_price").text(
-          "$" + parseFloat(price_array.payblePrice).toFixed(2)
+          "$" +
+            parseFloat(
+              price_array.payblePrice || price_array.invoiceTotal
+            ).toFixed(2)
         );
         $(".trigger-button.open-checkout")[0].click();
       } else {
