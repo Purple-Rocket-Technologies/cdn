@@ -35,13 +35,6 @@ $(".appointment-iframe .w-iframe iframe").attr(
     "&video=false"
 );
 
-setTimeout(() => {
-  if (!lastPopupShown) {
-    $("#email-sent-text").css("display", "none");
-    $(".last-popup").addClass("active");
-  }
-}, 22000);
-
 // learn more
 $(".slide_cta").click(function () {
   lastPopupShown = true;
