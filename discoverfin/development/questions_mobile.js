@@ -272,8 +272,8 @@ async function createNewProspect() {
     country: country_val,
   };
 
-  if (readCookie("isAffiliateUrl") == "true") {
-    data.affiliateId = readCookie("affiliateId");
+  if (readCookies("isAffiliateUrl") == "true") {
+    data.affiliateId = readCookies("affiliateId");
   }
 
   axios({
