@@ -104,6 +104,8 @@ function validateUrl(company, user) {
         setCookies("VIDEO", response.data.data.videoProfileLink);
         setCookies("PHONE", response.data.data.phone);
         setCookies("EMAIL", response.data.data.email);
+        setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
+        setCookies("affiliateId", response.data.data.affiliateId);
         continuationCheck();
       } else {
         $(".fourofour").addClass("show");

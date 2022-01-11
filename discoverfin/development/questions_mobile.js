@@ -275,6 +275,7 @@ async function createNewProspect() {
   if (readCookies("isAffiliateUrl") == "true") {
     data.affiliateId = readCookies("affiliateId");
   }
+
   axios({
     method: "post",
     url:

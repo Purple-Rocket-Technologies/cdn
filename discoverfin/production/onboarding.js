@@ -21,6 +21,8 @@ function getAPIparams() {
     .then(function (response) {
       company_id = response.data.data.companyId;
       setCookies("COMPANY_ID", company_id);
+      setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
+      setCookies("affiliateId", response.data.data.affiliateId);
 
       // getting prospect id
       axios({
@@ -110,6 +112,8 @@ axios({
     } else {
       $(".main_start_div").addClass("show");
       setCookies("COMPANY_ID", response.data.data.companyId);
+      setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
+      setCookies("affiliateId", response.data.data.affiliateId);
       setCookies("COMPANY_URL", response.data.data.companyUrl);
       setCookies("USER_ID", response.data.data.userId);
       setCookies("USER_URL", response.data.data.userUrl);

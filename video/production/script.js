@@ -107,6 +107,8 @@ function validateUrl(company, user) {
         setCookies("VIDEO", response.data.data.videoProfileLink);
         setCookies("PHONE", response.data.data.phone);
         setCookies("EMAIL", response.data.data.email);
+        setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
+        setCookies("affiliateId", response.data.data.affiliateId);
         continuationCheck();
       } else {
         $(".fourofour").addClass("show");
@@ -278,7 +280,7 @@ function renderVideo(videoID) {
       setTotalDuration();
       playerinitialized = 1;
     })
-    .catch(function (error) { });
+    .catch(function (error) {});
   player.pause();
   setFinalFunction();
 }
@@ -706,10 +708,10 @@ async function triggerRenderOptions(path_name) {
   path_name = path_name.includes("1")
     ? "Path 1"
     : path_name.includes("2")
-      ? "Path 2"
-      : path_name.includes("3")
-        ? "Path 3"
-        : "";
+    ? "Path 2"
+    : path_name.includes("3")
+    ? "Path 3"
+    : "";
 
   // track path clicked event to mixpanel
   trackMixPanelEvent(`${videoType}: ${path_name} Clicked`, {
@@ -812,10 +814,10 @@ $(".submit.paths").click(async () => {
         $(".appointment-iframe .w-iframe iframe").attr(
           "src",
           "https://discoverfin.io/appointment?company=" +
-          getUrlParameter("company") +
-          "&user=" +
-          getUrlParameter("user") +
-          "&video=true"
+            getUrlParameter("company") +
+            "&user=" +
+            getUrlParameter("user") +
+            "&video=true"
         );
         $(".last-popup").addClass("active");
       })
@@ -833,10 +835,10 @@ $(".iframe-back").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
     "https://discoverfin.io/appointment?company=" +
-    getUrlParameter("company") +
-    "&user=" +
-    getUrlParameter("user") +
-    "&video=true"
+      getUrlParameter("company") +
+      "&user=" +
+      getUrlParameter("user") +
+      "&video=true"
   );
 });
 
@@ -845,9 +847,9 @@ $(".closer-last").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
     "https://discoverfin.io/appointment?company=" +
-    getUrlParameter("company") +
-    "&user=" +
-    getUrlParameter("user") +
-    "&video=true"
+      getUrlParameter("company") +
+      "&user=" +
+      getUrlParameter("user") +
+      "&video=true"
   );
 });
