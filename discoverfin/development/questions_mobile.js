@@ -255,6 +255,27 @@ async function createNewProspect() {
     ];
   }
 
+  const data = {
+    companyId: readCookie("COMPANY_ID"),
+    userId: readCookie("USER_ID"),
+    first_name: $("#user_name").val(),
+    age: $("#user_age").val(),
+    annual_income_after_inflation: parseInt($("#income_after_inflation").val()),
+    annual_income_before_inflation: parseInt(
+      $("#user_income").val().replace(/,/g, "")
+    ),
+    retirement_age,
+    pension_choice,
+    guessed_fin,
+    email: $("#email").val(),
+    fin_number: parseInt($("#fin_number").val()),
+    country: country_val,
+  };
+
+  if (readCookie("isAffiliateUrl") == "true") {
+    data.affiliateId = readCookie("affiliateId");
+  }
+
   axios({
     method: "post",
     url:
@@ -263,24 +284,7 @@ async function createNewProspect() {
       "/api/v1/users/company/" +
       readCookie("COMPANY_ID") +
       "/prospects",
-    data: {
-      companyId: readCookie("COMPANY_ID"),
-      userId: readCookie("USER_ID"),
-      first_name: $("#user_name").val(),
-      age: $("#user_age").val(),
-      annual_income_after_inflation: parseInt(
-        $("#income_after_inflation").val()
-      ),
-      annual_income_before_inflation: parseInt(
-        $("#user_income").val().replace(/,/g, "")
-      ),
-      retirement_age,
-      pension_choice,
-      guessed_fin,
-      email: $("#email").val(),
-      fin_number: parseInt($("#fin_number").val()),
-      country: country_val,
-    },
+    data,
   })
     .then(function (response) {
       setCookies("prospect_id", response.data.data._id);
