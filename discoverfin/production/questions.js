@@ -1,8 +1,10 @@
-var relativ_url = window.location.origin + window.location.pathname;
-var curren_url = window.location;
-if (curren_url != relativ_url) {
+const relativ_url = window.location.origin + window.location.pathname;
+const curren_url = window.location;
+if (curren_url !== relativ_url) {
   window.location = relativ_url;
 }
+let avg_retirement_age = 0;
+let default_death_age = 0;
 
 $("body").on("scroll mousewheel touchmove", function (e) {
   e.preventDefault();
@@ -10,18 +12,11 @@ $("body").on("scroll mousewheel touchmove", function (e) {
   return false;
 });
 
-function initializeVar() {
-  avg_retirement_age = 0;
-  default_death_age = 0;
-}
-
 function isEmail(e) {
   return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
     e
   );
 }
-
-initializeVar();
 
 $(".button_blocker.email").click(function () {
   alert("Please enter a correct email");
@@ -387,28 +382,32 @@ async function updateProspect(prospectID) {
 }
 
 $("#submit_btn").click(function () {
-  axios({
-    method: "get",
-    url:
-      "https://" +
-      api_url +
-      "/api/v1/users/company/" +
-      readCookie("COMPANY_ID") +
-      "/prospects?email=" +
-      $("#email").val(),
-  })
-    .then(function (response) {
-      if (response.data.count == 0) {
-        createNewProspect();
-      } else {
-        updateProspect(response.data.data[0]._id);
-      }
+  if ($("#terms").is(":checked")) {
+    axios({
+      method: "get",
+      url:
+        "https://" +
+        api_url +
+        "/api/v1/users/company/" +
+        readCookie("COMPANY_ID") +
+        "/prospects?email=" +
+        $("#email").val(),
     })
-    .catch(function (error) {
-      alert("Oops, There was an unexpected error.");
-      throw new SentryError(
-        `Error While submitting results: ${$("#email").val()}`,
-        error
-      );
-    });
+      .then(function (response) {
+        if (response.data.count === 0) {
+          createNewProspect();
+        } else {
+          updateProspect(response.data.data[0]._id);
+        }
+      })
+      .catch(function (error) {
+        alert("Oops, There was an unexpected error.");
+        throw new SentryError(
+          `Error While submitting results: ${$("#email").val()}`,
+          error
+        );
+      });
+  } else {
+    alert("Please accept the terms and conditions");
+  }
 });
