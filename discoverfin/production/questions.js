@@ -382,9 +382,11 @@ async function updateProspect(prospectID) {
 }
 
 $("#submit_btn").click(function () {
-  if ($("#terms").is(":checked")) {
-    if (!isEmail($("#email").val())) {
-      alert("Please enter your email address");
+  const terms = $("#terms").is(":checked");
+  const email_address = isEmail($("#email").val());
+  if (email_address) {
+    if (!terms) {
+      alert("Please accept the terms and conditions");
     } else {
       axios({
         method: "get",
@@ -412,6 +414,6 @@ $("#submit_btn").click(function () {
         });
     }
   } else {
-    alert("Please accept the terms and conditions");
+    alert("Please enter your email address");
   }
 });
