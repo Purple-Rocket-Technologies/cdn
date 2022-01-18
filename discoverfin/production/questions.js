@@ -1,10 +1,8 @@
-const relativ_url = window.location.origin + window.location.pathname;
-const curren_url = window.location;
-if (curren_url !== relativ_url) {
+var relativ_url = window.location.origin + window.location.pathname;
+var curren_url = window.location;
+if (curren_url != relativ_url) {
   window.location = relativ_url;
 }
-let avg_retirement_age = 0;
-let default_death_age = 0;
 
 $("body").on("scroll mousewheel touchmove", function (e) {
   e.preventDefault();
@@ -12,11 +10,18 @@ $("body").on("scroll mousewheel touchmove", function (e) {
   return false;
 });
 
+function initializeVar() {
+  avg_retirement_age = 0;
+  default_death_age = 0;
+}
+
 function isEmail(e) {
   return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
     e
   );
 }
+
+initializeVar()
 
 $(".button_blocker.email").click(function () {
   alert("Please enter a correct email");
