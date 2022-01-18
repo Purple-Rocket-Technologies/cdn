@@ -366,28 +366,31 @@ async function updateProspect(prospectID) {
       alert(error.response.data.message);
     });
 }
-
 $("#submit_btn").click(function () {
-  axios({
-    method: "get",
-    url:
-      "https://" +
-      api_url +
-      "/api/v1/users/company/" +
-      readCookie("COMPANY_ID") +
-      "/prospects?email=" +
-      $("#email").val(),
-  })
-    .then(function (response) {
-      if (response.data.count == 0) {
-        createNewProspect();
-      } else {
-        updateProspect(response.data.data[0]._id);
-      }
+  if ($("#terms").is(":checked")) {
+    axios({
+      method: "get",
+      url:
+        "https://" +
+        api_url +
+        "/api/v1/users/company/" +
+        readCookie("COMPANY_ID") +
+        "/prospects?email=" +
+        $("#email").val(),
     })
-    .catch(function (error) {
-      alert("Oops, There was an unexpected error.");
-    });
+      .then(function (response) {
+        if (response.data.count === 0) {
+          createNewProspect();
+        } else {
+          updateProspect(response.data.data[0]._id);
+        }
+      })
+      .catch(function (error) {
+        alert("Oops, There was an unexpected error.");
+      });
+  } else {
+    alert("Please accept the terms and conditions");
+  }
 });
 
 $("*").animate({ scrollTop: 0 }, "fast");
