@@ -8,6 +8,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   let company_id;
   let user_id;
   let isVideoApp = JSON.parse(getUrlParameter("video"));
+  const user_url = getUrlParameter("id");
 
   function map_all_data() {
     $("#rep-name").text(rep_name);
@@ -40,12 +41,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   async function getCompany() {
     try {
       const response = await axios.get(
-        "https://" +
-        api_url +
-        "/api/v1/users/getCompany/name/" +
-        getUrlParameter("company") +
-        "/" +
-        getUrlParameter("user")
+        "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
