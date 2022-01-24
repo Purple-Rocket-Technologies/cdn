@@ -1,3 +1,5 @@
+const user_url = getUrlParameter("id");
+
 if (
   getUrlParameter("company") &&
   getUrlParameter("user") &&
@@ -10,13 +12,7 @@ if (
 function getAPIparams() {
   axios({
     method: "get",
-    url:
-      "https://" +
-      api_url +
-      "/api/v1/users/getCompany/name/" +
-      getUrlParameter("company") +
-      "/" +
-      getUrlParameter("user"),
+    url: "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url,
   })
     .then(function (response) {
       company_id = response.data.data.companyId;
@@ -84,13 +80,7 @@ setCookies("URL_COMPANY", company);
 
 axios({
   method: "get",
-  url:
-    "https://" +
-    api_url +
-    "/api/v1/users/getCompany/name/" +
-    company +
-    "/" +
-    user,
+  url: "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url,
 })
   .then(function (response) {
     if (response.data.error == true) {

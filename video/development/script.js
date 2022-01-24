@@ -35,6 +35,9 @@ const getUrlParameter = function getUrlParameter(sParam) {
   }
 };
 
+const user_url = getUrlParameter("id");
+
+
 // Check email format
 function isEmail(e) {
   return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
@@ -83,12 +86,7 @@ function format(time) {
 //Validating URL
 function validateUrl(company, user) {
   let validateCompanyUserAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/getCompany/name/" +
-    company +
-    "/" +
-    user;
+    "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url;
   axios({
     method: "get",
     url: validateCompanyUserAPI,
