@@ -2,6 +2,7 @@
 //**ALL VARIABLES DECLARATIONS***/
 //*******************************/
 const videoType = window.location.pathname.replace("/", "");
+
 let country_val;
 let lang_val;
 let video_id;
@@ -80,15 +81,12 @@ function format(time) {
   return ret;
 }
 
+const user_url = getUrlParameter("id");
+
 //Validating URL
 function validateUrl(company, user) {
   let validateCompanyUserAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/getCompany/name/" +
-    company +
-    "/" +
-    user;
+      "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url;
   axios({
     method: "get",
     url: validateCompanyUserAPI,
