@@ -1,3 +1,5 @@
+const user_url = getUrlParameter("id");
+
 if (
   getUrlParameter("company") &&
   getUrlParameter("user") &&
@@ -10,13 +12,7 @@ if (
 function getAPIparams() {
   axios({
     method: "get",
-    url:
-      "https://" +
-      api_url +
-      "/api/v1/users/getCompany/name/" +
-      getUrlParameter("company") +
-      "/" +
-      getUrlParameter("user"),
+    url: "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url,
   })
     .then(function (response) {
       company_id = response.data.data.companyId;
@@ -44,15 +40,15 @@ function getAPIparams() {
             setCookies("Name", user_name);
             setCookies("FIN Number", fin_num);
 
-            var routeChoice = response.data.data[0].route_choice;
-            if (response.data.data[0].route_choice != "") {
-              if (routeChoice == "Make More Money") {
+            const routeChoice = response.data.data[0].route_choice;
+            if (response.data.data[0].route_choice !== "") {
+              if (routeChoice === "Make More Money") {
                 window.location.href = "/route/make-more-money";
               }
-              if (routeChoice == "Manage Money Better") {
+              if (routeChoice === "Manage Money Better") {
                 window.location.href = "/route/manage-money-better";
               }
-              if (routeChoice == "Both") {
+              if (routeChoice === "Both") {
                 window.location.href = "/route/both";
               }
             } else {
@@ -84,16 +80,10 @@ setCookies("URL_COMPANY", company);
 
 axios({
   method: "get",
-  url:
-    "https://" +
-    api_url +
-    "/api/v1/users/getCompany/name/" +
-    company +
-    "/" +
-    user,
+  url: "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url,
 })
   .then(function (response) {
-    if (response.data.error == true) {
+    if (response.data.error === true) {
       console.log("Error");
       $(".not_found").addClass("show_not_found");
       $(".page").addClass("pnf");

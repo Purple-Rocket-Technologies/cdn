@@ -9,6 +9,8 @@ if (window.location.pathname.startsWith("/appointment")) {
   let user_id;
   let isVideoApp = JSON.parse(getUrlParameter("video"));
 
+  const user_url = getUrlParameter("id");
+
   function map_all_data() {
     $("#rep-name").text(rep_name);
     $("#rep-image-container").css("background-image", `url(${rep_pic})`);
@@ -25,14 +27,14 @@ if (window.location.pathname.startsWith("/appointment")) {
       "src",
       appointment_link
     );
-    $("#rep-email").text(rep_email);
-    $("#rep-phone").text(rep_phone);
-    $("#rep-phone").attr("href", `tel:${rep_phone}`);
-    $("#rep-email").attr("href", `mailto:${rep_email}`);
+    //$("#rep-email").text(rep_email);
+    //$("#rep-phone").text(rep_phone);
+    //$("#phone-btn").attr("href", `tel:${rep_phone}`);
+    //$("#mail-btn").attr("href", `mailto:${rep_email}`);
     $("#phone-btn").click(() => {
       window.open(`tel:${rep_phone}`, "_blank");
     });
-    $("#email-btn").click(() => {
+    $("#mail-btn").click(() => {
       window.open(`mailto:${rep_email}`, "_blank");
     });
   }
@@ -40,12 +42,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   async function getCompany() {
     try {
       const response = await axios.get(
-        "https://" +
-        api_url +
-        "/api/v1/users/getCompany/name/" +
-        getUrlParameter("company") +
-        "/" +
-        getUrlParameter("user")
+          "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
