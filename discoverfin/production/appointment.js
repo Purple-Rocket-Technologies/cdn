@@ -53,14 +53,14 @@ if (window.location.pathname.startsWith("/appointment")) {
       "src",
       appointment_link
     );
-    $("#rep-email").text(rep_email);
-    $("#rep-phone").text(rep_phone);
-    $("#rep-phone").attr("href", `tel:${rep_phone}`);
-    $("#rep-email").attr("href", `mailto:${rep_email}`);
+    //$("#rep-email").text(rep_email);
+    //$("#rep-phone").text(rep_phone);
+   // $("#rep-phone").attr("href", `tel:${rep_phone}`);
+    //$("#rep-email").attr("href", `mailto:${rep_email}`);
     $("#phone-btn").click(() => {
       window.open(`tel:${rep_phone}`, "_blank");
     });
-    $("#email-btn").click(() => {
+    $("#mail-btn").click(() => {
       window.open(`mailto:${rep_email}`, "_blank");
     });
   }
