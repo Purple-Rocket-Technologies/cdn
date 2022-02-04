@@ -390,9 +390,6 @@ $("#submit_btn").click(function () {
             updateProspect(response.data.data[0]._id);
           }
         })
-        .catch(function (error) {
-          alert("Oops, There was an unexpected error.");
-        });
     }
   } else {
     alert("Please enter a valid email address");

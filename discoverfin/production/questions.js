@@ -411,7 +411,7 @@ $("#submit_btn").click(function () {
           }
         })
         .catch(function (error) {
-          alert("Oops, There was an unexpected error.");
+          // alert("Oops, There was an unexpected error.");
           throw new SentryError(
             `Error While submitting results: ${$("#email").val()}`,
             error
