@@ -45,6 +45,5 @@ function submitRoute(redirectUrl) {
     })
     .catch(function (error) {
         console.log(error);
-        alert("Oops, There was an unexpected error."); 
     });  
 }
