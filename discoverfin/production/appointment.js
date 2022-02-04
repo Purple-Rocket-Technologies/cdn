@@ -58,11 +58,18 @@ if (window.location.pathname.startsWith("/appointment")) {
    // $("#rep-phone").attr("href", `tel:${rep_phone}`);
     //$("#rep-email").attr("href", `mailto:${rep_email}`);
     $("#phone-btn").click(() => {
-      window.open(`tel:${rep_phone}`, "_blank");
+      openLink(`tel:${rep_phone}`);
     });
     $("#mail-btn").click(() => {
-      window.open(`mailto:${rep_email}`, "_blank");
+      openLink(`mailto:${rep_email}`);
     });
+  }
+
+  function openLink(link) {
+    let element = document.createElement("a");
+    element.setAttribute("href", link);
+    element.click();
+    element.remove();
   }
 
   async function getCompany() {
