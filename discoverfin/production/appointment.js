@@ -66,10 +66,11 @@ if (window.location.pathname.startsWith("/appointment")) {
   }
 
   function openLink(link) {
-    let element = document.createElement("a");
-    element.setAttribute("href", link);
-    element.click();
-    element.remove();
+    //let element = document.createElement("a");
+    //element.setAttribute("href", link);
+    //element.click();
+    //element.remove();
+    window.open(link, "_self");
   }
 
   async function getCompany() {
