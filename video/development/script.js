@@ -469,6 +469,16 @@ setInterval(function () {
   if (playerinitialized === 1) {
     player.getCurrentTime().then(function (seconds) {
       $(".elapsedtime").text(format(seconds));
+      console.log(seconds, "seconds");
+      if(~~((seconds % 3600) / 60) >= 18){
+        console.log("18 minutes reached");
+        const schedule_footer = $(".schedule-footer");
+        if(schedule_footer.css("display") === "none"){
+          console.log("Schedule footer is hidden");
+          schedule_footer.css("display", "flex");
+          $("#window_frame").attr("src", "https://www.youtube.com/embed/");
+        }
+      }
       currentTiming = seconds;
     });
   }
@@ -652,8 +662,6 @@ const set90 = setInterval(function () {
   if (watchpercentage > 90) {
     updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
     clearInterval(set90);
-    $(".schedule-footer").css("display", "flex");
-    $("#window_frame").attr("src", "https://www.youtube.com/embed/");
   }
 }, 1000);
 const set96 = setInterval(function () {
