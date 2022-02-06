@@ -469,15 +469,14 @@ setInterval(function () {
   if (playerinitialized === 1) {
     player.getCurrentTime().then(function (seconds) {
       $(".elapsedtime").text(format(seconds));
-      console.log(seconds, "seconds");
-      if(~~((seconds % 3600) / 60) >= 18){
-        console.log("18 minutes reached");
-        const schedule_footer = $(".schedule-footer");
+      const schedule_footer = $(".schedule-footer");
+      if(~~((seconds % 3600) / 60) >= 18) {
         if(schedule_footer.css("display") === "none"){
-          console.log("Schedule footer is hidden");
           schedule_footer.css("display", "flex");
           $("#window_frame").attr("src", "https://www.youtube.com/embed/");
         }
+      } else {
+        schedule_footer.css("display", "none");
       }
       currentTiming = seconds;
     });
@@ -588,7 +587,7 @@ $(".non-clicker").click(function () {
   error_show("Please select a language first.");
 });
 
-$(".onboad").click(function () {
+$("#submit-btn-play").click(function () {
   if (country_val !== "") {
     if (
       $("#peoplewatching").val() != "" &&
