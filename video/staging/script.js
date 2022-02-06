@@ -467,7 +467,7 @@ setInterval(function () {
       if(~~((seconds % 3600) / 60) >= 18) {
         if(schedule_footer.css("display") === "none"){
           schedule_footer.css("display", "flex");
-          $("#window_frame").attr("src", `https://${window.location.hostname}/appointment/?user=${getUrlParameter('user')}&company=${getUrlParameter("company")}&video=true`);
+          $("#window_frame").attr("src", `https://staging.discoverfin.io/appointment/?user=${getUrlParameter('user')}&company=${getUrlParameter("company")}&video=true`);
         }
       } else {
         schedule_footer.css("display", "none");
