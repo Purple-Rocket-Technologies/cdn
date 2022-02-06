@@ -473,7 +473,7 @@ setInterval(function () {
       if(~~((seconds % 3600) / 60) >= 18) {
         if(schedule_footer.css("display") === "none"){
           schedule_footer.css("display", "flex");
-          $("#window_frame").attr("src", `https://${window.location.hostname}/appointment/?id=${readCookie('USER_ID')}&video=true`);
+          $("#window_frame").attr("src", `https://dev.discoverfin.io/appointment/?id=${getUrlParameter('id')}&video=true`);
         }
       } else {
         schedule_footer.css("display", "none");
