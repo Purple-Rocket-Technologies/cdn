@@ -463,6 +463,15 @@ setInterval(function () {
   if (playerinitialized === 1) {
     player.getCurrentTime().then(function (seconds) {
       $(".elapsedtime").text(format(seconds));
+      const schedule_footer = $(".schedule-footer");
+      if(~~((seconds % 3600) / 60) >= 18) {
+        if(schedule_footer.css("display") === "none"){
+          schedule_footer.css("display", "flex");
+          $("#window_frame").attr("src", `https://${window.location.hostname}/appointment/?user=${getUrlParameter('user')}&company=${getUrlParameter("company")}&video=true`);
+        }
+      } else {
+        schedule_footer.css("display", "none");
+      }
       currentTiming = seconds;
     });
   }
@@ -685,6 +694,8 @@ const set75 = setInterval(function () {
 
 $(".path-option").click(function () {
   var path_name_value = $(this).children(".heading").text();
+  const schedule_footer = $(".schedule-footer");
+  schedule_footer.remove();
   triggerRenderOptions(path_name_value);
 });
 

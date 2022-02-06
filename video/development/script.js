@@ -473,7 +473,7 @@ setInterval(function () {
       if(~~((seconds % 3600) / 60) >= 18) {
         if(schedule_footer.css("display") === "none"){
           schedule_footer.css("display", "flex");
-          $("#window_frame").attr("src", "https://www.youtube.com/embed/");
+          $("#window_frame").attr("src", `https://${window.location.hostname}/appointment/?id=${readCookie('USER_ID')}&video=true`);
         }
       } else {
         schedule_footer.css("display", "none");
@@ -699,7 +699,11 @@ const set75 = setInterval(function () {
 }, 1000);
 
 $(".path-option").click(function () {
-  var path_name_value = $(this).children(".heading").text();
+  const path_name_value = $(this).children(".heading").text();
+
+  const schedule_footer = $(".schedule-footer");
+  schedule_footer.remove();
+
   triggerRenderOptions(path_name_value);
 });
 
@@ -800,9 +804,7 @@ $(".submit.paths").click(async () => {
         success_show("Your answers have been sent successfully!");
         $(".appointment-iframe .w-iframe iframe").attr(
           "src",
-          "https://dev.discoverfin.io/appointment?company=" +
-            getUrlParameter("company") +
-            "&user=" +
+          "https://dev.discoverfin.io/appointment?id=" +
             getUrlParameter("user") +
             "&video=true"
         );
@@ -821,9 +823,7 @@ $(".submit.paths").click(async () => {
 $(".iframe-back").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-    "https://dev.discoverfin.io/appointment?company=" +
-      getUrlParameter("company") +
-      "&user=" +
+    "https://dev.discoverfin.io/appointment?id=" +
       getUrlParameter("user") +
       "&video=true"
   );
@@ -833,9 +833,7 @@ $(".closer-last").click(function () {
   $(".last-popup").removeClass("active");
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-    "https://dev.discoverfin.io/appointment?company=" +
-      getUrlParameter("company") +
-      "&user=" +
+      "https://dev.discoverfin.io/appointment?id=" +
       getUrlParameter("user") +
       "&video=true"
   );
