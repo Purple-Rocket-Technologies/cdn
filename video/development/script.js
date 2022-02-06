@@ -652,6 +652,8 @@ const set90 = setInterval(function () {
   if (watchpercentage > 90) {
     updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
     clearInterval(set90);
+    $(".schedule-footer").css("display", "flex");
+    $("#window_frame").attr("src", "https://www.youtube.com/embed/");
   }
 }, 1000);
 const set96 = setInterval(function () {
