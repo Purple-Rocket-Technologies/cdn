@@ -149,6 +149,7 @@ $("#lang_us").click(function () {
   $(".fin_video").attr("src", "https://player.vimeo.com/video/445268145");
   Weglot.switchTo("en");
   setCookies("lang", "en");
+  console.log("lang: en");
   setCookies("country", "United States");
 });
 
@@ -164,6 +165,7 @@ $("#lang_es").click(function () {
   $(".fin_video").attr("src", "https://player.vimeo.com/video/452754620");
   Weglot.switchTo("es");
   setCookies("lang", "es");
+  console.log("lang: es");
   setCookies("country", "United States");
 });
 
