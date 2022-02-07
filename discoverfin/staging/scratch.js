@@ -97,8 +97,8 @@
         }
 
           $('#confetti_btn')[0].click();
-          $("#header_window_frame").attr("src", `${window.location.origin}/appointment?company=${readCookie("URL_COMPANY")}&user=${readCookie("URL_USER")}&video=false`);
-          $(".schedule-btn-header").css("display", "block");
+          // $("#header_window_frame").attr("src", `${window.location.origin}/appointment?company=${readCookie("URL_COMPANY")}&user=${readCookie("URL_USER")}&video=false`);
+          // $(".schedule-btn-header").css("display", "block");
       }
     }
     
