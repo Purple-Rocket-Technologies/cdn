@@ -303,6 +303,7 @@ function fetchVideo(type, country, lang) {
     url: fetchVideoAPI,
   })
     .then(function (response) {
+      console.log(response.data.data, country, lang);
       video_id = response.data.data[0].url;
       $(".video-container").css(
         "height",
