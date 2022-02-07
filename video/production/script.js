@@ -190,6 +190,8 @@ function validateVideoType(typeName) {
   })
     .then(function (response) {
       document.title = response.data.data[0].name; // Setting page title
+      $("#video-title").text(response.data.data[0].name); // Setting video title
+      console.log(response.data.data);
       if (response.data.count > 0) {
         validateUrl(getUrlParameter("company"), getUrlParameter("user"));
         setPathsContentVariable(videoType);
@@ -476,7 +478,8 @@ setInterval(function () {
     player.getCurrentTime().then(function (seconds) {
       $(".elapsedtime").text(format(seconds));
       const schedule_footer = $(".schedule-footer");
-      if(~~((seconds % 3600) / 60) >= 18) {
+      watchpercentage = (seconds / totalDurationTime) * 100;
+      if(watchpercentage >= 93) {
         if(schedule_footer.css("display") === "none"){
           schedule_footer.css("display", "flex");
           $("#window_frame").attr("src", `https://discoverfin.io/appointment?company=${getUrlParameter("company")}&user=${getUrlParameter('user')}&video=true`);

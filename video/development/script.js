@@ -185,6 +185,8 @@ function validateVideoType(typeName) {
   })
     .then(function (response) {
       document.title = response.data.data[0].name; // Setting page title
+      $("#video-title").text(response.data.data[0].name); // Setting video title
+      console.log(response.data.data);
       if (response.data.count > 0) {
         validateUrl(getUrlParameter("company"), getUrlParameter("user"));
         setPathsContentVariable(videoType);
