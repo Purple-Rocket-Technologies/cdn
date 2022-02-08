@@ -15,16 +15,17 @@ if (window.location.pathname.startsWith("/appointment")) {
     $("#rep-name").text(rep_name);
     $("#rep-image-container").css("background-image", `url(${rep_pic})`);
     if (video_id === "" || !video_id) {
-      $("#profile-video-area").css("opacity", "0");
+      $("#profile-video-area").css("display", "none");
       $("#video-watch-wrapper").css("opacity", "0");
       $("#video-watch-wrapper").css("cursor", "default");
     } else {
       $("#profile-video").html(video_id);
       $("#profile-video iframe").attr("width", "100%");
       $("#profile-video iframe").attr("class", "appointment-page-video");
-      $("#profile-video-area").css("opacity", "100%");
+      $("#profile-video-area").css("display", "flex");
       $("#video-watch-wrapper").css("opacity", "100%");
       $("#watch-profile-video").css("display", "flex");
+      $("#watch-profile-video").css("opacity", "100%");
       $("#video-watch-wrapper").css("cursor", "pointer");
     }
 
