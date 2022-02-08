@@ -24,6 +24,7 @@ if (window.location.pathname.startsWith("/appointment")) {
       $("#profile-video-area").css("display", "flex");
       $("#video-watch-wrapper").css("opacity", "100%");
       $("#watch-profile-video").css("display", "flex");
+      $("#watch-profile-video").css("opacity", "100%");
       $("#video-watch-wrapper").css("cursor", "pointer");
     }
 
