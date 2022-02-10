@@ -37,11 +37,11 @@ setTimeout(() => {
 }, 22000);
 
 // learn more
-$(".slide_cta").click(function () {
-  lastPopupShown = true;
-  $("#email-sent-text").css("display", "block");
-  $(".last-popup").addClass("active");
-});
+// $(".slide_cta").click(function () {
+//   lastPopupShown = true;
+//   $("#email-sent-text").css("display", "block");
+//   $(".last-popup").addClass("active");
+// });
 
 $(".fin_learn_more").click(function () {
   $("#video").attr("src", $("#video").attr("src") + "?autoplay=1");
@@ -59,7 +59,7 @@ $(".iframe-back").click(function () {
 });
 
 $(".closer-last").click(function () {
-  $(".last-popup").removeClass("active");
+  // $(".last-popup").removeClass("active");
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
     "https://staging.discoverfin.io/appointment?company=" +

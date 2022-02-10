@@ -37,9 +37,9 @@ $(".appointment-iframe .w-iframe iframe").attr(
 
 // learn more
 $(".slide_cta").click(function () {
-  lastPopupShown = true;
-  $("#email-sent-text").css("display", "block");
-  $(".last-popup").addClass("active");
+  // lastPopupShown = true;
+  // $("#email-sent-text").css("display", "block");
+  // $(".last-popup").addClass("active");
   trackMixPanelEvent("Clicked Email Free Video", {
     company: URL_COMPANY,
     type: "Fin Prospect",
@@ -79,7 +79,7 @@ $("#learn-more-prospect").on("click", function () {
 });
 
 $(".closer-last").click(function () {
-  $(".last-popup").removeClass("active");
+  // $(".last-popup").removeClass("active");
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
     "https://discoverfin.io/appointment?company=" +

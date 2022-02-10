@@ -28,19 +28,19 @@ $(".appointment-iframe .w-iframe iframe").attr(
   "&video=false"
 );
 
-setTimeout(() => {
-  if (!lastPopupShown) {
-    $("#email-sent-text").css("display", "none");
-    $(".last-popup").addClass("active");
-  }
-}, 22000);
+// setTimeout(() => {
+//   if (!lastPopupShown) {
+//     $("#email-sent-text").css("display", "none");
+//     $(".last-popup").addClass("active");
+//   }
+// }, 22000);
 
-// learn more
-$(".slide_cta").click(function () {
-  lastPopupShown = true;
-  $("#email-sent-text").css("display", "block");
-  $(".last-popup").addClass("active");
-});
+// // learn more
+// $(".slide_cta").click(function () {
+//   lastPopupShown = true;
+//   $("#email-sent-text").css("display", "block");
+//   $(".last-popup").addClass("active");
+// });
 
 $(".fin_learn_more").click(function () {
   $("#video").attr("src", $("#video").attr("src") + "?autoplay=1");
@@ -58,7 +58,7 @@ $(".iframe-back").click(function () {
 });
 
 $(".closer-last").click(function () {
-  $(".last-popup").removeClass("active");
+  // $(".last-popup").removeClass("active");
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
     "https://dev.discoverfin.io/appointment?company=" +
