@@ -185,6 +185,8 @@ function validateVideoType(typeName) {
   })
     .then(function (response) {
       document.title = response.data.data[0].name; // Setting page title
+      $("#video-title").text(response.data.data[0].name); // Setting video title
+      console.log(response.data.data);
       if (response.data.count > 0) {
         validateUrl(getUrlParameter("company"), getUrlParameter("user"));
         setPathsContentVariable(videoType);
@@ -463,6 +465,15 @@ setInterval(function () {
   if (playerinitialized === 1) {
     player.getCurrentTime().then(function (seconds) {
       $(".elapsedtime").text(format(seconds));
+      const schedule_footer = $(".schedule-footer");
+      if(~~((seconds % 3600) / 60) >= 18) {
+        if(schedule_footer.css("display") === "none"){
+          schedule_footer.css("display", "flex");
+          $("#window_frame").attr("src", `https://staging.discoverfin.io/appointment/?user=${getUrlParameter('user')}&company=${getUrlParameter("company")}&video=true`);
+        }
+      } else {
+        schedule_footer.css("display", "none");
+      }
       currentTiming = seconds;
     });
   }
@@ -685,6 +696,8 @@ const set75 = setInterval(function () {
 
 $(".path-option").click(function () {
   var path_name_value = $(this).children(".heading").text();
+  const schedule_footer = $(".schedule-footer");
+  schedule_footer.remove();
   triggerRenderOptions(path_name_value);
 });
 
