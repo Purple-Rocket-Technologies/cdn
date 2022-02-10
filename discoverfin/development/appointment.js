@@ -37,8 +37,8 @@ if (window.location.pathname.startsWith("/appointment")) {
     }
 
     $("#appointment-schedule-url .calender-embedd").attr(
-      "src",
-      appointment_link
+        "src",
+        appointment_link
     );
     //$("#rep-email").text(rep_email);
     //$("#rep-phone").text(rep_phone);
@@ -63,7 +63,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   async function getCompany() {
     try {
       const response = await axios.get(
-        "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url
+          "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
@@ -99,14 +99,14 @@ if (window.location.pathname.startsWith("/appointment")) {
         companyId: company_id,
       },
     })
-      .then(() => {
-        $(".getintouch").addClass("hide");
-        $(".successmessage").addClass("displayshow");
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Oops, There was an unexpected error.");
-      });
+        .then(() => {
+          $(".getintouch").addClass("hide");
+          $(".successmessage").addClass("displayshow");
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Oops, There was an unexpected error.");
+        });
   });
 
   let scroll_position = 0;
@@ -114,9 +114,9 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   window.addEventListener("scroll", function () {
     scroll_direction =
-      document.body.getBoundingClientRect().top > scroll_position
-        ? "up"
-        : "down";
+        document.body.getBoundingClientRect().top > scroll_position
+            ? "up"
+            : "down";
     scroll_position = document.body.getBoundingClientRect().top;
     if (scroll_direction === "up") {
       $(".button-pattern").css("display", "block");
@@ -127,9 +127,9 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   const getBaseUrl = () => {
     if (window.location.host === "dev.discoverfin.io") {
-      return "https://devvideo.discoverfin.io/video_type?company=";
+      return "https://devvideo.discoverfin.io/video_type?id=";
     } else if (window.location.host === "staging.discoverfin.io") {
-      return "https://stagingvideo.discoverfin.io/video_type?company=";
+      return "https://stagingvideo.discoverfin.io/video_type?id=";
     } else if (window.location.host === "discoverfin.io") {
       return "https://video.discoverfin.io/video_type?company=";
     }
@@ -141,28 +141,20 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   const finBusinessVideoAppLink = () => {
     return (
-      getBaseUrl() +
-      getUrlParameter("company") +
-      "&user=" +
-      getUrlParameter("user")
+        getBaseUrl() +
+        user_url
     ).replace("video_type", "businessOverview");
   };
 
   const finAppLink = () => {
     return (
-      finBaseUrl() +
-      getUrlParameter("company") +
-      "&user=" +
-      getUrlParameter("user")
+        finBaseUrl() +user_url
     );
   };
 
   const finFinancialSuccessVideoAppLink = () => {
     return (
-      getBaseUrl() +
-      getUrlParameter("company") +
-      "&user=" +
-      getUrlParameter("user")
+        getBaseUrl() +user_url
     ).replace("video_type", "financialHouse");
   };
 

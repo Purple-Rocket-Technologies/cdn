@@ -127,9 +127,9 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   const getBaseUrl = () => {
     if (window.location.host === "dev.discoverfin.io") {
-      return "https://devvideo.discoverfin.io/video_type?company=";
+      return "https://devvideo.discoverfin.io/video_type?id=";
     } else if (window.location.host === "staging.discoverfin.io") {
-      return "https://stagingvideo.discoverfin.io/video_type?company=";
+      return "https://stagingvideo.discoverfin.io/video_type?id=";
     } else if (window.location.host === "discoverfin.io") {
       return "https://video.discoverfin.io/video_type?company=";
     }
@@ -142,27 +142,19 @@ if (window.location.pathname.startsWith("/appointment")) {
   const finBusinessVideoAppLink = () => {
     return (
         getBaseUrl() +
-        getUrlParameter("company") +
-        "&user=" +
-        getUrlParameter("user")
+        user_url
     ).replace("video_type", "businessOverview");
   };
 
   const finAppLink = () => {
     return (
-        finBaseUrl() +
-        getUrlParameter("company") +
-        "&user=" +
-        getUrlParameter("user")
+        finBaseUrl() +user_url
     );
   };
 
   const finFinancialSuccessVideoAppLink = () => {
     return (
-        getBaseUrl() +
-        getUrlParameter("company") +
-        "&user=" +
-        getUrlParameter("user")
+        getBaseUrl() +user_url
     ).replace("video_type", "financialHouse");
   };
 
