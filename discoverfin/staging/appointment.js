@@ -7,8 +7,15 @@ if (window.location.pathname.startsWith("/appointment")) {
   let video_id;
   let company_id;
   let user_id;
-  let isVideoApp = JSON.parse(getUrlParameter("video"));
-
+  let isDashboard = false;
+  let isVideoApp = false;
+  if(getUrlParameter("video")){
+    isVideoApp= JSON.parse(getUrlParameter("video"));
+    isDashboard=false;
+  }else{
+    isVideoApp=false;
+    isDashboard=true;
+  }
   const user_url = getUrlParameter("id");
 
   function map_all_data() {
@@ -24,19 +31,27 @@ if (window.location.pathname.startsWith("/appointment")) {
     }
 
     $("#appointment-schedule-url .calender-embedd").attr(
-      "src",
-      appointment_link
+        "src",
+        appointment_link
     );
     //$("#rep-email").text(rep_email);
     //$("#rep-phone").text(rep_phone);
     //$("#phone-btn").attr("href", `tel:${rep_phone}`);
     //$("#mail-btn").attr("href", `mailto:${rep_email}`);
+
     $("#phone-btn").click(() => {
-      window.open(`tel:${rep_phone}`, "_blank");
+      openLink(`tel:${rep_phone}`);
     });
     $("#mail-btn").click(() => {
-      window.open(`mailto:${rep_email}`, "_blank");
+      openLink(`mailto:${rep_email}`);
     });
+  }
+
+  function openLink(link) {
+    let element = document.createElement("a");
+    element.setAttribute("href", link);
+    element.click();
+    element.remove();
   }
 
   async function getCompany() {
@@ -78,14 +93,14 @@ if (window.location.pathname.startsWith("/appointment")) {
         companyId: company_id,
       },
     })
-      .then(() => {
-        $(".getintouch").addClass("hide");
-        $(".successmessage").addClass("displayshow");
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Oops, There was an unexpected error.");
-      });
+        .then(() => {
+          $(".getintouch").addClass("hide");
+          $(".successmessage").addClass("displayshow");
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Oops, There was an unexpected error.");
+        });
   });
 
   let scroll_position = 0;
@@ -93,9 +108,9 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   window.addEventListener("scroll", function () {
     scroll_direction =
-      document.body.getBoundingClientRect().top > scroll_position
-        ? "up"
-        : "down";
+        document.body.getBoundingClientRect().top > scroll_position
+            ? "up"
+            : "down";
     scroll_position = document.body.getBoundingClientRect().top;
     if (scroll_direction === "up") {
       $(".button-pattern").css("display", "block");
@@ -120,32 +135,49 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   const finBusinessVideoAppLink = () => {
     return (
-      getBaseUrl() +
-      getUrlParameter("company") +
-      "&user=" +
-      getUrlParameter("user")
+        getBaseUrl() +
+        getUrlParameter("company") +
+        "&user=" +
+        getUrlParameter("user")
     ).replace("video_type", "businessOverview");
   };
 
   const finAppLink = () => {
     return (
-      finBaseUrl() +
-      getUrlParameter("company") +
-      "&user=" +
-      getUrlParameter("user")
+        finBaseUrl() +
+        getUrlParameter("company") +
+        "&user=" +
+        getUrlParameter("user")
     );
   };
 
   const finFinancialSuccessVideoAppLink = () => {
     return (
-      getBaseUrl() +
-      getUrlParameter("company") +
-      "&user=" +
-      getUrlParameter("user")
+        getBaseUrl() +
+        getUrlParameter("company") +
+        "&user=" +
+        getUrlParameter("user")
     ).replace("video_type", "financialHouse");
   };
 
-  if (!isVideoApp) {
+  if(isDashboard){
+    $("#only-video-app").css("display", "flex");
+    $("#financial-video").click(() => {
+      window.open(finFinancialSuccessVideoAppLink(), "_blank");
+    });
+
+    $("#business-video").click(() => {
+      window.open(finBusinessVideoAppLink(), "_blank");
+    });
+
+    $("#only-fin-app").css("display", "flex");
+    $("#do-you-know-fin").click(() => {
+      window.open(finAppLink(), "_blank");
+    });
+
+  }
+
+  if (!isVideoApp && !isDashboard) {
     $("#only-video-app").css("display", "none");
     $("#financial-video").click(() => {
       window.open(finFinancialSuccessVideoAppLink(), "_blank");
@@ -154,7 +186,7 @@ if (window.location.pathname.startsWith("/appointment")) {
     $("#business-video").click(() => {
       window.open(finBusinessVideoAppLink(), "_blank");
     });
-  } else {
+  } else if(!isDashboard) {
     $("#only-fin-app").css("display", "none");
     $("#do-you-know-fin").click(() => {
       window.open(finAppLink(), "_blank");

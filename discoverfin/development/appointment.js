@@ -7,7 +7,15 @@ if (window.location.pathname.startsWith("/appointment")) {
   let video_id;
   let company_id;
   let user_id;
-  let isVideoApp = JSON.parse(getUrlParameter("video"));
+  let isDashboard = false;
+  let isVideoApp = false;
+  if(getUrlParameter("video")){
+    isVideoApp= JSON.parse(getUrlParameter("video"));
+    isDashboard=false;
+  }else{
+    isVideoApp=false;
+    isDashboard=true;
+  }
   const user_url = getUrlParameter("id");
 
   function map_all_data() {
@@ -152,7 +160,24 @@ if (window.location.pathname.startsWith("/appointment")) {
     ).replace("video_type", "financialHouse");
   };
 
-  if (!isVideoApp) {
+  if(isDashboard){
+    $("#only-video-app").css("display", "flex");
+    $("#financial-video").click(() => {
+      window.open(finFinancialSuccessVideoAppLink(), "_blank");
+    });
+
+    $("#business-video").click(() => {
+      window.open(finBusinessVideoAppLink(), "_blank");
+    });
+
+    $("#only-fin-app").css("display", "flex");
+    $("#do-you-know-fin").click(() => {
+      window.open(finAppLink(), "_blank");
+    });
+
+  }
+
+  if (!isVideoApp && !isDashboard) {
     $("#only-video-app").css("display", "none");
     $("#financial-video").click(() => {
       window.open(finFinancialSuccessVideoAppLink(), "_blank");
@@ -161,7 +186,7 @@ if (window.location.pathname.startsWith("/appointment")) {
     $("#business-video").click(() => {
       window.open(finBusinessVideoAppLink(), "_blank");
     });
-  } else {
+  } else if(!isDashboard) {
     $("#only-fin-app").css("display", "none");
     $("#do-you-know-fin").click(() => {
       window.open(finAppLink(), "_blank");
