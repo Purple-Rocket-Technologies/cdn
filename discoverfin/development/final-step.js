@@ -5,12 +5,13 @@ var URL_COMPANY = readCookie("URL_COMPANY");
 var URL_USER = readCookie("URL_USER");
 
 let lastPopupShown = false;
-
 // Reading name cookie
 var user_name = readCookie("Name");
 $(".user_name").each(function () {
   $(this).html("" + user_name);
 });
+
+console.log(URL_COMPANY, URL_USER);
 
 var appointment_link = "https://" + readCookie("APTMT_LINK");
 $("#aptmt_link").attr("href", appointment_link);
@@ -20,12 +21,10 @@ $(".rep_name").text(rep_name);
 $(".rep_name_cta").text(rep_name);
 $(".rep-phoito").css("background-image", "url('" + readCookie("PIC") + "')");
 $(".appointment-iframe .w-iframe iframe").attr(
-  "src",
-  "https://dev.discoverfin.io/appointment?company=" +
-  URL_COMPANY +
-  "&user=" +
-  URL_USER +
-  "&video=false"
+    "src",
+    "https://dev.discoverfin.io/appointment?id=" +
+    URL_USER +
+    "&video=false"
 );
 
 // setTimeout(() => {
@@ -35,7 +34,7 @@ $(".appointment-iframe .w-iframe iframe").attr(
 //   }
 // }, 22000);
 
-// // learn more
+// learn more
 // $(".slide_cta").click(function () {
 //   lastPopupShown = true;
 //   $("#email-sent-text").css("display", "block");
@@ -48,23 +47,19 @@ $(".fin_learn_more").click(function () {
 
 $(".iframe-back").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
-    "src",
-    "https://dev.discoverfin.io/appointment?company=" +
-    URL_COMPANY +
-    "&user=" +
-    URL_USER +
-    "&video=false"
+      "src",
+      "https://dev.discoverfin.io/appointment?id=" +
+      URL_USER +
+      "&video=false"
   );
 });
 
 $(".closer-last").click(function () {
   // $(".last-popup").removeClass("active");
   $(".appointment-iframe .w-iframe iframe").attr(
-    "src",
-    "https://dev.discoverfin.io/appointment?company=" +
-    URL_COMPANY +
-    "&user=" +
-    URL_USER +
-    "&video=false"
+      "src",
+      "https://dev.discoverfin.io/appointment?id=" +
+      URL_USER +
+      "&video=false"
   );
 });
