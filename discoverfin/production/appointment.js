@@ -7,7 +7,15 @@ if (window.location.pathname.startsWith("/appointment")) {
   let video_id;
   let company_id;
   let user_id;
-  let isVideoApp = JSON.parse(getUrlParameter("video"));
+  let isDashboard = false;
+  let isVideoApp = false;
+  if(getUrlParameter("video")){
+    isVideoApp= JSON.parse(getUrlParameter("video"));
+    isDashboard=false;
+  }else{
+    isVideoApp=false;
+    isDashboard=true;
+  }
 
   trackMixPanelEvent("Prospect visited Appointment Page", {
     rep_name,
