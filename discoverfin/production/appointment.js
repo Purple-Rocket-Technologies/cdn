@@ -207,7 +207,24 @@ if (window.location.pathname.startsWith("/appointment")) {
     ).replace("video_type", "financialHouse");
   };
 
-  if (!isVideoApp) {
+  if(isDashboard){
+    $("#only-video-app").css("display", "flex");
+    $("#financial-video").click(() => {
+      window.open(finFinancialSuccessVideoAppLink(), "_blank");
+    });
+
+    $("#business-video").click(() => {
+      window.open(finBusinessVideoAppLink(), "_blank");
+    });
+
+    $("#only-fin-app").css("display", "flex");
+    $("#do-you-know-fin").click(() => {
+      window.open(finAppLink(), "_blank");
+    });
+
+  }
+
+  if (!isVideoApp && !isDashboard) {
     $("#only-video-app").css("display", "none");
     $("#financial-video").click(() => {
       window.open(finFinancialSuccessVideoAppLink(), "_blank");
@@ -216,12 +233,13 @@ if (window.location.pathname.startsWith("/appointment")) {
     $("#business-video").click(() => {
       window.open(finBusinessVideoAppLink(), "_blank");
     });
-  } else {
+  } else if(!isDashboard) {
     $("#only-fin-app").css("display", "none");
     $("#do-you-know-fin").click(() => {
       window.open(finAppLink(), "_blank");
     });
   }
+
 
   getCompany();
 }
