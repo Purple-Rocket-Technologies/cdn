@@ -5,6 +5,7 @@ var URL_COMPANY = readCookie("URL_COMPANY") !== 'undefined' ? readCookie("URL_CO
 var URL_USER = readCookie("URL_USER") !== 'undefined' ? readCookie("URL_USER") : readCookie("USER_URL");
 
 let lastPopupShown = false;
+
 // Reading name cookie
 var user_name = readCookie("Name");
 $(".user_name").each(function () {
