@@ -1,8 +1,8 @@
 //var height = ($(".video_placeholder").width() / 16) * 9;
 //$(".video_placeholder").height(height);
 
-var URL_COMPANY = readCookie("URL_COMPANY");
-var URL_USER = readCookie("URL_USER") !=== 'undefined' ? readCookie("URL_USER") : readCookie("USER_URL");
+var URL_COMPANY = readCookie("URL_COMPANY") !== 'undefined' ? readCookie("URL_COMPANY") : readCookie("COMPANY_URL");
+var URL_USER = readCookie("URL_USER") !== 'undefined' ? readCookie("URL_USER") : readCookie("USER_URL");
 
 let lastPopupShown = false;
 // Reading name cookie
