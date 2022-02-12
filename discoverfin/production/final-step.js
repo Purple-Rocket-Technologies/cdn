@@ -2,7 +2,7 @@
 //$(".video_placeholder").height(height);
 
 var URL_COMPANY = readCookie("URL_COMPANY");
-var URL_USER = readCookie("URL_USER");
+var URL_USER = readCookie("URL_USER") !=== 'undefined' ? readCookie("URL_USER") : readCookie("USER_URL");
 
 trackMixPanelEvent("Prospect visited final screen", {
   company: URL_COMPANY,
