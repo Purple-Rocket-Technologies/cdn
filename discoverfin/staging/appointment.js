@@ -16,7 +16,34 @@ if (window.location.pathname.startsWith("/appointment")) {
     isVideoApp=false;
     isDashboard=true;
   }
-  const user_url = getUrlParameter("id");
+
+  // trackMixPanelEvent("Prospect visited Appointment Page", {
+  //   rep_name,
+  //   page_type: isVideoApp ? "Video App" : "FIN App",
+  // });
+
+  let appointment_button_clicked = false;
+
+  // track appointment button clicks to mixpanel
+  const handleAppointmentButtonClick = () => {
+    if (appointment_button_clicked) {
+      return;
+    }
+    // trackMixPanelEvent("Clicked Schedule Appointment button", {
+    //   rep_name,
+    //   company_id,
+    //   user_id,
+    //   user,
+    //   company,
+    //   page_type: isVideoApp ? "Video App" : "FIN App",
+    //   rep_email,
+    // });
+    appointment_button_clicked = true;
+  };
+
+  $("#aptmt_link1").click(handleAppointmentButtonClick);
+  $("#aptmt_link2").click(handleAppointmentButtonClick);
+  $("#aptmt_link3").click(handleAppointmentButtonClick);
 
   function map_all_data() {
     $("#rep-name").text(rep_name);
@@ -42,9 +69,8 @@ if (window.location.pathname.startsWith("/appointment")) {
     );
     //$("#rep-email").text(rep_email);
     //$("#rep-phone").text(rep_phone);
-    //$("#phone-btn").attr("href", `tel:${rep_phone}`);
-    //$("#mail-btn").attr("href", `mailto:${rep_email}`);
-
+    // $("#rep-phone").attr("href", `tel:${rep_phone}`);
+    //$("#rep-email").attr("href", `mailto:${rep_email}`);
     $("#phone-btn").click(() => {
       openLink(`tel:${rep_phone}`);
     });
@@ -56,6 +82,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   function openLink(link) {
     let element = document.createElement("a");
     element.setAttribute("href", link);
+    element.setAttribute("target", "_parent");
     element.click();
     element.remove();
   }
@@ -63,7 +90,12 @@ if (window.location.pathname.startsWith("/appointment")) {
   async function getCompany() {
     try {
       const response = await axios.get(
-          "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url
+          "https://" +
+          api_url +
+          "/api/v1/users/getCompany/name/" +
+          getUrlParameter("company") +
+          "/" +
+          getUrlParameter("user")
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
@@ -100,6 +132,15 @@ if (window.location.pathname.startsWith("/appointment")) {
       },
     })
         .then(() => {
+          // trackMixPanelEvent("Prospect filled getInTouch form", {
+          //   rep_name,
+          //   user_id,
+          //   rep_email,
+          //   company_id,
+          //   page_type: isVideoApp ? "Video App" : "FIN App",
+          //   prospectName: $("#first_name").val() + " " + $("#last_name").val(),
+          //   prospectEmail: $("#email").val(),
+          // });
           $(".getintouch").addClass("hide");
           $(".successmessage").addClass("displayshow");
         })
@@ -127,9 +168,9 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   const getBaseUrl = () => {
     if (window.location.host === "dev.discoverfin.io") {
-      return "https://devvideo.discoverfin.io/video_type?id=";
+      return "https://devvideo.discoverfin.io/video_type?company=";
     } else if (window.location.host === "staging.discoverfin.io") {
-      return "https://stagingvideo.discoverfin.io/video_type?id=";
+      return "https://stagingvideo.discoverfin.io/video_type?company=";
     } else if (window.location.host === "discoverfin.io") {
       return "https://video.discoverfin.io/video_type?company=";
     }
@@ -142,19 +183,27 @@ if (window.location.pathname.startsWith("/appointment")) {
   const finBusinessVideoAppLink = () => {
     return (
         getBaseUrl() +
-        user_url
+        getUrlParameter("company") +
+        "&user=" +
+        getUrlParameter("user")
     ).replace("video_type", "businessOverview");
   };
 
   const finAppLink = () => {
     return (
-        finBaseUrl() +user_url
+        finBaseUrl() +
+        getUrlParameter("company") +
+        "&user=" +
+        getUrlParameter("user")
     );
   };
 
   const finFinancialSuccessVideoAppLink = () => {
     return (
-        getBaseUrl() +user_url
+        getBaseUrl() +
+        getUrlParameter("company") +
+        "&user=" +
+        getUrlParameter("user")
     ).replace("video_type", "financialHouse");
   };
 
@@ -168,7 +217,7 @@ if (window.location.pathname.startsWith("/appointment")) {
       window.open(finBusinessVideoAppLink(), "_blank");
     });
 
-    $("#only-fin-app").css("display", "flex");
+    $("#only-fin-app").css("display", "grid");
     $("#do-you-know-fin").click(() => {
       window.open(finAppLink(), "_blank");
     });
@@ -190,6 +239,7 @@ if (window.location.pathname.startsWith("/appointment")) {
       window.open(finAppLink(), "_blank");
     });
   }
+
 
   getCompany();
 }
