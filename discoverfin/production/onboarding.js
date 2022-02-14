@@ -145,12 +145,12 @@ player.on("ended", function () {
 
 setCookies("INITIAL_LINK", window.location.href);
 
+const canadian = getUrlParameter("ca");
+
 $("#lang_us").click(function () {
-  $(".fin_video").attr("src", "https://player.vimeo.com/video/445268145");
+  $(".fin_video").attr("src", canadian && JSON.parse(canadian) ? "https://player.vimeo.com/video/551499288" : "https://player.vimeo.com/video/445268145");
   Weglot.switchTo("en");
-  setCookies("lang", "en");
-  console.log("lang: en");
-  setCookies("country", "United States");
+  setCookies("country", canadian && JSON.parse(canadian) ? "Canada" : "United States");
 });
 
 $("#lang_ca").click(function () {
@@ -162,11 +162,9 @@ $("#lang_ca").click(function () {
 $("#lang_es").click(function () {
   $("#temp_en").addClass("hide");
   $("#temp_es").removeClass("hide");
-  $(".fin_video").attr("src", "https://player.vimeo.com/video/452754620");
+  $(".fin_video").attr("src", canadian && JSON.parse(canadian) ? "https://player.vimeo.com/video/452754620" : "https://player.vimeo.com/video/452754620");
   Weglot.switchTo("es");
-  setCookies("lang", "es");
-  console.log("lang: es");
-  setCookies("country", "United States");
+  ssetCookies("country", canadian && JSON.parse(canadian) ? "Canada" : "United States");
 });
 
 $("#lang_ca_es").click(function () {
