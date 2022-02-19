@@ -99,6 +99,15 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
     );
 };
 
+const openVideoApp = (prospectAnswers) => {
+  window.open(
+    `https://devvideo.discoverfin.io/${getVideoType()}?id=${URL_USER}&fname=${readCookie(
+      "Name"
+    )}&email=${prospectAnswers["email"]}`,
+    "_self"
+  );
+};
+
 async function populatePathOptions() {
   const parent = $("#ans-selected");
   let prospectAnswers = await getPathAnswers(readCookie("prospect_id"));
@@ -110,7 +119,14 @@ async function populatePathOptions() {
       maximumFractionDigits: 0,
     }).format(prospectAnswers["fin_number"])
   );
-  $(".video-app iframe").attr("src", `https://devvideo.discoverfin.io/${getVideoType()}?id=${URL_USER}&fname=${readCookie("Name")}&email=${prospectAnswers["email"]}`);
+
+  $("#video-area").click(() => {
+    openVideoApp(prospectAnswers);
+  });
+  $("#open-video").click(() => {
+    openVideoApp(prospectAnswers);
+  });
+  
   parent.html(questionAndAnswersOfProspect(prospectAnswers));
 }
 
