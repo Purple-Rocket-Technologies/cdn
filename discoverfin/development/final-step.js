@@ -18,6 +18,15 @@ $(".user_name").each(function () {
   $(this).html("" + user_name);
 });
 
+$("#video-area").css(
+  "background-image",
+  `url(${
+    window.location.pathname.includes("make-more-money")
+      ? "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/6210dad4ad797ee88f50da1c_Group%20287.png"
+      : "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/6210877dd8fc1e63e01c0ea4_7%201.png"
+  })`
+);
+
 const getTrailerId = () => {
   return window.location.pathname.includes("make-more-money")
     ? "445443796"
@@ -141,3 +150,4 @@ $(".closer-last").click(function () {
     "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
   );
 });
+
