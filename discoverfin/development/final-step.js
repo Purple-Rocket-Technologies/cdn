@@ -46,7 +46,7 @@ $(".appointment-iframe .w-iframe iframe").attr(
   "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
 );
 $("#message-rep").click(() => {
-  window.open(`tel:${readCookie("PHONE")}`, "_parent");
+  window.open(`sms:${readCookie("PHONE")}`, "_parent");
 });
 
 const getVideoType = () => {
