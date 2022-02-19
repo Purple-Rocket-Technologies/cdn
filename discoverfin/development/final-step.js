@@ -42,6 +42,23 @@ $("#aptmt_link").attr("href", appointment_link);
 
 setTrailerVideo();
 
+  window.addEventListener("scroll", function () {
+    scroll_direction =
+        document.body.getBoundingClientRect().top > scroll_position
+            ? "up"
+            : "down";
+    scroll_position = document.body.getBoundingClientRect().top;
+    if (scroll_direction === "up") {
+      $(".hide-on-scroll").each(function (){
+        $(this).css("display", "block");
+    })
+    } else {
+     $(".hide-on-scroll").each(function (){
+        $(this).css("display", "none");
+    })
+    }
+  });
+
 var rep_name = capitalize(readCookie("REP_NAME"));
 $(".rep_name").text(rep_name);
 $("#rep-name").text(rep_name);
@@ -54,8 +71,10 @@ $("#appointment-iframe iframe").attr(
   "src",
   "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
 );
-$("#message-rep").click(() => {
+$("#message-rep").each(function (){
+  $(this).click(() => {
   window.open(`sms:${readCookie("PHONE")}`, "_parent");
+})
 });
 
 const getVideoType = () => {
