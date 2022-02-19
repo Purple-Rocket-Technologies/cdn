@@ -37,7 +37,6 @@ const getUrlParameter = function getUrlParameter(sParam) {
 
 const user_url = getUrlParameter("id");
 
-
 // Check email format
 function isEmail(e) {
   return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
@@ -171,6 +170,20 @@ function redirectContinuer() {
     }, 1000);
   }
 }
+
+function autoFill() {
+  const firstName = getUrlParameter("fname");
+  const email_fill = getUrlParameter("email");
+  if (firstName && email_fill) {
+    $("#fname").val(firstName);
+    $("#email").val(email_fill);
+    $("#peoplewatching").val(1);
+    $("#country-us").click();
+    $("#country-us").toggleClass("active");
+  }
+}
+
+autoFill();
 
 //Validating video type
 function validateVideoType(typeName) {
@@ -472,10 +485,15 @@ setInterval(function () {
     player.getCurrentTime().then(function (seconds) {
       $(".elapsedtime").text(format(seconds));
       const schedule_footer = $(".schedule-footer");
-      if(~~((seconds % 3600) / 60) >= 18) {
-        if(schedule_footer.css("display") === "none"){
+      if (~~((seconds % 3600) / 60) >= 18) {
+        if (schedule_footer.css("display") === "none") {
           schedule_footer.css("display", "flex");
-          $("#window_frame").attr("src", `https://dev.discoverfin.io/appointment/?id=${getUrlParameter('id')}&video=true`);
+          $("#window_frame").attr(
+            "src",
+            `https://dev.discoverfin.io/appointment/?id=${getUrlParameter(
+              "id"
+            )}&video=true`
+          );
         }
       } else {
         schedule_footer.css("display", "none");
@@ -835,7 +853,7 @@ $(".closer-last").click(function () {
   $(".last-popup").removeClass("active");
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-      "https://dev.discoverfin.io/appointment?id=" +
+    "https://dev.discoverfin.io/appointment?id=" +
       getUrlParameter("user") +
       "&video=true"
   );
