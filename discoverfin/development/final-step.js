@@ -75,7 +75,7 @@ $("#appointment-iframe iframe").attr(
   "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
 );
 
-$("#message-rep").each(function (){
+$(".dm-rep").each(function (){
    $(this).attr("href", `sms:${readCookie("PHONE")}`);
   $(this).attr("target", "_parent");
 });
