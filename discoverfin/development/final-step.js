@@ -65,6 +65,7 @@ const getPathAnswers = async (id) => {
 };
 
 const questionAndAnswersOfProspect = (prospectAnswers) => {
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   return [
     prospectAnswers.ques_1,
     prospectAnswers.ques_2,
@@ -78,9 +79,14 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
     )
     .reduce((a, b) => a.concat(b), [])
     .map(
-      (currentItem) => `<div class="div-block-65"><img
+      (currentItem) => `<div class="${
+        isMobile ? "div-block-84" : "div-block-65"
+      }"><img
+      class="pointer-image"
       src="https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/620e98d16dc631d33da9dd03_Group%20272.svg"
-      loading="lazy" alt=""><h2 class="ml-3 font-normal">${currentItem}</h2></div>`
+      loading="lazy" alt=""><h2 class="${
+        isMobile ? "ml-3-2 text-18 font-normal " : "font-normal ml-3"
+      }">${currentItem}</h2></div>`
     );
 };
 
