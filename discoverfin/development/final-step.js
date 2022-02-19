@@ -18,8 +18,20 @@ $(".user_name").each(function () {
   $(this).html("" + user_name);
 });
 
+const getTrailerId = () => {
+  return window.location.pathname.includes("make-more-money")
+    ? "445443796"
+    : "614514350";
+};
+
+const setTrailerVideo = () => {
+  $("#video").attr("src", `https://player.vimeo.com/video/${getTrailerId()}`);
+};
+
 var appointment_link = "https://" + readCookie("APTMT_LINK");
 $("#aptmt_link").attr("href", appointment_link);
+
+setTrailerVideo();
 
 var rep_name = capitalize(readCookie("REP_NAME"));
 $(".rep_name").text(rep_name);
@@ -33,6 +45,15 @@ $(".appointment-iframe .w-iframe iframe").attr(
   "src",
   "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
 );
+$("#message-rep").click(() => {
+  window.open(`tel:${readCookie("PHONE")}`, "_parent");
+});
+
+const getVideoType = () => {
+  return window.location.pathname.includes("make-more-money")
+    ? "businessOverview"
+    : "financialHouse";
+};
 
 const getPathAnswers = async (id) => {
   return await axios({
@@ -63,6 +84,15 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
     );
 };
 
+const openVideoApp = (prospectAnswers) => {
+  window.open(
+    `https://devvideo.discoverfin.io/${getVideoType()}?id=${URL_USER}&fname=${readCookie(
+      "Name"
+    )}&email=${prospectAnswers["email"]}`,
+    "_self"
+  );
+};
+
 async function populatePathOptions() {
   const parent = $("#ans-selected");
   let prospectAnswers = await getPathAnswers(readCookie("prospect_id"));
@@ -74,6 +104,14 @@ async function populatePathOptions() {
       maximumFractionDigits: 0,
     }).format(prospectAnswers["fin_number"])
   );
+
+  $("#video-area").click(() => {
+    openVideoApp(prospectAnswers);
+  });
+  $("#open-video").click(() => {
+    openVideoApp(prospectAnswers);
+  });
+
   parent.html(questionAndAnswersOfProspect(prospectAnswers));
 }
 
