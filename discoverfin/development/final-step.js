@@ -50,7 +50,7 @@ $("#user-name").text(readCookie("Name"));
 $("#rep_name").text(rep_name);
 $("#rep-image").attr("src", readCookie("PIC"));
 $(".rep-phoito").css("background-image", "url('" + readCookie("PIC") + "')");
-$(".appointment-iframe .w-iframe iframe").attr(
+$("#appointment-iframe iframe").attr(
   "src",
   "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
 );
@@ -121,7 +121,7 @@ $("#watch-trailer").click(function () {
 });
 
 $(".iframe-back").click(function () {
-  $(".appointment-iframe .w-iframe iframe").attr(
+  $("#appointment-iframe iframe").attr(
     "src",
     "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
   );
@@ -129,7 +129,7 @@ $(".iframe-back").click(function () {
 
 $(".closer-last").click(function () {
   // $(".last-popup").removeClass("active");
-  $(".appointment-iframe .w-iframe iframe").attr(
+  $("#appointment-iframe iframe .w-iframe iframe").attr(
     "src",
     "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
   );
