@@ -42,6 +42,9 @@ $("#aptmt_link").attr("href", appointment_link);
 
 setTrailerVideo();
 
+  let scroll_position = 0;
+  let scroll_direction;
+
   window.addEventListener("scroll", function () {
     scroll_direction =
         document.body.getBoundingClientRect().top > scroll_position
