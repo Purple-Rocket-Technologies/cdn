@@ -1,19 +1,19 @@
 //var height = ($(".video_placeholder").width() / 16) * 9;
 //$(".video_placeholder").height(height);
 
-var URL_COMPANY =
-  readCookie("URL_COMPANY") !== "undefined"
-    ? readCookie("URL_COMPANY")
-    : readCookie("COMPANY_URL");
-var URL_USER =
-  readCookie("URL_USER") !== "undefined"
-    ? readCookie("URL_USER")
-    : readCookie("USER_URL");
+const URL_COMPANY =
+    readCookie("URL_COMPANY") !== "undefined"
+        ? readCookie("URL_COMPANY")
+        : readCookie("COMPANY_URL");
+const URL_USER =
+    readCookie("URL_USER") !== "undefined"
+        ? readCookie("URL_USER")
+        : readCookie("USER_URL");
 
 let lastPopupShown = false;
 
 // Reading name cookie
-var user_name = readCookie("Name");
+const user_name = readCookie("Name");
 $(".user_name").each(function () {
   $(this).html("" + user_name);
 });
@@ -22,8 +22,8 @@ $("#video-area").css(
   "background-image",
   `url(${
     window.location.pathname.includes("make-more-money")
-      ? "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/6210dad4ad797ee88f50da1c_Group%20287.png"
-      : "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/6210877dd8fc1e63e01c0ea4_7%201.png"
+      ? "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/621384b4ba614364d8af757f_Group%20287.png"
+      : "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/621384b456ed7a796f07db00_7%201.png"
   })`
 );
 
@@ -34,15 +34,17 @@ const getTrailerId = () => {
 };
 
 const setTrailerVideo = () => {
-  $("#video").attr("src", `https://player.vimeo.com/video/${getTrailerId()}`);
+  $("#video").each(() => {
+    $(this).attr("src", `https://player.vimeo.com/video/${getTrailerId()}`);
+  });
 };
 
-var appointment_link = "https://" + readCookie("APTMT_LINK");
+const appointment_link = "https://" + readCookie("APTMT_LINK");
 $("#aptmt_link").attr("href", appointment_link);
 
 setTrailerVideo();
 
-var rep_name = capitalize(readCookie("REP_NAME"));
+const rep_name = capitalize(readCookie("REP_NAME"));
 $(".rep_name").text(rep_name);
 $("#rep-name").text(rep_name);
 $(".rep_name_cta").text(rep_name);
@@ -150,4 +152,3 @@ $(".closer-last").click(function () {
     "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
   );
 });
-
