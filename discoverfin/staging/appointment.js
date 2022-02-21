@@ -45,8 +45,30 @@ if (window.location.pathname.startsWith("/appointment")) {
   $("#aptmt_link2").click(handleAppointmentButtonClick);
   $("#aptmt_link3").click(handleAppointmentButtonClick);
 
+  function setPageMetaContent(repName, repPic) {
+    document.title = repName;
+    $('head').append(`<meta name="description" content="${repName}"><meta name="og:title" content="${repName}"><meta name="og:image" content="${repPic}">`);
+    $("link[rel='icon']").attr("href", repPic);
+    $("meta[name='description']").attr("content", repName);
+    $("meta[name='keywords']").attr("content", repName);
+    $("meta[property='og:title']").attr("content", repName);
+    $("meta[property='og:description']").attr("content", repName);
+    $("meta[property='og:image']").attr("content", repPic);
+    $("meta[property='og:url']").attr("content", window.location.href);
+    $("meta[property='twitter:title']").attr("content", repName);
+    $("meta[property='twitter:description']").attr("content", repName);
+    $("meta[property='twitter:image']").attr("content", repPic);
+    $("meta[property='twitter:url']").attr("content", window.location.href);
+    $("meta[name='twitter:title']").attr("content", repName);
+    $("meta[name='twitter:description']").attr("content", repName);
+    $("meta[name='twitter:image']").attr("content", repPic);
+    $("meta[name='twitter:url']").attr("content", window.location.href);
+  }
+
+
   function map_all_data() {
     $("#rep-name").text(rep_name);
+    setPageMetaContent(rep_name, rep_pic);
     $("#rep-image-container").css("background-image", `url(${rep_pic})`);
     if (video_id === "" || !video_id) {
       $("#profile-video-area").css("display", "none");
