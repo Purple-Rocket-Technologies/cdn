@@ -2,13 +2,13 @@
 //$(".video_placeholder").height(height);
 
 const URL_COMPANY =
-    readCookie("URL_COMPANY") !== "undefined"
-        ? readCookie("URL_COMPANY")
-        : readCookie("COMPANY_URL");
+  readCookie("URL_COMPANY") !== "undefined"
+    ? readCookie("URL_COMPANY")
+    : readCookie("COMPANY_URL");
 const URL_USER =
-    readCookie("URL_USER") !== "undefined"
-        ? readCookie("URL_USER")
-        : readCookie("USER_URL");
+  readCookie("URL_USER") !== "undefined"
+    ? readCookie("URL_USER")
+    : readCookie("USER_URL");
 
 let lastPopupShown = false;
 
@@ -44,7 +44,25 @@ $("#aptmt_link").attr("href", appointment_link);
 
 setTrailerVideo();
 
-const rep_name = capitalize(readCookie("REP_NAME"));
+let scroll_position = 0;
+let scroll_direction;
+
+window.addEventListener("scroll", function () {
+  scroll_direction =
+    document.body.getBoundingClientRect().top > scroll_position ? "up" : "down";
+  scroll_position = document.body.getBoundingClientRect().top;
+  if (scroll_direction === "up") {
+    $(".hide-on-scroll").each(function () {
+      $(this).css("display", "block");
+    });
+  } else {
+    $(".hide-on-scroll").each(function () {
+      $(this).css("display", "none");
+    });
+  }
+});
+
+var rep_name = capitalize(readCookie("REP_NAME"));
 $(".rep_name").text(rep_name);
 $("#rep-name").text(rep_name);
 $(".rep_name_cta").text(rep_name);
@@ -52,12 +70,14 @@ $("#user-name").text(readCookie("Name"));
 $("#rep_name").text(rep_name);
 $("#rep-image").attr("src", readCookie("PIC"));
 $(".rep-phoito").css("background-image", "url('" + readCookie("PIC") + "')");
-$(".appointment-iframe .w-iframe iframe").attr(
+$("#appointment-iframe iframe").attr(
   "src",
   "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
 );
-$("#message-rep").click(() => {
-  window.open(`sms:${readCookie("PHONE")}`, "_parent");
+
+$(".dm-rep").each(function () {
+  $(this).attr("href", `sms:${readCookie("PHONE")}`);
+  $(this).attr("target", "_parent");
 });
 
 const getVideoType = () => {
@@ -139,7 +159,7 @@ $("#watch-trailer").click(function () {
 });
 
 $(".iframe-back").click(function () {
-  $(".appointment-iframe .w-iframe iframe").attr(
+  $("#appointment-iframe iframe").attr(
     "src",
     "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
   );
@@ -147,7 +167,7 @@ $(".iframe-back").click(function () {
 
 $(".closer-last").click(function () {
   // $(".last-popup").removeClass("active");
-  $(".appointment-iframe .w-iframe iframe").attr(
+  $("#appointment-iframe iframe .w-iframe iframe").attr(
     "src",
     "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
   );
