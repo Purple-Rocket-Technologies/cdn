@@ -43,24 +43,64 @@ const appointment_link = "https://" + readCookie("APTMT_LINK");
 $("#aptmt_link").attr("href", appointment_link);
 
 setTrailerVideo();
-
-let scroll_position = 0;
-let scroll_direction;
-
-window.addEventListener("scroll", function () {
-  scroll_direction =
-    document.body.getBoundingClientRect().top > scroll_position ? "up" : "down";
-  scroll_position = document.body.getBoundingClientRect().top;
-  if (scroll_direction === "up") {
+/**
+ *
+ *
+ * @param {boolean} [isScrolling=true]
+ * @param {*} scrollDirection
+ * @param {*} targetElement
+ */
+function scrollButtonHandlers(
+  isScrolling = true,
+  scrollDirection,
+  targetElement
+) {
+  if (
+    isScrolling
+      ? scrollDirection === "up"
+      : true &&
+        window.scrollY > targetElement.offsetTop + targetElement.offsetHeight
+  ) {
     $(".hide-on-scroll").each(function () {
       $(this).css("display", "block");
     });
+    $(".down-arrow").css("display", "none");
   } else {
     $(".hide-on-scroll").each(function () {
       $(this).css("display", "none");
     });
   }
-});
+  if (window.scrollY < targetElement.offsetTop + targetElement.offsetHeight) {
+    $(".down-arrow").css("display", "block");
+  } else {
+    $(".down-arrow").css("display", "none");
+  }
+}
+
+let scroll_position = 0;
+let scroll_direction;
+
+// Setup isScrolling variable
+var isScrolling;
+
+// Listen for scroll events
+window.addEventListener(
+  "scroll",
+  function () {
+    scroll_direction =
+      document.body.getBoundingClientRect().top > scroll_position
+        ? "up"
+        : "down";
+    scroll_position = document.body.getBoundingClientRect().top;
+    const elementTarget = document.getElementById("header_area");
+    scrollButtonHandlers(true, scroll_direction, elementTarget);
+    window.clearTimeout(isScrolling);
+    isScrolling = setTimeout(function () {
+      scrollButtonHandlers(false, scroll_direction, elementTarget);
+    }, 66);
+  },
+  false
+);
 
 var rep_name = capitalize(readCookie("REP_NAME"));
 $(".rep_name").text(rep_name);
