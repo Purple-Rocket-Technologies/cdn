@@ -612,7 +612,6 @@ $("#submit-btn-play").click(function () {
     if (
       $("#peoplewatching").val() != "" &&
       $("#phone").val() != "" &&
-      $("#lname").val() != "" &&
       $("#fname").val() != ""
     ) {
       if (isEmail($("#email").val())) {
