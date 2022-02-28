@@ -58,8 +58,7 @@ function scrollButtonHandlers(
   if (
     isScrolling
       ? scrollDirection === "up"
-      : true &&
-        window.scrollY > targetElement.offsetTop + targetElement.offsetHeight
+      : window.scrollY > targetElement.offsetTop + targetElement.offsetHeight
   ) {
     $(".hide-on-scroll").each(function () {
       $(this).css("display", "block");
@@ -81,7 +80,7 @@ let scroll_position = 0;
 let scroll_direction;
 
 // Setup isScrolling variable
-var isScrolling;
+let isScrolling;
 
 // Listen for scroll events
 window.addEventListener(
@@ -102,7 +101,7 @@ window.addEventListener(
   false
 );
 
-var rep_name = capitalize(readCookie("REP_NAME"));
+const rep_name = capitalize(readCookie("REP_NAME"));
 $(".rep_name").text(rep_name);
 $("#rep-name").text(rep_name);
 $(".rep_name_cta").text(rep_name);
@@ -195,6 +194,7 @@ async function populatePathOptions() {
 populatePathOptions();
 
 $("#watch-trailer").click(function () {
+  $("#video").play()
   $("#video").attr("src", $("#video").attr("src") + "?autoplay=1");
 });
 
