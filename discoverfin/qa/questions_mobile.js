@@ -1,8 +1,8 @@
 const relativ_url = window.location.origin + window.location.pathname;
 const curren_url = window.location;
-if (curren_url !== relativ_url) {
-  window.location = relativ_url;
-}
+//if (curren_url !== relativ_url) {
+  //window.location = relativ_url;
+//}
 
 $("body").on("scroll mousewheel touchmove", function (e) {
   e.preventDefault();
