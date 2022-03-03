@@ -194,7 +194,7 @@ async function populatePathOptions() {
 populatePathOptions();
 
 $("#watch-trailer").click(function () {
-  $("#video").play()
+  // $("#video").play()
   $("#video").attr("src", $("#video").attr("src") + "?autoplay=1");
 });
 
