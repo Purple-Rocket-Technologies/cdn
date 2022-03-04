@@ -140,6 +140,8 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
     prospectAnswers.ques_1,
     prospectAnswers.ques_2,
     prospectAnswers.ques_3,
+    prospectAnswers.ques_4,
+    prospectAnswers.ques_5
   ]
     .filter((currentItem) => currentItem !== "")
     .map((currentItem) =>
