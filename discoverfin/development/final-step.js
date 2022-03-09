@@ -197,7 +197,7 @@ populatePathOptions();
 
 $("#watch-trailer").click(function () {
   // $("#video").play()
-  $("#video").attr("src", $("#video").attr("src") + "?autoplay=1");
+  $("#video").attr("src", $("#video").attr("src") + "?background=1");
 });
 
 $(".iframe-back").click(function () {
