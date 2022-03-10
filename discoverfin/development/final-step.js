@@ -10,8 +10,6 @@ const URL_USER =
     ? readCookie("URL_USER")
     : readCookie("USER_URL");
 
-let lastPopupShown = false;
-
 // Reading name cookie
 const user_name = readCookie("Name");
 $(".user_name").each(function () {
@@ -22,8 +20,8 @@ $("#video-area").css(
   "background-image",
   `url(${
     window.location.pathname.includes("make-more-money")
-      ? "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/621384b4ba614364d8af757f_Group%20287.png"
-      : "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/621384b456ed7a796f07db00_7%201.png"
+      ? "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/62298cbd7e7d4d28cd3ba692_Group%20287.png"
+      : "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/62298cac2c8a5362218448df_7%201.png"
   })`
 );
 
@@ -114,7 +112,7 @@ $("#appointment-iframe iframe").attr(
   "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
 );
 
-$(".dm-rep").each(function () {
+$(".message-rep").each(function () {
   $(this).attr("href", `sms:${readCookie("PHONE")}`);
   $(this).attr("target", "_parent");
 });
@@ -186,8 +184,11 @@ async function populatePathOptions() {
   $("#video-area").click(() => {
     openVideoApp(prospectAnswers);
   });
-  $("#open-video").click(() => {
-    openVideoApp(prospectAnswers);
+
+  $("#open-video").each(function () {
+    $(this).click(()=>{
+      openVideoApp(prospectAnswers);
+    })
   });
 
   parent.html(questionAndAnswersOfProspect(prospectAnswers));
@@ -196,8 +197,7 @@ async function populatePathOptions() {
 populatePathOptions();
 
 $("#watch-trailer").click(function () {
-  // $("#video").play()
-  $("#video").attr("src", $("#video").attr("src") + "?background=1");
+  new Vimeo.Player($("#video")).play()
 });
 
 $(".iframe-back").click(function () {
