@@ -112,7 +112,7 @@ $("#appointment-iframe iframe").attr(
   "https://qa.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
 );
 
-$(".message-rep").each(function () {
+$("#message-rep").each(function () {
   $(this).attr("href", `sms:${readCookie("PHONE")}`);
   $(this).attr("target", "_parent");
 });
