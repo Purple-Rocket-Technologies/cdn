@@ -86,10 +86,12 @@ function format(time) {
 function validateUrl(company, user) {
   let validateCompanyUserAPI = `https://${api_url}${
     getUrlParameter("company")
-      ? `/api/v1/users/getCompany/name/${getUrlParameter(
-          "company"
-        )}/${user_url}`
-      : `/api/v1/users/getUserByUrl/${user_url}`
+      ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
+          getUrlParameter("id") || getUrlParameter("user")
+        }`
+      : `/api/v1/users/getUserByUrl/${
+          getUrlParameter("id") || getUrlParameter("user")
+        }`
   }`;
   axios({
     method: "get",
@@ -857,7 +859,8 @@ $(".submit.paths").click(async () => {
         success_show("Your answers have been sent successfully!");
         $(".appointment-iframe .w-iframe iframe").attr(
           "src",
-          "https://discoverfin.io/appointment?id=" + user_url + "&video=true"
+          "https://discoverfin.io/appointment?id=" + getUrlParameter("id") ||
+            getUrlParameter("user") + "&video=true"
         );
         $(".last-popup").addClass("active");
       })
@@ -874,7 +877,8 @@ $(".submit.paths").click(async () => {
 $(".iframe-back").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-    "https://discoverfin.io/appointment?id=" + user_url + "&video=true"
+    "https://discoverfin.io/appointment?id=" + getUrlParameter("id") ||
+      getUrlParameter("user") + "&video=true"
   );
 });
 
@@ -882,6 +886,7 @@ $(".closer-last").click(function () {
   $(".last-popup").removeClass("active");
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-    "https://discoverfin.io/appointment?id=" + user_url + "&video=true"
+    "https://discoverfin.io/appointment?id=" + getUrlParameter("id") ||
+      getUrlParameter("user") + "&video=true"
   );
 });

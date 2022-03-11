@@ -126,10 +126,12 @@ if (window.location.pathname.startsWith("/appointment")) {
       const response = await axios.get(
         `https://${api_url}${
           getUrlParameter("company")
-            ? `/api/v1/users/getCompany/name/${getUrlParameter(
-                "company"
-              )}/${user_url}`
-            : `/api/v1/users/getUserByUrl/${user_url}`
+            ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
+                getUrlParameter("id") || getUrlParameter("user")
+              }`
+            : `/api/v1/users/getUserByUrl/${
+                getUrlParameter("id") || getUrlParameter("user")
+              }`
         }`
       );
       if (JSON.parse(response.data.error)) {
@@ -219,15 +221,19 @@ if (window.location.pathname.startsWith("/appointment")) {
   };
 
   const finBusinessVideoAppLink = () => {
-    return (getBaseUrl() + user_url).replace("video_type", "businessOverview");
+    return (
+      getBaseUrl() + getUrlParameter("id") || getUrlParameter("user")
+    ).replace("video_type", "businessOverview");
   };
 
   const finAppLink = () => {
-    return `${finBaseUrl()}${user_url}`;
+    return `${finBaseUrl()}${getUrlParameter("id") || getUrlParameter("user")}`;
   };
 
   const finFinancialSuccessVideoAppLink = () => {
-    return (getBaseUrl() + user_url).replace("video_type", "financialHouse");
+    return (
+      getBaseUrl() + getUrlParameter("id") || getUrlParameter("user")
+    ).replace("video_type", "financialHouse");
   };
 
   if (isDashboard) {
