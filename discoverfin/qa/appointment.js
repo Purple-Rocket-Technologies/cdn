@@ -9,6 +9,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   let user_id;
   let isDashboard = false;
   let isVideoApp = false;
+  let is_canadian = false;
   if (getUrlParameter("video")) {
     isVideoApp = JSON.parse(getUrlParameter("video"));
     isDashboard = false;
@@ -63,6 +64,16 @@ if (window.location.pathname.startsWith("/appointment")) {
       "src",
       appointment_link
     );
+
+    if (is_canadian) {
+      $("#logos").css("grid-template-columns", "repeat(5, 1fr)");
+      $("#logos").css("-ms-grid-columns", "repeat(5, 1fr)");
+      $(".american").css("display", "none");
+      $(".canadian").css("display", "block");
+    } else {
+      $(".canadian").css("display", "none");
+    }
+
     //$("#rep-email").text(rep_email);
     //$("#rep-phone").text(rep_phone);
     //$("#phone-btn").attr("href", `tel:${rep_phone}`);
@@ -96,6 +107,9 @@ if (window.location.pathname.startsWith("/appointment")) {
         rep_pic = response.data.data.profilePic;
         rep_phone = response.data.data.phone;
         user_id = response.data.data.userId;
+        is_canadian =
+          response.data.data.address &&
+          response.data.data.address.country === "Canada";
         company_id = response.data.data.companyId;
         rep_email = response.data.data.email;
         video_id = $.trim(response.data.data.videoProfileLink);
@@ -155,13 +169,13 @@ if (window.location.pathname.startsWith("/appointment")) {
       return "https://stagingvideo.discoverfin.io/video_type?id=";
     } else if (window.location.host === "discoverfin.io") {
       return "https://video.discoverfin.io/video_type?company=";
-    } else if(window.location.host === "qa.discoverfin.io") {
+    } else if (window.location.host === "qa.discoverfin.io") {
       return "https://qavideo.discoverfin.io/video_type?id=";
     }
   };
 
   const finBaseUrl = () => {
-    return `https://${window.location.host}/en?company=`;
+    return `https://${window.location.host}/en?id=`;
   };
 
   const finBusinessVideoAppLink = () => {
@@ -169,7 +183,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   };
 
   const finAppLink = () => {
-    return finBaseUrl() + user_url;
+    return finBaseUrl() + user_url + is_canadian ? "&ca=true" : "";
   };
 
   const finFinancialSuccessVideoAppLink = () => {
