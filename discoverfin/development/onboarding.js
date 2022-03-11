@@ -1,10 +1,6 @@
 const user_url = getUrlParameter("id") || getUrlParameter("user");
 let is_canadian = false;
-if (
-  getUrlParameter("company") &&
-  getUrlParameter("user") &&
-  getUrlParameter("prospectEmail")
-) {
+if (user_url && getUrlParameter("prospectEmail")) {
   getAPIparams();
 }
 
@@ -92,6 +88,9 @@ axios({
       $(".page").addClass("pnf");
     } else {
       $(".main_start_div").addClass("show");
+      is_canadian =
+        response.data.data.address &&
+        response.data.data.address.country === "Canada";
       setCookies("COMPANY_ID", response.data.data.companyId);
       setCookies("COMPANY_URL", response.data.data.companyUrl);
       setCookies("USER_ID", response.data.data.userId);
