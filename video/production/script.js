@@ -187,6 +187,9 @@ function autoFill() {
     $("#email").val(email_fill);
     $("#peoplewatching").val(1);
     $("#country-us").click();
+    country_val = "US";
+    lang_val = "EN";
+    fetchVideo(videoType, country_val, lang_val);
     $("#country-us").toggleClass("active");
   }
 }
