@@ -21,7 +21,7 @@ function isEmail(e) {
   );
 }
 
-initializeVar()
+initializeVar();
 
 $(".button_blocker.email").click(function () {
   alert("Please enter a correct email");
@@ -70,7 +70,6 @@ $("#ques_1_btn").on("click", function () {
     first_name: $("#user_name").val(),
   });
 });
-
 $("#user_age").keyup(function () {
   var var_age = $(this).val();
   if (var_age.length > 1) {
@@ -310,26 +309,22 @@ async function createNewProspect() {
 
   //trrigerring the email
   // axios({
-  //   method: "post",
-  //   url: "https://" + api_url + "/api/v1/users/email/send/finResults",
+  //   method: 'post',
+  //   url: 'https://'+ api_url +'/api/v1/users/email/send/finResults',
   //   data: {
-  //     companyId: readCookie("COMPANY_ID"),
-  //     userId: readCookie("USER_ID"),
-  //     prospectName: $("#user_name").val(),
+  //     companyId: readCookie('COMPANY_ID'),
+  //     userId: readCookie('USER_ID'),
+  //     prospectName : $("#user_name").val(),
   //     prospectEmail: $("#email").val(),
-  //     finNumber: parseInt($("#fin_number").val()),
-  //   },
+  //     finNumber: parseInt($("#fin_number").val())
+  //   }
   // })
-  //   .then(function (response) {
-  //     console.log(response.data);
-  //   })
-  //   .catch(function (error) {
-  //     alert("Oops, There was an unexpected error.");
-  //     throw new SentryError(
-  //       `Error while sending finResults email: ${$("#email").val()}`,
-  //       error
-  //     );
-  //   });
+  // .then(function(response) {
+  //   console.log(response.data);
+  // })
+  // .catch(function (error) {
+  //   alert("Oops, There was an unexpected error.");
+  // });
 }
 
 async function updateProspect(prospectID) {
