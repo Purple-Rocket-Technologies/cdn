@@ -17,7 +17,8 @@ if (window.location.pathname.startsWith("/appointment")) {
     isVideoApp = false;
     isDashboard = true;
   }
-  const user_url = getUrlParameter("id");
+
+  const user_url = getUrlParameter("id") || getUrlParameter("user");
 
   function setPageMetaContent(repName, repPic) {
     document.title = repName;

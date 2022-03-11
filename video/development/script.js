@@ -35,7 +35,7 @@ const getUrlParameter = function getUrlParameter(sParam) {
   }
 };
 
-const user_url = getUrlParameter("id");
+const user_url = getUrlParameter("id") || getUrlParameter("user");
 
 // Check email format
 function isEmail(e) {
