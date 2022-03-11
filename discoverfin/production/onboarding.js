@@ -1,8 +1,8 @@
 const user_url = getUrlParameter("id") || getUrlParameter("user");
 let is_canadian = false;
 if (
-  getUrlParameter("id") ||
-  (getUrlParameter("user") && getUrlParameter("prospectEmail"))
+  (getUrlParameter("id") || getUrlParameter("user")) &&
+  getUrlParameter("prospectEmail")
 ) {
   getAPIparams();
 }
