@@ -212,7 +212,7 @@ if (window.location.pathname.startsWith("/appointment")) {
     } else if (window.location.host === "staging.discoverfin.io") {
       return "https://stagingvideo.discoverfin.io/video_type?id=";
     } else if (window.location.host === "discoverfin.io") {
-      return "https://video.discoverfin.io/video_type?company=";
+      return "https://video.discoverfin.io/video_type?id=";
     }
   };
 
