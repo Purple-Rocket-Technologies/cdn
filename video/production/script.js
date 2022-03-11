@@ -82,10 +82,14 @@ function format(time) {
   return ret;
 }
 
+const isOldLink = getUrlParameter("company");
+
 //Validating URL
 function validateUrl(company, user) {
   let validateCompanyUserAPI =
-    "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url;
+    "https://" + api_url + isOldLink
+      ? `/api/v1/users/getCompany/name/${isOldLink}/${user_url}`
+      : `/api/v1/users/getUserByUrl/${user_url}`;
   axios({
     method: "get",
     url: validateCompanyUserAPI,
