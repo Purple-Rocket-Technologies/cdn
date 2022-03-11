@@ -121,10 +121,14 @@ if (window.location.pathname.startsWith("/appointment")) {
     element.remove();
   }
 
+  const isOldLink = getUrlParameter("company");
+
   async function getCompany() {
     try {
       const response = await axios.get(
-        "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url
+        "https://" + api_url + isOldLink
+          ? `/api/v1/users/getCompany/name/${isOldLink}/${user_url}`
+          : `/api/v1/users/getUserByUrl/${user_url}`
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
