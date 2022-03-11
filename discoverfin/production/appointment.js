@@ -246,7 +246,7 @@ if (window.location.pathname.startsWith("/appointment")) {
       window.open(finBusinessVideoAppLink(), "_blank");
     });
 
-    $("#only-fin-app").css("display", "flex");
+    $("#only-fin-app").css("display", "grid");
     $("#do-you-know-fin").click(() => {
       window.open(finAppLink(), "_blank");
     });
