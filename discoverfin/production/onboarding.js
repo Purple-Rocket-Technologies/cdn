@@ -4,21 +4,23 @@ if (user_url && getUrlParameter("prospectEmail")) {
   getAPIparams();
 }
 
-const isOldLink = getUrlParameter("company");
-
 //fetching company, user and prospect IDs
 function getAPIparams() {
   axios({
     method: "get",
     url: `https://${api_url}${
-      isOldLink
-        ? `/api/v1/users/getCompany/name/${isOldLink}/${user_url}`
+      getUrlParameter("company")
+        ? `/api/v1/users/getCompany/name/${getUrlParameter(
+            "company"
+          )}/${user_url}`
         : `/api/v1/users/getUserByUrl/${user_url}`
     }`,
   })
     .then(function (response) {
       company_id = response.data.data.companyId;
       setCookies("COMPANY_ID", company_id);
+      setCookies("URL_COMPANY", response.data.data.companyUrl);
+      setCookies("USER_URL", user_url);
       is_canadian =
         response.data.data.address &&
         response.data.data.address.country === "Canada";
@@ -92,14 +94,15 @@ $("#start_over").attr("href", home_link);
 
 var user = getUrlParameter("user");
 var company = getUrlParameter("company");
-setCookies("URL_USER", user);
-setCookies("URL_COMPANY", company);
+setCookies("URL_USER", user_url);
 
 axios({
   method: "get",
   url: `https://${api_url}${
-    isOldLink
-      ? `/api/v1/users/getCompany/name/${isOldLink}/${user_url}`
+    getUrlParameter("company")
+      ? `/api/v1/users/getCompany/name/${getUrlParameter(
+          "company"
+        )}/${user_url}`
       : `/api/v1/users/getUserByUrl/${user_url}`
   }`,
 })
@@ -116,7 +119,8 @@ axios({
       setCookies("COMPANY_ID", response.data.data.companyId);
       setCookies("COMPANY_URL", response.data.data.companyUrl);
       setCookies("USER_ID", response.data.data.userId);
-      setCookies("USER_URL", response.data.data.userUrl);
+      setCookies("URL_COMPANY", response.data.data.companyUrl);
+      setCookies("USER_URL", user_url);
       setCookies("APTMT_LINK", response.data.data.appointmentBookingLink);
       setCookies("REP_NAME", response.data.data.firstName);
       setCookies("PIC", response.data.data.profilePic);
