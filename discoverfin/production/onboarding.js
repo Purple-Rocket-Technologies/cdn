@@ -10,10 +10,11 @@ const isOldLink = getUrlParameter("company");
 function getAPIparams() {
   axios({
     method: "get",
-    url:
-      "https://" + api_url + isOldLink
+    url: `https://${api_url}${
+      isOldLink
         ? `/api/v1/users/getCompany/name/${isOldLink}/${user_url}`
-        : `/api/v1/users/getUserByUrl/${user_url}`,
+        : `/api/v1/users/getUserByUrl/${user_url}`
+    }`,
   })
     .then(function (response) {
       company_id = response.data.data.companyId;
@@ -96,10 +97,11 @@ setCookies("URL_COMPANY", company);
 
 axios({
   method: "get",
-  url:
-    "https://" + api_url + isOldLink
+  url: `https://${api_url}${
+    isOldLink
       ? `/api/v1/users/getCompany/name/${isOldLink}/${user_url}`
-      : `/api/v1/users/getUserByUrl/${user_url}`,
+      : `/api/v1/users/getUserByUrl/${user_url}`
+  }`,
 })
   .then(function (response) {
     if (response.data.error === true) {
