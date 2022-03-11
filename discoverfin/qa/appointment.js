@@ -183,7 +183,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   };
 
   const finAppLink = () => {
-    return finBaseUrl() + user_url + is_canadian ? "&ca=true" : "";
+    return `${finBaseUrl()}${user_url}${is_canadian ? "&ca=true" : ""}`;
   };
 
   const finFinancialSuccessVideoAppLink = () => {
