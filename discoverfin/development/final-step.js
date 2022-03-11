@@ -139,7 +139,7 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
     prospectAnswers.ques_2,
     prospectAnswers.ques_3,
     prospectAnswers.ques_4,
-    prospectAnswers.ques_5
+    prospectAnswers.ques_5,
   ]
     .filter((currentItem) => currentItem !== "")
     .map((currentItem) =>
@@ -186,9 +186,9 @@ async function populatePathOptions() {
   });
 
   $("#open-video").each(function () {
-    $(this).click(()=>{
+    $(this).click(() => {
       openVideoApp(prospectAnswers);
-    })
+    });
   });
 
   parent.html(questionAndAnswersOfProspect(prospectAnswers));
@@ -197,7 +197,7 @@ async function populatePathOptions() {
 populatePathOptions();
 
 $("#watch-trailer").click(function () {
-  new Vimeo.Player($("#video")).play()
+  new Vimeo.Player($("#video")).play();
 });
 
 $(".iframe-back").click(function () {

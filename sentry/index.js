@@ -20,7 +20,7 @@ class SentryError extends Error {
     });
 
     Sentry.captureException(errMessage);
-    
+
     console.error(errMessage);
   }
 }

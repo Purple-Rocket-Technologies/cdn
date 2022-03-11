@@ -490,7 +490,7 @@ setInterval(function () {
           schedule_footer.css("display", "flex");
           $("#window_frame").attr(
             "src",
-            `https://dev.discoverfin.io/appointment/?id=${getUrlParameter(
+            `https://qa.discoverfin.io/appointment/?id=${getUrlParameter(
               "id"
             )}&video=true`
           );
@@ -823,7 +823,7 @@ $(".submit.paths").click(async () => {
         success_show("Your answers have been sent successfully!");
         $(".appointment-iframe .w-iframe iframe").attr(
           "src",
-          "https://dev.discoverfin.io/appointment?id=" +
+          "https://qa.discoverfin.io/appointment?id=" +
             getUrlParameter("user") +
             "&video=true"
         );
@@ -842,7 +842,7 @@ $(".submit.paths").click(async () => {
 $(".iframe-back").click(function () {
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-    "https://dev.discoverfin.io/appointment?id=" +
+    "https://qa.discoverfin.io/appointment?id=" +
       getUrlParameter("user") +
       "&video=true"
   );
@@ -852,7 +852,7 @@ $(".closer-last").click(function () {
   $(".last-popup").removeClass("active");
   $(".appointment-iframe .w-iframe iframe").attr(
     "src",
-    "https://dev.discoverfin.io/appointment?id=" +
+    "https://qa.discoverfin.io/appointment?id=" +
       getUrlParameter("user") +
       "&video=true"
   );

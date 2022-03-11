@@ -383,14 +383,13 @@ $("#submit_btn").click(function () {
           readCookie("COMPANY_ID") +
           "/prospects?email=" +
           $("#email").val(),
-      })
-        .then(function (response) {
-          if (response.data.count === 0) {
-            createNewProspect();
-          } else {
-            updateProspect(response.data.data[0]._id);
-          }
-        })
+      }).then(function (response) {
+        if (response.data.count === 0) {
+          createNewProspect();
+        } else {
+          updateProspect(response.data.data[0]._id);
+        }
+      });
     }
   } else {
     alert("Please enter a valid email address");
