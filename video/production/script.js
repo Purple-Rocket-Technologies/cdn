@@ -37,6 +37,8 @@ const getUrlParameter = function getUrlParameter(sParam) {
 
 const user_url = getUrlParameter("id") || getUrlParameter("user");
 
+setCookies("isOldUrl", getUrlParameter("company"));
+
 // Check email format
 function isEmail(e) {
   return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
@@ -874,19 +876,17 @@ $(".submit.paths").click(async () => {
   }
 });
 
+const appointmentLink = readCookie("isOldUrl")
+  ? `https://discoverfin.io/appointment?company=${readCookie(
+      "isOldUrl"
+    )}&user=${getUrlParameter("id") || getUrlParameter("user")}&video=true`
+  : `https://discoverfin.io/appointment?id=${getUrlParameter("id")}&video=true`;
+
 $(".iframe-back").click(function () {
-  $(".appointment-iframe .w-iframe iframe").attr(
-    "src",
-    "https://discoverfin.io/appointment?id=" + getUrlParameter("id") ||
-      getUrlParameter("user") + "&video=true"
-  );
+  $(".appointment-iframe .w-iframe iframe").attr("src", appointmentLink);
 });
 
 $(".closer-last").click(function () {
   $(".last-popup").removeClass("active");
-  $(".appointment-iframe .w-iframe iframe").attr(
-    "src",
-    "https://discoverfin.io/appointment?id=" + getUrlParameter("id") ||
-      getUrlParameter("user") + "&video=true"
-  );
+  $(".appointment-iframe .w-iframe iframe").attr("src", appointmentLink);
 });

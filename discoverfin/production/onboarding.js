@@ -7,6 +7,8 @@ if (
   getAPIparams();
 }
 
+setCookies("isOldUrl", getUrlParameter("company"))
+
 //fetching company, user and prospect IDs
 function getAPIparams() {
   axios({
@@ -185,7 +187,7 @@ $("#lang_es").click(function () {
       : "https://player.vimeo.com/video/452754620"
   );
   Weglot.switchTo("es");
-  ssetCookies("country", is_canadian ? "Canada" : "United States");
+  setCookies("country", is_canadian ? "Canada" : "United States");
 });
 
 $("#lang_ca_es").click(function () {
