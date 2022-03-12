@@ -1,36 +1,26 @@
-const user_url = getUrlParameter("id") || getUrlParameter("user");
-let is_canadian = false;
 if (
-  (getUrlParameter("id") || getUrlParameter("user")) &&
+  getUrlParameter("company") &&
+  getUrlParameter("user") &&
   getUrlParameter("prospectEmail")
 ) {
   getAPIparams();
 }
 
-setCookies("isOldUrl", getUrlParameter("company"))
-
 //fetching company, user and prospect IDs
 function getAPIparams() {
   axios({
     method: "get",
-    url: `https://${api_url}${
-      getUrlParameter("company")
-        ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
-            getUrlParameter("id") || getUrlParameter("user")
-          }`
-        : `/api/v1/users/getUserByUrl/${
-            getUrlParameter("id") || getUrlParameter("user")
-          }`
-    }`,
+    url:
+      "https://" +
+      api_url +
+      "/api/v1/users/getCompany/name/" +
+      getUrlParameter("company") +
+      "/" +
+      getUrlParameter("user"),
   })
     .then(function (response) {
       company_id = response.data.data.companyId;
       setCookies("COMPANY_ID", company_id);
-      setCookies("URL_COMPANY", response.data.data.companyUrl);
-      setCookies("USER_URL", getUrlParameter("id") || getUrlParameter("user"));
-      is_canadian =
-        response.data.data.address &&
-        response.data.data.address.country === "Canada";
       setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
       setCookies("affiliateId", response.data.data.affiliateId);
 
@@ -54,15 +44,15 @@ function getAPIparams() {
             setCookies("Name", user_name);
             setCookies("FIN Number", fin_num);
 
-            const routeChoice = response.data.data[0].route_choice;
-            if (response.data.data[0].route_choice !== "") {
-              if (routeChoice === "Make More Money") {
+            var routeChoice = response.data.data[0].route_choice;
+            if (response.data.data[0].route_choice != "") {
+              if (routeChoice == "Make More Money") {
                 window.location.href = "/route/make-more-money";
               }
-              if (routeChoice === "Manage Money Better") {
+              if (routeChoice == "Manage Money Better") {
                 window.location.href = "/route/manage-money-better";
               }
-              if (routeChoice === "Both") {
+              if (routeChoice == "Both") {
                 window.location.href = "/route/both";
               }
             } else {
@@ -101,35 +91,32 @@ $("#start_over").attr("href", home_link);
 
 var user = getUrlParameter("user");
 var company = getUrlParameter("company");
-setCookies("URL_USER", getUrlParameter("id") || getUrlParameter("user"));
+setCookies("URL_USER", user);
+setCookies("URL_COMPANY", company);
 
 axios({
   method: "get",
-  url: `https://${api_url}${
-    getUrlParameter("company")
-      ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
-          getUrlParameter("id") || getUrlParameter("user")
-        }`
-      : `/api/v1/users/getUserByUrl/${
-          getUrlParameter("id") || getUrlParameter("user")
-        }`
-  }`,
+  url:
+    "https://" +
+    api_url +
+    "/api/v1/users/getCompany/name/" +
+    company +
+    "/" +
+    user,
 })
   .then(function (response) {
-    if (response.data.error === true) {
+    if (response.data.error == true) {
       console.log("Error");
       $(".not_found").addClass("show_not_found");
       $(".page").addClass("pnf");
     } else {
       $(".main_start_div").addClass("show");
-      is_canadian =
-        response.data.data.address &&
-        response.data.data.address.country === "Canada";
       setCookies("COMPANY_ID", response.data.data.companyId);
+      setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
+      setCookies("affiliateId", response.data.data.affiliateId);
       setCookies("COMPANY_URL", response.data.data.companyUrl);
       setCookies("USER_ID", response.data.data.userId);
-      setCookies("URL_COMPANY", response.data.data.companyUrl);
-      setCookies("USER_URL", getUrlParameter("id") || getUrlParameter("user"));
+      setCookies("USER_URL", response.data.data.userUrl);
       setCookies("APTMT_LINK", response.data.data.appointmentBookingLink);
       setCookies("REP_NAME", response.data.data.firstName);
       setCookies("PIC", response.data.data.profilePic);
@@ -137,8 +124,6 @@ axios({
       setCookies("EMAIL", response.data.data.email);
       setCookies("VIDEO", response.data.data.videoProfileLink);
       $(document).prop("title", "DiscoverFIN");
-      setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
-      setCookies("affiliateId", response.data.data.affiliateId);
     }
   })
   .catch(function (error) {
@@ -160,15 +145,20 @@ player.on("ended", function () {
 
 setCookies("INITIAL_LINK", window.location.href);
 
+const canadian = getUrlParameter("ca");
+
 $("#lang_us").click(function () {
   $(".fin_video").attr(
     "src",
-    is_canadian
+    canadian && JSON.parse(canadian)
       ? "https://player.vimeo.com/video/551499288"
       : "https://player.vimeo.com/video/445268145"
   );
   Weglot.switchTo("en");
-  setCookies("country", is_canadian ? "Canada" : "United States");
+  setCookies(
+    "country",
+    canadian && JSON.parse(canadian) ? "Canada" : "United States"
+  );
 });
 
 $("#lang_ca").click(function () {
@@ -182,12 +172,15 @@ $("#lang_es").click(function () {
   $("#temp_es").removeClass("hide");
   $(".fin_video").attr(
     "src",
-    is_canadian
+    canadian && JSON.parse(canadian)
       ? "https://player.vimeo.com/video/452754620"
       : "https://player.vimeo.com/video/452754620"
   );
   Weglot.switchTo("es");
-  setCookies("country", is_canadian ? "Canada" : "United States");
+  ssetCookies(
+    "country",
+    canadian && JSON.parse(canadian) ? "Canada" : "United States"
+  );
 });
 
 $("#lang_ca_es").click(function () {

@@ -9,15 +9,13 @@ if (window.location.pathname.startsWith("/appointment")) {
   let user_id;
   let isDashboard = false;
   let isVideoApp = false;
-  let is_canadian = false;
-  if (getUrlParameter("video")) {
-    isVideoApp = JSON.parse(getUrlParameter("video"));
-    isDashboard = false;
-  } else {
-    isVideoApp = false;
-    isDashboard = true;
+  if(getUrlParameter("video")){
+    isVideoApp= JSON.parse(getUrlParameter("video"));
+    isDashboard=false;
+  }else{
+    isVideoApp=false;
+    isDashboard=true;
   }
-  const user_url = getUrlParameter("id") || getUrlParameter("user");
 
   trackMixPanelEvent("Prospect visited Appointment Page", {
     rep_name,
@@ -46,11 +44,10 @@ if (window.location.pathname.startsWith("/appointment")) {
   $("#aptmt_link1").click(handleAppointmentButtonClick);
   $("#aptmt_link2").click(handleAppointmentButtonClick);
   $("#aptmt_link3").click(handleAppointmentButtonClick);
+
   function setPageMetaContent(repName, repPic) {
     document.title = repName;
-    $("head").append(
-      `<meta name="description" content="${repName}"><meta name="og:title" content="${repName}"><meta name="og:image" content="${repPic}">`
-    );
+    $('head').append(`<meta name="description" content="${repName}"><meta name="og:title" content="${repName}"><meta name="og:image" content="${repPic}">`);
     $("link[rel='icon']").attr("href", repPic);
     $("meta[name='description']").attr("content", repName);
     $("meta[name='keywords']").attr("content", repName);
@@ -70,8 +67,9 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   function map_all_data() {
     $("#rep-name").text(rep_name);
-    setPageMetaContent(rep_name, rep_pic);
     $("#rep-image-container").css("background-image", `url(${rep_pic})`);
+    setPageMetaContent(rep_name, rep_pic);
+
     if (video_id === "" || !video_id) {
       $("#profile-video-area").css("display", "none");
       $("#video-watch-wrapper").css("opacity", "0");
@@ -87,24 +85,14 @@ if (window.location.pathname.startsWith("/appointment")) {
       $("#video-watch-wrapper").css("cursor", "pointer");
     }
 
-    if (is_canadian) {
-      $("#logos").css("grid-template-columns", "repeat(5, 1fr)");
-      $("#logos").css("-ms-grid-columns", "repeat(5, 1fr)");
-      $(".american").css("display", "none");
-      $(".canadian").css("display", "block");
-    } else {
-      $(".canadian").css("display", "none");
-    }
-
     $("#appointment-schedule-url .calender-embedd").attr(
       "src",
       appointment_link
     );
     //$("#rep-email").text(rep_email);
     //$("#rep-phone").text(rep_phone);
-    //$("#phone-btn").attr("href", `tel:${rep_phone}`);
-    //$("#mail-btn").attr("href", `mailto:${rep_email}`);
-
+   // $("#rep-phone").attr("href", `tel:${rep_phone}`);
+    //$("#rep-email").attr("href", `mailto:${rep_email}`);
     $("#phone-btn").click(() => {
       openLink(`tel:${rep_phone}`);
     });
@@ -124,15 +112,12 @@ if (window.location.pathname.startsWith("/appointment")) {
   async function getCompany() {
     try {
       const response = await axios.get(
-        `https://${api_url}${
-          getUrlParameter("company")
-            ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
-                getUrlParameter("id") || getUrlParameter("user")
-              }`
-            : `/api/v1/users/getUserByUrl/${
-                getUrlParameter("id") || getUrlParameter("user")
-              }`
-        }`
+        "https://" +
+          api_url +
+          "/api/v1/users/getCompany/name/" +
+          getUrlParameter("company") +
+          "/" +
+          getUrlParameter("user")
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
@@ -142,9 +127,6 @@ if (window.location.pathname.startsWith("/appointment")) {
         rep_pic = response.data.data.profilePic;
         rep_phone = response.data.data.phone;
         user_id = response.data.data.userId;
-        is_canadian =
-          response.data.data.address &&
-          response.data.data.address.country === "Canada";
         company_id = response.data.data.companyId;
         rep_email = response.data.data.email;
         video_id = $.trim(response.data.data.videoProfileLink);
@@ -208,35 +190,46 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   const getBaseUrl = () => {
     if (window.location.host === "dev.discoverfin.io") {
-      return "https://devvideo.discoverfin.io/video_type?id=";
+      return "https://devvideo.discoverfin.io/video_type?company=";
     } else if (window.location.host === "staging.discoverfin.io") {
-      return "https://stagingvideo.discoverfin.io/video_type?id=";
+      return "https://stagingvideo.discoverfin.io/video_type?company=";
     } else if (window.location.host === "discoverfin.io") {
-      return "https://video.discoverfin.io/video_type?id=";
+      return "https://video.discoverfin.io/video_type?company=";
     }
   };
 
   const finBaseUrl = () => {
-    return `https://${window.location.host}/en?id=`;
+    return `https://${window.location.host}/en?company=`;
   };
 
   const finBusinessVideoAppLink = () => {
     return (
-      getBaseUrl() + getUrlParameter("id") || getUrlParameter("user")
+      getBaseUrl() +
+      getUrlParameter("company") +
+      "&user=" +
+      getUrlParameter("user")
     ).replace("video_type", "businessOverview");
   };
 
   const finAppLink = () => {
-    return `${finBaseUrl()}${getUrlParameter("id") || getUrlParameter("user")}`;
+    return (
+      finBaseUrl() +
+      getUrlParameter("company") +
+      "&user=" +
+      getUrlParameter("user")
+    );
   };
 
   const finFinancialSuccessVideoAppLink = () => {
     return (
-      getBaseUrl() + getUrlParameter("id") || getUrlParameter("user")
+      getBaseUrl() +
+      getUrlParameter("company") +
+      "&user=" +
+      getUrlParameter("user")
     ).replace("video_type", "financialHouse");
   };
 
-  if (isDashboard) {
+  if(isDashboard){
     $("#only-video-app").css("display", "flex");
     $("#financial-video").click(() => {
       window.open(finFinancialSuccessVideoAppLink(), "_blank");
@@ -250,6 +243,7 @@ if (window.location.pathname.startsWith("/appointment")) {
     $("#do-you-know-fin").click(() => {
       window.open(finAppLink(), "_blank");
     });
+
   }
 
   if (!isVideoApp && !isDashboard) {
@@ -261,12 +255,13 @@ if (window.location.pathname.startsWith("/appointment")) {
     $("#business-video").click(() => {
       window.open(finBusinessVideoAppLink(), "_blank");
     });
-  } else if (!isDashboard) {
+  } else if(!isDashboard) {
     $("#only-fin-app").css("display", "none");
     $("#do-you-know-fin").click(() => {
       window.open(finAppLink(), "_blank");
     });
   }
+
 
   getCompany();
 }
