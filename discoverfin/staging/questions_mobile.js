@@ -366,6 +366,7 @@ async function updateProspect(prospectID) {
       alert(error.response.data.message);
     });
 }
+
 $("#submit_btn").click(function () {
   const terms = $("#terms").is(":checked");
   const email_address = isEmail($("#email").val());

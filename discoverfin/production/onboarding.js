@@ -177,7 +177,7 @@ $("#lang_es").click(function () {
       : "https://player.vimeo.com/video/452754620"
   );
   Weglot.switchTo("es");
-  ssetCookies(
+  setCookies(
     "country",
     canadian && JSON.parse(canadian) ? "Canada" : "United States"
   );
