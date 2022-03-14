@@ -12,6 +12,7 @@ let currentTiming;
 let watchpercentage;
 let options;
 let mcq = [];
+let player;
 
 //*******************************/
 //********ALL FUNCTIONS *********/
@@ -284,7 +285,7 @@ async function setPathsContentVariable(videoType) {
 // Render Video
 function renderVideo(videoID) {
   iframe = document.getElementById("video");
-  player = new Vimeo.Player(iframe);
+  let player = new Vimeo.Player(iframe);
   player
     .loadVideo(videoID)
     .then(function (id) {

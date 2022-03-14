@@ -12,6 +12,7 @@ let currentTiming;
 let watchpercentage;
 let options;
 let mcq = [];
+let player;
 
 //*******************************/
 //********ALL FUNCTIONS *********/
