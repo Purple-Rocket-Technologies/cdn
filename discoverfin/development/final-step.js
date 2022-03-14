@@ -10,6 +10,12 @@ const URL_USER =
     ? readCookie("URL_USER")
     : readCookie("USER_URL");
 
+const appointmentLink = readCookie("isOldUrl")
+  ? `https://${window.location.host}/appointment?company=${readCookie(
+      "isOldUrl"
+    )}&user=${URL_USER}&video=false`
+  : `https://${window.location.host}/appointment?id=${URL_USER}&video=false`;
+
 // Reading name cookie
 const user_name = readCookie("Name");
 $(".user_name").each(function () {
@@ -37,8 +43,7 @@ const setTrailerVideo = () => {
   });
 };
 
-const appointment_link = "https://" + readCookie("APTMT_LINK");
-$("#aptmt_link").attr("href", appointment_link);
+$("#aptmt_link").attr("href", appointmentLink);
 
 setTrailerVideo();
 /**
@@ -107,10 +112,7 @@ $("#user-name").text(readCookie("Name"));
 $("#rep_name").text(rep_name);
 $("#rep-image").attr("src", readCookie("PIC"));
 $(".rep-phoito").css("background-image", "url('" + readCookie("PIC") + "')");
-$("#appointment-iframe iframe").attr(
-  "src",
-  "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
-);
+$("#appointment-iframe iframe").attr("src", appointmentLink);
 
 $("#message-rep").each(function () {
   $(this).attr("href", `sms:${readCookie("PHONE")}`);
@@ -160,11 +162,27 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
     );
 };
 
+const getVideoBaseUrl = () => {
+  if (window.location.host === "dev.discoverfin.io") {
+    return "https://devvideo.discoverfin.io";
+  } else if (window.location.host === "staging.discoverfin.io") {
+    return "https://stagingvideo.discoverfin.io";
+  } else if (window.location.host === "discoverfin.io") {
+    return "https://video.discoverfin.io";
+  }
+};
+
 const openVideoApp = (prospectAnswers) => {
   window.open(
-    `https://devvideo.discoverfin.io/${getVideoType()}?id=${URL_USER}&fname=${readCookie(
-      "Name"
-    )}&email=${prospectAnswers["email"]}`,
+    readCookie("isOldUrl")
+      ? `${getVideoBaseUrl()}/${getVideoType()}?company=${readCookie(
+          "isOldUrl"
+        )}&user=${URL_USER}&fname=${readCookie("Name")}&email=${
+          prospectAnswers["email"]
+        }`
+      : `${getVideoBaseUrl()}/${getVideoType()}?id=${URL_USER}&fname=${readCookie(
+          "Name"
+        )}&email=${prospectAnswers["email"]}`,
     "_self"
   );
 };
@@ -198,19 +216,19 @@ populatePathOptions();
 
 $("#watch-trailer").click(function () {
   new Vimeo.Player($("#video")).play();
+  trackMixPanelEvent("Clicked Watch FIN Trailer", {
+    company: URL_COMPANY,
+    type: "Fin Prospect",
+    page: "FIN APP FINAL STEP",
+    fieldTrainer: URL_USER,
+  });
 });
 
 $(".iframe-back").click(function () {
-  $("#appointment-iframe iframe").attr(
-    "src",
-    "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
-  );
+  $("#appointment-iframe iframe").attr("src", appointmentLink);
 });
 
 $(".closer-last").click(function () {
   // $(".last-popup").removeClass("active");
-  $("#appointment-iframe iframe .w-iframe iframe").attr(
-    "src",
-    "https://dev.discoverfin.io/appointment?id=" + URL_USER + "&video=false"
-  );
+  $("#appointment-iframe iframe .w-iframe iframe").attr("src", appointmentLink);
 });
