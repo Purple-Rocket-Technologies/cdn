@@ -841,12 +841,7 @@ $(".submit.paths").click(async () => {
           "url('" + readCookie("PIC") + "')"
         );
         success_show("Your answers have been sent successfully!");
-        $(".appointment-iframe .w-iframe iframe").attr(
-          "src",
-          "https://dev.discoverfin.io/appointment?id=" +
-            getUrlParameter("user") +
-            "&video=true"
-        );
+        $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
         $(".last-popup").addClass("active");
       })
       .catch(function (error) {

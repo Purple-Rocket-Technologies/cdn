@@ -50,11 +50,12 @@ const getVideoBaseUrl = () => {
   }
 };
 
-const appointment_link = !checkIsEmpty(getUrlParameter("company"))
-  ? `https://${getVideoBaseUrl()}/appointment?company=${getUrlParameter(
-      "company"
-    )}&user=${user_url}&video=true`
-  : `https://${getVideoBaseUrl()}/appointment?id=${user_url}&video=true`;
+const appointment_link = () =>
+  !checkIsEmpty(getUrlParameter("company"))
+    ? `https://${getVideoBaseUrl()}/appointment?company=${getUrlParameter(
+        "company"
+      )}&user=${user_url}&video=true`
+    : `https://${getVideoBaseUrl()}/appointment?id=${user_url}&video=true`;
 
 // Check email format
 function isEmail(e) {
@@ -843,9 +844,7 @@ $(".submit.paths").click(async () => {
         success_show("Your answers have been sent successfully!");
         $(".appointment-iframe .w-iframe iframe").attr(
           "src",
-          "https://qa.discoverfin.io/appointment?id=" +
-            getUrlParameter("user") +
-            "&video=true"
+          appointment_link()
         );
         $(".last-popup").addClass("active");
       })
@@ -860,10 +859,10 @@ $(".submit.paths").click(async () => {
 });
 
 $(".iframe-back").click(function () {
-  $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
+  $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link());
 });
 
 $(".closer-last").click(function () {
   $(".last-popup").removeClass("active");
-  $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
+  $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link());
 });
