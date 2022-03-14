@@ -303,7 +303,7 @@ async function setPathsContentVariable(videoType) {
 // Render Video
 function renderVideo(videoID) {
   iframe = document.getElementById("video");
-  let player = new Vimeo.Player(iframe);
+  player = new Vimeo.Player(iframe);
   player
     .loadVideo(videoID)
     .then(function (id) {
