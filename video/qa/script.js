@@ -180,6 +180,7 @@ function autoFill() {
     $("#peoplewatching").val(1);
     $("#country-us").click();
     $("#country-us").toggleClass("active");
+    fetchVideo(videoType, "US", "EN");
   }
 }
 
