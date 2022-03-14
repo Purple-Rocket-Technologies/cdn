@@ -64,7 +64,7 @@ function scrollButtonHandlers(
       : window.scrollY > targetElement.offsetTop + targetElement.offsetHeight
   ) {
     $(".hide-on-scroll").each(function () {
-      $(this).css("display", "block");
+      $(this).css("display", "grid");
     });
     $(".down-arrow").css("display", "none");
   } else {
@@ -162,27 +162,27 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
     );
 };
 
-const getVideoBaseUrl = () => {
+function getVideoBaseUrl() {
   if (window.location.host === "dev.discoverfin.io") {
     return "https://devvideo.discoverfin.io";
   } else if (window.location.host === "staging.discoverfin.io") {
     return "https://stagingvideo.discoverfin.io";
   } else if (window.location.host === "discoverfin.io") {
     return "https://video.discoverfin.io";
+  } else if (window.location.host === "qa.discoverfin.io") {
+    return "https://qavideo.discoverfin.io";
   }
-};
+}
 
-const openVideoApp = (prospectAnswers) => {
+const openVideoApp = (email) => {
   window.open(
     !checkIsEmpty(readCookie("isOldUrl"))
       ? `${getVideoBaseUrl()}/${getVideoType()}?company=${readCookie(
           "isOldUrl"
-        )}&user=${URL_USER}&fname=${readCookie("Name")}&email=${
-          prospectAnswers["email"]
-        }`
+        )}&user=${URL_USER}&fname=${readCookie("Name")}&email=${email}`
       : `${getVideoBaseUrl()}/${getVideoType()}?id=${URL_USER}&fname=${readCookie(
           "Name"
-        )}&email=${prospectAnswers["email"]}`,
+        )}&email=${email}`,
     "_self"
   );
 };
@@ -200,12 +200,12 @@ async function populatePathOptions() {
   );
 
   $("#video-area").click(() => {
-    openVideoApp(prospectAnswers);
+    openVideoApp(prospectAnswers["email"]);
   });
-
-  $("#open-video").each(function () {
+  
+  $(".open-video").each(function () {
     $(this).click(() => {
-      openVideoApp(prospectAnswers);
+      openVideoApp(prospectAnswers["email"]);
     });
   });
 

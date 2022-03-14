@@ -10,6 +10,8 @@ const URL_USER =
     ? readCookie("URL_USER")
     : readCookie("USER_URL");
 
+let prospectEmail;
+
 const appointmentLink = !checkIsEmpty(readCookie("isOldUrl"))
   ? `https://${window.location.host}/appointment?company=${readCookie(
       "isOldUrl"
@@ -164,25 +166,25 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
 
 const getVideoBaseUrl = () => {
   if (window.location.host === "dev.discoverfin.io") {
-    return "https://devvideo.discoverfin.io";
+    return "https://devvideo.discoverfin.io/video_type?id=";
   } else if (window.location.host === "staging.discoverfin.io") {
-    return "https://stagingvideo.discoverfin.io";
+    return "https://stagingvideo.discoverfin.io/video_type?id=";
   } else if (window.location.host === "discoverfin.io") {
-    return "https://video.discoverfin.io";
+    return "https://video.discoverfin.io/video_type?id=";
+  } else if (window.location.host === "qa.discoverfin.io") {
+    return "https://qavideo.discoverfin.io/video_type?id=";
   }
 };
 
-const openVideoApp = (prospectAnswers) => {
+const openVideoApp = (email) => {
   window.open(
     !checkIsEmpty(readCookie("isOldUrl"))
       ? `${getVideoBaseUrl()}/${getVideoType()}?company=${readCookie(
           "isOldUrl"
-        )}&user=${URL_USER}&fname=${readCookie("Name")}&email=${
-          prospectAnswers["email"]
-        }`
+        )}&user=${URL_USER}&fname=${readCookie("Name")}&email=${email}`
       : `${getVideoBaseUrl()}/${getVideoType()}?id=${URL_USER}&fname=${readCookie(
           "Name"
-        )}&email=${prospectAnswers["email"]}`,
+        )}&email=${email}`,
     "_self"
   );
 };
@@ -200,12 +202,12 @@ async function populatePathOptions() {
   );
 
   $("#video-area").click(() => {
-    openVideoApp(prospectAnswers);
+    openVideoApp(prospectAnswers["email"]);
   });
 
-  $("#open-video").each(function () {
+  $(".open-video").each(function () {
     $(this).click(() => {
-      openVideoApp(prospectAnswers);
+      openVideoApp(prospectAnswers["email"]);
     });
   });
 
