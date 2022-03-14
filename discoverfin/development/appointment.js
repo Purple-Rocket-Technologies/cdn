@@ -212,6 +212,8 @@ if (window.location.pathname.startsWith("/appointment")) {
       return "https://stagingvideo.discoverfin.io/video_type?id=";
     } else if (window.location.host === "discoverfin.io") {
       return "https://video.discoverfin.io/video_type?id=";
+    } else if (window.location.host === "qa.discoverfin.io") {
+      return "https://qavideo.discoverfin.io/video_type?id=";
     }
   };
 
