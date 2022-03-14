@@ -10,7 +10,7 @@ const URL_USER =
     ? readCookie("URL_USER")
     : readCookie("USER_URL");
 
-const appointmentLink = readCookie("isOldUrl")
+const appointmentLink = !checkIsEmpty(readCookie("isOldUrl"))
   ? `https://${window.location.host}/appointment?company=${readCookie(
       "isOldUrl"
     )}&user=${URL_USER}&video=false`
@@ -174,7 +174,7 @@ const getVideoBaseUrl = () => {
 
 const openVideoApp = (prospectAnswers) => {
   window.open(
-    readCookie("isOldUrl")
+    !checkIsEmpty(readCookie("isOldUrl"))
       ? `${getVideoBaseUrl()}/${getVideoType()}?company=${readCookie(
           "isOldUrl"
         )}&user=${URL_USER}&fname=${readCookie("Name")}&email=${
