@@ -17,8 +17,34 @@ if (window.location.pathname.startsWith("/appointment")) {
     isVideoApp = false;
     isDashboard = true;
   }
-  const user_url = getUrlParameter("id") || getUrlParameter("user");
 
+  trackMixPanelEvent("Prospect visited Appointment Page", {
+    rep_name,
+    page_type: isVideoApp ? "Video App" : "FIN App",
+  });
+
+  let appointment_button_clicked = false;
+
+  // track appointment button clicks to mixpanel
+  const handleAppointmentButtonClick = () => {
+    if (appointment_button_clicked) {
+      return;
+    }
+    trackMixPanelEvent("Clicked Schedule Appointment button", {
+      rep_name,
+      company_id,
+      user_id,
+      user,
+      company,
+      page_type: isVideoApp ? "Video App" : "FIN App",
+      rep_email,
+    });
+    appointment_button_clicked = true;
+  };
+
+  $("#aptmt_link1").click(handleAppointmentButtonClick);
+  $("#aptmt_link2").click(handleAppointmentButtonClick);
+  $("#aptmt_link3").click(handleAppointmentButtonClick);
   function setPageMetaContent(repName, repPic) {
     document.title = repName;
     $("head").append(
@@ -89,6 +115,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   function openLink(link) {
     let element = document.createElement("a");
     element.setAttribute("href", link);
+    element.setAttribute("target", "_parent");
     element.click();
     element.remove();
   }
@@ -96,7 +123,15 @@ if (window.location.pathname.startsWith("/appointment")) {
   async function getCompany() {
     try {
       const response = await axios.get(
-        "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url
+        `https://${api_url}${
+          getUrlParameter("company")
+            ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
+                getUrlParameter("id") || getUrlParameter("user")
+              }`
+            : `/api/v1/users/getUserByUrl/${
+                getUrlParameter("id") || getUrlParameter("user")
+              }`
+        }`
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
@@ -136,6 +171,15 @@ if (window.location.pathname.startsWith("/appointment")) {
       },
     })
       .then(() => {
+        trackMixPanelEvent("Prospect filled getInTouch form", {
+          rep_name,
+          user_id,
+          rep_email,
+          company_id,
+          page_type: isVideoApp ? "Video App" : "FIN App",
+          prospectName: $("#first_name").val() + " " + $("#last_name").val(),
+          prospectEmail: $("#email").val(),
+        });
         $(".getintouch").addClass("hide");
         $(".successmessage").addClass("displayshow");
       })
@@ -167,7 +211,7 @@ if (window.location.pathname.startsWith("/appointment")) {
     } else if (window.location.host === "staging.discoverfin.io") {
       return "https://stagingvideo.discoverfin.io/video_type?id=";
     } else if (window.location.host === "discoverfin.io") {
-      return "https://video.discoverfin.io/video_type?company=";
+      return "https://video.discoverfin.io/video_type?id=";
     }
   };
 
@@ -176,15 +220,19 @@ if (window.location.pathname.startsWith("/appointment")) {
   };
 
   const finBusinessVideoAppLink = () => {
-    return (getBaseUrl() + user_url).replace("video_type", "businessOverview");
+    return (
+      getBaseUrl() + getUrlParameter("id") || getUrlParameter("user")
+    ).replace("video_type", "businessOverview");
   };
 
   const finAppLink = () => {
-    return `${finBaseUrl()}${user_url}${is_canadian ? "&ca=true" : ""}`;
+    return `${finBaseUrl()}${getUrlParameter("id") || getUrlParameter("user")}`;
   };
 
   const finFinancialSuccessVideoAppLink = () => {
-    return (getBaseUrl() + user_url).replace("video_type", "financialHouse");
+    return (
+      getBaseUrl() + getUrlParameter("id") || getUrlParameter("user")
+    ).replace("video_type", "financialHouse");
   };
 
   if (isDashboard) {
@@ -197,7 +245,7 @@ if (window.location.pathname.startsWith("/appointment")) {
       window.open(finBusinessVideoAppLink(), "_blank");
     });
 
-    $("#only-fin-app").css("display", "flex");
+    $("#only-fin-app").css("display", "grid");
     $("#do-you-know-fin").click(() => {
       window.open(finAppLink(), "_blank");
     });

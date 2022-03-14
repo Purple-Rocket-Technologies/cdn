@@ -1,8 +1,8 @@
-const relativ_url = window.location.origin + window.location.pathname;
-const curren_url = window.location;
-//if (curren_url !== relativ_url) {
-  //window.location = relativ_url;
-//}
+var relativ_url = window.location.origin + window.location.pathname;
+var curren_url = window.location;
+if (curren_url != relativ_url) {
+  window.location = relativ_url;
+}
 
 $("body").on("scroll mousewheel touchmove", function (e) {
   e.preventDefault();
@@ -57,12 +57,18 @@ $("#user_name").keyup(function () {
 });
 
 $("#user_name").on("keypress", function (e) {
-  if (e.which === 13) {
+  if (e.which == 13) {
     e.preventDefault();
     if ($("#ques_1_btn").hasClass("go_ahead")) {
       $("#ques_1_btn")[0].click();
     }
   }
+});
+
+$("#ques_1_btn").on("click", function () {
+  trackMixPanelEvent("FIN Prospect Started Journey", {
+    first_name: $("#user_name").val(),
+  });
 });
 
 $("#user_age").keyup(function () {
@@ -84,7 +90,7 @@ $("#user_age").keyup(function () {
 
 //question two desktop 1
 $("#user_age").on("keypress", function (e) {
-  if (e.which === 13) {
+  if (e.which == 13) {
     e.preventDefault();
     if ($("#ques_2_btn").hasClass("go_ahead")) {
       $("#ques_2_btn")[0].click();
@@ -119,7 +125,7 @@ $("#user_income").keyup(function () {
 
 // Live Comma
 $("#user_income").keyup(function () {
-  if ($(this).val() !== "") {
+  if ($(this).val() != "") {
     if (parseInt($(this).val()) > 0) {
       var income = parseInt(
         $(this).val().replace(/[^\d]/g, "").replace(/,/g, ""),
@@ -136,7 +142,7 @@ $("#user_income").keyup(function () {
 
 //question four desktop 1
 $("#user_income").on("keypress", function (e) {
-  if (e.which === 13) {
+  if (e.which == 13) {
     e.preventDefault();
     if ($("#ques_4_btn").hasClass("go_ahead")) {
       $("#ques_4_btn")[0].click();
@@ -150,12 +156,13 @@ var year_left_in_retirement;
 var fin_factor;
 
 $("#ques_4_btn").click(function () {
-  const incomebi = $("#user_income").val().replace(/,/g, "");
-  const userage = parseInt($("#user_age").val());
+  var incomebi = $("#user_income").val().replace(/,/g, "");
+  var userage = parseInt($("#user_age").val());
+  avg_retirement_age = avg_retirement_age;
   year_left_in_retirement = avg_retirement_age - userage;
-  let inflation_factor = Math.pow(1.025, year_left_in_retirement);
+  var inflation_factor = Math.pow(1.025, year_left_in_retirement);
   inflation_factor = Math.round((inflation_factor + 0.00001) * 100) / 100;
-  const income_after_inflation = parseInt(incomebi) * inflation_factor;
+  var income_after_inflation = parseInt(incomebi) * inflation_factor;
   $("#ibi").html("$" + addCommas(parseInt(incomebi)));
   $(".income_after_inflation").html(
     addCommas(parseInt(income_after_inflation))
@@ -197,18 +204,25 @@ $(".options_popup.step_5 .option").click(function () {
     $(".income_after_inflation").html().replace(/,/g, "") * fin_factor;
   selected_ans = parseInt($(this).attr("data-ans"));
   user_age = parseInt($("#user_age").val());
-   if (
-    (user_age > 30 && user_age < 40 && selected_ans === 1) ||
-    (user_age > 30 && user_age < 40 && selected_ans === 3)
+  if (
+    (user_age < 30 && selected_ans == 1) ||
+    (user_age < 30 && selected_ans == 3)
+  ) {
+    fin_num = fin_num;
+  } else if (
+    (user_age > 30 && user_age < 40 && selected_ans == 1) ||
+    (user_age > 30 && user_age < 40 && selected_ans == 3)
   ) {
     fin_num = fin_num - (fin_num / 100) * 20;
   } else if (
-    (user_age > 40 && selected_ans === 1) ||
-    (user_age > 40 && selected_ans === 3)
+    (user_age > 40 && selected_ans == 1) ||
+    (user_age > 40 && selected_ans == 3)
   ) {
     fin_num = fin_num - (fin_num / 100) * 30;
-  } else if (user_age > 30 && selected_ans === 2) {
+  } else if (user_age > 30 && selected_ans == 2) {
     fin_num = fin_num - (fin_num / 100) * 50;
+  } else {
+    fin_num = fin_num;
   }
   $("#fin_number").val(fin_num);
 });
@@ -264,7 +278,7 @@ async function createNewProspect() {
     country: country_val,
   };
 
-  if (readCookie("isAffiliateUrl") === "true") {
+  if (readCookie("isAffiliateUrl") == "true") {
     data.affiliateId = readCookie("affiliateId");
   }
 
@@ -283,10 +297,15 @@ async function createNewProspect() {
       setCookies("FIN Number", "" + response.data.data.fin_number);
       setCookies("Name", response.data.data.first_name);
       setCookies("Country", response.data.data.country);
+      trackMixPanelEvent("FIN Prospect created.", response.data.data);
       window.location.href = "/result";
     })
     .catch(function (error) {
       alert(error.response.data.message);
+      throw new SentryError(
+        `Error while creating a prospect email: ${$("#email").val()}`,
+        error
+      );
     });
 
   //trrigerring the email
@@ -310,7 +329,7 @@ async function createNewProspect() {
 }
 
 async function updateProspect(prospectID) {
-  if (Weglot.getCurrentLang() === "es") {
+  if (Weglot.getCurrentLang() == "es") {
     [retirement_age, pension_choice, guessed_fin] = await translateToLanguage([
       $("#retirement_age").val(),
       $("#pension_choice").val(),
@@ -356,6 +375,10 @@ async function updateProspect(prospectID) {
     })
     .catch(function (error) {
       alert(error.response.data.message);
+      throw new SentryError(
+        `Error while user submitting answers: ${$("#email").val()}`,
+        error
+      );
     });
 }
 $("#submit_btn").click(function () {
@@ -382,6 +405,13 @@ $("#submit_btn").click(function () {
             updateProspect(response.data.data[0]._id);
           }
         })
+        .catch(function (error) {
+          // alert("Oops, There was an unexpected error.");
+          throw new SentryError(
+            `Error While submitting answers: ${$("#email").val()}`,
+            error
+          );
+        });
     }
   } else {
     alert("Please enter a valid email address");

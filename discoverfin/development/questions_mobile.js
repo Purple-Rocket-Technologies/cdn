@@ -65,6 +65,12 @@ $("#user_name").on("keypress", function (e) {
   }
 });
 
+$("#ques_1_btn").on("click", function () {
+  trackMixPanelEvent("FIN Prospect Started Journey", {
+    first_name: $("#user_name").val(),
+  });
+});
+
 $("#user_age").keyup(function () {
   var var_age = $(this).val();
   if (var_age.length > 1) {
@@ -291,10 +297,15 @@ async function createNewProspect() {
       setCookies("FIN Number", "" + response.data.data.fin_number);
       setCookies("Name", response.data.data.first_name);
       setCookies("Country", response.data.data.country);
+      trackMixPanelEvent("FIN Prospect created.", response.data.data);
       window.location.href = "/result";
     })
     .catch(function (error) {
       alert(error.response.data.message);
+      throw new SentryError(
+        `Error while creating a prospect email: ${$("#email").val()}`,
+        error
+      );
     });
 
   //trrigerring the email
@@ -364,6 +375,10 @@ async function updateProspect(prospectID) {
     })
     .catch(function (error) {
       alert(error.response.data.message);
+      throw new SentryError(
+        `Error while user submitting answers: ${$("#email").val()}`,
+        error
+      );
     });
 }
 $("#submit_btn").click(function () {
@@ -382,13 +397,21 @@ $("#submit_btn").click(function () {
           readCookie("COMPANY_ID") +
           "/prospects?email=" +
           $("#email").val(),
-      }).then(function (response) {
-        if (response.data.count === 0) {
-          createNewProspect();
-        } else {
-          updateProspect(response.data.data[0]._id);
-        }
-      });
+      })
+        .then(function (response) {
+          if (response.data.count === 0) {
+            createNewProspect();
+          } else {
+            updateProspect(response.data.data[0]._id);
+          }
+        })
+        .catch(function (error) {
+          // alert("Oops, There was an unexpected error.");
+          throw new SentryError(
+            `Error While submitting answers: ${$("#email").val()}`,
+            error
+          );
+        });
     }
   } else {
     alert("Please enter a valid email address");
