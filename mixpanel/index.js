@@ -1,3 +1,5 @@
 const trackMixPanelEvent = (eventName, data = {}) => {
-  mixpanel.track(eventName, data);
+  if (window.location.host === "discoverfin.io") {
+    mixpanel.track(eventName, data);
+  }
 };

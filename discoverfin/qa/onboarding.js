@@ -1,6 +1,10 @@
 const user_url = getUrlParameter("id") || getUrlParameter("user");
+setCookies("isOldUrl", getUrlParameter("company"));
 let is_canadian = false;
-if (user_url && getUrlParameter("prospectEmail")) {
+if (
+  (getUrlParameter("id") || getUrlParameter("user")) &&
+  getUrlParameter("prospectEmail")
+) {
   getAPIparams();
 }
 
@@ -8,11 +12,21 @@ if (user_url && getUrlParameter("prospectEmail")) {
 function getAPIparams() {
   axios({
     method: "get",
-    url: "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url,
+    url: `https://${api_url}${
+      getUrlParameter("company")
+        ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
+            getUrlParameter("id") || getUrlParameter("user")
+          }`
+        : `/api/v1/users/getUserByUrl/${
+            getUrlParameter("id") || getUrlParameter("user")
+          }`
+    }`,
   })
     .then(function (response) {
       company_id = response.data.data.companyId;
       setCookies("COMPANY_ID", company_id);
+      setCookies("URL_COMPANY", response.data.data.companyUrl);
+      setCookies("USER_URL", getUrlParameter("id") || getUrlParameter("user"));
       is_canadian =
         response.data.data.address &&
         response.data.data.address.country === "Canada";
@@ -60,11 +74,23 @@ function getAPIparams() {
         .catch(function (error) {
           console.log(error);
           alert("Oops, There was an unexpected error.");
+          throw new SentryError(
+            `Oops, There was an unexpected error onboarding.js: ${getUrlParameter(
+              "prospectEmail"
+            )}`,
+            error
+          );
         });
     })
     .catch(function (error) {
       console.log(error);
       alert("Oops, There was an unexpected error.");
+      throw new SentryError(
+        `Oops, There was an unexpected error onboarding.js: ${getUrlParameter(
+          "prospectEmail"
+        )}`,
+        error
+      );
     });
 }
 
@@ -74,12 +100,19 @@ $("#start_over").attr("href", home_link);
 
 var user = getUrlParameter("user");
 var company = getUrlParameter("company");
-setCookies("URL_USER", user);
-setCookies("URL_COMPANY", company);
+setCookies("URL_USER", getUrlParameter("id") || getUrlParameter("user"));
 
 axios({
   method: "get",
-  url: "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url,
+  url: `https://${api_url}${
+    getUrlParameter("company")
+      ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
+          getUrlParameter("id") || getUrlParameter("user")
+        }`
+      : `/api/v1/users/getUserByUrl/${
+          getUrlParameter("id") || getUrlParameter("user")
+        }`
+  }`,
 })
   .then(function (response) {
     if (response.data.error === true) {
@@ -94,7 +127,8 @@ axios({
       setCookies("COMPANY_ID", response.data.data.companyId);
       setCookies("COMPANY_URL", response.data.data.companyUrl);
       setCookies("USER_ID", response.data.data.userId);
-      setCookies("USER_URL", response.data.data.userUrl);
+      setCookies("URL_COMPANY", response.data.data.companyUrl);
+      setCookies("USER_URL", getUrlParameter("id") || getUrlParameter("user"));
       setCookies("APTMT_LINK", response.data.data.appointmentBookingLink);
       setCookies("REP_NAME", response.data.data.firstName);
       setCookies("PIC", response.data.data.profilePic);
@@ -152,7 +186,7 @@ $("#lang_es").click(function () {
       : "https://player.vimeo.com/video/452754620"
   );
   Weglot.switchTo("es");
-  ssetCookies("country", is_canadian ? "Canada" : "United States");
+  setCookies("country", is_canadian ? "Canada" : "United States");
 });
 
 $("#lang_ca_es").click(function () {

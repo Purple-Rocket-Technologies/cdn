@@ -65,6 +65,11 @@ $("#user_name").on("keypress", function (e) {
   }
 });
 
+$("#ques_1_btn").on("click", function () {
+  trackMixPanelEvent("FIN Prospect Started Journey", {
+    first_name: $("#user_name").val(),
+  });
+});
 $("#user_age").keyup(function () {
   var var_age = $(this).val();
   if (var_age.length > 1) {
@@ -292,29 +297,15 @@ async function createNewProspect() {
       setCookies("Name", response.data.data.first_name);
       setCookies("Country", response.data.data.country);
       window.location.href = "/result";
+      trackMixPanelEvent("FIN Prospect created.", response.data.data);
     })
     .catch(function (error) {
       alert(error.response.data.message);
+      throw new SentryError(
+        `Error while creating a prospect email: ${$("#email").val()}`,
+        error
+      );
     });
-
-  //trrigerring the email
-  // axios({
-  //   method: 'post',
-  //   url: 'https://'+ api_url +'/api/v1/users/email/send/finResults',
-  //   data: {
-  //     companyId: readCookie('COMPANY_ID'),
-  //     userId: readCookie('USER_ID'),
-  //     prospectName : $("#user_name").val(),
-  //     prospectEmail: $("#email").val(),
-  //     finNumber: parseInt($("#fin_number").val())
-  //   }
-  // })
-  // .then(function(response) {
-  //   console.log(response.data);
-  // })
-  // .catch(function (error) {
-  //   alert("Oops, There was an unexpected error.");
-  // });
 }
 
 async function updateProspect(prospectID) {
@@ -364,6 +355,10 @@ async function updateProspect(prospectID) {
     })
     .catch(function (error) {
       alert(error.response.data.message);
+      throw new SentryError(
+        `Error while updating prospect: ${prospectID}`,
+        error
+      );
     });
 }
 
@@ -391,8 +386,15 @@ $("#submit_btn").click(function () {
             updateProspect(response.data.data[0]._id);
           }
         })
+        .catch(function (error) {
+          // alert("Oops, There was an unexpected error.");
+          throw new SentryError(
+            `Error While submitting results: ${$("#email").val()}`,
+            error
+          );
+        });
     }
   } else {
-    alert("Please enter a valid email address");
+    alert("Please enter your email address");
   }
 });
