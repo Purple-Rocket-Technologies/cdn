@@ -166,13 +166,13 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
 
 const getVideoBaseUrl = () => {
   if (window.location.host === "dev.discoverfin.io") {
-    return "https://devvideo.discoverfin.io/video_type?id=";
+    return "https://devvideo.discoverfin.io";
   } else if (window.location.host === "staging.discoverfin.io") {
-    return "https://stagingvideo.discoverfin.io/video_type?id=";
+    return "https://stagingvideo.discoverfin.io";
   } else if (window.location.host === "discoverfin.io") {
-    return "https://video.discoverfin.io/video_type?id=";
+    return "https://video.discoverfin.io";
   } else if (window.location.host === "qa.discoverfin.io") {
-    return "https://qavideo.discoverfin.io/video_type?id=";
+    return "https://qavideo.discoverfin.io";
   }
 };
 
