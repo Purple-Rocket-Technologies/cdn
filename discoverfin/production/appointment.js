@@ -17,7 +17,6 @@ if (window.location.pathname.startsWith("/appointment")) {
     isVideoApp = false;
     isDashboard = true;
   }
-  const user_url = getUrlParameter("id") || getUrlParameter("user");
 
   trackMixPanelEvent("Prospect visited Appointment Page", {
     rep_name,

@@ -1,4 +1,5 @@
 const user_url = getUrlParameter("id") || getUrlParameter("user");
+setCookies("isOldUrl", getUrlParameter("company"));
 let is_canadian = false;
 if (
   (getUrlParameter("id") || getUrlParameter("user")) &&
@@ -6,8 +7,6 @@ if (
 ) {
   getAPIparams();
 }
-
-setCookies("isOldUrl", getUrlParameter("company"))
 
 //fetching company, user and prospect IDs
 function getAPIparams() {

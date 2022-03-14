@@ -11,10 +11,10 @@ const URL_USER =
     : readCookie("USER_URL");
 
 const appointmentLink = readCookie("isOldUrl")
-  ? `https://discoverfin.io/appointment?company=${readCookie(
+  ? `https://${window.location.host}/appointment?company=${readCookie(
       "isOldUrl"
     )}&user=${URL_USER}&video=false`
-  : `https://discoverfin.io/appointment?id=${URL_USER}&video=false`;
+  : `https://${window.location.host}.io/appointment?id=${URL_USER}&video=false`;
 
 // Reading name cookie
 const user_name = readCookie("Name");
@@ -161,15 +161,26 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
       }">${currentItem}</h2></div>`
     );
 };
+
+const getVideoBaseUrl = () => {
+  if (window.location.host === "dev.discoverfin.io") {
+    return "https://devvideo.discoverfin.io";
+  } else if (window.location.host === "staging.discoverfin.io") {
+    return "https://stagingvideo.discoverfin.io";
+  } else if (window.location.host === "discoverfin.io") {
+    return "https://video.discoverfin.io";
+  }
+};
+
 const openVideoApp = (prospectAnswers) => {
   window.open(
     readCookie("isOldUrl")
-      ? `https://video.discoverfin.io/${getVideoType()}?company=${readCookie(
+      ? `${getVideoBaseUrl()}/${getVideoType()}?company=${readCookie(
           "isOldUrl"
         )}&user=${URL_USER}&fname=${readCookie("Name")}&email=${
           prospectAnswers["email"]
         }`
-      : `https://video.discoverfin.io/${getVideoType()}?id=${URL_USER}&fname=${readCookie(
+      : `${getVideoBaseUrl()}/${getVideoType()}?id=${URL_USER}&fname=${readCookie(
           "Name"
         )}&email=${prospectAnswers["email"]}`,
     "_self"
