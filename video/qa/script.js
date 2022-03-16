@@ -12,6 +12,7 @@ let currentTiming;
 let watchpercentage;
 let options;
 let mcq = [];
+let player;
 
 //*******************************/
 //********ALL FUNCTIONS *********/
@@ -36,6 +37,25 @@ const getUrlParameter = function getUrlParameter(sParam) {
 };
 
 const user_url = getUrlParameter("id") || getUrlParameter("user");
+
+const getVideoBaseUrl = () => {
+  if (window.location.host === "devvideo.discoverfin.io") {
+    return "dev.discoverfin.io";
+  } else if (window.location.host === "stagingvideo.discoverfin.io") {
+    return "staging.discoverfin.io";
+  } else if (window.location.host === "video.discoverfin.io") {
+    return "video.discoverfin.io";
+  } else if (window.location.host === "qavideo.discoverfin.io") {
+    return "qa.discoverfin.io";
+  }
+};
+
+const appointment_link = () =>
+  !checkIsEmpty(getUrlParameter("company"))
+    ? `https://${getVideoBaseUrl()}/appointment?company=${getUrlParameter(
+        "company"
+      )}&user=${user_url}&video=true`
+    : `https://${getVideoBaseUrl()}/appointment?id=${user_url}&video=true`;
 
 // Check email format
 function isEmail(e) {
@@ -826,9 +846,7 @@ $(".submit.paths").click(async () => {
         success_show("Your answers have been sent successfully!");
         $(".appointment-iframe .w-iframe iframe").attr(
           "src",
-          "https://qa.discoverfin.io/appointment?id=" +
-            getUrlParameter("user") +
-            "&video=true"
+          appointment_link()
         );
         $(".last-popup").addClass("active");
       })
@@ -843,20 +861,10 @@ $(".submit.paths").click(async () => {
 });
 
 $(".iframe-back").click(function () {
-  $(".appointment-iframe .w-iframe iframe").attr(
-    "src",
-    "https://qa.discoverfin.io/appointment?id=" +
-      getUrlParameter("user") +
-      "&video=true"
-  );
+  $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link());
 });
 
 $(".closer-last").click(function () {
   $(".last-popup").removeClass("active");
-  $(".appointment-iframe .w-iframe iframe").attr(
-    "src",
-    "https://qa.discoverfin.io/appointment?id=" +
-      getUrlParameter("user") +
-      "&video=true"
-  );
+  $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link());
 });
