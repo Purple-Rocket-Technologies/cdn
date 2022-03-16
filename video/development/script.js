@@ -180,6 +180,9 @@ function autoFill() {
     $("#peoplewatching").val(1);
     $("#country-us").click();
     $("#country-us").toggleClass("active");
+    lang_val = "EN";
+    country_val = "US";
+    fetchVideo(videoType, "US", "EN");
   }
 }
 
@@ -345,8 +348,8 @@ function checkVideoProspect(email_val) {
             "Welcome " + response.data.data[0].firstName + "! Enjoy your video"
           );
         }
-        country_val = response.data.data[0].country;
-        lang_val = response.data.data[0].language;
+        country_val = response.data.data[0].country || "US";
+        lang_val = response.data.data[0].language || "EN";
         fetchVideo(videoType, country_val, lang_val);
         letsStart();
       } else {
@@ -366,8 +369,8 @@ function createVideoProspect() {
     lastName: $("#lname").val(),
     email: $("#email").val(),
     phone: Inputmask.unmask($("#phone").val(), { mask: "(999) 999-9999" }),
-    country: country_val,
-    language: lang_val,
+    country: country_val || "US",
+    language: lang_val || "EN",
     watchingWith: $("#peoplewatching").val(),
     watchedTime: 0,
     totalVideoTime: format(totalDurationTime),
