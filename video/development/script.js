@@ -382,6 +382,7 @@ function checkVideoProspect(email_val) {
 
 // Create Video Prospect
 function createVideoProspect() {
+  fetchVideo(videoType, country_val || "US", lang_val || "EN");
   const data = {
     videoName: document.title,
     firstName: $("#fname").val(),
@@ -415,12 +416,14 @@ function createVideoProspect() {
     data,
   })
     .then(function (response) {
+      renderVideo(video_id);
       video_prospect_id = response.data.data._id;
       success_show("Your details have been verified, Enjoy your video!");
       letsStart();
     })
     .catch(function (error) {
-      error_show(error.response.data.message);
+      console.log(error);
+      // error_show(error.response.data.message);
     });
 }
 

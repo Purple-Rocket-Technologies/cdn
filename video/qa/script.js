@@ -349,12 +349,12 @@ function fetchVideo(type, country, lang) {
 // Check Video Prospect
 function checkVideoProspect(email_val) {
   const checkVideoProspectAPI =
-      "https://" +
-      api_url +
-      "/api/v1/users/company/" +
-      readCookie("COMPANY_ID") +
-      "/videoProspects?email=" +
-      email_val;
+    "https://" +
+    api_url +
+    "/api/v1/users/company/" +
+    readCookie("COMPANY_ID") +
+    "/videoProspects?email=" +
+    email_val;
 
   axios({
     method: "get",
@@ -383,6 +383,7 @@ function checkVideoProspect(email_val) {
 
 // Create Video Prospect
 function createVideoProspect() {
+  fetchVideo(videoType, country_val || "US", lang_val || "EN");
   const data = {
     videoName: document.title,
     firstName: $("#fname").val(),
@@ -421,7 +422,8 @@ function createVideoProspect() {
       letsStart();
     })
     .catch(function (error) {
-      error_show(error.response.data.message);
+      console.log(error);
+      // error_show(error.response.data.message);
     });
 }
 
