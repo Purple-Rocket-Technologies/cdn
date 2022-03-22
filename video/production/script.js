@@ -480,17 +480,17 @@ setInterval(function () {
       $(".elapsedtime").text(format(seconds));
       const schedule_footer = $(".schedule-footer");
       watchpercentage = (seconds / totalDurationTime) * 100;
-      if (watchpercentage >= 93) {
-        if (schedule_footer.css("display") === "none") {
-          schedule_footer.css("display", "flex");
-          $("#window_frame").attr(
-            "src",
-            `https://discoverfin.io/appointment?company=${getUrlParameter(
-              "company"
-            )}&user=${getUrlParameter("user")}&video=true`
-          );
-        }
-      }
+     //if (watchpercentage >= 93) {
+       //if (schedule_footer.css("display") === "none") {
+          // schedule_footer.css("display", "flex");
+          // $("#window_frame").attr(
+           // "src",
+             //`https://discoverfin.io/appointment?company=${getUrlParameter(
+             // "company"
+            //)}&user=${getUrlParameter("user")}&video=true`
+          //);
+        //}
+      //}
       currentTiming = seconds;
     });
   }
@@ -716,8 +716,8 @@ const set75 = setInterval(function () {
 
 $(".path-option").click(function () {
   var path_name_value = $(this).children(".heading").text();
-  const schedule_footer = $(".schedule-footer");
-  schedule_footer.remove();
+  //const schedule_footer = $(".schedule-footer");
+  //schedule_footer.remove();
   triggerRenderOptions(path_name_value);
 });
 
