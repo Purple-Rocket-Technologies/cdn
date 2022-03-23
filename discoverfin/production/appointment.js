@@ -10,12 +10,12 @@ if (window.location.pathname.startsWith("/appointment")) {
   let isDashboard = false;
   let isVideoApp = false;
   let is_canadian = false;
-  if(getUrlParameter("video")){
-    isVideoApp= JSON.parse(getUrlParameter("video"));
-    isDashboard=false;
-  }else{
-    isVideoApp=false;
-    isDashboard=true;
+  if (getUrlParameter("video")) {
+    isVideoApp = JSON.parse(getUrlParameter("video"));
+    isDashboard = false;
+  } else {
+    isVideoApp = false;
+    isDashboard = true;
   }
 
   trackMixPanelEvent("Prospect visited Appointment Page", {
@@ -94,14 +94,14 @@ if (window.location.pathname.startsWith("/appointment")) {
     } else {
       $(".canadian").css("display", "none");
     }
-    
+
     $("#appointment-schedule-url .calender-embedd").attr(
       "src",
       appointment_link
     );
     //$("#rep-email").text(rep_email);
     //$("#rep-phone").text(rep_phone);
-   // $("#rep-phone").attr("href", `tel:${rep_phone}`);
+    // $("#rep-phone").attr("href", `tel:${rep_phone}`);
     //$("#rep-email").attr("href", `mailto:${rep_email}`);
     $("#phone-btn").click(() => {
       openLink(`tel:${rep_phone}`);
@@ -123,11 +123,11 @@ if (window.location.pathname.startsWith("/appointment")) {
     try {
       const response = await axios.get(
         "https://" +
-          api_url +
-          "/api/v1/users/getCompany/name/" +
-          getUrlParameter("company") +
-          "/" +
-          getUrlParameter("user")
+        api_url +
+        "/api/v1/users/getCompany/name/" +
+        getUrlParameter("company") +
+        "/" +
+        getUrlParameter("user")
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
@@ -242,7 +242,7 @@ if (window.location.pathname.startsWith("/appointment")) {
     ).replace("video_type", "financialHouse");
   };
 
-  if(isDashboard){
+  if (isDashboard) {
     $("#only-video-app").css("display", "flex");
     $("#financial-video").click(() => {
       window.open(finFinancialSuccessVideoAppLink(), "_blank");
@@ -268,7 +268,7 @@ if (window.location.pathname.startsWith("/appointment")) {
     $("#business-video").click(() => {
       window.open(finBusinessVideoAppLink(), "_blank");
     });
-  } else if(!isDashboard) {
+  } else if (!isDashboard) {
     $("#only-fin-app").css("display", "none");
     $("#do-you-know-fin").click(() => {
       window.open(finAppLink(), "_blank");
