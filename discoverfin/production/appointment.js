@@ -9,6 +9,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   let user_id;
   let isDashboard = false;
   let isVideoApp = false;
+  let is_canadian = false;
   if(getUrlParameter("video")){
     isVideoApp= JSON.parse(getUrlParameter("video"));
     isDashboard=false;
@@ -85,6 +86,15 @@ if (window.location.pathname.startsWith("/appointment")) {
       $("#video-watch-wrapper").css("cursor", "pointer");
     }
 
+    if (is_canadian) {
+      $("#logos").css("grid-template-columns", "repeat(5, 1fr)");
+      $("#logos").css("-ms-grid-columns", "repeat(5, 1fr)");
+      $(".american").css("display", "none");
+      $(".canadian").css("display", "block");
+    } else {
+      $(".canadian").css("display", "none");
+    }
+    
     $("#appointment-schedule-url .calender-embedd").attr(
       "src",
       appointment_link
@@ -129,6 +139,9 @@ if (window.location.pathname.startsWith("/appointment")) {
         user_id = response.data.data.userId;
         company_id = response.data.data.companyId;
         rep_email = response.data.data.email;
+        is_canadian =
+          response.data.data.address &&
+          response.data.data.address.country === "Canada";
         video_id = $.trim(response.data.data.videoProfileLink);
         map_all_data();
       }
