@@ -18,6 +18,8 @@ if (window.location.pathname.startsWith("/appointment")) {
     isDashboard = true;
   }
 
+
+
   trackMixPanelEvent("Prospect visited Appointment Page", {
     rep_name,
     page_type: isVideoApp ? "Video App" : "FIN App",
@@ -67,7 +69,11 @@ if (window.location.pathname.startsWith("/appointment")) {
   }
 
   function map_all_data() {
-    $("#rep-name").text(rep_name);
+    const repName= $("#rep-name")
+    repName.text(rep_name);
+    $("#loading-logo").hide();
+    repName.toggleClass("hide");
+
     $("#rep-image-container").css("background-image", `url(${rep_pic})`);
     setPageMetaContent(rep_name, rep_pic);
 
