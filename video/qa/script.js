@@ -50,12 +50,11 @@ const getVideoBaseUrl = () => {
   }
 };
 
-const appointment_link = () =>
-  !checkIsEmpty(getUrlParameter("company"))
-    ? `https://${getVideoBaseUrl()}/appointment?company=${getUrlParameter(
-        "company"
-      )}&user=${user_url}&video=true`
-    : `https://${getVideoBaseUrl()}/appointment?id=${user_url}&video=true`;
+const appointment_link = !checkIsEmpty(getUrlParameter("company"))
+  ? `https://${getVideoBaseUrl()}/appointment?company=${getUrlParameter(
+      "company"
+    )}&user=${user_url}&video=true`
+  : `https://${getVideoBaseUrl()}/appointment?id=${user_url}&video=true`;
 
 // Check email format
 function isEmail(e) {
@@ -348,7 +347,7 @@ function fetchVideo(type, country, lang) {
 
 // Check Video Prospect
 function checkVideoProspect(email_val) {
-  const checkVideoProspectAPI =
+  var checkVideoProspectAPI =
     "https://" +
     api_url +
     "/api/v1/users/company/" +
@@ -417,6 +416,7 @@ function createVideoProspect() {
     data,
   })
     .then(function (response) {
+      renderVideo(video_id);
       video_prospect_id = response.data.data._id;
       success_show("Your details have been verified, Enjoy your video!");
       letsStart();
@@ -513,12 +513,7 @@ setInterval(function () {
       if (~~((seconds % 3600) / 60) >= 18) {
         if (schedule_footer.css("display") === "none") {
           schedule_footer.css("display", "flex");
-          $("#window_frame").attr(
-            "src",
-            `https://qa.discoverfin.io/appointment/?id=${getUrlParameter(
-              "id"
-            )}&video=true`
-          );
+          $("#window_frame").attr("src", appointment_link);
         }
       } else {
         schedule_footer.css("display", "none");
@@ -846,10 +841,7 @@ $(".submit.paths").click(async () => {
           "url('" + readCookie("PIC") + "')"
         );
         success_show("Your answers have been sent successfully!");
-        $(".appointment-iframe .w-iframe iframe").attr(
-          "src",
-          appointment_link()
-        );
+        $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
         $(".last-popup").addClass("active");
       })
       .catch(function (error) {
@@ -863,10 +855,10 @@ $(".submit.paths").click(async () => {
 });
 
 $(".iframe-back").click(function () {
-  $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link());
+  $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
 });
 
 $(".closer-last").click(function () {
   $(".last-popup").removeClass("active");
-  $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link());
+  $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
 });
