@@ -12,6 +12,7 @@ let currentTiming;
 let watchpercentage;
 let options;
 let mcq = [];
+let player;
 
 //*******************************/
 //********ALL FUNCTIONS *********/
@@ -281,6 +282,7 @@ function renderVideo(videoID) {
     .then(function (id) {
       setTotalDuration();
       playerinitialized = 1;
+      player.pause();
     })
     .catch(function (error) {});
   player.pause();
