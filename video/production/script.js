@@ -431,7 +431,7 @@ function createVideoProspect() {
     })
     .catch(function (error) {
       console.log(error);
-      // error_show(error.response.data.message);
+      error_show(error.response.data.message);
     });
 }
 
