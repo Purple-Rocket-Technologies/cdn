@@ -119,11 +119,11 @@ if (window.location.pathname.startsWith("/appointment")) {
     try {
       const response = await axios.get(
         "https://" +
-          api_url +
-          "/api/v1/users/getCompany/name/" +
-          getUrlParameter("company") +
-          "/" +
-          getUrlParameter("user")
+        api_url +
+        "/api/v1/users/getCompany/name/" +
+        getUrlParameter("company") +
+        "/" +
+        getUrlParameter("user")
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
@@ -139,6 +139,8 @@ if (window.location.pathname.startsWith("/appointment")) {
         is_canadian =
           response.data.data.address &&
           response.data.data.address.country === "Canada";
+        setCookies("user_id", response.data.data.userId);
+        setCookies("company_id", response.data.data.companyId);
         video_id = $.trim(response.data.data.videoProfileLink);
         map_all_data();
       }
@@ -156,8 +158,8 @@ if (window.location.pathname.startsWith("/appointment")) {
       prospectEmail: $("#email").val(),
       prospectPhone: $("#phone_no").val(),
       prospectMessage: $("#message").val(),
-      userId: user_id,
-      companyId: company_id,
+      userId: readCookie("user_id"),
+      companyId: readCookie("company_id"),
     };
     console.table(bodyObject);
     axios({

@@ -54,7 +54,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   }
 
   function map_all_data() {
-    const repName= $("#rep-name")
+    const repName = $("#rep-name");
     repName.text(rep_name);
     $("#loading-logo").hide();
     repName.toggleClass("hide");
@@ -112,14 +112,11 @@ if (window.location.pathname.startsWith("/appointment")) {
   async function getCompany() {
     try {
       const response = await axios.get(
-        `https://${api_url}${
-          getUrlParameter("company")
-            ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
-                getUrlParameter("id") || getUrlParameter("user")
-              }`
-            : `/api/v1/users/getUserByUrl/${
-                getUrlParameter("id") || getUrlParameter("user")
-              }`
+        `https://${api_url}${getUrlParameter("company")
+          ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${getUrlParameter("id") || getUrlParameter("user")
+          }`
+          : `/api/v1/users/getUserByUrl/${getUrlParameter("id") || getUrlParameter("user")
+          }`
         }`
       );
       if (JSON.parse(response.data.error)) {
@@ -135,6 +132,8 @@ if (window.location.pathname.startsWith("/appointment")) {
           response.data.data.address.country === "Canada";
         company_id = response.data.data.companyId;
         rep_email = response.data.data.email;
+        setCookies("user_id", response.data.data.userId);
+        setCookies("company_id", response.data.data.companyId);
         video_id = $.trim(response.data.data.videoProfileLink);
         map_all_data();
       }
@@ -152,8 +151,8 @@ if (window.location.pathname.startsWith("/appointment")) {
       prospectEmail: $("#email").val(),
       prospectPhone: $("#phone_no").val(),
       prospectMessage: $("#message").val(),
-      userId: user_id,
-      companyId: company_id,
+      userId: readCookie("user_id"),
+      companyId: readCookie("company_id"),
     };
     console.table(bodyObject);
     axios({
