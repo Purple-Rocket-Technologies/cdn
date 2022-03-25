@@ -68,7 +68,10 @@ if (window.location.pathname.startsWith("/appointment")) {
   }
 
   function map_all_data() {
-    $("#rep-name").text(rep_name);
+    const repName= $("#rep-name")
+    repName.text(rep_name);
+    $("#loading-logo").hide();
+    repName.toggleClass("hide");
     setPageMetaContent(rep_name, rep_pic);
     $("#rep-image-container").css("background-image", `url(${rep_pic})`);
     if (video_id === "" || !video_id) {

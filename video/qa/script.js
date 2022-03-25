@@ -44,7 +44,7 @@ const getVideoBaseUrl = () => {
   } else if (window.location.host === "stagingvideo.discoverfin.io") {
     return "staging.discoverfin.io";
   } else if (window.location.host === "video.discoverfin.io") {
-    return "video.discoverfin.io";
+    return "discoverfin.io";
   } else if (window.location.host === "qavideo.discoverfin.io") {
     return "qa.discoverfin.io";
   }
@@ -103,8 +103,15 @@ function format(time) {
 
 //Validating URL
 function validateUrl(company, user) {
-  let validateCompanyUserAPI =
-    "https://" + api_url + "/api/v1/users/getUserByUrl/" + user_url;
+  let validateCompanyUserAPI = `https://${api_url}${
+    getUrlParameter("company")
+      ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
+          getUrlParameter("id") || getUrlParameter("user")
+        }`
+      : `/api/v1/users/getUserByUrl/${
+          getUrlParameter("id") || getUrlParameter("user")
+        }`
+  }`;
   axios({
     method: "get",
     url: validateCompanyUserAPI,
@@ -311,10 +318,10 @@ function renderVideo(videoID) {
     .then(function (id) {
       setTotalDuration();
       playerinitialized = 1;
+      player.pause();
+      setFinalFunction();
     })
     .catch(function (error) {});
-  player.pause();
-  setFinalFunction();
 }
 
 //fetch video
@@ -333,6 +340,7 @@ function fetchVideo(type, country, lang) {
     url: fetchVideoAPI,
   })
     .then(function (response) {
+      console.log(response.data.data, country, lang);
       video_id = response.data.data[0].url;
       $(".video-container").css(
         "height",
@@ -347,7 +355,7 @@ function fetchVideo(type, country, lang) {
 
 // Check Video Prospect
 function checkVideoProspect(email_val) {
-  var checkVideoProspectAPI =
+  const checkVideoProspectAPI =
     "https://" +
     api_url +
     "/api/v1/users/company/" +
@@ -422,8 +430,7 @@ function createVideoProspect() {
       letsStart();
     })
     .catch(function (error) {
-      console.log(error);
-      // error_show(error.response.data.message);
+      error_show(error.response.data.message);
     });
 }
 
@@ -510,14 +517,18 @@ setInterval(function () {
     player.getCurrentTime().then(function (seconds) {
       $(".elapsedtime").text(format(seconds));
       const schedule_footer = $(".schedule-footer");
-      if (~~((seconds % 3600) / 60) >= 18) {
-        if (schedule_footer.css("display") === "none") {
-          schedule_footer.css("display", "flex");
-          $("#window_frame").attr("src", appointment_link);
-        }
-      } else {
-        schedule_footer.css("display", "none");
-      }
+      watchpercentage = (seconds / totalDurationTime) * 100;
+      //if (watchpercentage >= 93) {
+      //if (schedule_footer.css("display") === "none") {
+      // schedule_footer.css("display", "flex");
+      // $("#window_frame").attr(
+      // "src",
+      //`https://discoverfin.io/appointment?company=${getUrlParameter(
+      // "company"
+      //)}&user=${getUrlParameter("user")}&video=true`
+      //);
+      //}
+      //}
       currentTiming = seconds;
     });
   }
@@ -627,7 +638,7 @@ $(".non-clicker").click(function () {
   error_show("Please select a language first.");
 });
 
-$("#submit-btn-play").click(function () {
+$(".onboad").click(function () {
   if (country_val !== "") {
     if (
       $("#peoplewatching").val() != "" &&
@@ -738,11 +749,9 @@ const set75 = setInterval(function () {
 }, 1000);
 
 $(".path-option").click(function () {
-  const path_name_value = $(this).children(".heading").text();
-
-  const schedule_footer = $(".schedule-footer");
-  schedule_footer.remove();
-
+  var path_name_value = $(this).children(".heading").text();
+  //const schedule_footer = $(".schedule-footer");
+  //schedule_footer.remove();
   triggerRenderOptions(path_name_value);
 });
 
@@ -755,6 +764,7 @@ async function triggerRenderOptions(path_name) {
     : path_name.includes("3")
     ? "Path 3"
     : "";
+
   var getPathOptionsAPI =
     "https://" +
     api_url +

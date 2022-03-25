@@ -8,9 +8,9 @@ if (window.location.pathname.startsWith("/appointment")) {
   let company_id;
   let user_id;
   let isDashboard = false;
+  let fetchedCompany = false;
   let isVideoApp = false;
   let is_canadian = false;
-
   if (getUrlParameter("video")) {
     isVideoApp = JSON.parse(getUrlParameter("video"));
     isDashboard = false;
@@ -19,11 +19,6 @@ if (window.location.pathname.startsWith("/appointment")) {
     isDashboard = true;
   }
 
-  // trackMixPanelEvent("Prospect visited Appointment Page", {
-  //   rep_name,
-  //   page_type: isVideoApp ? "Video App" : "FIN App",
-  // });
-
   let appointment_button_clicked = false;
 
   // track appointment button clicks to mixpanel
@@ -31,15 +26,6 @@ if (window.location.pathname.startsWith("/appointment")) {
     if (appointment_button_clicked) {
       return;
     }
-    // trackMixPanelEvent("Clicked Schedule Appointment button", {
-    //   rep_name,
-    //   company_id,
-    //   user_id,
-    //   user,
-    //   company,
-    //   page_type: isVideoApp ? "Video App" : "FIN App",
-    //   rep_email,
-    // });
     appointment_button_clicked = true;
   };
 
@@ -70,12 +56,14 @@ if (window.location.pathname.startsWith("/appointment")) {
   }
 
   function map_all_data() {
-    const repName= $("#rep-name")
+    const repName = $("#rep-name");
     repName.text(rep_name);
     $("#loading-logo").hide();
     repName.toggleClass("hide");
-    setPageMetaContent(rep_name, rep_pic);
+
     $("#rep-image-container").css("background-image", `url(${rep_pic})`);
+    setPageMetaContent(rep_name, rep_pic);
+
     if (video_id === "" || !video_id) {
       $("#profile-video-area").css("display", "none");
       $("#video-watch-wrapper").css("opacity", "0");
@@ -125,28 +113,32 @@ if (window.location.pathname.startsWith("/appointment")) {
   }
 
   async function getCompany() {
+    if (fetchedCompany) {
+      return;
+    }
     try {
       const response = await axios.get(
         "https://" +
-        api_url +
-        "/api/v1/users/getCompany/name/" +
-        getUrlParameter("company") +
-        "/" +
-        getUrlParameter("user")
+          api_url +
+          "/api/v1/users/getCompany/name/" +
+          getUrlParameter("company") +
+          "/" +
+          getUrlParameter("user")
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
       } else {
+        fetchedCompany = !!(response.data && response.data.data);
         appointment_link = response.data.data.appointmentBookingLink;
         rep_name = `${response.data.data.firstName} ${response.data.data.lastName}`;
         rep_pic = response.data.data.profilePic;
         rep_phone = response.data.data.phone;
         user_id = response.data.data.userId;
-        is_canadian = response.data.data.address &&
-          response.data.data.address.country === "Canada";
-
         company_id = response.data.data.companyId;
         rep_email = response.data.data.email;
+        is_canadian =
+          response.data.data.address &&
+          response.data.data.address.country === "Canada";
         video_id = $.trim(response.data.data.videoProfileLink);
         map_all_data();
       }
@@ -157,30 +149,23 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   $("#getintouch").submit((e) => {
     e.preventDefault();
+    const bodyObject = {
+      prospectFirstName: $("#first_name").val(),
+      prospectLastName: $("#last_name").val(),
+      prospectName: $("#first_name").val() + " " + $("#last_name").val(),
+      prospectEmail: $("#email").val(),
+      prospectPhone: $("#phone_no").val(),
+      prospectMessage: $("#message").val(),
+      userId: user_id,
+      companyId: company_id,
+    };
+    console.table(bodyObject);
     axios({
       method: "post",
       url: "https://" + api_url + "/api/v1/users/email/send/getInTouch",
-      data: {
-        prospectFirstName: $("#first_name").val(),
-        prospectLastName: $("#last_name").val(),
-        prospectName: $("#first_name").val() + " " + $("#last_name").val(),
-        prospectEmail: $("#email").val(),
-        prospectPhone: $("#phone_no").val(),
-        prospectMessage: $("#message").val(),
-        userId: user_id,
-        companyId: company_id,
-      },
+      data: bodyObject,
     })
       .then(() => {
-        // trackMixPanelEvent("Prospect filled getInTouch form", {
-        //   rep_name,
-        //   user_id,
-        //   rep_email,
-        //   company_id,
-        //   page_type: isVideoApp ? "Video App" : "FIN App",
-        //   prospectName: $("#first_name").val() + " " + $("#last_name").val(),
-        //   prospectEmail: $("#email").val(),
-        // });
         $(".getintouch").addClass("hide");
         $(".successmessage").addClass("displayshow");
       })

@@ -18,11 +18,6 @@ if (window.location.pathname.startsWith("/appointment")) {
     isDashboard = true;
   }
 
-  trackMixPanelEvent("Prospect visited Appointment Page", {
-    rep_name,
-    page_type: isVideoApp ? "Video App" : "FIN App",
-  });
-
   let appointment_button_clicked = false;
 
   // track appointment button clicks to mixpanel
@@ -30,15 +25,6 @@ if (window.location.pathname.startsWith("/appointment")) {
     if (appointment_button_clicked) {
       return;
     }
-    trackMixPanelEvent("Clicked Schedule Appointment button", {
-      rep_name,
-      company_id,
-      user_id,
-      user,
-      company,
-      page_type: isVideoApp ? "Video App" : "FIN App",
-      rep_email,
-    });
     appointment_button_clicked = true;
   };
 
@@ -68,7 +54,10 @@ if (window.location.pathname.startsWith("/appointment")) {
   }
 
   function map_all_data() {
-    $("#rep-name").text(rep_name);
+    const repName= $("#rep-name")
+    repName.text(rep_name);
+    $("#loading-logo").hide();
+    repName.toggleClass("hide");
     setPageMetaContent(rep_name, rep_pic);
     $("#rep-image-container").css("background-image", `url(${rep_pic})`);
     if (video_id === "" || !video_id) {
@@ -156,30 +145,23 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   $("#getintouch").submit((e) => {
     e.preventDefault();
+    const bodyObject = {
+      prospectFirstName: $("#first_name").val(),
+      prospectLastName: $("#last_name").val(),
+      prospectName: $("#first_name").val() + " " + $("#last_name").val(),
+      prospectEmail: $("#email").val(),
+      prospectPhone: $("#phone_no").val(),
+      prospectMessage: $("#message").val(),
+      userId: user_id,
+      companyId: company_id,
+    };
+    console.table(bodyObject);
     axios({
       method: "post",
       url: "https://" + api_url + "/api/v1/users/email/send/getInTouch",
-      data: {
-        prospectFirstName: $("#first_name").val(),
-        prospectLastName: $("#last_name").val(),
-        prospectName: $("#first_name").val() + " " + $("#last_name").val(),
-        prospectEmail: $("#email").val(),
-        prospectPhone: $("#phone_no").val(),
-        prospectMessage: $("#message").val(),
-        userId: user_id,
-        companyId: company_id,
-      },
+      data: bodyObject,
     })
       .then(() => {
-        trackMixPanelEvent("Prospect filled getInTouch form", {
-          rep_name,
-          user_id,
-          rep_email,
-          company_id,
-          page_type: isVideoApp ? "Video App" : "FIN App",
-          prospectName: $("#first_name").val() + " " + $("#last_name").val(),
-          prospectEmail: $("#email").val(),
-        });
         $(".getintouch").addClass("hide");
         $(".successmessage").addClass("displayshow");
       })
