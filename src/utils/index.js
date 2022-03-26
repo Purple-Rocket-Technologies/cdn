@@ -25,6 +25,11 @@ const isRouteSelectedPage = () => {
   );
 };
 
+const isResultPage = () => {
+  const path = window.location.pathname;
+  return path.startsWith("/result");
+};
+
 const isRouteQuestionPage = () => {
   const path = window.location.pathname;
   return (
@@ -87,6 +92,48 @@ const isEmpty = (value) => {
   return typeof value === "object" && Object.keys(value).length === 0;
 };
 
+const getVideoBaseUrl = () => {
+  if (window.location.host === "dev.discoverfin.io") {
+    return "https://devvideo.discoverfin.io/";
+  } else if (window.location.host === "staging.discoverfin.io") {
+    return "https://stagingvideo.discoverfin.io/";
+  } else if (window.location.host === "discoverfin.io") {
+    return "https://video.discoverfin.io/";
+  } else if (window.location.host === "qa.discoverfin.io") {
+    return "https://qavideo.discoverfin.io/";
+  }
+};
+const getBaseUrl = () => {
+  if (window.location.host === "dev.discoverfin.io") {
+    return "https://dev.discoverfin.io/";
+  } else if (window.location.host === "staging.discoverfin.io") {
+    return "https://staging.discoverfin.io/";
+  } else if (window.location.host === "discoverfin.io") {
+    return "https://discoverfin.io/";
+  } else if (window.location.host === "qa.discoverfin.io") {
+    return "https://qa.discoverfin.io/";
+  }
+};
+
+const finBaseUrl = (user, company, type, start) => {
+  return company
+    ? `${this[type](user, company)}${start}?company=${company}&user=${user}`
+    : `${this[type](user, company)}${start}?id=${user}`;
+};
+
+const videoLink = (user, company, type, videoName) => {
+  const url = finBaseUrl(user, company, type, "video_type");
+  return url.replace(`video_type`, videoName);
+};
+
+const finBusinessVideoAppLink = (user, company) => {
+  return videoLink(user, company, "getVideoBaseUrl", "businessOverview");
+};
+
+const finFinancialSuccessVideoAppLink = (user, company) => {
+  return videoLink(user, company, "getVideoBaseUrl", "financialHouse");
+};
+
 module.exports = {
   getUrlParameter,
   cookies,
@@ -95,4 +142,10 @@ module.exports = {
   isRouteSelectedPage,
   isOnBoardingPage,
   isRouteQuestionPage,
+  isResultPage,
+  getVideoBaseUrl,
+  getBaseUrl,
+  finBaseUrl,
+  finBusinessVideoAppLink,
+  finFinancialSuccessVideoAppLink,
 };
