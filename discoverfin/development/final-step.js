@@ -145,7 +145,14 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
     prospectAnswers.ques_4,
     prospectAnswers.ques_5,
   ]
-    .filter((currentItem) => currentItem !== "")
+    .filter(
+      (answer) =>
+        answer
+          .toLowerCase()
+          .includes(
+            "what are areas you want to evaluate or know more about?"
+          ) && answer !== ""
+    )
     .map((currentItem) =>
       currentItem
         ? currentItem.split("*").splice(1, currentItem.split("*").length - 1)
@@ -211,7 +218,13 @@ async function populatePathOptions() {
     });
   });
 
-  parent.html(questionAndAnswersOfProspect(prospectAnswers));
+  const isMakeMoreMoney = window.location.pathname.includes("make-more-money");
+  if (!isMakeMoreMoney) {
+    $(".manage-both").css("display", "block");
+    parent.html(questionAndAnswersOfProspect(prospectAnswers));
+  } else {
+    $(".manage-both").css("display", "none");
+  }
 }
 
 populatePathOptions();
