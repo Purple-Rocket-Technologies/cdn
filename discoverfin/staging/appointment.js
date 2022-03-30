@@ -212,7 +212,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   const videoUrlBase = () =>
     isOldUrl()
       ? `${getBaseUrl()}company=${isOldUrl()}&user=${getUserUrl()}`
-      : `${getBaseUrl()}id=${getUserByUrl()}`;
+      : `${getBaseUrl()}id=${getUserUrl()}`;
 
   const finBusinessVideoAppLink = () => {
     return videoUrlBase().replace("video_type", "businessOverview");
