@@ -2,21 +2,21 @@
 //$(".video_placeholder").height(height);
 
 const URL_COMPANY =
-    readCookie("URL_COMPANY") !== "undefined"
-        ? readCookie("URL_COMPANY")
-        : readCookie("COMPANY_URL");
+  readCookie("URL_COMPANY") !== "undefined"
+    ? readCookie("URL_COMPANY")
+    : readCookie("COMPANY_URL");
 const URL_USER =
-    readCookie("URL_USER") !== "undefined"
-        ? readCookie("URL_USER")
-        : readCookie("USER_URL");
+  readCookie("URL_USER") !== "undefined"
+    ? readCookie("URL_USER")
+    : readCookie("USER_URL");
 
 let prospectEmail;
 
 const appointmentLink = !checkIsEmpty(readCookie("isOldUrl"))
-    ? `https://${window.location.host}/appointment?company=${readCookie(
-        "isOldUrl"
+  ? `https://${window.location.host}/appointment?company=${readCookie(
+      "isOldUrl"
     )}&user=${URL_USER}&video=false`
-    : `https://${window.location.host}/appointment?id=${URL_USER}&video=false`;
+  : `https://${window.location.host}/appointment?id=${URL_USER}&video=false`;
 
 // Reading name cookie
 const user_name = readCookie("Name");
@@ -25,19 +25,27 @@ $(".user_name").each(function () {
 });
 
 $("#video-area").css(
-    "background-image",
-    `url(${
-        window.location.pathname.includes("make-more-money")
-            ? "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/62447936cd9d3938d09c181d_more_than_buisness.png"
-            : "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/62447935eafc80b0556a88bd_7_steps.png"
-    })`
+  "background-image",
+  `url(${
+    window.location.pathname.includes("make-more-money")
+      ? "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/62447936cd9d3938d09c181d_more_than_buisness.png"
+      : "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/62447935eafc80b0556a88bd_7_steps.png"
+  })`
 );
 
 const getTrailerId = () => {
   return window.location.pathname.includes("make-more-money")
-      ? "445443796"
-      : "614514350";
+    ? "445443796"
+    : "614514350";
 };
+
+const videoTitle = () => {
+  return window.location.pathname.includes("make-more-money")
+    ? "More than a Business"
+    : "7 Steps To Create A Clear Financial Vision";
+};
+
+$("#video-title").text(videoTitle());
 
 const setTrailerVideo = () => {
   $("#video").each(() => {
@@ -56,14 +64,14 @@ setTrailerVideo();
  * @param {*} targetElement
  */
 function scrollButtonHandlers(
-    isScrolling = true,
-    scrollDirection,
-    targetElement
+  isScrolling = true,
+  scrollDirection,
+  targetElement
 ) {
   if (
-      isScrolling
-          ? scrollDirection === "up"
-          : window.scrollY > targetElement.offsetTop + targetElement.offsetHeight
+    isScrolling
+      ? scrollDirection === "up"
+      : window.scrollY > targetElement.offsetTop + targetElement.offsetHeight
   ) {
     $(".hide-on-scroll").each(function () {
       $(this).css("display", "block");
@@ -89,21 +97,21 @@ let isScrolling;
 
 // Listen for scroll events
 window.addEventListener(
-    "scroll",
-    function () {
-      scroll_direction =
-          document.body.getBoundingClientRect().top > scroll_position
-              ? "up"
-              : "down";
-      scroll_position = document.body.getBoundingClientRect().top;
-      const elementTarget = document.getElementById("header_area");
-      scrollButtonHandlers(true, scroll_direction, elementTarget);
-      window.clearTimeout(isScrolling);
-      isScrolling = setTimeout(function () {
-        scrollButtonHandlers(false, scroll_direction, elementTarget);
-      }, 66);
-    },
-    false
+  "scroll",
+  function () {
+    scroll_direction =
+      document.body.getBoundingClientRect().top > scroll_position
+        ? "up"
+        : "down";
+    scroll_position = document.body.getBoundingClientRect().top;
+    const elementTarget = document.getElementById("header_area");
+    scrollButtonHandlers(true, scroll_direction, elementTarget);
+    window.clearTimeout(isScrolling);
+    isScrolling = setTimeout(function () {
+      scrollButtonHandlers(false, scroll_direction, elementTarget);
+    }, 66);
+  },
+  false
 );
 
 const rep_name = capitalize(readCookie("REP_NAME"));
@@ -123,15 +131,15 @@ $("#message-rep").each(function () {
 
 const getVideoType = () => {
   return window.location.pathname.includes("make-more-money")
-      ? "businessOverview"
-      : "financialHouse";
+    ? "businessOverview"
+    : "financialHouse";
 };
 
 const getPathAnswers = async (id) => {
   return await axios({
     method: "get",
     url: `https://${api_url}/api/v1/users/company/${readCookie(
-        "COMPANY_ID"
+      "COMPANY_ID"
     )}/prospects/?_id=${id}`,
   });
 };
@@ -145,30 +153,30 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
     prospectAnswers.ques_4,
     prospectAnswers.ques_5,
   ]
-      .filter(
-          (answer) =>
-              answer
-                  .toLowerCase()
-                  .includes(
-                      "what are areas you want to evaluate or know more about?"
-                  ) && answer !== ""
-      )
-      .map((currentItem) =>
-          currentItem
-              ? currentItem.split("*").splice(1, currentItem.split("*").length - 1)
-              : []
-      )
-      .reduce((a, b) => a.concat(b), [])
-      .map(
-          (currentItem) => `<div class="${
-              isMobile ? "div-block-84" : "div-block-65"
-          }"><img
+    .filter(
+      (answer) =>
+        answer
+          .toLowerCase()
+          .includes(
+            "what are areas you want to evaluate or know more about?"
+          ) && answer !== ""
+    )
+    .map((currentItem) =>
+      currentItem
+        ? currentItem.split("*").splice(1, currentItem.split("*").length - 1)
+        : []
+    )
+    .reduce((a, b) => a.concat(b), [])
+    .map(
+      (currentItem) => `<div class="${
+        isMobile ? "div-block-84" : "div-block-65"
+      }"><img
       class="pointer-image"
       src="https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/620e98d16dc631d33da9dd03_Group%20272.svg"
       loading="lazy" alt=""><h2 class="${
-              isMobile ? "ml-3-2 text-18 font-normal " : "font-normal ml-3"
-          }">${currentItem}</h2></div>`
-      );
+        isMobile ? "ml-3-2 text-18 font-normal " : "font-normal ml-3"
+      }">${currentItem}</h2></div>`
+    );
 };
 
 const getVideoBaseUrl = () => {
@@ -185,14 +193,14 @@ const getVideoBaseUrl = () => {
 
 const openVideoApp = (email) => {
   window.open(
-      !checkIsEmpty(readCookie("isOldUrl"))
-          ? `${getVideoBaseUrl()}/${getVideoType()}?company=${readCookie(
-              "isOldUrl"
-          )}&user=${URL_USER}&fname=${readCookie("Name")}&email=${email}`
-          : `${getVideoBaseUrl()}/${getVideoType()}?id=${URL_USER}&fname=${readCookie(
-              "Name"
-          )}&email=${email}`,
-      "_self"
+    !checkIsEmpty(readCookie("isOldUrl"))
+      ? `${getVideoBaseUrl()}/${getVideoType()}?company=${readCookie(
+          "isOldUrl"
+        )}&user=${URL_USER}&fname=${readCookie("Name")}&email=${email}`
+      : `${getVideoBaseUrl()}/${getVideoType()}?id=${URL_USER}&fname=${readCookie(
+          "Name"
+        )}&email=${email}`,
+    "_self"
   );
 };
 
@@ -201,11 +209,11 @@ async function populatePathOptions() {
   let prospectAnswers = await getPathAnswers(readCookie("prospect_id"));
   prospectAnswers = prospectAnswers["data"]["data"][0];
   $("#fin_number").text(
-      Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 0,
-      }).format(prospectAnswers["fin_number"])
+    Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0,
+    }).format(prospectAnswers["fin_number"])
   );
 
   $("#video-area").click(() => {

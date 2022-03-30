@@ -27,12 +27,12 @@ $(".user_name").each(function () {
 });
 
 $("#video-area").css(
-    "background-image",
-    `url(${
-        window.location.pathname.includes("make-more-money")
-            ? "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/62447936cd9d3938d09c181d_more_than_buisness.png"
-            : "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/62447935eafc80b0556a88bd_7_steps.png"
-    })`
+  "background-image",
+  `url(${
+    window.location.pathname.includes("make-more-money")
+      ? "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/62447936cd9d3938d09c181d_more_than_buisness.png"
+      : "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/62447935eafc80b0556a88bd_7_steps.png"
+  })`
 );
 
 const getTrailerId = () => {
@@ -40,6 +40,14 @@ const getTrailerId = () => {
     ? "445443796"
     : "614514350";
 };
+
+const videoTitle = () => {
+  return window.location.pathname.includes("make-more-money")
+    ? "More than a Business"
+    : "7 Steps To Create A Clear Financial Vision";
+};
+
+$("#video-title").text(videoTitle());
 
 const setTrailerVideo = () => {
   $("#video").each(() => {
@@ -237,12 +245,12 @@ async function populatePathOptions() {
 
 populatePathOptions();
 
-$("#learn-more").click(()=>{
-    trackMixPanelEvent("Clicked Learn More", {
-        type: "Fin Prospect",
-        page: "FIN APP FINAL STEP",
-    });
-})
+$("#learn-more").click(() => {
+  trackMixPanelEvent("Clicked Learn More", {
+    type: "Fin Prospect",
+    page: "FIN APP FINAL STEP",
+  });
+});
 
 $("#watch-trailer").click(function () {
   new Vimeo.Player($("#video")).play();
