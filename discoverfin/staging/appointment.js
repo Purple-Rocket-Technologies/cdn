@@ -54,7 +54,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   }
 
   function map_all_data() {
-    const repName = $("#rep-name")
+    const repName = $("#rep-name");
     repName.text(rep_name);
     $("#loading-logo").hide();
     repName.toggleClass("hide");
@@ -112,11 +112,14 @@ if (window.location.pathname.startsWith("/appointment")) {
   async function getCompany() {
     try {
       const response = await axios.get(
-        `https://${api_url}${getUrlParameter("company")
-          ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${getUrlParameter("id") || getUrlParameter("user")
-          }`
-          : `/api/v1/users/getUserByUrl/${getUrlParameter("id") || getUrlParameter("user")
-          }`
+        `https://${api_url}${
+          getUrlParameter("company")
+            ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
+                getUrlParameter("id") || getUrlParameter("user")
+              }`
+            : `/api/v1/users/getUserByUrl/${
+                getUrlParameter("id") || getUrlParameter("user")
+              }`
         }`
       );
       if (JSON.parse(response.data.error)) {
@@ -188,34 +191,43 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   const getBaseUrl = () => {
     if (window.location.host === "dev.discoverfin.io") {
-      return "https://devvideo.discoverfin.io/video_type?id=";
+      return "https://devvideo.discoverfin.io/video_type?";
     } else if (window.location.host === "staging.discoverfin.io") {
-      return "https://stagingvideo.discoverfin.io/video_type?id=";
+      return "https://stagingvideo.discoverfin.io/video_type?";
     } else if (window.location.host === "discoverfin.io") {
-      return "https://video.discoverfin.io/video_type?id=";
+      return "https://video.discoverfin.io/video_type?";
     } else if (window.location.host === "qa.discoverfin.io") {
-      return "https://qavideo.discoverfin.io/video_type?id=";
+      return "https://qavideo.discoverfin.io/video_type?";
     }
   };
 
   const finBaseUrl = () => {
-    return `https://${window.location.host}/en?id=`;
+    return `https://${window.location.host}/en?`;
   };
 
+  const isOldUrl = () => getUrlParameter("company");
+
+  const getUserUrl = () => getUrlParameter("id") || getUrlParameter("user");
+
+  const videoUrlBase = () =>
+    isOldUrl()
+      ? `${getBaseUrl()}company=${isOldUrl()}&user=${getUserUrl()}`
+      : `${getBaseUrl()}id=${getUserByUrl()}`;
+
   const finBusinessVideoAppLink = () => {
-    return (
-      getBaseUrl() + getUrlParameter("id") || getUrlParameter("user")
-    ).replace("video_type", "businessOverview");
+    return videoUrlBase().replace("video_type", "businessOverview");
   };
 
   const finAppLink = () => {
-    return `${finBaseUrl()}${getUrlParameter("id") || getUrlParameter("user")}`;
+    return !isOldUrl()
+      ? `${finBaseUrl()}id=${getUrlParameter("id") || getUrlParameter("user")}`
+      : `${finBaseUrl()}company=${isOldUrl()}&user=${
+          getUrlParameter("id") || getUrlParameter("user")
+        }`;
   };
 
   const finFinancialSuccessVideoAppLink = () => {
-    return (
-      getBaseUrl() + getUrlParameter("id") || getUrlParameter("user")
-    ).replace("video_type", "financialHouse");
+    return videoUrlBase().replace("video_type", "financialHouse");
   };
 
   if (isDashboard) {
