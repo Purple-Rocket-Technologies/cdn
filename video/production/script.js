@@ -231,7 +231,7 @@ function validateVideoType(typeName) {
     .then(function (response) {
       document.title = response.data.data[0].name; // Setting page title
       $("#video-title").text(response.data.data[0].name); // Setting video title
-      console.log(response.data.data);
+      renderVideo(response.data.data[0].url); // Rendering video
       if (response.data.count > 0) {
         validateUrl(getUrlParameter("company"), getUrlParameter("user"));
         setPathsContentVariable(videoType);
@@ -343,7 +343,6 @@ function fetchVideo(type, country, lang) {
     url: fetchVideoAPI,
   })
     .then(function (response) {
-      console.log(response.data.data, country, lang);
       video_id = response.data.data[0].url;
       $(".video-container").css(
         "height",
@@ -392,8 +391,8 @@ function checkVideoProspect(email_val) {
 }
 
 // Create Video Prospect
-function createVideoProspect() {
-  fetchVideo(videoType, country_val || "US", lang_val || "EN");
+async function createVideoProspect() {
+  await fetchVideo(videoType, country_val || "US", lang_val || "EN");
   const data = {
     videoName: document.title,
     firstName: $("#fname").val(),
@@ -427,7 +426,6 @@ function createVideoProspect() {
     data,
   })
     .then(function (response) {
-      renderVideo(video_id);
       video_prospect_id = response.data.data._id;
       success_show("Your details have been verified, Enjoy your video!");
       letsStart();
