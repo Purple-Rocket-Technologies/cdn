@@ -21,17 +21,17 @@ let player;
 // reading url parameters
 const getUrlParameter = function getUrlParameter(sParam) {
   let sPageURL = window.location.search.substring(1),
-    sURLVariables = sPageURL.split("&"),
-    sParameterName,
-    i;
+      sURLVariables = sPageURL.split("&"),
+      sParameterName,
+      i;
 
   for (i = 0; i < sURLVariables.length; i++) {
     sParameterName = sURLVariables[i].split("=");
 
     if (sParameterName[0] === sParam) {
       return sParameterName[1] === undefined
-        ? true
-        : decodeURIComponent(sParameterName[1]);
+          ? true
+          : decodeURIComponent(sParameterName[1]);
     }
   }
 };
@@ -51,15 +51,15 @@ const getVideoBaseUrl = () => {
 };
 
 const appointment_link = !checkIsEmpty(getUrlParameter("company"))
-  ? `https://${getVideoBaseUrl()}/appointment?company=${getUrlParameter(
-      "company"
+    ? `https://${getVideoBaseUrl()}/appointment?company=${getUrlParameter(
+        "company"
     )}&user=${user_url}&video=true`
-  : `https://${getVideoBaseUrl()}/appointment?id=${user_url}&video=true`;
+    : `https://${getVideoBaseUrl()}/appointment?id=${user_url}&video=true`;
 
 // Check email format
 function isEmail(e) {
   return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
-    e
+      e
   );
 }
 
@@ -68,10 +68,10 @@ function error_show(msg) {
   $("#error_msg").text(msg);
   $(function () {
     $(".error-triggerer")
-      .click(function () {
-        this.click();
-      })
-      .click();
+        .click(function () {
+          this.click();
+        })
+        .click();
   });
 }
 
@@ -80,10 +80,10 @@ function success_show(msg) {
   $(".success-msg-text").text(msg);
   $(function () {
     $(".success-triggerer")
-      .click(function () {
-        this.click();
-      })
-      .click();
+        .click(function () {
+          this.click();
+        })
+        .click();
   });
 }
 
@@ -104,39 +104,42 @@ function format(time) {
 //Validating URL
 function validateUrl(company, user) {
   let validateCompanyUserAPI = `https://${api_url}${
-    getUrlParameter("company")
-      ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
-          getUrlParameter("id") || getUrlParameter("user")
-        }`
-      : `/api/v1/users/getUserByUrl/${
-          getUrlParameter("id") || getUrlParameter("user")
-        }`
+      getUrlParameter("company")
+          ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
+              getUrlParameter("id") || getUrlParameter("user")
+          }`
+          : `/api/v1/users/getUserByUrl/${
+              getUrlParameter("id") || getUrlParameter("user")
+          }`
   }`;
   axios({
     method: "get",
     url: validateCompanyUserAPI,
   })
-    .then(function (response) {
-      if (response.data.status === 200) {
-        //setting necessary cookies
-        setCookies("COMPANY_ID", response.data.data.companyId);
-        setCookies("USER_ID", response.data.data.userId);
-        setCookies("PIC", response.data.data.profilePic);
-        setCookies("REP_NAME", response.data.data.firstName);
-        setCookies("APTMT_LINK", response.data.data.appointmentBookingLink);
-        setCookies("VIDEO", response.data.data.videoProfileLink);
-        setCookies("PHONE", response.data.data.phone);
-        setCookies("EMAIL", response.data.data.email);
-        setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
-        setCookies("affiliateId", response.data.data.affiliateId);
-        continuationCheck();
-      } else {
-        $(".fourofour").addClass("show");
-      }
-    })
-    .catch(function (error) {
-      //error_show("Oops, There was an unexpected error.");
-    });
+      .then(function (response) {
+        if (response.data.status === 200) {
+          // trackMixPanelEvent("Prospect Visited Appointment page", {
+          //   rep: response.data.data.firstName,
+          // });
+          //setting necessary cookies
+          setCookies("COMPANY_ID", response.data.data.companyId);
+          setCookies("USER_ID", response.data.data.userId);
+          setCookies("PIC", response.data.data.profilePic);
+          setCookies("REP_NAME", response.data.data.firstName);
+          setCookies("APTMT_LINK", response.data.data.appointmentBookingLink);
+          setCookies("VIDEO", response.data.data.videoProfileLink);
+          setCookies("PHONE", response.data.data.phone);
+          setCookies("EMAIL", response.data.data.email);
+          setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
+          setCookies("affiliateId", response.data.data.affiliateId);
+          continuationCheck();
+        } else {
+          $(".fourofour").addClass("show");
+        }
+      })
+      .catch(function (error) {
+        //error_show("Oops, There was an unexpected error.");
+      });
 }
 
 function continuationCheck() {
@@ -144,27 +147,27 @@ function continuationCheck() {
     axios({
       method: "get",
       url:
-        "https://" +
-        api_url +
-        "/api/v1/users/company/" +
-        readCookie("COMPANY_ID") +
-        "/videoProspects?email=" +
-        getUrlParameter("prospectEmail"),
+          "https://" +
+          api_url +
+          "/api/v1/users/company/" +
+          readCookie("COMPANY_ID") +
+          "/videoProspects?email=" +
+          getUrlParameter("prospectEmail"),
     })
-      .then(function (response) {
-        if (response.data.count > 0) {
-          video_prospect_id = response.data.data[0]._id;
-          prospect_watchpercentage = response.data.data[0].watchPercentage;
-          prospect_pathChoosen = response.data.data[0].pathChoosen;
-          redirectContinuer();
-        } else {
-          $(".main-app-container").addClass("show");
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-        alert("Oops, There was an unexpected error.");
-      });
+        .then(function (response) {
+          if (response.data.count > 0) {
+            video_prospect_id = response.data.data[0]._id;
+            prospect_watchpercentage = response.data.data[0].watchPercentage;
+            prospect_pathChoosen = response.data.data[0].pathChoosen;
+            redirectContinuer();
+          } else {
+            $(".main-app-container").addClass("show");
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+          alert("Oops, There was an unexpected error.");
+        });
   } else {
     // normal flow if not a continuation
     $(".main-app-container").addClass("show");
@@ -179,10 +182,10 @@ function redirectContinuer() {
     checkVideoProspect(getUrlParameter("prospectEmail"));
     $(function () {
       $(".nav-bullet-dot:nth-child(3)")
-        .click(function () {
-          this.click();
-        })
-        .click();
+          .click(function () {
+            this.click();
+          })
+          .click();
     });
     $(".site-content-wrapper.video").addClass("move");
     $(".site-content-wrapper.paths").addClass("move");
@@ -217,96 +220,96 @@ autoFill();
 //Validating video type
 function validateVideoType(typeName) {
   let validateVideoTypeAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/videoProspects/leadCapturingVideos?type=" +
-    typeName;
+      "https://" +
+      api_url +
+      "/api/v1/users/videoProspects/leadCapturingVideos?type=" +
+      typeName;
   axios({
     method: "get",
     url: validateVideoTypeAPI,
   })
-    .then(function (response) {
-      document.title = response.data.data[0].name; // Setting page title
-      $("#video-title").text(response.data.data[0].name); // Setting video title
-      console.log(response.data.data);
-      if (response.data.count > 0) {
-        validateUrl(getUrlParameter("company"), getUrlParameter("user"));
-        setPathsContentVariable(videoType);
-      } else {
+      .then(function (response) {
+        document.title = response.data.data[0].name; // Setting page title
+        $("#video-title").text(response.data.data[0].name); // Setting video title
+        renderVideo(response.data.data[0].url); // Rendering video
+        if (response.data.count > 0) {
+          validateUrl(getUrlParameter("company"), getUrlParameter("user"));
+          setPathsContentVariable(videoType);
+        } else {
+          $(".fourofour").addClass("show");
+        }
+      })
+      .catch(function (error) {
         $(".fourofour").addClass("show");
-      }
-    })
-    .catch(function (error) {
-      $(".fourofour").addClass("show");
-    });
+      });
 }
 
 //Setting paths content variable
 async function setPathsContentVariable(videoType) {
   let pathsContentAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/videoProspects/paths?type=" +
-    videoType;
+      "https://" +
+      api_url +
+      "/api/v1/users/videoProspects/paths?type=" +
+      videoType;
   axios({
     method: "get",
     url: pathsContentAPI,
   })
-    .then(async function (response) {
-      [...$(".path-option")].forEach((elem) => {
-        let temp = [];
-        for (let i = 0; i < elem.childNodes.length; i++) {
-          const item = elem.childNodes[i];
-          if (!item.className.includes("path-text")) {
-            temp.push(item);
+      .then(async function (response) {
+        [...$(".path-option")].forEach((elem) => {
+          let temp = [];
+          for (let i = 0; i < elem.childNodes.length; i++) {
+            const item = elem.childNodes[i];
+            if (!item.className.includes("path-text")) {
+              temp.push(item);
+            }
           }
-        }
-        elem.innerHTML = "";
-        temp.forEach((item) => {
-          elem.append(item);
+          elem.innerHTML = "";
+          temp.forEach((item) => {
+            elem.append(item);
+          });
         });
-      });
 
-      let description_item_text;
-      let description_array;
-      let path_name;
-      for (let i = 0; i < response.data.data.length; i++) {
-        let it = response.data.data[i];
-        //setting title of path
-        if ((await Weglot.getCurrentLang()) === "es") {
-          path_name = await translateToLanguage([it.name], "en", "es");
-        } else {
-          path_name = it.name;
-        }
-        $(".path-option:nth-child(" + (i + 1) + ") .heading").text(path_name);
-
-        //setting description of path
-        description_array = it.description;
-
-        for (let j = 0; j < description_array.length; j++) {
-          let elem = description_array[j];
+        let description_item_text;
+        let description_array;
+        let path_name;
+        for (let i = 0; i < response.data.data.length; i++) {
+          let it = response.data.data[i];
+          //setting title of path
           if ((await Weglot.getCurrentLang()) === "es") {
-            description_item_text = await translateToLanguage(
-              [elem],
-              "en",
-              "es"
-            );
+            path_name = await translateToLanguage([it.name], "en", "es");
           } else {
-            description_item_text = elem;
+            path_name = it.name;
           }
-          const html_elem = $(`.path-option:nth-child(${i + 1})`);
-          if (!html_elem[0].innerHTML.includes(description_item_text)) {
-            html_elem.append(
-              `<div class='path-text'>${description_item_text}</div>`
-            );
+          $(".path-option:nth-child(" + (i + 1) + ") .heading").text(path_name);
+
+          //setting description of path
+          description_array = it.description;
+
+          for (let j = 0; j < description_array.length; j++) {
+            let elem = description_array[j];
+            if ((await Weglot.getCurrentLang()) === "es") {
+              description_item_text = await translateToLanguage(
+                  [elem],
+                  "en",
+                  "es"
+              );
+            } else {
+              description_item_text = elem;
+            }
+            const html_elem = $(`.path-option:nth-child(${i + 1})`);
+            if (!html_elem[0].innerHTML.includes(description_item_text)) {
+              html_elem.append(
+                  `<div class='path-text'>${description_item_text}</div>`
+              );
+            }
           }
         }
-      }
-    })
-    .catch(function (error) {
-      error_show("Oops, There was an unexpected error.");
-      console.error(error);
-    });
+      })
+      .catch(function (error) {
+        error_show("Oops, There was an unexpected error.");
+        console.error(error);
+      });
 }
 
 // Render Video
@@ -314,83 +317,82 @@ function renderVideo(videoID) {
   iframe = document.getElementById("video");
   player = new Vimeo.Player(iframe);
   player
-    .loadVideo(videoID)
-    .then(function (id) {
-      setTotalDuration();
-      playerinitialized = 1;
-      player.pause();
-      setFinalFunction();
-    })
-    .catch(function (error) {});
+      .loadVideo(videoID)
+      .then(function (id) {
+        setTotalDuration();
+        playerinitialized = 1;
+        player.pause();
+        setFinalFunction();
+      })
+      .catch(function (error) {});
 }
 
 //fetch video
 function fetchVideo(type, country, lang) {
   const fetchVideoAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/videoProspects/leadCapturingVideos?type=" +
-    type +
-    "&countryCode=" +
-    country +
-    "&language=" +
-    lang;
+      "https://" +
+      api_url +
+      "/api/v1/users/videoProspects/leadCapturingVideos?type=" +
+      type +
+      "&countryCode=" +
+      country +
+      "&language=" +
+      lang;
   axios({
     method: "get",
     url: fetchVideoAPI,
   })
-    .then(function (response) {
-      console.log(response.data.data, country, lang);
-      video_id = response.data.data[0].url;
-      $(".video-container").css(
-        "height",
-        $(".video-container").width() / (16 / 9)
-      );
-      renderVideo(video_id);
-    })
-    .catch(function (error) {
-      error_show("Oops, There was an unexpected error.");
-    });
+      .then(function (response) {
+        video_id = response.data.data[0].url;
+        $(".video-container").css(
+            "height",
+            $(".video-container").width() / (16 / 9)
+        );
+        renderVideo(video_id);
+      })
+      .catch(function (error) {
+        error_show("Oops, There was an unexpected error.");
+      });
 }
 
 // Check Video Prospect
 function checkVideoProspect(email_val) {
   const checkVideoProspectAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/company/" +
-    readCookie("COMPANY_ID") +
-    "/videoProspects?email=" +
-    email_val;
+      "https://" +
+      api_url +
+      "/api/v1/users/company/" +
+      readCookie("COMPANY_ID") +
+      "/videoProspects?email=" +
+      email_val;
 
   axios({
     method: "get",
     url: checkVideoProspectAPI,
   })
-    .then(function (response) {
-      if (response.data.count === 1) {
-        video_prospect_id = response.data.data[0]._id;
-        if (!getUrlParameter("prospectEmail")) {
-          success_show(
-            "Welcome " + response.data.data[0].firstName + "! Enjoy your video"
-          );
+      .then(function (response) {
+        if (response.data.count === 1) {
+          video_prospect_id = response.data.data[0]._id;
+          if (!getUrlParameter("prospectEmail")) {
+            success_show(
+                "Welcome " + response.data.data[0].firstName + "! Enjoy your video"
+            );
+          }
+          country_val = response.data.data[0].country || "US";
+          lang_val = response.data.data[0].language || "EN";
+          fetchVideo(videoType, country_val, lang_val);
+          letsStart();
+        } else {
+          createVideoProspect();
         }
-        country_val = response.data.data[0].country || "US";
-        lang_val = response.data.data[0].language || "EN";
-        fetchVideo(videoType, country_val, lang_val);
-        letsStart();
-      } else {
-        createVideoProspect();
-      }
-    })
-    .catch(function (error) {
-      error_show(error.response.data.message);
-    });
+      })
+      .catch(function (error) {
+        error_show(error.response.data.message);
+      });
 }
 
 // Create Video Prospect
-function createVideoProspect() {
-  fetchVideo(videoType, country_val || "US", lang_val || "EN");
+async function createVideoProspect() {
+  await fetchVideo(videoType, country_val || "US", lang_val || "EN");
   const data = {
     videoName: document.title,
     firstName: $("#fname").val(),
@@ -413,35 +415,34 @@ function createVideoProspect() {
   }
 
   const createVideoProspectID =
-    "https://" +
-    api_url +
-    "/api/v1/users/company/" +
-    readCookie("COMPANY_ID") +
-    "/videoProspects";
+      "https://" +
+      api_url +
+      "/api/v1/users/company/" +
+      readCookie("COMPANY_ID") +
+      "/videoProspects";
   axios({
     method: "post",
     url: createVideoProspectID,
     data,
   })
-    .then(function (response) {
-      renderVideo(video_id);
-      video_prospect_id = response.data.data._id;
-      success_show("Your details have been verified, Enjoy your video!");
-      letsStart();
-    })
-    .catch(function (error) {
-      error_show(error.response.data.message);
-    });
+      .then(function (response) {
+        video_prospect_id = response.data.data._id;
+        success_show("Your details have been verified, Enjoy your video!");
+        letsStart();
+      })
+      .catch(function (error) {
+        error_show(error.response.data.message);
+      });
 }
 
 // Move the screens on successfull prospect
 function letsStart() {
   $(function () {
     $(".nav-bullet-dot:nth-child(2)")
-      .click(function () {
-        this.click();
-      })
-      .click();
+        .click(function () {
+          this.click();
+        })
+        .click();
   });
   $(".onboarding").addClass("pan-out");
   $(".watch-video").addClass("pan-in");
@@ -451,12 +452,12 @@ function letsStart() {
 // Update watch percentage
 function updateWatchtime(time, percentage) {
   const updateWatchTimeAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/company/" +
-    readCookie("COMPANY_ID") +
-    "/videoProspects/" +
-    video_prospect_id;
+      "https://" +
+      api_url +
+      "/api/v1/users/company/" +
+      readCookie("COMPANY_ID") +
+      "/videoProspects/" +
+      video_prospect_id;
   axios({
     method: "put",
     url: updateWatchTimeAPI,
@@ -465,14 +466,19 @@ function updateWatchtime(time, percentage) {
       watchPercentage: parseInt(percentage),
     },
   })
-    .then(function (response) {
-      //console.log(response.data);
-      //console.log(response.xhr);
-    })
-    .catch(function (error) {
-      //console.log(response.data);
-      //console.log(response.xhr);
-    });
+      .then(function (response) {
+        // trackMixPanelEvent(`Watched ${videoType} ${parseInt(percentage)}%`, {
+        //   videoType,
+        //   percentage: parseInt(percentage),
+        //   watchedTime: format(time),
+        // });
+        //console.log(response.data);
+        //console.log(response.xhr);
+      })
+      .catch(function (error) {
+        //console.log(response.data);
+        //console.log(response.xhr);
+      });
 }
 
 /********************************/
@@ -539,10 +545,10 @@ function setFinalFunction() {
   player.on("ended", function () {
     $(function () {
       $(".nav-bullet-dot:nth-child(3)")
-        .click(function () {
-          this.click();
-        })
-        .click();
+          .click(function () {
+            this.click();
+          })
+          .click();
     });
     $(".site-content-wrapper.video").addClass("move");
     $(".site-content-wrapper.paths").addClass("move");
@@ -561,16 +567,16 @@ async function render_options() {
     }
     $(".checkbox-field:nth-child(" + (i + 1) + ") .checkbox-label").text(text);
     $(".checkbox-field:nth-child(" + (i + 1) + ") .checkbox-label").attr(
-      "en",
-      options[i]
+        "en",
+        options[i]
     );
   }
   $(function () {
     $(".nav-bullet-dot:nth-child(4)")
-      .click(function () {
-        this.click();
-      })
-      .click();
+        .click(function () {
+          this.click();
+        })
+        .click();
   });
   $(".watch-video").addClass("pan-out");
   $(".path-container").addClass("pan-in");
@@ -623,6 +629,9 @@ function toggleFocus(e) {
 //Setting cookie name
 $("#fname").keyup(function () {
   setCookies("Name", $(this).val());
+  // trackMixPanelEvent(`Video Prospect Journey Started`, {
+  //   prospectName: $(this).val(),
+  // });
 });
 
 //Country Button functions
@@ -641,9 +650,9 @@ $(".non-clicker").click(function () {
 $(".onboad").click(function () {
   if (country_val !== "") {
     if (
-      $("#peoplewatching").val() != "" &&
-      $("#phone").val() != "" &&
-      $("#fname").val() != ""
+        $("#peoplewatching").val() != "" &&
+        $("#phone").val() != "" &&
+        $("#fname").val() != ""
     ) {
       if (isEmail($("#email").val())) {
         checkVideoProspect($("#email").val());
@@ -758,25 +767,32 @@ $(".path-option").click(function () {
 async function triggerRenderOptions(path_name) {
   $(".path-heading").text(path_name);
   path_name = path_name.includes("1")
-    ? "Path 1"
-    : path_name.includes("2")
-    ? "Path 2"
-    : path_name.includes("3")
-    ? "Path 3"
-    : "";
+      ? "Path 1"
+      : path_name.includes("2")
+          ? "Path 2"
+          : path_name.includes("3")
+              ? "Path 3"
+              : "";
 
-  var getPathOptionsAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/videoProspects/paths/?name=" +
-    path_name;
-  var setPathAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/company/" +
-    readCookie("COMPANY_ID") +
-    "/videoProspects/" +
-    video_prospect_id;
+  // track path clicked event to mixpanel
+  // trackMixPanelEvent(`${videoType}: ${path_name} Clicked`, {
+  //   companyId: readCookie("COMPANY_ID"),
+  //   video_prospect_id,
+  //   pathChoosen: path_name,
+  // });
+
+  const getPathOptionsAPI =
+      "https://" +
+      api_url +
+      "/api/v1/users/videoProspects/paths/?name=" +
+      path_name;
+  const setPathAPI =
+      "https://" +
+      api_url +
+      "/api/v1/users/company/" +
+      readCookie("COMPANY_ID") +
+      "/videoProspects/" +
+      video_prospect_id;
 
   axios({
     method: "put",
@@ -785,27 +801,27 @@ async function triggerRenderOptions(path_name) {
       pathChoosen: path_name,
     },
   })
-    .then(function (response) {
-      // Getting path options afte a successfull post
-      axios({
-        method: "get",
-        url: getPathOptionsAPI,
-      })
-        .then(function (response) {
-          options = response.data.data[0].options;
-          render_options();
+      .then(function (response) {
+        // Getting path options afte a successfull post
+        axios({
+          method: "get",
+          url: getPathOptionsAPI,
         })
-        .catch(function (error) {
-          console.log(error.status);
-          console.log(error.statusText);
-          error_show("Oops, There was an unexpected error.");
-        });
-    })
-    .catch(function (error) {
-      console.log(error.status);
-      console.log(error.statusText);
-      error_show("Oops, There was an unexpected error.");
-    });
+            .then(function (response) {
+              options = response.data.data[0].options;
+              render_options();
+            })
+            .catch(function (error) {
+              console.log(error.status);
+              console.log(error.statusText);
+              error_show("Oops, There was an unexpected error.");
+            });
+      })
+      .catch(function (error) {
+        console.log(error.status);
+        console.log(error.statusText);
+        error_show("Oops, There was an unexpected error.");
+      });
 }
 
 $(".checkbox-field").click(function () {
@@ -827,12 +843,12 @@ $(".checkbox-field").click(function () {
 
 $(".submit.paths").click(async () => {
   const setPathOptionsAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/company/" +
-    readCookie("COMPANY_ID") +
-    "/videoProspects/" +
-    video_prospect_id;
+      "https://" +
+      api_url +
+      "/api/v1/users/company/" +
+      readCookie("COMPANY_ID") +
+      "/videoProspects/" +
+      video_prospect_id;
 
   if (mcq.length !== 0) {
     axios({
@@ -842,23 +858,27 @@ $(".submit.paths").click(async () => {
         interests: mcq,
       },
     })
-      .then(function (response) {
-        console.log(response.data);
-        $(".user_name").text($("#fname").val());
-        $(".rep_name, .rep_name_cta").text(readCookie("REP_NAME"));
-        $(".rep-phoito").css(
-          "background-image",
-          "url('" + readCookie("PIC") + "')"
-        );
-        success_show("Your answers have been sent successfully!");
-        $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
-        $(".last-popup").addClass("active");
-      })
-      .catch(function (error) {
-        console.log(error.status);
-        console.log(error.statusText);
-        error_show("Oops, There was an unexpected error.");
-      });
+        .then(function (response) {
+          console.log(response.data);
+          // trackMixPanelEvent(
+          //   `Video Prospect Journey Completed`,
+          //   response.data.data
+          // );
+          $(".user_name").text($("#fname").val());
+          $(".rep_name, .rep_name_cta").text(readCookie("REP_NAME"));
+          $(".rep-phoito").css(
+              "background-image",
+              "url('" + readCookie("PIC") + "')"
+          );
+          success_show("Your answers have been sent successfully!");
+          $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
+          $(".last-popup").addClass("active");
+        })
+        .catch(function (error) {
+          console.log(error.status);
+          console.log(error.statusText);
+          error_show("Oops, There was an unexpected error.");
+        });
   } else {
     error_show("Please select at least one option");
   }
