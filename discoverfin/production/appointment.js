@@ -18,6 +18,12 @@ if (window.location.pathname.startsWith("/appointment")) {
     isDashboard = true;
   }
 
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  };
+
   trackMixPanelEvent("Prospect visited Appointment Page", {
     rep_name,
     page_type: isVideoApp ? "Video App" : "FIN App",
@@ -48,7 +54,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   function setPageMetaContent(repName, repPic) {
     document.title = repName;
     $("head").append(
-        `<meta name="description" content="${repName}"><meta name="og:title" content="${repName}"><meta name="og:image" content="${repPic}">`
+      `<meta name="description" content="${repName}"><meta name="og:title" content="${repName}"><meta name="og:image" content="${repPic}">`
     );
     $("link[rel='icon']").attr("href", repPic);
     $("meta[name='description']").attr("content", repName);
@@ -90,8 +96,12 @@ if (window.location.pathname.startsWith("/appointment")) {
     }
 
     if (is_canadian) {
-      $("#logos").css("grid-template-columns", "repeat(5, 1fr)");
-      $("#logos").css("-ms-grid-columns", "repeat(5, 1fr)");
+      let gridColumns = "repeat(2, 1fr)";
+      if (!isMobile()) {
+        gridColumns = "repeat(5, 1fr)";
+      }
+      $("#logos").css("grid-template-columns", gridColumns);
+      $("#logos").css("-ms-grid-columns", gridColumns);
       $(".american").css("display", "none");
       $(".canadian").css("display", "block");
     } else {
@@ -99,8 +109,8 @@ if (window.location.pathname.startsWith("/appointment")) {
     }
 
     $("#appointment-schedule-url .calender-embedd").attr(
-        "src",
-        appointment_link
+      "src",
+      appointment_link
     );
     //$("#rep-email").text(rep_email);
     //$("#rep-phone").text(rep_phone);
@@ -126,15 +136,15 @@ if (window.location.pathname.startsWith("/appointment")) {
   async function getCompany() {
     try {
       const response = await axios.get(
-          `https://${api_url}${
-              getUrlParameter("company")
-                  ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
-                      getUrlParameter("id") || getUrlParameter("user")
-                  }`
-                  : `/api/v1/users/getUserByUrl/${
-                      getUrlParameter("id") || getUrlParameter("user")
-                  }`
-          }`
+        `https://${api_url}${
+          getUrlParameter("company")
+            ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
+                getUrlParameter("id") || getUrlParameter("user")
+              }`
+            : `/api/v1/users/getUserByUrl/${
+                getUrlParameter("id") || getUrlParameter("user")
+              }`
+        }`
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
@@ -145,8 +155,8 @@ if (window.location.pathname.startsWith("/appointment")) {
         rep_phone = response.data.data.phone;
         user_id = response.data.data.userId;
         is_canadian =
-            response.data.data.address &&
-            response.data.data.address.country === "Canada";
+          response.data.data.address &&
+          response.data.data.address.country === "Canada";
         company_id = response.data.data.companyId;
         rep_email = response.data.data.email;
         setCookies("user_id", response.data.data.userId);
@@ -177,23 +187,23 @@ if (window.location.pathname.startsWith("/appointment")) {
       url: "https://" + api_url + "/api/v1/users/email/send/getInTouch",
       data: bodyObject,
     })
-        .then(() => {
-          trackMixPanelEvent("Prospect filled getInTouch form", {
-            rep_name,
-            user_id,
-            rep_email,
-            company_id,
-            page_type: isVideoApp ? "Video App" : "FIN App",
-            prospectName: $("#first_name").val() + " " + $("#last_name").val(),
-            prospectEmail: $("#email").val(),
-          });
-          $(".getintouch").addClass("hide");
-          $(".successmessage").addClass("displayshow");
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("Oops, There was an unexpected error.");
+      .then(() => {
+        trackMixPanelEvent("Prospect filled getInTouch form", {
+          rep_name,
+          user_id,
+          rep_email,
+          company_id,
+          page_type: isVideoApp ? "Video App" : "FIN App",
+          prospectName: $("#first_name").val() + " " + $("#last_name").val(),
+          prospectEmail: $("#email").val(),
         });
+        $(".getintouch").addClass("hide");
+        $(".successmessage").addClass("displayshow");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Oops, There was an unexpected error.");
+      });
   });
 
   let scroll_position = 0;
@@ -201,9 +211,9 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   window.addEventListener("scroll", function () {
     scroll_direction =
-        document.body.getBoundingClientRect().top > scroll_position
-            ? "up"
-            : "down";
+      document.body.getBoundingClientRect().top > scroll_position
+        ? "up"
+        : "down";
     scroll_position = document.body.getBoundingClientRect().top;
     if (scroll_direction === "up") {
       $(".button-pattern").css("display", "block");
@@ -233,9 +243,9 @@ if (window.location.pathname.startsWith("/appointment")) {
   const getUserUrl = () => getUrlParameter("id") || getUrlParameter("user");
 
   const videoUrlBase = () =>
-      isOldUrl()
-          ? `${getBaseUrl()}company=${isOldUrl()}&user=${getUserUrl()}`
-          : `${getBaseUrl()}id=${getUserUrl()}`;
+    isOldUrl()
+      ? `${getBaseUrl()}company=${isOldUrl()}&user=${getUserUrl()}`
+      : `${getBaseUrl()}id=${getUserUrl()}`;
 
   const finBusinessVideoAppLink = () => {
     return videoUrlBase().replace("video_type", "businessOverview");
@@ -243,9 +253,9 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   const finAppLink = () => {
     return !isOldUrl()
-        ? `${finBaseUrl()}id=${getUrlParameter("id") || getUrlParameter("user")}`
-        : `${finBaseUrl()}company=${isOldUrl()}&user=${
-            getUrlParameter("id") || getUrlParameter("user")
+      ? `${finBaseUrl()}id=${getUrlParameter("id") || getUrlParameter("user")}`
+      : `${finBaseUrl()}company=${isOldUrl()}&user=${
+          getUrlParameter("id") || getUrlParameter("user")
         }`;
   };
 

@@ -18,6 +18,12 @@ if (window.location.pathname.startsWith("/appointment")) {
     isDashboard = true;
   }
 
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  };
+
   let appointment_button_clicked = false;
 
   // track appointment button clicks to mixpanel
@@ -76,8 +82,12 @@ if (window.location.pathname.startsWith("/appointment")) {
     }
 
     if (is_canadian) {
-      $("#logos").css("grid-template-columns", "repeat(5, 1fr)");
-      $("#logos").css("-ms-grid-columns", "repeat(5, 1fr)");
+      let gridColumns = "repeat(2, 1fr)";
+      if (!isMobile()) {
+        gridColumns = "repeat(5, 1fr)";
+      }
+      $("#logos").css("grid-template-columns", gridColumns);
+      $("#logos").css("-ms-grid-columns", gridColumns);
       $(".american").css("display", "none");
       $(".canadian").css("display", "block");
     } else {
