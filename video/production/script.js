@@ -36,6 +36,26 @@ const getUrlParameter = function getUrlParameter(sParam) {
   }
 };
 
+const user_url = getUrlParameter("id") || getUrlParameter("user");
+
+const getVideoBaseUrl = () => {
+  if (window.location.host === "devvideo.discoverfin.io") {
+    return "dev.discoverfin.io";
+  } else if (window.location.host === "stagingvideo.discoverfin.io") {
+    return "staging.discoverfin.io";
+  } else if (window.location.host === "video.discoverfin.io") {
+    return "discoverfin.io";
+  } else if (window.location.host === "qavideo.discoverfin.io") {
+    return "qa.discoverfin.io";
+  }
+};
+
+const appointment_link = !checkIsEmpty(getUrlParameter("company"))
+  ? `https://${getVideoBaseUrl()}/appointment?company=${getUrlParameter(
+      "company"
+    )}&user=${user_url}&video=true`
+  : `https://${getVideoBaseUrl()}/appointment?id=${user_url}&video=true`;
+
 // Check email format
 function isEmail(e) {
   return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
@@ -83,13 +103,15 @@ function format(time) {
 
 //Validating URL
 function validateUrl(company, user) {
-  let validateCompanyUserAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/getCompany/name/" +
-    company +
-    "/" +
-    user;
+  let validateCompanyUserAPI = `https://${api_url}${
+    getUrlParameter("company")
+      ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
+          getUrlParameter("id") || getUrlParameter("user")
+        }`
+      : `/api/v1/users/getUserByUrl/${
+          getUrlParameter("id") || getUrlParameter("user")
+        }`
+  }`;
   axios({
     method: "get",
     url: validateCompanyUserAPI,
@@ -178,6 +200,23 @@ function redirectContinuer() {
   }
 }
 
+function autoFill() {
+  const firstName = getUrlParameter("fname");
+  const email_fill = getUrlParameter("email");
+  if (firstName && email_fill) {
+    $("#fname").val(firstName);
+    $("#email").val(email_fill);
+    $("#peoplewatching").val(1);
+    $("#country-us").click();
+    $("#country-us").toggleClass("active");
+    lang_val = "EN";
+    country_val = "US";
+    fetchVideo(videoType, "US", "EN");
+  }
+}
+
+autoFill();
+
 //Validating video type
 function validateVideoType(typeName) {
   let validateVideoTypeAPI =
@@ -192,7 +231,7 @@ function validateVideoType(typeName) {
     .then(function (response) {
       document.title = response.data.data[0].name; // Setting page title
       $("#video-title").text(response.data.data[0].name); // Setting video title
-      console.log(response.data.data);
+      renderVideo(response.data.data[0].url); // Rendering video
       if (response.data.count > 0) {
         validateUrl(getUrlParameter("company"), getUrlParameter("user"));
         setPathsContentVariable(videoType);
@@ -283,10 +322,9 @@ function renderVideo(videoID) {
       setTotalDuration();
       playerinitialized = 1;
       player.pause();
+      setFinalFunction();
     })
     .catch(function (error) {});
-  player.pause();
-  setFinalFunction();
 }
 
 //fetch video
@@ -305,7 +343,6 @@ function fetchVideo(type, country, lang) {
     url: fetchVideoAPI,
   })
     .then(function (response) {
-      console.log(response.data.data, country, lang);
       video_id = response.data.data[0].url;
       $(".video-container").css(
         "height",
@@ -320,7 +357,7 @@ function fetchVideo(type, country, lang) {
 
 // Check Video Prospect
 function checkVideoProspect(email_val) {
-  var checkVideoProspectAPI =
+  const checkVideoProspectAPI =
     "https://" +
     api_url +
     "/api/v1/users/company/" +
@@ -340,8 +377,8 @@ function checkVideoProspect(email_val) {
             "Welcome " + response.data.data[0].firstName + "! Enjoy your video"
           );
         }
-        country_val = response.data.data[0].country;
-        lang_val = response.data.data[0].language;
+        country_val = response.data.data[0].country || "US";
+        lang_val = response.data.data[0].language || "EN";
         fetchVideo(videoType, country_val, lang_val);
         letsStart();
       } else {
@@ -354,8 +391,29 @@ function checkVideoProspect(email_val) {
 }
 
 // Create Video Prospect
-function createVideoProspect() {
-  fetchVideo(videoType, country_val || "US", lang_val || "EN");
+async function createVideoProspect() {
+  await fetchVideo(videoType, country_val || "US", lang_val || "EN");
+  const data = {
+    videoName: document.title,
+    firstName: $("#fname").val(),
+    lastName: $("#lname").val(),
+    email: $("#email").val(),
+    phone: Inputmask.unmask($("#phone").val(), { mask: "(999) 999-9999" }),
+    country: country_val || "US",
+    language: lang_val || "EN",
+    watchingWith: $("#peoplewatching").val(),
+    watchedTime: 0,
+    totalVideoTime: format(totalDurationTime),
+    watchPercentage: 0,
+    appointmentCompleted: false,
+    userId: readCookie("USER_ID"),
+    companyId: readCookie("COMPANY_ID"),
+  };
+
+  if (readCookie("isAffiliateUrl") === "true") {
+    data.affiliateId = readCookie("affiliateId");
+  }
+
   const createVideoProspectID =
     "https://" +
     api_url +
@@ -365,22 +423,7 @@ function createVideoProspect() {
   axios({
     method: "post",
     url: createVideoProspectID,
-    data: {
-      videoName: document.title,
-      firstName: $("#fname").val(),
-      lastName: $("#lname").val(),
-      email: $("#email").val(),
-      phone: Inputmask.unmask($("#phone").val(), { mask: "(999) 999-9999" }),
-      country: country_val || "US",
-      language: lang_val || "EN",
-      watchingWith: $("#peoplewatching").val(),
-      watchedTime: 0,
-      totalVideoTime: format(totalDurationTime),
-      watchPercentage: 0,
-      appointmentCompleted: false,
-      userId: readCookie("USER_ID"),
-      companyId: readCookie("COMPANY_ID"),
-    },
+    data,
   })
     .then(function (response) {
       video_prospect_id = response.data.data._id;
@@ -425,8 +468,6 @@ function updateWatchtime(time, percentage) {
   })
     .then(function (response) {
       trackMixPanelEvent(`Watched ${videoType} ${parseInt(percentage)}%`, {
-        video_prospect_id,
-        company_id: readCookie("COMPANY_ID"),
         videoType,
         percentage: parseInt(percentage),
         watchedTime: format(time),
@@ -483,16 +524,16 @@ setInterval(function () {
       $(".elapsedtime").text(format(seconds));
       const schedule_footer = $(".schedule-footer");
       watchpercentage = (seconds / totalDurationTime) * 100;
-     //if (watchpercentage >= 93) {
-       //if (schedule_footer.css("display") === "none") {
-          // schedule_footer.css("display", "flex");
-          // $("#window_frame").attr(
-           // "src",
-             //`https://discoverfin.io/appointment?company=${getUrlParameter(
-             // "company"
-            //)}&user=${getUrlParameter("user")}&video=true`
-          //);
-        //}
+      //if (watchpercentage >= 93) {
+      //if (schedule_footer.css("display") === "none") {
+      // schedule_footer.css("display", "flex");
+      // $("#window_frame").attr(
+      // "src",
+      //`https://discoverfin.io/appointment?company=${getUrlParameter(
+      // "company"
+      //)}&user=${getUrlParameter("user")}&video=true`
+      //);
+      //}
       //}
       currentTiming = seconds;
     });
@@ -611,7 +652,6 @@ $(".onboad").click(function () {
     if (
       $("#peoplewatching").val() != "" &&
       $("#phone").val() != "" &&
-      $("#lname").val() != "" &&
       $("#fname").val() != ""
     ) {
       if (isEmail($("#email").val())) {
@@ -741,18 +781,18 @@ async function triggerRenderOptions(path_name) {
     pathChoosen: path_name,
   });
 
-  var getPathOptionsAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/videoProspects/paths/?name=" +
-    path_name;
-  var setPathAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/company/" +
-    readCookie("COMPANY_ID") +
-    "/videoProspects/" +
-    video_prospect_id;
+  const getPathOptionsAPI =
+      "https://" +
+      api_url +
+      "/api/v1/users/videoProspects/paths/?name=" +
+      path_name;
+  const setPathAPI =
+      "https://" +
+      api_url +
+      "/api/v1/users/company/" +
+      readCookie("COMPANY_ID") +
+      "/videoProspects/" +
+      video_prospect_id;
 
   axios({
     method: "put",
@@ -820,10 +860,9 @@ $(".submit.paths").click(async () => {
     })
       .then(function (response) {
         console.log(response.data);
-        // track path clicked event to mixpanel
         trackMixPanelEvent(
-          `Video Prospect Journey Completed`,
-          response.data.data
+            `Video Prospect Journey Completed`,
+            response.data.data
         );
         $(".user_name").text($("#fname").val());
         $(".rep_name, .rep_name_cta").text(readCookie("REP_NAME"));
@@ -832,14 +871,7 @@ $(".submit.paths").click(async () => {
           "url('" + readCookie("PIC") + "')"
         );
         success_show("Your answers have been sent successfully!");
-        $(".appointment-iframe .w-iframe iframe").attr(
-          "src",
-          "https://discoverfin.io/appointment?company=" +
-            getUrlParameter("company") +
-            "&user=" +
-            getUrlParameter("user") +
-            "&video=true"
-        );
+        $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
         $(".last-popup").addClass("active");
       })
       .catch(function (error) {
@@ -853,24 +885,10 @@ $(".submit.paths").click(async () => {
 });
 
 $(".iframe-back").click(function () {
-  $(".appointment-iframe .w-iframe iframe").attr(
-    "src",
-    "https://discoverfin.io/appointment?company=" +
-      getUrlParameter("company") +
-      "&user=" +
-      getUrlParameter("user") +
-      "&video=true"
-  );
+  $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
 });
 
 $(".closer-last").click(function () {
   $(".last-popup").removeClass("active");
-  $(".appointment-iframe .w-iframe iframe").attr(
-    "src",
-    "https://discoverfin.io/appointment?company=" +
-      getUrlParameter("company") +
-      "&user=" +
-      getUrlParameter("user") +
-      "&video=true"
-  );
+  $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
 });

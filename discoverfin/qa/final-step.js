@@ -10,6 +10,8 @@ const URL_USER =
     ? readCookie("URL_USER")
     : readCookie("USER_URL");
 
+let prospectEmail;
+
 const appointmentLink = !checkIsEmpty(readCookie("isOldUrl"))
   ? `https://${window.location.host}/appointment?company=${readCookie(
       "isOldUrl"
@@ -26,8 +28,8 @@ $("#video-area").css(
   "background-image",
   `url(${
     window.location.pathname.includes("make-more-money")
-      ? "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/62298cbd7e7d4d28cd3ba692_Group%20287.png"
-      : "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/62298cac2c8a5362218448df_7%201.png"
+      ? "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/62447936cd9d3938d09c181d_more_than_buisness.png"
+      : "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/62447935eafc80b0556a88bd_7_steps.png"
   })`
 );
 
@@ -36,6 +38,14 @@ const getTrailerId = () => {
     ? "445443796"
     : "614514350";
 };
+
+const videoTitle = () => {
+  return window.location.pathname.includes("make-more-money")
+    ? "More than a Business"
+    : "7 Steps To Create A Clear Financial Vision";
+};
+
+$("#video-title").text(videoTitle());
 
 const setTrailerVideo = () => {
   $("#video").each(() => {
@@ -64,7 +74,7 @@ function scrollButtonHandlers(
       : window.scrollY > targetElement.offsetTop + targetElement.offsetHeight
   ) {
     $(".hide-on-scroll").each(function () {
-      $(this).css("display", "grid");
+      $(this).css("display", "block");
     });
     $(".down-arrow").css("display", "none");
   } else {
@@ -143,7 +153,14 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
     prospectAnswers.ques_4,
     prospectAnswers.ques_5,
   ]
-    .filter((currentItem) => currentItem !== "")
+    .filter(
+      (answer) =>
+        answer
+          .toLowerCase()
+          .includes(
+            "what are areas you want to evaluate or know more about?"
+          ) && answer !== ""
+    )
     .map((currentItem) =>
       currentItem
         ? currentItem.split("*").splice(1, currentItem.split("*").length - 1)
@@ -162,7 +179,7 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
     );
 };
 
-function getVideoBaseUrl() {
+const getVideoBaseUrl = () => {
   if (window.location.host === "dev.discoverfin.io") {
     return "https://devvideo.discoverfin.io";
   } else if (window.location.host === "staging.discoverfin.io") {
@@ -172,7 +189,7 @@ function getVideoBaseUrl() {
   } else if (window.location.host === "qa.discoverfin.io") {
     return "https://qavideo.discoverfin.io";
   }
-}
+};
 
 const openVideoApp = (email) => {
   window.open(
@@ -202,14 +219,20 @@ async function populatePathOptions() {
   $("#video-area").click(() => {
     openVideoApp(prospectAnswers["email"]);
   });
-  
+
   $(".open-video").each(function () {
     $(this).click(() => {
       openVideoApp(prospectAnswers["email"]);
     });
   });
 
-  parent.html(questionAndAnswersOfProspect(prospectAnswers));
+  const isMakeMoreMoney = window.location.pathname.includes("make-more-money");
+  if (!isMakeMoreMoney) {
+    $(".manage-both").css("display", "block");
+    parent.html(questionAndAnswersOfProspect(prospectAnswers));
+  } else {
+    $(".manage-both").css("display", "none");
+  }
 }
 
 populatePathOptions();

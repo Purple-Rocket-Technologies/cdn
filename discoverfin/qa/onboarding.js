@@ -1,4 +1,6 @@
 const user_url = getUrlParameter("id") || getUrlParameter("user");
+let totalDurationTime;
+let playerinitialized = 0;
 setCookies("isOldUrl", getUrlParameter("company"));
 let is_canadian = false;
 if (
@@ -151,40 +153,60 @@ var player = new Vimeo.Player(iframe);
 player.on("play", function () {
   $(".arrow_lottie").css("opacity", "0");
   $(".title").addClass("hide");
+  setTotalDuration();
 });
 
 player.on("ended", function () {
-  $(".cta_btn").addClass("active");
+  $(".link-block .cta_btn").addClass("active");
 });
+
+// Setting total time duration of video
+function setTotalDuration() {
+  player.getDuration().then(function (duration) {
+    totalDurationTime = duration;
+    playerinitialized = 1;
+  });
+}
 
 setCookies("INITIAL_LINK", window.location.href);
 
 $("#lang_us").click(function () {
-  $(".fin_video").attr(
-    "src",
-    is_canadian
-      ? "https://player.vimeo.com/video/551499288"
-      : "https://player.vimeo.com/video/445268145"
-  );
+  renderVideo(is_canadian ? 551499288 : 445268145);
   Weglot.switchTo("en");
   setCookies("country", is_canadian ? "Canada" : "United States");
 });
 
 $("#lang_ca").click(function () {
-  $(".fin_video").attr("src", "https://player.vimeo.com/video/551499288");
+  renderVideo(551499288);
   Weglot.switchTo("en");
   setCookies("country", "Canada");
 });
 
+function renderVideo(videoID) {
+  player.loadVideo(videoID).then(function (id) {
+    setTotalDuration();
+    player.pause();
+  });
+}
+
+setInterval(function () {
+  if (playerinitialized === 1) {
+    player.getCurrentTime().then(function (seconds) {
+      let watchpercentage = (seconds / totalDurationTime) * 100;
+      const disButton = $(".link-block");
+      if (watchpercentage >= 90) {
+        $(".link-block .cta_btn").addClass("active");
+      } else {
+        $(".link-block .cta_btn").removeClass("active");
+      }
+    });
+  }
+}, 200);
+
 $("#lang_es").click(function () {
   $("#temp_en").addClass("hide");
   $("#temp_es").removeClass("hide");
-  $(".fin_video").attr(
-    "src",
-    is_canadian
-      ? "https://player.vimeo.com/video/452754620"
-      : "https://player.vimeo.com/video/452754620"
-  );
+  renderVideo(is_canadian ? 452754620 : 452754620);
   Weglot.switchTo("es");
   setCookies("country", is_canadian ? "Canada" : "United States");
 });
