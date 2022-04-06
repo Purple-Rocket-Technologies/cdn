@@ -98,7 +98,7 @@ if (window.location.pathname.startsWith("/appointment")) {
     if (is_canadian) {
       let gridColumns = "repeat(2, 1fr)";
       if (!isMobile()) {
-        gridColumns = "repeat(5, 1fr)";
+        gridColumns = "repeat(4, 1fr)";
       }
       $("#logos").css("grid-template-columns", gridColumns);
       $("#logos").css("-ms-grid-columns", gridColumns);
