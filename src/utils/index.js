@@ -11,6 +11,28 @@ Array.prototype.remove = function (item) {
   }
 };
 
+String.prototype.isEmail = function () {
+  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    this
+  );
+};
+
+class BasePage {
+  constructor(object) {
+    Object.assign(this, {
+      ...object,
+    });
+  }
+
+  track(event, data) {
+    trackMixPanelEvent(event, data);
+  }
+
+  on(event, selector, callback) {
+    $(`${selector}`).on(event, callback);
+  }
+}
+
 const isOnBoardingPage = () => {
   return window.location.pathname.startsWith("/en");
 };
@@ -147,5 +169,6 @@ module.exports = {
   getBaseUrl,
   finBaseUrl,
   finBusinessVideoAppLink,
+  BasePage,
   finFinancialSuccessVideoAppLink,
 };

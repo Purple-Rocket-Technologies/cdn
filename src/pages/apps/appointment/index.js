@@ -1,20 +1,10 @@
 const { appointmentUtils } = require("../../../utils/appointment.utils");
 const { getCompany } = require("../../../service/appointment.service");
-const { url } = require("../../../utils");
+const { url, BasePage } = require("../../../utils");
 const { submitForm } = require("../../../service/appointment.service");
-class AppointmentPage {
-  constructor(object) {
-    Object.assign(this, {
-      ...object,
-    });
-  }
-
-  track(event, data) {
-    trackMixPanelEvent(event, data);
-  }
-
-  on(event, selector, callback) {
-    $(`${selector}`).on(event, callback);
+class AppointmentPage extends BasePage {
+  constructor(_object) {
+    super(_object);
   }
 }
 
