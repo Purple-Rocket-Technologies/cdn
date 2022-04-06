@@ -32,6 +32,7 @@ function getAPIparams() {
       is_canadian =
         response.data.data.address &&
         response.data.data.address.country === "Canada";
+      setCookies("isCanadianLink", is_canadian);
       setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
       setCookies("affiliateId", response.data.data.affiliateId);
 
@@ -126,6 +127,7 @@ axios({
       is_canadian =
         response.data.data.address &&
         response.data.data.address.country === "Canada";
+      setCookies("isCanadianLink", is_canadian);
       setCookies("COMPANY_ID", response.data.data.companyId);
       setCookies("COMPANY_URL", response.data.data.companyUrl);
       setCookies("USER_ID", response.data.data.userId);
