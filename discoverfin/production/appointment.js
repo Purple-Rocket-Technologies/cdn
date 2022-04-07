@@ -1,3 +1,8 @@
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+}
 if (window.location.pathname.startsWith("/appointment")) {
   let appointment_link;
   let rep_name;
@@ -18,12 +23,6 @@ if (window.location.pathname.startsWith("/appointment")) {
     isDashboard = true;
   }
 
-  const isMobile = () => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
-  };
-
   trackMixPanelEvent("Prospect visited Appointment Page", {
     rep_name,
     page_type: isVideoApp ? "Video App" : "FIN App",
@@ -32,7 +31,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   let appointment_button_clicked = false;
 
   // track appointment button clicks to mixpanel
-  const handleAppointmentButtonClick = () => {
+  function handleAppointmentButtonClick() {
     if (appointment_button_clicked) {
       return;
     }
@@ -46,7 +45,7 @@ if (window.location.pathname.startsWith("/appointment")) {
       page_type: isVideoApp ? "Video App" : "FIN App",
       rep_email,
     });
-  };
+  }
 
   $("#aptmt_link1").click(handleAppointmentButtonClick);
   $("#aptmt_link2").click(handleAppointmentButtonClick);
@@ -222,7 +221,7 @@ if (window.location.pathname.startsWith("/appointment")) {
     }
   });
 
-  const getBaseUrl = () => {
+  function getBaseUrl() {
     if (window.location.host === "dev.discoverfin.io") {
       return "https://devvideo.discoverfin.io/video_type?";
     } else if (window.location.host === "staging.discoverfin.io") {
@@ -232,36 +231,41 @@ if (window.location.pathname.startsWith("/appointment")) {
     } else if (window.location.host === "qa.discoverfin.io") {
       return "https://qavideo.discoverfin.io/video_type?";
     }
-  };
+  }
 
-  const finBaseUrl = () => {
+  function finBaseUrl() {
     return `https://${window.location.host}/en?`;
-  };
+  }
 
-  const isOldUrl = () => getUrlParameter("company");
+  function isOldUrl() {
+    return getUrlParameter("company");
+  }
 
-  const getUserUrl = () => getUrlParameter("id") || getUrlParameter("user");
+  function getUserUrl() {
+    return getUrlParameter("id") || getUrlParameter("user");
+  }
 
-  const videoUrlBase = () =>
-    isOldUrl()
+  function videoUrlBase() {
+    return isOldUrl()
       ? `${getBaseUrl()}company=${isOldUrl()}&user=${getUserUrl()}`
       : `${getBaseUrl()}id=${getUserUrl()}`;
+  }
 
-  const finBusinessVideoAppLink = () => {
+  function finBusinessVideoAppLink() {
     return videoUrlBase().replace("video_type", "businessOverview");
-  };
+  }
 
-  const finAppLink = () => {
+  function finAppLink() {
     return !isOldUrl()
       ? `${finBaseUrl()}id=${getUrlParameter("id") || getUrlParameter("user")}`
       : `${finBaseUrl()}company=${isOldUrl()}&user=${
           getUrlParameter("id") || getUrlParameter("user")
         }`;
-  };
+  }
 
-  const finFinancialSuccessVideoAppLink = () => {
+  function finFinancialSuccessVideoAppLink() {
     return videoUrlBase().replace("video_type", "financialHouse");
-  };
+  }
 
   if (isDashboard) {
     $("#only-video-app").css("display", "flex");

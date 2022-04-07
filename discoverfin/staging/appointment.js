@@ -1,3 +1,8 @@
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+  );
+}
 if (window.location.pathname.startsWith("/appointment")) {
   let appointment_link;
   let rep_name;
@@ -18,21 +23,15 @@ if (window.location.pathname.startsWith("/appointment")) {
     isDashboard = true;
   }
 
-  const isMobile = () => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
-  };
-
   let appointment_button_clicked = false;
 
   // track appointment button clicks to mixpanel
-  const handleAppointmentButtonClick = () => {
+  function handleAppointmentButtonClick() {
     if (appointment_button_clicked) {
       return;
     }
     appointment_button_clicked = true;
-  };
+  }
 
   $("#aptmt_link1").click(handleAppointmentButtonClick);
   $("#aptmt_link2").click(handleAppointmentButtonClick);
@@ -40,7 +39,7 @@ if (window.location.pathname.startsWith("/appointment")) {
   function setPageMetaContent(repName, repPic) {
     document.title = repName;
     $("head").append(
-      `<meta name="description" content="${repName}"><meta name="og:title" content="${repName}"><meta name="og:image" content="${repPic}">`
+        `<meta name="description" content="${repName}"><meta name="og:title" content="${repName}"><meta name="og:image" content="${repPic}">`
     );
     $("link[rel='icon']").attr("href", repPic);
     $("meta[name='description']").attr("content", repName);
@@ -95,8 +94,8 @@ if (window.location.pathname.startsWith("/appointment")) {
     }
 
     $("#appointment-schedule-url .calender-embedd").attr(
-      "src",
-      appointment_link
+        "src",
+        appointment_link
     );
     //$("#rep-email").text(rep_email);
     //$("#rep-phone").text(rep_phone);
@@ -122,15 +121,15 @@ if (window.location.pathname.startsWith("/appointment")) {
   async function getCompany() {
     try {
       const response = await axios.get(
-        `https://${api_url}${
-          getUrlParameter("company")
-            ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
-                getUrlParameter("id") || getUrlParameter("user")
-              }`
-            : `/api/v1/users/getUserByUrl/${
-                getUrlParameter("id") || getUrlParameter("user")
-              }`
-        }`
+          `https://${api_url}${
+              getUrlParameter("company")
+                  ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
+                      getUrlParameter("id") || getUrlParameter("user")
+                  }`
+                  : `/api/v1/users/getUserByUrl/${
+                      getUrlParameter("id") || getUrlParameter("user")
+                  }`
+          }`
       );
       if (JSON.parse(response.data.error)) {
         window.location.href = "/404";
@@ -141,8 +140,8 @@ if (window.location.pathname.startsWith("/appointment")) {
         rep_phone = response.data.data.phone;
         user_id = response.data.data.userId;
         is_canadian =
-          response.data.data.address &&
-          response.data.data.address.country === "Canada";
+            response.data.data.address &&
+            response.data.data.address.country === "Canada";
         company_id = response.data.data.companyId;
         rep_email = response.data.data.email;
         setCookies("user_id", response.data.data.userId);
@@ -173,14 +172,14 @@ if (window.location.pathname.startsWith("/appointment")) {
       url: "https://" + api_url + "/api/v1/users/email/send/getInTouch",
       data: bodyObject,
     })
-      .then(() => {
-        $(".getintouch").addClass("hide");
-        $(".successmessage").addClass("displayshow");
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Oops, There was an unexpected error.");
-      });
+        .then(() => {
+          $(".getintouch").addClass("hide");
+          $(".successmessage").addClass("displayshow");
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Oops, There was an unexpected error.");
+        });
   });
 
   let scroll_position = 0;
@@ -188,9 +187,9 @@ if (window.location.pathname.startsWith("/appointment")) {
 
   window.addEventListener("scroll", function () {
     scroll_direction =
-      document.body.getBoundingClientRect().top > scroll_position
-        ? "up"
-        : "down";
+        document.body.getBoundingClientRect().top > scroll_position
+            ? "up"
+            : "down";
     scroll_position = document.body.getBoundingClientRect().top;
     if (scroll_direction === "up") {
       $(".button-pattern").css("display", "block");
@@ -199,7 +198,7 @@ if (window.location.pathname.startsWith("/appointment")) {
     }
   });
 
-  const getBaseUrl = () => {
+  function getBaseUrl() {
     if (window.location.host === "dev.discoverfin.io") {
       return "https://devvideo.discoverfin.io/video_type?";
     } else if (window.location.host === "staging.discoverfin.io") {
@@ -209,36 +208,41 @@ if (window.location.pathname.startsWith("/appointment")) {
     } else if (window.location.host === "qa.discoverfin.io") {
       return "https://qavideo.discoverfin.io/video_type?";
     }
-  };
+  }
 
-  const finBaseUrl = () => {
+  function finBaseUrl() {
     return `https://${window.location.host}/en?`;
-  };
+  }
 
-  const isOldUrl = () => getUrlParameter("company");
+  function isOldUrl() {
+    return getUrlParameter("company");
+  }
 
-  const getUserUrl = () => getUrlParameter("id") || getUrlParameter("user");
+  function getUserUrl() {
+    return getUrlParameter("id") || getUrlParameter("user");
+  }
 
-  const videoUrlBase = () =>
-    isOldUrl()
-      ? `${getBaseUrl()}company=${isOldUrl()}&user=${getUserUrl()}`
-      : `${getBaseUrl()}id=${getUserUrl()}`;
+  function videoUrlBase() {
+    return isOldUrl()
+        ? `${getBaseUrl()}company=${isOldUrl()}&user=${getUserUrl()}`
+        : `${getBaseUrl()}id=${getUserUrl()}`;
+  }
 
-  const finBusinessVideoAppLink = () => {
+  function finBusinessVideoAppLink() {
     return videoUrlBase().replace("video_type", "businessOverview");
-  };
+  }
 
-  const finAppLink = () => {
+  function finAppLink() {
     return !isOldUrl()
-      ? `${finBaseUrl()}id=${getUrlParameter("id") || getUrlParameter("user")}`
-      : `${finBaseUrl()}company=${isOldUrl()}&user=${
-          getUrlParameter("id") || getUrlParameter("user")
+        ? `${finBaseUrl()}id=${getUrlParameter("id") || getUrlParameter("user")}`
+        : `${finBaseUrl()}company=${isOldUrl()}&user=${
+            getUrlParameter("id") || getUrlParameter("user")
         }`;
-  };
+  }
 
-  const finFinancialSuccessVideoAppLink = () => {
+  function finFinancialSuccessVideoAppLink() {
     return videoUrlBase().replace("video_type", "financialHouse");
-  };
+  }
 
   if (isDashboard) {
     $("#only-video-app").css("display", "flex");
