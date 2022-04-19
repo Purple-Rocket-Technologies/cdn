@@ -149,23 +149,26 @@ function submitGetInTouchForm(formData) {
   });
 }
 
-function isEmpty(item) {
-  return (
-    item === undefined ||
-    item === null ||
-    item === "" ||
-    item === "null" ||
-    item === "undefined" ||
-    item === "[]" ||
-    item === "{}" ||
-    (typeof item === "object" && Object.keys(item).length === 0) ||
-    (typeof item === "string" && item.trim().length === 0)
-  );
-}
+// 
+if (window.location.hostname === "dev.discoverfin.io") {
+  function isEmpty(item) {
+    return (
+      item === undefined ||
+      item === null ||
+      item === "" ||
+      item === "null" ||
+      item === "undefined" ||
+      item === "[]" ||
+      item === "{}" ||
+      (typeof item === "object" && Object.keys(item).length === 0) ||
+      (typeof item === "string" && item.trim().length === 0)
+    );
+  }
 
-// utility
-function isMobile() {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
+  // utility
+  function isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  }
 }
