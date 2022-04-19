@@ -37,23 +37,18 @@ $("#route_3").click(function () {
 });
 
 function submitRoute(redirectUrl) {
-  axios({
-    method: "put",
-    url:
-      "https://" +
-      api_url +
-      "/api/v1/users/company/" +
-      company_id +
-      "/prospects/" +
-      prospect_id,
-    data: {
-      route_choice: route_selection,
-    },
+  updateProspectById(company_id, prospect_id, {
+    route_choice: route_selection,
   })
-    .then(function (response) {
+    .then(function () {
       window.location.href = redirectUrl;
     })
     .catch(function (error) {
+      alert("Oops, There was an unexpected error.");
       console.log(error);
+      throw new SentryError(
+        `Oops, There was an unexpected error onboarding.js: ${route_selection}`,
+        error
+      );
     });
 }
