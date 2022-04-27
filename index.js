@@ -149,8 +149,11 @@ function submitGetInTouchForm(formData) {
   });
 }
 
-// 
-if (window.location.hostname === "dev.discoverfin.io") {
+//
+if (
+  window.location.hostname === "dev.discoverfin.io" ||
+  window.location.hostname === "qa.discoverfin.io"
+) {
   function isEmpty(item) {
     return (
       item === undefined ||
