@@ -83,7 +83,7 @@ function scrollButtonHandlers(
     });
   }
   if (window.scrollY < targetElement.offsetTop + targetElement.offsetHeight) {
-    $(".down-arrow").css("display", "block");
+    $(".down-arrow").css("display", "grid");
   } else {
     $(".down-arrow").css("display", "none");
   }

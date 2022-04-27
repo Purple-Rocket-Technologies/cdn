@@ -282,50 +282,24 @@ async function createNewProspect() {
     data.affiliateId = readCookie("affiliateId");
   }
 
-  axios({
-    method: "post",
-    url:
-      "https://" +
-      api_url +
-      "/api/v1/users/company/" +
-      readCookie("COMPANY_ID") +
-      "/prospects",
-    data,
-  })
-    .then(function (response) {
-      setCookies("prospect_id", response.data.data._id);
-      setCookies("FIN Number", "" + response.data.data.fin_number);
-      setCookies("Name", response.data.data.first_name);
-      setCookies("Country", response.data.data.country);
-      trackMixPanelEvent("FIN Prospect created.", response.data.data);
+  createProspect(readCookie("COMPANY_ID"), data)
+    .then((res) => {
+      setCookies("prospect_id", res._id);
+      setCookies("FIN Number", "" + res.fin_number);
+      setCookies("Name", res.first_name);
+      setCookies("Country", res.country);
       window.location.href = "/result";
+      trackMixPanelEvent("FIN Prospect created.");
     })
-    .catch(function (error) {
-      alert(error.response.data.message);
+    .catch((error) => {
+      alert(
+        error.response && error.response.data && error.response.data.message
+      );
       throw new SentryError(
         `Error while creating a prospect email: ${$("#email").val()}`,
         error
       );
     });
-
-  //trrigerring the email
-  // axios({
-  //   method: 'post',
-  //   url: 'https://'+ api_url +'/api/v1/users/email/send/finResults',
-  //   data: {
-  //     companyId: readCookie('COMPANY_ID'),
-  //     userId: readCookie('USER_ID'),
-  //     prospectName : $("#user_name").val(),
-  //     prospectEmail: $("#email").val(),
-  //     finNumber: parseInt($("#fin_number").val())
-  //   }
-  // })
-  // .then(function(response) {
-  //   console.log(response.data);
-  // })
-  // .catch(function (error) {
-  //   alert("Oops, There was an unexpected error.");
-  // });
 }
 
 async function updateProspect(prospectID) {
@@ -343,44 +317,35 @@ async function updateProspect(prospectID) {
     ];
   }
 
-  axios({
-    method: "put",
-    url:
-      "https://" +
-      api_url +
-      "/api/v1/users/company/" +
-      readCookie("COMPANY_ID") +
-      "/prospects/" +
-      prospectID,
-    data: {
-      age: $("#user_age").val(),
-      retirement_age,
-      annual_income_after_inflation: parseInt(
-        $("#income_after_inflation").val()
-      ),
-      annual_income_before_inflation: parseInt(
-        $("#user_income").val().replace(/,/g, "")
-      ),
-      pension_choice,
-      guessed_fin,
-      fin_number: parseInt($("#fin_number").val()),
-    },
+  updateProspectById(readCookie("COMPANY_ID"), prospectID, {
+    age: $("#user_age").val(),
+    retirement_age,
+    annual_income_after_inflation: parseInt($("#income_after_inflation").val()),
+    annual_income_before_inflation: parseInt(
+      $("#user_income").val().replace(/,/g, "")
+    ),
+    pension_choice,
+    guessed_fin,
+    fin_number: parseInt($("#fin_number").val()),
   })
     .then(function (response) {
-      setCookies("prospect_id", response.data.data._id);
-      setCookies("FIN Number", "" + response.data.data.fin_number);
-      setCookies("Name", response.data.data.first_name);
-      setCookies("Country", response.data.data.country);
+      setCookies("prospect_id", response._id);
+      setCookies("FIN Number", "" + response.fin_number);
+      setCookies("Name", response.first_name);
+      setCookies("Country", response.country);
       window.location.href = "/result";
     })
     .catch(function (error) {
-      alert(error.response.data.message);
+      alert(
+        error.response && error.response.data && error.response.data.message
+      );
       throw new SentryError(
-        `Error while user submitting answers: ${$("#email").val()}`,
+        `Error while updating prospect: ${prospectID}`,
         error
       );
     });
 }
+
 $("#submit_btn").click(function () {
   const terms = $("#terms").is(":checked");
   const email_address = isEmail($("#email").val());
@@ -388,33 +353,28 @@ $("#submit_btn").click(function () {
     if (!terms) {
       alert("Please accept the terms and conditions");
     } else {
-      axios({
-        method: "get",
-        url:
-          "https://" +
-          api_url +
-          "/api/v1/users/company/" +
-          readCookie("COMPANY_ID") +
-          "/prospects?email=" +
-          $("#email").val(),
-      })
+      fetchProspect(
+        readCookie("USER_ID"),
+        readCookie("COMPANY_ID"),
+        $("#email").val()
+      )
         .then(function (response) {
-          if (response.data.count === 0) {
-            createNewProspect();
-          } else {
-            updateProspect(response.data.data[0]._id);
-          }
+          updateProspect(response._id);
         })
         .catch(function (error) {
+          if (error.success && error.count === 0) {
+            createNewProspect();
+          } else {
+            throw new SentryError(
+              `Error While submitting results: ${$("#email").val()}`,
+              error
+            );
+          }
           // alert("Oops, There was an unexpected error.");
-          throw new SentryError(
-            `Error While submitting answers: ${$("#email").val()}`,
-            error
-          );
         });
     }
   } else {
-    alert("Please enter a valid email address");
+    alert("Please enter your email address");
   }
 });
 
