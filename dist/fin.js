@@ -14547,7 +14547,7 @@ function initFinalStep() {
   };
 
   const openVideoApp = email => {
-    window.open(!checkIsEmpty(utils.cookies.get("isOldUrl")) ? `${(0,utils.getVideoBaseUrl)()}/${getVideoType()}?company=${utils.cookies.get("isOldUrl")}&user=${URL_USER}&fname=${utils.cookies.get("Name")}&email=${email}` : `${(0,utils.getVideoBaseUrl)()}/${getVideoType()}?id=${URL_USER}&fname=${utils.cookies.get("Name")}&email=${email}`, "_self");
+    window.open(!checkIsEmpty(utils.cookies.get("isOldUrl")) ? `${(0,utils.getVideoBaseUrl)()}/${getVideoType()}?company=${utils.cookies.get("isOldUrl")}&user=${page.URL_USER}&fname=${utils.cookies.get("Name")}&email=${email}` : `${(0,utils.getVideoBaseUrl)()}/${getVideoType()}?id=${page.URL_USER}&fname=${utils.cookies.get("Name")}&email=${email}`, "_self");
   };
 
   async function populatePathOptions() {
@@ -14555,7 +14555,7 @@ function initFinalStep() {
     let prospectAnswers;
 
     try {
-      prospectAnswers = await getPathAnswers(utils.cookies.get("prospect_id"));
+      prospectAnswers = await getPathAnswers(utils.cookies.get("PROSPECT_ID"));
     } catch (e) {
       console.log(e);
     }

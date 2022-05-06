@@ -209,10 +209,10 @@ export default function initFinalStep() {
       !checkIsEmpty(cookies.get("isOldUrl"))
         ? `${getVideoBaseUrl()}/${getVideoType()}?company=${cookies.get(
             "isOldUrl"
-          )}&user=${URL_USER}&fname=${cookies.get("Name")}&email=${email}`
-        : `${getVideoBaseUrl()}/${getVideoType()}?id=${URL_USER}&fname=${cookies.get(
-            "Name"
-          )}&email=${email}`,
+          )}&user=${page.URL_USER}&fname=${cookies.get("Name")}&email=${email}`
+        : `${getVideoBaseUrl()}/${getVideoType()}?id=${
+            page.URL_USER
+          }&fname=${cookies.get("Name")}&email=${email}`,
       "_self"
     );
   };
@@ -221,7 +221,7 @@ export default function initFinalStep() {
     const parent = $("#ans-selected");
     let prospectAnswers;
     try {
-      prospectAnswers = await getPathAnswers(cookies.get("prospect_id"));
+      prospectAnswers = await getPathAnswers(cookies.get("PROSPECT_ID"));
     } catch (e) {
       console.log(e);
     }
@@ -245,6 +245,7 @@ export default function initFinalStep() {
 
     const isMakeMoreMoney =
       window.location.pathname.includes("make-more-money");
+
     if (!isMakeMoreMoney) {
       $(".manage-both").css("display", "block");
       parent.html(questionAndAnswersOfProspect(prospectAnswers));
