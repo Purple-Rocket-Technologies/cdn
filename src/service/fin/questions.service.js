@@ -1,6 +1,6 @@
 const Service = require("../Service");
 
-exports.createProspect = function (COMPANY_ID, BODY) {
+function createProspect(COMPANY_ID, BODY) {
   return new Promise((resolve, reject) => {
     const prospectService = new Service(`company/${COMPANY_ID}/prospects`);
     prospectService.set(BODY);
@@ -19,9 +19,9 @@ exports.createProspect = function (COMPANY_ID, BODY) {
         reject(error);
       });
   });
-};
+}
 
-exports.updateProspectById = function (COMPANY_ID, PROSPECT_ID, UPDATE_DATA) {
+function updateProspectById(COMPANY_ID, PROSPECT_ID, UPDATE_DATA) {
   return new Promise((resolve, reject) => {
     const prospectService = new Service(`company/${COMPANY_ID}/prospects`);
     prospectService.set(UPDATE_DATA);
@@ -38,4 +38,9 @@ exports.updateProspectById = function (COMPANY_ID, PROSPECT_ID, UPDATE_DATA) {
         reject(error);
       });
   });
+}
+
+module.exports = {
+  updateProspectById,
+  createProspect,
 };
