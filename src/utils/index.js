@@ -57,14 +57,18 @@ const isQuestionPage = () => {
   return path.startsWith("/questions");
 };
 
-const isRouteQuestionPage = () => {
+const isRouteQuestionPage = (checkisVideo) => {
   const path = window.location.pathname;
-  return (
+  const baseCondition =
     path.startsWith("/route") &&
     (path.includes("make-more-money") ||
       path.includes("manage-money-better") ||
-      path.includes("both"))
-  );
+      path.includes("both"));
+  if (checkisVideo) {
+    return baseCondition && path.includes("/video") && checkisVideo;
+  } else {
+    return baseCondition && !path.includes("/video");
+  }
 };
 
 const getUrlParameter = (name) => {
@@ -112,6 +116,22 @@ const cookies = {
     });
   },
 };
+
+//ismobile
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+};
+//formarans
+const formatAnswers = (list) =>
+  list
+    .map((question, index) => ({
+      [`ques_${index + 1}`]: `${question.question} * ${question.answer.join(
+        " * "
+      )}`,
+    }))
+    .reduce((acc, curr) => ({ ...acc, ...curr }));
 
 const isEmpty = (value) => {
   if (value === null || value === undefined) return true;
@@ -177,4 +197,6 @@ module.exports = {
   BasePage,
   finFinancialSuccessVideoAppLink,
   isQuestionPage,
+  isMobile,
+  formatAnswers,
 };
