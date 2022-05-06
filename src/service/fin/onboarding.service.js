@@ -19,11 +19,11 @@ const getUser = async (USER_URL, COMPANY_URL) => {
   });
 };
 
-const getProspect = async (COMPANY_ID, EMAIL) => {
+const getProspect = async (ADVISOR_ID, COMPANY_ID, EMAIL) => {
   const endpoint = `company/${COMPANY_ID}/prospects`;
-
   const prospect = new Service(endpoint);
   prospect.equals("email", EMAIL);
+  prospect.equals("userId", ADVISOR_ID);
   return await new Promise((resolve, reject) => {
     prospect.find().then(
       (response) => {

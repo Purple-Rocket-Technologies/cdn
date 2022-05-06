@@ -181,6 +181,10 @@ const finFinancialSuccessVideoAppLink = (user, company) => {
   return videoLink(user, company, "getVideoBaseUrl", "financialHouse");
 };
 
+const isAppointmentPage = () => {
+  return window.location.pathname.startsWith("/appointment");
+};
+
 module.exports = {
   getUrlParameter,
   cookies,
@@ -199,4 +203,10 @@ module.exports = {
   isQuestionPage,
   isMobile,
   formatAnswers,
+  isEmail: (email) => {
+    const re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  },
+  isAppointmentPage,
 };

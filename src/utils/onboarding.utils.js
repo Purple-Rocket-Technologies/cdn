@@ -117,12 +117,18 @@ const onBoarding = {
     handlePlayer: function (IS_CANADIAN_LINK) {
       const iframe = document.getElementById("video");
       const player = new Vimeo.Player(iframe);
+      const lockIconEl = $(".show-after-unlock");
+      const arrowEl = $(".hide-after-unlock");
       player.on("play", () => {
         $(".arrow_lottie").css("opacity", "0");
         $(".title").addClass("hide");
+        lockIconEl.css("display", "none");
+        arrowEl.css("display", "block");
       });
       player.on("ended", () => {
         $(".cta_btn").addClass("active");
+        lockIconEl.css("display", "block");
+        arrowEl.css("display", "none");
       });
       onBoarding.videos.handleLanguages(IS_CANADIAN_LINK);
     },

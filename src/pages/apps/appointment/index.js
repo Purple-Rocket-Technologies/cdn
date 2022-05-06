@@ -8,7 +8,7 @@ class AppointmentPage extends BasePage {
   }
 }
 
-function init() {
+export default function initAppointment() {
   let page = new AppointmentPage({
     ...appointmentUtils.initialState,
     USER_URL: url.query.get("id") || url.query.get("user"),
