@@ -1,62 +1,109 @@
-const user_url = getUrlParameter("id") || getUrlParameter("user");
 let totalDurationTime;
 let playerinitialized = 0;
-setCookies("isOldUrl", getUrlParameter("company"));
 let is_canadian = false;
-if (
-  (getUrlParameter("id") || getUrlParameter("user")) &&
-  getUrlParameter("prospectEmail")
-) {
-  getAPIparams();
+var iframe = document.getElementById("video");
+var player = new Vimeo.Player(iframe);
+
+setCookies("isOldUrl", getUrlParameter("company"));
+setCookies("START_OVER_URL", window.location.href);
+setCookies("URL_USER", getUrlParameter("id") || getUrlParameter("user"));
+
+$("#start_over").attr("href", readCookie("START_OVER_URL"));
+
+function getAdvisorUrl() {
+  return getUrlParameter("id") || getUrlParameter("user");
 }
 
-//fetching company, user and prospect IDs
-function getAPIparams() {
-  axios({
-    method: "get",
-    url: `https://${api_url}${
-      getUrlParameter("company")
-        ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
-            getUrlParameter("id") || getUrlParameter("user")
-          }`
-        : `/api/v1/users/getUserByUrl/${
-            getUrlParameter("id") || getUrlParameter("user")
-          }`
-    }`,
-  })
-    .then(function (response) {
-      company_id = response.data.data.companyId;
-      setCookies("COMPANY_ID", company_id);
-      setCookies("URL_COMPANY", response.data.data.companyUrl);
-      setCookies("USER_URL", getUrlParameter("id") || getUrlParameter("user"));
+function handleVideoPlayer() {
+  player.on("play", function () {
+    $(".arrow_lottie").css("opacity", "0");
+    $(".title").addClass("hide");
+    setTotalDuration();
+  });
+
+  player.on("ended", function () {
+    $(".link-block .cta_btn").addClass("active");
+  });
+
+  // Setting total time duration of video
+  function setTotalDuration() {
+    player.getDuration().then(function (duration) {
+      totalDurationTime = duration;
+      playerinitialized = 1;
+    });
+  }
+
+  setCookies("INITIAL_LINK", window.location.href);
+
+  $("#lang_us").click(function () {
+    renderVideo(is_canadian ? 551499288 : 445268145);
+    Weglot.switchTo("en");
+    setCookies("country", is_canadian ? "Canada" : "United States");
+  });
+
+  $("#lang_ca").click(function () {
+    renderVideo(551499288);
+    Weglot.switchTo("en");
+    setCookies("country", "Canada");
+  });
+
+  function renderVideo(videoID) {
+    player.loadVideo(videoID).then(function (id) {
+      setTotalDuration();
+      player.pause();
+    });
+  }
+
+  setInterval(function () {
+    if (playerinitialized === 1) {
+      player.getCurrentTime().then(function (seconds) {
+        let watchpercentage = (seconds / totalDurationTime) * 100;
+        const disButton = $(".link-block");
+        if (watchpercentage >= 90) {
+          $(".link-block .cta_btn").addClass("active");
+        } else {
+          $(".link-block .cta_btn").removeClass("active");
+        }
+      });
+    }
+  }, 200);
+
+  $("#lang_es").click(function () {
+    $("#temp_en").addClass("hide");
+    $("#temp_es").removeClass("hide");
+    renderVideo(is_canadian ? 452754620 : 452754620);
+    Weglot.switchTo("es");
+    setCookies("country", is_canadian ? "Canada" : "United States");
+  });
+
+  $("#lang_ca_es").click(function () {
+    $(".fin_video").attr("src", "https://player.vimeo.com/video/452754620");
+    Weglot.switchTo("es");
+    setCookies("country", "Canada");
+  });
+}
+
+//fetching company, user and prospect ID
+function fetchAdvisorAndProspect() {
+  fetchAdvisor(getUrlParameter("company"), getAdvisorUrl())
+    .then((advisorResponse) => {
       is_canadian =
-        response.data.data.address &&
-        response.data.data.address.country === "Canada";
-      setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
-      setCookies("affiliateId", response.data.data.affiliateId);
-
-      // getting prospect id
-      axios({
-        method: "get",
-        url:
-          "https://" +
-          api_url +
-          "/api/v1/users/company/" +
-          company_id +
-          "/prospects?email=" +
-          getUrlParameter("prospectEmail"),
-      })
-        .then(function (response) {
-          if (response.data.count > 0) {
-            prospect_id = response.data.data[0]._id;
-            user_name = response.data.data[0].first_name;
-            fin_num = response.data.data[0].fin_number;
-            setCookies("prospect_id", prospect_id);
-            setCookies("Name", user_name);
-            setCookies("FIN Number", fin_num);
-
-            const routeChoice = response.data.data[0].route_choice;
-            if (response.data.data[0].route_choice !== "") {
+        advisorResponse.address && advisorResponse.address.country === "Canada";
+      setPageCookies(advisorResponse);
+      handleVideoPlayer();
+      // fetch prospect details if prospect email is present in the query string
+      if (getAdvisorUrl() && getUrlParameter("prospectEmail")) {
+        fetchProspect(
+          advisorResponse.userId,
+          readCookie("COMPANY_ID"),
+          getUrlParameter("prospectEmail")
+        )
+          .then((prospectResponse) => {
+            setCookies("prospect_id", prospectResponse._id);
+            setCookies("Name", prospectResponse.first_name);
+            setCookies("FIN Number", prospectResponse.fin_number);
+            const routeChoice = prospectResponse.route_choice;
+            if (routeChoice.route_choice && routeChoice.route_choice !== "") {
               if (routeChoice === "Make More Money") {
                 window.location.href = "/route/make-more-money";
               }
@@ -69,150 +116,41 @@ function getAPIparams() {
             } else {
               window.location.href = "/route";
             }
-          } else {
-            window.location.href = "/404";
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-          alert("Oops, There was an unexpected error.");
-          throw new SentryError(
-            `Oops, There was an unexpected error onboarding.js: ${getUrlParameter(
-              "prospectEmail"
-            )}`,
-            error
-          );
-        });
+          })
+          .catch((error) => {
+            console.log(error);
+            alert("Oops, There was an unexpected error.");
+            throw new SentryError(
+              `Oops, There was an unexpected error onboarding.js: ${getUrlParameter(
+                "prospectEmail"
+              )}`,
+              error
+            );
+          });
+      }
     })
-    .catch(function (error) {
-      console.log(error);
-      alert("Oops, There was an unexpected error.");
-      throw new SentryError(
-        `Oops, There was an unexpected error onboarding.js: ${getUrlParameter(
-          "prospectEmail"
-        )}`,
-        error
-      );
-    });
-}
-
-setCookies("START_OVER_URL", window.location.href);
-var home_link = readCookie("START_OVER_URL");
-$("#start_over").attr("href", home_link);
-
-var user = getUrlParameter("user");
-var company = getUrlParameter("company");
-setCookies("URL_USER", getUrlParameter("id") || getUrlParameter("user"));
-
-axios({
-  method: "get",
-  url: `https://${api_url}${
-    getUrlParameter("company")
-      ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
-          getUrlParameter("id") || getUrlParameter("user")
-        }`
-      : `/api/v1/users/getUserByUrl/${
-          getUrlParameter("id") || getUrlParameter("user")
-        }`
-  }`,
-})
-  .then(function (response) {
-    if (response.data.error === true) {
-      console.log("Error");
+    .catch(() => {
       $(".not_found").addClass("show_not_found");
       $(".page").addClass("pnf");
-    } else {
-      $(".main_start_div").addClass("show");
-      is_canadian =
-        response.data.data.address &&
-        response.data.data.address.country === "Canada";
-      setCookies("COMPANY_ID", response.data.data.companyId);
-      setCookies("COMPANY_URL", response.data.data.companyUrl);
-      setCookies("USER_ID", response.data.data.userId);
-      setCookies("URL_COMPANY", response.data.data.companyUrl);
-      setCookies("USER_URL", getUrlParameter("id") || getUrlParameter("user"));
-      setCookies("APTMT_LINK", response.data.data.appointmentBookingLink);
-      setCookies("REP_NAME", response.data.data.firstName);
-      setCookies("PIC", response.data.data.profilePic);
-      setCookies("PHONE", response.data.data.phone);
-      setCookies("EMAIL", response.data.data.email);
-      setCookies("VIDEO", response.data.data.videoProfileLink);
-      $(document).prop("title", "DiscoverFIN");
-      setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
-      setCookies("affiliateId", response.data.data.affiliateId);
-    }
-  })
-  .catch(function (error) {
-    console.log(error.status); // xhr.status
-    console.log(error.statusText); // xhr.statusText
-  });
-
-var iframe = document.getElementById("video");
-var player = new Vimeo.Player(iframe);
-
-player.on("play", function () {
-  $(".arrow_lottie").css("opacity", "0");
-  $(".title").addClass("hide");
-  setTotalDuration();
-});
-
-player.on("ended", function () {
-  $(".link-block .cta_btn").addClass("active");
-});
-
-// Setting total time duration of video
-function setTotalDuration() {
-  player.getDuration().then(function (duration) {
-    totalDurationTime = duration;
-    playerinitialized = 1;
-  });
-}
-
-setCookies("INITIAL_LINK", window.location.href);
-
-$("#lang_us").click(function () {
-  renderVideo(is_canadian ? 551499288 : 445268145);
-  Weglot.switchTo("en");
-  setCookies("country", is_canadian ? "Canada" : "United States");
-});
-
-$("#lang_ca").click(function () {
-  renderVideo(551499288);
-  Weglot.switchTo("en");
-  setCookies("country", "Canada");
-});
-
-function renderVideo(videoID) {
-  player.loadVideo(videoID).then(function (id) {
-    setTotalDuration();
-    player.pause();
-  });
-}
-
-setInterval(function () {
-  if (playerinitialized === 1) {
-    player.getCurrentTime().then(function (seconds) {
-      let watchpercentage = (seconds / totalDurationTime) * 100;
-      const disButton = $(".link-block");
-      if (watchpercentage >= 90) {
-        $(".link-block .cta_btn").addClass("active");
-      } else {
-        $(".link-block .cta_btn").removeClass("active");
-      }
     });
-  }
-}, 200);
+}
 
-$("#lang_es").click(function () {
-  $("#temp_en").addClass("hide");
-  $("#temp_es").removeClass("hide");
-  renderVideo(is_canadian ? 452754620 : 452754620);
-  Weglot.switchTo("es");
-  setCookies("country", is_canadian ? "Canada" : "United States");
-});
+function setPageCookies(advisorResponse) {
+  setCookies("isCanadianLink", is_canadian);
+  setCookies("COMPANY_ID", advisorResponse.companyId);
+  setCookies("COMPANY_URL", advisorResponse.companyUrl);
+  setCookies("USER_ID", advisorResponse.userId);
+  setCookies("URL_COMPANY", advisorResponse.companyUrl);
+  setCookies("USER_URL", getUrlParameter("id") || getUrlParameter("user"));
+  setCookies("APTMT_LINK", advisorResponse.appointmentBookingLink);
+  setCookies("REP_NAME", advisorResponse.firstName);
+  setCookies("PIC", advisorResponse.profilePic);
+  setCookies("PHONE", advisorResponse.phone);
+  setCookies("EMAIL", advisorResponse.email);
+  setCookies("VIDEO", advisorResponse.videoProfileLink);
+  $(document).prop("title", "DiscoverFIN");
+  setCookies("isAffiliateUrl", advisorResponse.isAffiliateUrl);
+  setCookies("affiliateId", advisorResponse.affiliateId);
+}
 
-$("#lang_ca_es").click(function () {
-  $(".fin_video").attr("src", "https://player.vimeo.com/video/452754620");
-  Weglot.switchTo("es");
-  setCookies("country", "Canada");
-});
+fetchAdvisorAndProspect();

@@ -83,7 +83,7 @@ function scrollButtonHandlers(
     });
   }
   if (window.scrollY < targetElement.offsetTop + targetElement.offsetHeight) {
-    $(".down-arrow").css("display", "block");
+    $(".down-arrow").css("display", "grid");
   } else {
     $(".down-arrow").css("display", "none");
   }
@@ -136,16 +136,27 @@ const getVideoType = () => {
 };
 
 const getPathAnswers = async (id) => {
-  return await axios({
-    method: "get",
-    url: `https://${api_url}/api/v1/users/company/${readCookie(
-      "COMPANY_ID"
-    )}/prospects/?_id=${id}`,
+  const prospectService = new Service(
+    `company/${readCookie("COMPANY_ID")}/prospects/`
+  );
+  prospectService.equals("_id", id);
+  prospectService.equals("userId", readCookie("USER_ID"));
+  return await new Promise((resolve, reject) => {
+    prospectService
+      .find()
+      .then((response) => {
+        if (response.count > 0) {
+          resolve(response.data[0]);
+        } else {
+          reject(response);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
 };
-
 const questionAndAnswersOfProspect = (prospectAnswers) => {
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   return [
     prospectAnswers.ques_1,
     prospectAnswers.ques_2,
@@ -169,12 +180,12 @@ const questionAndAnswersOfProspect = (prospectAnswers) => {
     .reduce((a, b) => a.concat(b), [])
     .map(
       (currentItem) => `<div class="${
-        isMobile ? "div-block-84" : "div-block-65"
+        isMobile() ? "div-block-84" : "div-block-65"
       }"><img
       class="pointer-image"
       src="https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/620e98d16dc631d33da9dd03_Group%20272.svg"
       loading="lazy" alt=""><h2 class="${
-        isMobile ? "ml-3-2 text-18 font-normal " : "font-normal ml-3"
+        isMobile() ? "ml-3-2 text-18 font-normal " : "font-normal ml-3"
       }">${currentItem}</h2></div>`
     );
 };
@@ -206,8 +217,12 @@ const openVideoApp = (email) => {
 
 async function populatePathOptions() {
   const parent = $("#ans-selected");
-  let prospectAnswers = await getPathAnswers(readCookie("prospect_id"));
-  prospectAnswers = prospectAnswers["data"]["data"][0];
+  let prospectAnswers;
+  try {
+    prospectAnswers = await getPathAnswers(readCookie("prospect_id"));
+  } catch (e) {
+    console.log(e);
+  }
   $("#fin_number").text(
     Intl.NumberFormat("en-US", {
       style: "currency",
