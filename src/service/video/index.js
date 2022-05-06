@@ -20,6 +20,28 @@ const getVideoProspect = async (COMPANY_ID, EMAIL) => {
   });
 };
 
+const fetchVideoService = async (type, country, lang) => {
+  const fetchVideoAPI = new Service("videoProspects/leadCapturingVideos");
+  fetchVideoAPI.equals("type", type);
+  fetchVideoAPI.equals("countryCode", country);
+  fetchVideoAPI.equals("language", lang);
+  return new Promise((resolve, reject) => {
+    fetchVideoAPI
+      .find()
+      .then((res) => {
+        if (res.count > 0) {
+          resolve(fetchVideoAPI);
+        } else {
+          reject(res);
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
 module.exports = {
   getVideoProspect,
+  fetchVideoService,
 };
