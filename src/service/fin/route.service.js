@@ -1,4 +1,4 @@
-import Service from "../Service";
+const Service = require("../Service");
 
 const updateRoute = async (COMPANY_ID, PROSPECT_ID, route_choice) => {
   const endpoint = `company/${COMPANY_ID}/prospects`;

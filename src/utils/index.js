@@ -52,6 +52,11 @@ const isResultPage = () => {
   return path.startsWith("/result");
 };
 
+const isQuestionPage = () => {
+  const path = window.location.pathname;
+  return path.startsWith("/questions");
+};
+
 const isRouteQuestionPage = () => {
   const path = window.location.pathname;
   return (
@@ -171,4 +176,5 @@ module.exports = {
   finBusinessVideoAppLink,
   BasePage,
   finFinancialSuccessVideoAppLink,
+  isQuestionPage,
 };

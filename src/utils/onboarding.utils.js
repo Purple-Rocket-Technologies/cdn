@@ -70,7 +70,7 @@ const onBoarding = {
   },
   prospect: {
     setCookies: function (prospect) {
-      cookies.set("prospect_id", prospect._id);
+      cookies.set("PROSPECT_ID", prospect._id);
       cookies.set("Name", prospect.first_name);
       cookies.set("FIN Number", prospect.fin_number);
     },

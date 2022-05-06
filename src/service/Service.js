@@ -1,9 +1,12 @@
-import { isEmpty } from "../utils";
+const { isEmpty } = require("../utils");
 
 const axios = require("axios");
 
-export default class Service {
+class Service {
   constructor(endpoint) {
+    if (endpoint.startsWith("/")) {
+      endpoint = endpoint.replace("/", "");
+    }
     this.axios = axios;
     this.baseUrl = `https://devbackendapp.discoverfin.io/api/v1/users/${endpoint}`;
     this.query = ``;
@@ -54,3 +57,5 @@ export default class Service {
     return await this.axios.put(`${this.baseUrl}/${id}`, this.body);
   }
 }
+
+module.exports = Service;

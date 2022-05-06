@@ -1,10 +1,11 @@
-function init() {
+function Questionsinit() {
   var relativ_url = window.location.origin + window.location.pathname;
   var curren_url = window.location;
   if (curren_url != relativ_url) {
     window.location = relativ_url;
   }
 
+  console.log("heloooo");
   $("body").on("scroll mousewheel touchmove", function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -297,7 +298,7 @@ function init() {
       data,
     })
       .then(function (response) {
-        setCookies("prospect_id", response.data.data._id);
+        setCookies("PROSPECT_ID", response.data.data._id);
         setCookies("FIN Number", "" + response.data.data.fin_number);
         setCookies("Name", response.data.data.first_name);
         setCookies("Country", response.data.data.country);
@@ -354,7 +355,7 @@ function init() {
       },
     })
       .then(function (response) {
-        setCookies("prospect_id", response.data.data._id);
+        setCookies("PROSPECT_ID", response.data.data._id);
         setCookies("FIN Number", "" + response.data.data.fin_number);
         setCookies("Name", response.data.data.first_name);
         setCookies("Country", response.data.data.country);
@@ -406,3 +407,5 @@ function init() {
     }
   });
 }
+
+module.exports = Questionsinit;

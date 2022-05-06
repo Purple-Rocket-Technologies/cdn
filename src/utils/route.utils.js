@@ -1,11 +1,11 @@
-import { updateRoute } from "../service/fin/route.service";
+const { updateRoute } = require("../service/fin/route.service");
 
 const routeUtils = {
   setPath: function ({ user_name, fin_number }) {
     $("#user_name").html("" + user_name);
     $("#fin_num").html("$" + fin_number);
   },
-  handlePathSelection: function ({ company_id, prospect_id, route_selection }) {
+  handlePathSelection: function ({ company_id, PROSPECT_ID, route_selection }) {
     const paths = [
       {
         selector: "#route_1",
@@ -26,7 +26,7 @@ const routeUtils = {
 
     paths.forEach((path) => {
       $(path.selector).click(function () {
-        updateRoute(company_id, prospect_id, route_selection)
+        updateRoute(company_id, PROSPECT_ID, route_selection)
           .then((r) => {
             window.location.href = "/route/" + path.route;
           })

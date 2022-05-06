@@ -293,7 +293,7 @@ async function createNewProspect() {
     data,
   })
     .then(function (response) {
-      setCookies("prospect_id", response.data.data._id);
+      setCookies("PROSPECT_ID", response.data.data._id);
       setCookies("FIN Number", "" + response.data.data.fin_number);
       setCookies("Name", response.data.data.first_name);
       setCookies("Country", response.data.data.country);
@@ -367,7 +367,7 @@ async function updateProspect(prospectID) {
     },
   })
     .then(function (response) {
-      setCookies("prospect_id", response.data.data._id);
+      setCookies("PROSPECT_ID", response.data.data._id);
       setCookies("FIN Number", "" + response.data.data.fin_number);
       setCookies("Name", response.data.data.first_name);
       setCookies("Country", response.data.data.country);

@@ -1,6 +1,6 @@
-import { cookies } from "../../../utils";
-import { routeUtils } from "../../../utils/route.utils";
-
+const { cookies } = require("../../../utils");
+const { routeUtils } = require("../../../utils/route.utils");
+console.log(routeUtils, "utils");
 class RoutePage {
   constructor(
     COMPANY_ID,
@@ -13,7 +13,7 @@ class RoutePage {
     this.user_name = USER_NAME;
     this.fin_number = FIN_NUMBER;
     this.company_id = COMPANY_ID;
-    this.prospect_id = PROSPECT_ID;
+    this.PROSPECT_ID = PROSPECT_ID;
   }
 
   set route_selection(route_selection) {
@@ -36,6 +36,7 @@ function init() {
     cookies.get("Name"),
     cookies.get("FIN Number")
   );
+  console.table(page);
   page.setPath();
   page.handlePathSelection();
 }

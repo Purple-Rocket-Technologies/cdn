@@ -1,6 +1,6 @@
 import { cookies } from "../../../utils";
 
-function init() {
+export default function resultInit() {
   require("../../../utils/scratch");
 
   const FIN_NUMBER = new Intl.NumberFormat("en-US", {
@@ -15,7 +15,3 @@ function init() {
     $(this).html(cookies.get("Name"));
   });
 }
-
-module.exports = {
-  init,
-};

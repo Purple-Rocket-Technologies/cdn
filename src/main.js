@@ -1,11 +1,13 @@
 import fin from "./pages/apps/fin";
 import route from "./pages/apps/fin/route.pages";
-import result from "./pages/apps/fin/result.pages";
+import resultInit from "./pages/apps/fin/result.pages";
+import Questionsinit from "./pages/apps/fin/questions";
 import {
   isOnBoardingPage,
   isRouteQuestionPage,
   isResultPage,
   isRouteSelectedPage,
+  isQuestionPage,
 } from "./utils";
 
 if (isOnBoardingPage()) {
@@ -13,10 +15,10 @@ if (isOnBoardingPage()) {
     console.log(r);
   });
 } else if (isRouteSelectedPage()) {
+  console.log("true");
   route.init();
 } else if (isResultPage()) {
-  result.init();
+  resultInit();
+} else if (isQuestionPage()) {
+  Questionsinit();
 }
-// else if (isRouteQuestionPage()) {
-//   route.init();
-// }
