@@ -19,203 +19,7 @@ let player;
 //*******************************/
 
 // reading url parameters
-const getUrlParameter = function getUrlParameter(sParam) {
-  let sPageURL = window.location.search.substring(1),
-    sURLVariables = sPageURL.split("&"),
-    sParameterName,
-    i;
-
-  for (i = 0; i < sURLVariables.length; i++) {
-    sParameterName = sURLVariables[i].split("=");
-
-    if (sParameterName[0] === sParam) {
-      return sParameterName[1] === undefined
-        ? true
-        : decodeURIComponent(sParameterName[1]);
-    }
-  }
-};
-
-const user_url = getUrlParameter("id") || getUrlParameter("user");
-
-const getVideoBaseUrl = () => {
-  if (window.location.host === "devvideo.discoverfin.io") {
-    return "dev.discoverfin.io";
-  } else if (window.location.host === "stagingvideo.discoverfin.io") {
-    return "staging.discoverfin.io";
-  } else if (window.location.host === "video.discoverfin.io") {
-    return "discoverfin.io";
-  } else if (window.location.host === "qavideo.discoverfin.io") {
-    return "qa.discoverfin.io";
-  }
-};
-
-const appointment_link = !checkIsEmpty(getUrlParameter("company"))
-  ? `https://${getVideoBaseUrl()}/appointment?company=${getUrlParameter(
-      "company"
-    )}&user=${user_url}&video=true`
-  : `https://${getVideoBaseUrl()}/appointment?id=${user_url}&video=true`;
-
-// Check email format
-function isEmail(e) {
-  return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
-    e
-  );
-}
-
-// show error message
-function error_show(msg) {
-  $("#error_msg").text(msg);
-  $(function () {
-    $(".error-triggerer")
-      .click(function () {
-        this.click();
-      })
-      .click();
-  });
-}
-
-// show success message
-function success_show(msg) {
-  $(".success-msg-text").text(msg);
-  $(function () {
-    $(".success-triggerer")
-      .click(function () {
-        this.click();
-      })
-      .click();
-  });
-}
-
-//formating seconds into time
-function format(time) {
-  const hrs = ~~(time / 3600);
-  const mins = ~~((time % 3600) / 60);
-  const secs = ~~time % 60;
-  let ret = "";
-  if (hrs > 0) {
-    ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
-  }
-  ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-  ret += "" + secs;
-  return ret;
-}
-
-//Validating URL
-function validateUrl(company, user) {
-  let validateCompanyUserAPI = `https://${api_url}${
-    getUrlParameter("company")
-      ? `/api/v1/users/getCompany/name/${getUrlParameter("company")}/${
-          getUrlParameter("id") || getUrlParameter("user")
-        }`
-      : `/api/v1/users/getUserByUrl/${
-          getUrlParameter("id") || getUrlParameter("user")
-        }`
-  }`;
-  axios({
-    method: "get",
-    url: validateCompanyUserAPI,
-  })
-    .then(function (response) {
-      if (response.data.status === 200) {
-        // trackMixPanelEvent("Prospect Visited Appointment page", {
-        //   rep: response.data.data.firstName,
-        // });
-        //setting necessary cookies
-        setCookies("COMPANY_ID", response.data.data.companyId);
-        setCookies("USER_ID", response.data.data.userId);
-        setCookies("PIC", response.data.data.profilePic);
-        setCookies("REP_NAME", response.data.data.firstName);
-        setCookies("APTMT_LINK", response.data.data.appointmentBookingLink);
-        setCookies("VIDEO", response.data.data.videoProfileLink);
-        setCookies("PHONE", response.data.data.phone);
-        setCookies("EMAIL", response.data.data.email);
-        setCookies("isAffiliateUrl", response.data.data.isAffiliateUrl);
-        setCookies("affiliateId", response.data.data.affiliateId);
-        continuationCheck();
-      } else {
-        $(".fourofour").addClass("show");
-      }
-    })
-    .catch(function (error) {
-      //error_show("Oops, There was an unexpected error.");
-    });
-}
-
-function continuationCheck() {
-  if (getUrlParameter("prospectEmail")) {
-    axios({
-      method: "get",
-      url:
-        "https://" +
-        api_url +
-        "/api/v1/users/company/" +
-        readCookie("COMPANY_ID") +
-        "/videoProspects?email=" +
-        getUrlParameter("prospectEmail"),
-    })
-      .then(function (response) {
-        if (response.data.count > 0) {
-          video_prospect_id = response.data.data[0]._id;
-          prospect_watchpercentage = response.data.data[0].watchPercentage;
-          prospect_pathChoosen = response.data.data[0].pathChoosen;
-          redirectContinuer();
-        } else {
-          $(".main-app-container").addClass("show");
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-        alert("Oops, There was an unexpected error.");
-      });
-  } else {
-    // normal flow if not a continuation
-    $(".main-app-container").addClass("show");
-  }
-}
-
-function redirectContinuer() {
-  if (prospect_watchpercentage < 90) {
-    checkVideoProspect(getUrlParameter("prospectEmail"));
-    $(".main-app-container").addClass("show");
-  } else if (prospect_pathChoosen === undefined) {
-    checkVideoProspect(getUrlParameter("prospectEmail"));
-    $(function () {
-      $(".nav-bullet-dot:nth-child(3)")
-        .click(function () {
-          this.click();
-        })
-        .click();
-    });
-    $(".site-content-wrapper.video").addClass("move");
-    $(".site-content-wrapper.paths").addClass("move");
-    setTimeout(function () {
-      $(".main-app-container").addClass("show");
-    }, 1000);
-  } else {
-    triggerRenderOptions(prospect_pathChoosen);
-    setTimeout(function () {
-      $(".main-app-container").addClass("show");
-    }, 1000);
-  }
-}
-
-function autoFill() {
-  const firstName = getUrlParameter("fname");
-  const email_fill = getUrlParameter("email");
-  if (firstName && email_fill) {
-    $("#fname").val(firstName);
-    $("#email").val(email_fill);
-    $("#peoplewatching").val(1);
-    $("#country-us").click();
-    $("#country-us").toggleClass("active");
-    lang_val = "EN";
-    country_val = "US";
-    fetchVideo(videoType, "US", "EN");
-  }
-}
-
-autoFill();
+//no
 
 //Validating video type
 function validateVideoType(typeName) {
@@ -312,49 +116,6 @@ async function setPathsContentVariable(videoType) {
     });
 }
 
-// Render Video
-function renderVideo(videoID) {
-  iframe = document.getElementById("video");
-  player = new Vimeo.Player(iframe);
-  player
-    .loadVideo(videoID)
-    .then(function (id) {
-      setTotalDuration();
-      playerinitialized = 1;
-      player.pause();
-      setFinalFunction();
-    })
-    .catch(function (error) {});
-}
-
-//fetch video
-function fetchVideo(type, country, lang) {
-  const fetchVideoAPI =
-    "https://" +
-    api_url +
-    "/api/v1/users/videoProspects/leadCapturingVideos?type=" +
-    type +
-    "&countryCode=" +
-    country +
-    "&language=" +
-    lang;
-  axios({
-    method: "get",
-    url: fetchVideoAPI,
-  })
-    .then(function (response) {
-      video_id = response.data.data[0].url;
-      $(".video-container").css(
-        "height",
-        $(".video-container").width() / (16 / 9)
-      );
-      renderVideo(video_id);
-    })
-    .catch(function (error) {
-      error_show("Oops, There was an unexpected error.");
-    });
-}
-
 // Check Video Prospect
 function checkVideoProspect(email_val) {
   const checkVideoProspectAPI =
@@ -435,20 +196,6 @@ async function createVideoProspect() {
     });
 }
 
-// Move the screens on successfull prospect
-function letsStart() {
-  $(function () {
-    $(".nav-bullet-dot:nth-child(2)")
-      .click(function () {
-        this.click();
-      })
-      .click();
-  });
-  $(".onboarding").addClass("pan-out");
-  $(".watch-video").addClass("pan-in");
-  $("*").scrollTop(0);
-}
-
 // Update watch percentage
 function updateWatchtime(time, percentage) {
   const updateWatchTimeAPI =
@@ -484,20 +231,6 @@ function updateWatchtime(time, percentage) {
 /********************************/
 /*******CUSTOM VIDEO CONTROLS****/
 /******************************/
-
-// Forward Backward Functionality
-$("#forward").click(function () {
-  player.setCurrentTime(currentTiming + 10);
-});
-
-$("#backward").click(function () {
-  player.setCurrentTime(currentTiming - 10);
-});
-
-//Fullscreen function
-$("#fullscreen").click(function () {
-  player.requestFullscreen();
-});
 
 // Setting total time duration of video
 function setTotalDuration() {
@@ -541,19 +274,6 @@ setInterval(function () {
 }, 200);
 
 // Move the screen when watched full video
-function setFinalFunction() {
-  player.on("ended", function () {
-    $(function () {
-      $(".nav-bullet-dot:nth-child(3)")
-        .click(function () {
-          this.click();
-        })
-        .click();
-    });
-    $(".site-content-wrapper.video").addClass("move");
-    $(".site-content-wrapper.paths").addClass("move");
-  });
-}
 
 // Rendering path questions based on the path selected
 async function render_options() {
