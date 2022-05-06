@@ -2,13 +2,14 @@ const { appointmentUtils } = require("../../../utils/appointment.utils");
 const { getCompany } = require("../../../service/appointment.service");
 const { url, BasePage } = require("../../../utils");
 const { submitForm } = require("../../../service/appointment.service");
+
 class AppointmentPage extends BasePage {
   constructor(_object) {
     super(_object);
   }
 }
 
-export default function initAppointment() {
+function initAppointment() {
   let page = new AppointmentPage({
     ...appointmentUtils.initialState,
     USER_URL: url.query.get("id") || url.query.get("user"),
@@ -71,3 +72,5 @@ export default function initAppointment() {
     }
   });
 }
+
+module.exports = initAppointment;
