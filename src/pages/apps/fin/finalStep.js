@@ -25,7 +25,8 @@ export default function initFinalStep() {
       cookies.get("URL_USER") !== "undefined"
         ? cookies.get("URL_USER")
         : cookies.get("USER_URL"),
-    IS_OLD_LINK: cookies.get("isOldUrl") || false,
+    IS_OLD_LINK:
+      cookies.get("isOldUrl") === "false" ? undefined : cookies.get("isOldUrl"),
     PROSPECT_EMAIL: "",
   });
   page.APPOINTMENT_LINK = !isEmpty(page.IS_OLD_LINK)
@@ -206,11 +207,11 @@ export default function initFinalStep() {
 
   const openVideoApp = (email) => {
     window.open(
-      !checkIsEmpty(cookies.get("isOldUrl"))
-        ? `${getVideoBaseUrl()}/${getVideoType()}?company=${cookies.get(
-            "isOldUrl"
-          )}&user=${page.URL_USER}&fname=${cookies.get("Name")}&email=${email}`
-        : `${getVideoBaseUrl()}/${getVideoType()}?id=${
+      !isEmpty(page.IS_OLD_LINK)
+        ? `${getVideoBaseUrl()}${getVideoType()}/?company=${
+            page.IS_OLD_LINK
+          }&user=${page.URL_USER}&fname=${cookies.get("Name")}&email=${email}`
+        : `${getVideoBaseUrl()}${getVideoType()}/?id=${
             page.URL_USER
           }&fname=${cookies.get("Name")}&email=${email}`,
       "_self"

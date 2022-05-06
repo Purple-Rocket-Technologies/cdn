@@ -14433,7 +14433,7 @@ function initFinalStep() {
   let page = new FinalStep({
     URL_COMPANY: utils.cookies.get("URL_COMPANY") !== "undefined" ? utils.cookies.get("URL_COMPANY") : utils.cookies.get("COMPANY_URL"),
     URL_USER: utils.cookies.get("URL_USER") !== "undefined" ? utils.cookies.get("URL_USER") : utils.cookies.get("USER_URL"),
-    IS_OLD_LINK: utils.cookies.get("isOldUrl") || false,
+    IS_OLD_LINK: utils.cookies.get("isOldUrl") === "false" ? undefined : utils.cookies.get("isOldUrl"),
     PROSPECT_EMAIL: ""
   });
   page.APPOINTMENT_LINK = !(0,utils.isEmpty)(page.IS_OLD_LINK) ? `https://${window.location.host}/appointment?company=${page.IS_OLD_LINK}&user=${page.URL_USER}&video=false` : `https://${window.location.host}/appointment?id=${page.URL_USER}&video=false`; // Reading name cookie
@@ -14547,7 +14547,7 @@ function initFinalStep() {
   };
 
   const openVideoApp = email => {
-    window.open(!checkIsEmpty(utils.cookies.get("isOldUrl")) ? `${(0,utils.getVideoBaseUrl)()}/${getVideoType()}?company=${utils.cookies.get("isOldUrl")}&user=${page.URL_USER}&fname=${utils.cookies.get("Name")}&email=${email}` : `${(0,utils.getVideoBaseUrl)()}/${getVideoType()}?id=${page.URL_USER}&fname=${utils.cookies.get("Name")}&email=${email}`, "_self");
+    window.open(!(0,utils.isEmpty)(page.IS_OLD_LINK) ? `${(0,utils.getVideoBaseUrl)()}${getVideoType()}/?company=${page.IS_OLD_LINK}&user=${page.URL_USER}&fname=${utils.cookies.get("Name")}&email=${email}` : `${(0,utils.getVideoBaseUrl)()}${getVideoType()}/?id=${page.URL_USER}&fname=${utils.cookies.get("Name")}&email=${email}`, "_self");
   };
 
   async function populatePathOptions() {
