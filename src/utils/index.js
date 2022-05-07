@@ -92,20 +92,20 @@ const cookies = {
     return null;
   },
   set: (name, value, expires, path = "/", domain, secure) => {
-    let cookieText = encodeURIComponent(name) + "=" + encodeURIComponent(value);
-    if (expires instanceof Date) {
-      cookieText += "; expires=" + expires.toGMTString();
+    let cookie = `${name}=${value}`;
+    if (expires) {
+      cookie += `; expires=${expires}`;
     }
     if (path) {
-      cookieText += "; path=" + path;
+      cookie += `; path=${path}`;
     }
     if (domain) {
-      cookieText += "; domain=" + domain;
+      cookie += `; domain=${domain}`;
     }
     if (secure) {
-      cookieText += "; secure";
+      cookie += `; secure=${secure}`;
     }
-    document.cookie = cookieText;
+    document.cookie = cookie;
   },
   unset: (name, path, domain, secure) => {
     this.set(name, "", new Date(0), path, domain, secure);
@@ -185,7 +185,21 @@ const isAppointmentPage = () => {
   return window.location.pathname.startsWith("/appointment");
 };
 
-module.exports = {
+const isEmail = (email) => {
+  const re =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+};
+
+const toDollar = (value) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(value);
+};
+
+export {
   getUrlParameter,
   cookies,
   url,
@@ -203,10 +217,7 @@ module.exports = {
   isQuestionPage,
   isMobile,
   formatAnswers,
-  isEmail: (email) => {
-    const re =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  },
+  isEmail,
   isAppointmentPage,
+  toDollar
 };
