@@ -6,11 +6,6 @@ const { cookies, isEmail, isMobile } = require("../../../utils");
 const { getProspect } = require("../../../service/fin/onboarding.service");
 
 function questionsPageInit() {
-  let relativ_url = window.location.origin + window.location.pathname;
-  let curren_url = window.location;
-  if (curren_url !== relativ_url) {
-    window.location = relativ_url;
-  }
   $("body").on("scroll mousewheel touchmove", function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -289,8 +284,8 @@ function questionsPageInit() {
 
     createProspect(cookies.get("COMPANY_ID"), data)
       .then((res) => {
-        cookies.set("prospect_id", res._id);
-        cookies.set("FIN Number", "" + res.fin_number);
+        cookies.set("PROSPECT_ID", res._id);
+        cookies.set("FIN Number", res.fin_number);
         cookies.set("Name", res.first_name);
         cookies.set("Country", res.country);
         window.location.href = "/result";
@@ -325,7 +320,7 @@ function questionsPageInit() {
       fin_number: parseInt($("#fin_number").val()),
     })
       .then(function (response) {
-        cookies.set("prospect_id", response._id);
+        cookies.set("PROSPECT_ID", response._id);
         cookies.set("FIN Number", "" + response.fin_number);
         cookies.set("Name", response.first_name);
         cookies.set("Country", response.country);
@@ -365,8 +360,8 @@ function questionsPageInit() {
                 `Error While submitting results: ${emailEl.val()}`,
                 error
               );
+              alert(error.message);
             }
-            // alert("Oops, There was an unexpected error.");
           });
       }
     } else {
