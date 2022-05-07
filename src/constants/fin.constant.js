@@ -1,11 +1,11 @@
 const FIN = {
   US: {
-    ENGLISH: "https://player.vimeo.com/video/445268145",
-    SPANISH: "https://player.vimeo.com/video/452754620",
+    ENGLISH: "445268145",
+    SPANISH: "452754620",
   },
   CA: {
-    ENGLISH: "https://player.vimeo.com/video/551499288",
-    SPANISH: "https://player.vimeo.com/video/452754620",
+    ENGLISH: "551499288",
+    SPANISH: "452754620",
   },
 };
 
