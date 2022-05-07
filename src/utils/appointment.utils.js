@@ -189,6 +189,4 @@ const appointmentUtils = {
   },
 };
 
-module.exports = {
-  appointmentUtils,
-};
+export { appointmentUtils };

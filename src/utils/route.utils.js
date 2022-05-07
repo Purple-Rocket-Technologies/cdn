@@ -1,9 +1,11 @@
+import { toDollar } from ".";
+
 const { updateRoute } = require("../service/fin/route.service");
 
 const routeUtils = {
   setPath: function ({ user_name, fin_number }) {
     $("#user_name").html("" + user_name);
-    $("#fin_num").html("$" + fin_number);
+    $("#fin_num").html(toDollar(fin_number));
   },
   handlePathSelection: function ({ company_id, PROSPECT_ID, route_selection }) {
     const paths = [
@@ -38,4 +40,4 @@ const routeUtils = {
   },
 };
 
-module.exports = { routeUtils };
+export { routeUtils };

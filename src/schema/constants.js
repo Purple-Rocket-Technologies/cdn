@@ -198,10 +198,4 @@ const questions = {
 
 const getLastSlash = (str) => str.split("/").pop();
 
-module.exports = {
-  questions,
-  alphabets,
-  colors,
-  getLastSlash,
-  buttonArrowImage,
-};
+export { questions, alphabets, colors, getLastSlash, buttonArrowImage };

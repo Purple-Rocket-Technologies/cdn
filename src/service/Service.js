@@ -57,5 +57,4 @@ class Service {
     return await this.axios.put(`${this.baseUrl}/${id}`, this.body);
   }
 }
-
 module.exports = Service;

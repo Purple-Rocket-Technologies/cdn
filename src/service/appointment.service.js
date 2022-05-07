@@ -16,7 +16,4 @@ const submitForm = (data) => {
   });
 };
 
-module.exports = {
-  getCompany: getUser,
-  submitForm,
-};
+export { getUser as getCompany, submitForm };

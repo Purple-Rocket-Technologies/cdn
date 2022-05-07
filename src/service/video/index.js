@@ -20,7 +20,7 @@ const getVideoProspect = async (COMPANY_ID, EMAIL) => {
   });
 };
 
-const fetchVideoService = async (type, country, lang) => {
+async function fetchVideoService(type, country, lang) {
   const fetchVideoAPI = new Service("videoProspects/leadCapturingVideos");
   fetchVideoAPI.equals("type", type);
   fetchVideoAPI.equals("countryCode", country);
@@ -39,9 +39,6 @@ const fetchVideoService = async (type, country, lang) => {
         reject(err);
       });
   });
-};
+}
 
-module.exports = {
-  getVideoProspect,
-  fetchVideoService,
-};
+export { fetchVideoService, getVideoProspect };
