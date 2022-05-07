@@ -1,15 +1,9 @@
-import { cookies } from "../../../utils";
+import { cookies, toDollar } from "../../../utils";
 
 export default function resultInit() {
   require("../../../utils/scratch");
 
-  const FIN_NUMBER = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-  }).format(parseInt(cookies.get("FIN Number")));
-
-  $("#fin_number").html(FIN_NUMBER);
+  $("#fin_number").html(toDollar(cookies.get("FIN Number")));
 
   $(".user_name").each(function () {
     $(this).html(cookies.get("Name"));

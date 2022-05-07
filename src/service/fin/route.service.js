@@ -18,6 +18,4 @@ const updateRoute = async (COMPANY_ID, PROSPECT_ID, route_choice) => {
   });
 };
 
-module.exports = {
-  updateRoute,
-};
+export { updateRoute };

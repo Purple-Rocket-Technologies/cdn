@@ -1,4 +1,3 @@
-import { createApp, h } from "vue";
 import {
   questions,
   getLastSlash,
@@ -9,6 +8,7 @@ import { saveAnswers } from "../../../service/fin/routeQuestion.service";
 import { formatAnswers, isMobile, cookies } from "../../../utils/index";
 
 export default function InitRouteQuestions() {
+  const { createApp, h } = require("vue");
   const type = getLastSlash(window.location.pathname)
     .replace(/-/g, "_")
     .toUpperCase();

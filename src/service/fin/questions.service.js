@@ -40,7 +40,4 @@ function updateProspectById(COMPANY_ID, PROSPECT_ID, UPDATE_DATA) {
   });
 }
 
-module.exports = {
-  updateProspectById,
-  createProspect,
-};
+export { updateProspectById, createProspect };

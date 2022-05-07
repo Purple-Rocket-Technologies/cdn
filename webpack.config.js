@@ -6,6 +6,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
   entry: {
     fin: path.resolve(__dirname, "src/main.js"),
+    video: path.resolve(__dirname, "src/pages/apps/video/index.js"),
   },
   output: {
     path: path.resolve(__dirname, "dist"),

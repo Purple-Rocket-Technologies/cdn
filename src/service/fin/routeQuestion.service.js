@@ -18,6 +18,4 @@ const saveAnswers = async (ANSWER, COMPANY_ID, PROSPECT_ID) => {
   });
 };
 
-module.exports = {
-  saveAnswers,
-};
+export { saveAnswers };

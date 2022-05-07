@@ -1,5 +1,4 @@
-import Service from "../service/Service";
-import fetchVideoService from "../service/video/index";
+import { fetchVideoService } from "../service/video/index";
 const videoUtils = {
   initialState: {
     VIDEO_TYPE: "",
@@ -121,4 +120,4 @@ const videoUtils = {
   },
 };
 
-module.exports = videoUtils;
+export default videoUtils;

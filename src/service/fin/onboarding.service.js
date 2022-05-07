@@ -27,11 +27,8 @@ const getProspect = async (ADVISOR_ID, COMPANY_ID, EMAIL) => {
   return await new Promise((resolve, reject) => {
     prospect.find().then(
       (response) => {
-        response.data.count <= 0 || response.data.error
-          ? reject({
-              error: response.data.error,
-              message: response.data.message,
-            })
+        response.count === 0 || response.error
+          ? reject(response)
           : resolve(prospect.parseResponse(response).first());
       },
       (error) => {
@@ -41,7 +38,4 @@ const getProspect = async (ADVISOR_ID, COMPANY_ID, EMAIL) => {
   });
 };
 
-module.exports = {
-  getUser,
-  getProspect,
-};
+export { getUser, getProspect };
