@@ -132,14 +132,13 @@ const onBoarding = {
               const arrowEl = $(".hide-after-unlock");
               const linkBlock = $(".link-block");
               let watchpercentage = (seconds / totalDurationTime) * 100;
-              console.log(watchpercentage, totalDurationTime, seconds);
               if (watchpercentage >= 90) {
                 linkBlock.attr("href", "/questions");
                 if (!isMobile()) {
                   $(".link-block .cta_btn").addClass("active");
                   $(".cta_btn").addClass("active");
                 } else {
-                  $(".link-block.od .cta_btn").addClass("active");
+                  $(".link-block.flaty .cta_btn").addClass("active");
                 }
                 lockIconEl.css("display", "block");
                 arrowEl.css("display", "none");
@@ -150,7 +149,7 @@ const onBoarding = {
                 linkBlock.attr("href", "#");
                 lockIconEl.css("display", "none");
                 arrowEl.css("display", "block");
-                $(".link-block.od .cta_btn").removeClass("active");
+                $(".link-block.flaty .cta_btn").removeClass("active");
                 $(".link-block .cta_btn").removeClass("active");
               }
             });
