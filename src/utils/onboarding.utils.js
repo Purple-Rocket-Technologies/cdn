@@ -138,7 +138,7 @@ const onBoarding = {
                   $(".link-block .cta_btn").addClass("active");
                   $(".cta_btn").addClass("active");
                 } else {
-                  $(".link-block.flaty .cta_btn").addClass("active");
+                  $("#unlock-btn .cta_btn").addClass("active");
                 }
                 lockIconEl.css("display", "block");
                 arrowEl.css("display", "none");
@@ -149,7 +149,6 @@ const onBoarding = {
                 linkBlock.attr("href", "#");
                 lockIconEl.css("display", "none");
                 arrowEl.css("display", "block");
-                $(".link-block.flaty .cta_btn").removeClass("active");
                 $(".link-block .cta_btn").removeClass("active");
               }
             });
