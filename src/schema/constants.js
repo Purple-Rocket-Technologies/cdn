@@ -196,6 +196,56 @@ const questions = {
   MAKE_MORE_MONEY: [BASE_QUESTIONS[1], BASE_QUESTIONS[3]],
 };
 
+const validateVideoTypeAPI_URL = (typeName) => {
+  return `https://${api_url}/api/v1/users/videoProspects/leadCapturingVideos?type=${typeName}`;
+};
+
+const pathsContentAPI = (videoType) => {
+  return `https://${api_url} +/api/v1/users/videoProspects/paths?type=${videoType}`;
+};
+
+const checkVideoProspectAPI = (email_val) => {
+  return `https://${api_url}/api/v1/users/company/${readCookie(
+    "COMPANY_ID"
+  )}/videoProspects?email=${email_val}`;
+};
+
+const createVideoProspectID_URL = () => {
+  return `https://${api_url}/api/v1/users/company/${readCookie(
+    "COMPANY_ID"
+  )}/videoProspects`;
+};
+
+const updateWatchTimeAPI_URL = () => {
+  return `https://
+${api_url}/api/v1/users/company/${readCookie(
+    "COMPANY_ID"
+  )}/videoProspects/video_prospect_id`;
+};
+
+const getPathOptionsAPI_URL = (path_name) => {
+  return `https://${api_url}/api/v1/users/videoProspects/paths/?name=${path_name}`;
+};
+
+const setPathAPI_URL = (video_prospect_id) => {
+  return `https://${api_url}/api/v1/users/company/${readCookie(
+    "COMPANY_ID"
+  )}/videoProspects/${video_prospect_id}`;
+};
+
 const getLastSlash = (str) => str.split("/").pop();
 
-export { questions, alphabets, colors, getLastSlash, buttonArrowImage };
+export {
+  questions,
+  alphabets,
+  colors,
+  getLastSlash,
+  buttonArrowImage,
+  validateVideoTypeAPI_URL,
+  pathsContentAPI,
+  checkVideoProspectAPI,
+  createVideoProspectID_URL,
+  updateWatchTimeAPI_URL,
+  getPathOptionsAPI_URL,
+  setPathAPI_URL,
+};

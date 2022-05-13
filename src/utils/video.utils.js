@@ -117,6 +117,15 @@ const videoUtils = {
         e
       );
     },
+    toggleFocus(e) {
+      console.log(e.type);
+
+      if (e.type === "focus") {
+        $(".email_help_text").addClass("active");
+      } else {
+        $(".email_help_text").removeClass("active");
+      }
+    },
   },
 };
 
