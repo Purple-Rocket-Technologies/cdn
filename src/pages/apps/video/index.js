@@ -1,7 +1,10 @@
 const { BasePage, finBaseUrl } = require("../../../utils");
 const { getUser } = require("../../../service/fin/onboarding.service");
 const { onBoarding } = require("../../../utils/onboarding.utils");
-const { getVideoProspect } = require("../../../service/video");
+const {
+  getVideoProspect,
+  fetchValidateVideoType,
+} = require("../../../service/video");
 const videoUtils = require("../../../utils/video.utils");
 const {
   validateVideoTypeAPI_URL,
@@ -40,10 +43,7 @@ async function redirectContinuer(page) {
 
 //Setting paths content variable
 async function setPathsContentVariable(videoType) {
-  axios({
-    method: "get",
-    url: pathsContentAPI(videoType),
-  })
+  await getPathsContentAPI(videoType)
     .then(async function (response) {
       [...$(".path-option")].forEach((elem) => {
         let temp = [];
@@ -101,11 +101,9 @@ async function setPathsContentVariable(videoType) {
     });
 }
 
-function validateVideoType(typeName) {
-  axios({
-    method: "get",
-    url: validateVideoTypeAPI_URL(typeName),
-  })
+//done
+async function validateVideoType(typeName) {
+  await fetchValidateVideoType(typeName)
     .then(function (response) {
       document.title = response.data.data[0].name; // Setting page title
       $("#video-title").text(response.data.data[0].name); // Setting video title
@@ -122,12 +120,11 @@ function validateVideoType(typeName) {
     });
 }
 
+//done
 // Check Video Prospect
-function checkVideoProspect(email_val) {
-  axios({
-    method: "get",
-    url: checkVideoProspectAPI(email_val),
-  })
+async function checkVideoProspect(email_val) {
+  let companyId = readCookie("COMPANY_ID");
+  await getVideoProspect(companyId, email_val)
     .then(function (response) {
       if (response.data.count === 1) {
         videoUtils.default.initialState.VIDEO_PROSPECT_ID =
@@ -156,6 +153,7 @@ function checkVideoProspect(email_val) {
     });
 }
 
+//done
 // Create Video Prospect
 async function createVideoProspect() {
   await videoUtils.default.methods.fetchVideo(
@@ -179,16 +177,10 @@ async function createVideoProspect() {
     userId: readCookie("USER_ID"),
     companyId: readCookie("COMPANY_ID"),
   };
-
   if (readCookie("isAffiliateUrl") === "true") {
     data.affiliateId = readCookie("affiliateId");
   }
-
-  axios({
-    method: "post",
-    url: createVideoProspectID_URL,
-    data,
-  })
+  await createVideoProspect(data.companyId, data)
     .then(function (response) {
       videoUtils.default.initialState.VIDEO_PROSPECT_ID =
         response.data.data._id;
@@ -202,18 +194,19 @@ async function createVideoProspect() {
     });
 }
 
+//done
 // Update watch percentage
-function updateWatchtime(time, percentage) {
-  axios({
-    method: "put",
-    url: updateWatchTimeAPI_URL(
-      videoUtils.default.initialState.VIDEO_PROSPECT_ID
-    ),
-    data: {
-      watchedTime: format(time),
-      watchPercentage: parseInt(percentage),
-    },
-  })
+async function updateWatchtime(time, percentage) {
+  let companyId = readCookie("COMPANY_ID");
+  let UpdateData = {
+    watchedTime: format(time),
+    watchPercentage: parseInt(percentage),
+  };
+  await updateWatchTimeAPI(
+    companyId,
+    videoUtils.default.initialState.VIDEO_PROSPECT_ID,
+    UpdateData
+  )
     .then(function (response) {
       // trackMixPanelEvent(`Watched ${videoType} ${parseInt(percentage)}%`, {
       //   videoType,
@@ -531,6 +524,7 @@ async function video_Int() {
   });
 
   async function triggerRenderOptions(path_name) {
+    let COMPANY_ID = readCookie("COMPANY_ID");
     $(".path-heading").text(path_name);
     path_name = path_name.includes("1")
       ? "Path 1"
@@ -546,20 +540,17 @@ async function video_Int() {
     //   videoUtils.default.initialState.VIDEO_PROSPECT_ID,
     //   pathChoosen: path_name,
     // });
-
-    axios({
-      method: "put",
-      url: setPathAPI_URL(videoUtils.default.initialState.VIDEO_PROSPECT_ID),
-      data: {
-        pathChoosen: path_name,
-      },
-    })
-      .then(function (response) {
+    await updateVideoProspect(
+      COMPANY_ID,
+      videoUtils.default.initialState.VIDEO_PROSPECT_ID,
+      BODY
+    )
+      .then(async function (response) {
+        let BODY = {
+          pathChoosen: path_name,
+        };
         // Getting path options afte a successfull post
-        axios({
-          method: "get",
-          url: getPathOptionsAPI_URL(path_name),
-        })
+        await getPathOptions(path_name)
           .then(function (response) {
             videoUtils.default.initialState.PATH_OPTIONS =
               response.data.data[0].options;
@@ -599,22 +590,17 @@ async function video_Int() {
   });
 
   $(".submit.paths").click(async () => {
-    const setPathOptionsAPI =
-      "https://" +
-      api_url +
-      "/api/v1/users/company/" +
-      readCookie("COMPANY_ID") +
-      "/videoProspects/" +
-      videoUtils.default.initialState.VIDEO_PROSPECT_ID;
+    let COMPANY_ID = readCookie("COMPANY_ID");
 
     if (videoUtils.default.initialState.MCQ_OPTIONS.length !== 0) {
-      axios({
-        method: "put",
-        url: setPathOptionsAPI,
-        data: {
-          interests: videoUtils.default.initialState.MCQ_OPTIONS,
-        },
-      })
+      let BODY = {
+        interests: videoUtils.default.initialState.MCQ_OPTIONS,
+      };
+      await setPathOptionsAPI(
+        COMPANY_ID,
+        videoUtils.default.initialState.VIDEO_PROSPECT_ID,
+        BODY
+      )
         .then(function (response) {
           console.log(response.data);
           // trackMixPanelEvent(
@@ -627,7 +613,9 @@ async function video_Int() {
             "background-image",
             "url('" + readCookie("PIC") + "')"
           );
-          success_show("Your answers have been sent successfully!");
+          videoUtils.default.methods.showSuccess(
+            "Your answers have been sent successfully!"
+          );
           $(".appointment-iframe .w-iframe iframe").attr(
             "src",
             appointment_link
@@ -637,10 +625,12 @@ async function video_Int() {
         .catch(function (error) {
           console.log(error.status);
           console.log(error.statusText);
-          error_show("Oops, There was an unexpected error.");
+          videoUtils.default.methods.showError(
+            "Oops, There was an unexpected error."
+          );
         });
     } else {
-      error_show("Please select at least one option");
+      videoUtils.default.methods.showError("Please select at least one option");
     }
   });
 
