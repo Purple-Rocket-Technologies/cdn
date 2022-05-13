@@ -9,7 +9,7 @@ class AppointmentPage extends BasePage {
   }
 }
 
-function initAppointment() {
+async function initAppointment() {
   let page = new AppointmentPage({
     ...appointmentUtils.initialState,
     USER_URL: url.query.get("id") || url.query.get("user"),
@@ -27,14 +27,19 @@ function initAppointment() {
   }
 
   try {
-    const advisor = getCompany(page.USER_URL, page.COMPANY_URL);
+    const advisor = await getCompany(page.USER_URL, page.COMPANY_URL);
+
     page = appointmentUtils.populatePageData(page, advisor);
 
+    console.table(page);
+
     page.track("Prospect visited Appointment Page", {
-      rep_name,
+      rep_name: page.REP_NAME,
       page_type: page.IS_VIDEO_APP ? "Video App" : "FIN App",
     });
     page = appointmentUtils.setupTrackAppointmentButtonClick(page);
+
+    appointmentUtils.mapDataToPage(page);
   } catch (e) {
     window.location.href = "/404";
   }

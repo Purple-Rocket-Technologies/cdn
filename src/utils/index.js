@@ -162,11 +162,11 @@ const getBaseUrl = () => {
   }
 };
 
-const finBaseUrl = (user, company, type, start) => {
+function finBaseUrl(user, company, type, start) {
   return company
-    ? `${this[type](user, company)}${start}?company=${company}&user=${user}`
-    : `${this[type](user, company)}${start}?id=${user}`;
-};
+    ? `${eval(type)(user, company)}${start}?company=${company}&user=${user}`
+    : `${eval(type)(user, company)}${start}?id=${user}`;
+}
 
 const videoLink = (user, company, type, videoName) => {
   const url = finBaseUrl(user, company, type, "video_type");
@@ -219,5 +219,5 @@ export {
   formatAnswers,
   isEmail,
   isAppointmentPage,
-  toDollar
+  toDollar,
 };
