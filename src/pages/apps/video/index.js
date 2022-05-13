@@ -654,4 +654,4 @@ async function video_Int() {
   });
 }
 
-module.exports = video_Int;
+video_Int();

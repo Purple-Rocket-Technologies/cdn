@@ -94,12 +94,16 @@ const videoUtils = {
         .catch(function (error) {});
     },
     setTotalDuration() {
+      iframe = document.getElementById("video");
+      player = new Vimeo.Player(iframe);
       player.getDuration().then(function (duration) {
         this.initialState.VIDEO_TOTAL_TIME = duration;
         $(".totaltime").text(format(duration));
       });
     },
     setFinalFunction() {
+      iframe = document.getElementById("video");
+      player = new Vimeo.Player(iframe);
       player.on("ended", function () {
         $(function () {
           $(".nav-bullet-dot:nth-child(3)")
@@ -119,7 +123,6 @@ const videoUtils = {
     },
     toggleFocus(e) {
       console.log(e.type);
-
       if (e.type === "focus") {
         $(".email_help_text").addClass("active");
       } else {
