@@ -160,8 +160,8 @@ function checkVideoProspect(email_val) {
 async function createVideoProspect() {
   await videoUtils.default.methods.fetchVideo(
     videoType,
-    country_val || "US",
-    lang_val || "EN"
+    videoUtils.default.initialState.COUNTRY || "US",
+    videoUtils.default.initialState.LANG || "EN"
   );
   const data = {
     videoName: document.title,
@@ -169,11 +169,11 @@ async function createVideoProspect() {
     lastName: $("#lname").val(),
     email: $("#email").val(),
     phone: Inputmask.unmask($("#phone").val(), { mask: "(999) 999-9999" }),
-    country: country_val || "US",
-    language: lang_val || "EN",
+    country: videoUtils.default.initialState.COUNTRY || "US",
+    language: videoUtils.default.initialState.LANG || "EN",
     watchingWith: $("#peoplewatching").val(),
     watchedTime: 0,
-    totalVideoTime: format(totalDurationTime),
+    totalVideoTime: format(videoUtils.default.initialState.VIDEO_TOTAL_TIME),
     watchPercentage: 0,
     appointmentCompleted: false,
     userId: readCookie("USER_ID"),
@@ -206,7 +206,9 @@ async function createVideoProspect() {
 function updateWatchtime(time, percentage) {
   axios({
     method: "put",
-    url: updateWatchTimeAPI_URL,
+    url: updateWatchTimeAPI_URL(
+      videoUtils.default.initialState.VIDEO_PROSPECT_ID
+    ),
     data: {
       watchedTime: format(time),
       watchPercentage: parseInt(percentage),
@@ -229,9 +231,12 @@ function updateWatchtime(time, percentage) {
 
 // Progress bar update
 setInterval(function () {
-  if (playerinitialized === 1) {
-    player.getCurrentTime().then(function (seconds) {
-      watchpercentage = (seconds / totalDurationTime) * 100;
+  if (videoUtils.default.initialState.IS_PLAYER_LOADED) {
+    videoUtils.default.initialState.PLAYER.getCurrentTime().then(function (
+      seconds
+    ) {
+      watchpercentage =
+        (seconds / videoUtils.default.initialState.VIDEO_TOTAL_TIME) * 100;
     });
     $(".progress-bar-inner").css("width", watchpercentage + "%");
   }
@@ -239,11 +244,14 @@ setInterval(function () {
 
 // Current timing
 setInterval(function () {
-  if (playerinitialized === 1) {
-    player.getCurrentTime().then(function (seconds) {
+  if (videoUtils.default.initialState.IS_PLAYER_LOADED) {
+    videoUtils.default.initialState.PLAYER.getCurrentTime().then(function (
+      seconds
+    ) {
       $(".elapsedtime").text(format(seconds));
       const schedule_footer = $(".schedule-footer");
-      watchpercentage = (seconds / totalDurationTime) * 100;
+      watchpercentage =
+        (seconds / videoUtils.default.initialState.VIDEO_TOTAL_TIME) * 100;
       //if (watchpercentage >= 93) {
       //if (schedule_footer.css("display") === "none") {
       // schedule_footer.css("display", "flex");
@@ -255,16 +263,16 @@ setInterval(function () {
       //);
       //}
       //}
-      currentTiming = seconds;
+      videoUtils.default.initialState.PLAYER_CURRENT_TIME = seconds;
     });
   }
 }, 200);
 
 // Rendering path questions based on the path selected
 async function render_options() {
-  for (i = 0; i <= options.length; i++) {
+  for (i = 0; i <= videoUtils.default.initialState.PATH_OPTIONS.length; i++) {
     $(".checkbox-field:nth-child(" + i + ")").show();
-    let text = options[i];
+    let text = videoUtils.default.initialState.PATH_OPTIONS[i];
     if ((await Weglot.getCurrentLang()) === "es") {
       if (text) {
         text = await translateToLanguage([text], "en", "es");
@@ -273,7 +281,7 @@ async function render_options() {
     $(".checkbox-field:nth-child(" + (i + 1) + ") .checkbox-label").text(text);
     $(".checkbox-field:nth-child(" + (i + 1) + ") .checkbox-label").attr(
       "en",
-      options[i]
+      videoUtils.default.initialState.PATH_OPTIONS[i]
     );
   }
   $(function () {
@@ -365,9 +373,13 @@ async function video_Int() {
   $(".country-btn").click(function () {
     $(".country-btn").removeClass("active");
     $(this).addClass("active");
-    country_val = $(this).attr("data-country");
-    lang_val = $(this).attr("data-lang");
-    fetchVideo(videoType, country_val, lang_val);
+    videoUtils.default.initialState.COUNTRY = $(this).attr("data-country");
+    videoUtils.default.initialState.LANG = $(this).attr("data-lang");
+    fetchVideo(
+      videoType,
+      videoUtils.default.initialState.COUNTRY,
+      videoUtils.default.initialState.LANG
+    );
   });
 
   $(".non-clicker").click(function () {
@@ -375,7 +387,7 @@ async function video_Int() {
   });
 
   $(".onboad").click(function () {
-    if (country_val !== "") {
+    if (videoUtils.default.initialState.COUNTRY !== "") {
       if (
         $("#peoplewatching").val() != "" &&
         $("#phone").val() != "" &&
@@ -397,61 +409,88 @@ async function video_Int() {
   // Updating watch time percentage thorough api
   const set10 = setInterval(function () {
     if (watchpercentage > 10) {
-      updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
+      updateWatchtime(
+        parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME),
+        parseInt(watchpercentage)
+      );
       clearInterval(set10);
     }
   }, 1000);
   const set20 = setInterval(function () {
     if (watchpercentage > 20) {
-      updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
+      updateWatchtime(
+        parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME),
+        parseInt(watchpercentage)
+      );
       clearInterval(set20);
     }
   }, 1000);
   const set30 = setInterval(function () {
     if (watchpercentage > 30) {
-      updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
+      updateWatchtime(
+        parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME),
+        parseInt(watchpercentage)
+      );
       clearInterval(set30);
     }
   }, 1000);
   const set40 = setInterval(function () {
     if (watchpercentage > 40) {
-      updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
+      updateWatchtime(
+        parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME),
+        parseInt(watchpercentage)
+      );
       clearInterval(set40);
     }
   }, 1000);
   const set50 = setInterval(function () {
     if (watchpercentage > 50) {
-      updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
+      updateWatchtime(
+        parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME),
+        parseInt(watchpercentage)
+      );
       clearInterval(set50);
     }
   }, 1000);
   const set60 = setInterval(function () {
     if (watchpercentage > 60) {
-      updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
+      updateWatchtime(
+        parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME),
+        parseInt(watchpercentage)
+      );
       clearInterval(set60);
     }
   }, 1000);
   const set70 = setInterval(function () {
     if (watchpercentage > 70) {
-      updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
+      updateWatchtime(
+        parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME),
+        parseInt(watchpercentage)
+      );
       clearInterval(set70);
     }
   }, 1000);
   const set80 = setInterval(function () {
     if (watchpercentage > 80) {
-      updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
+      updateWatchtime(
+        parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME),
+        parseInt(watchpercentage)
+      );
       clearInterval(set80);
     }
   }, 1000);
   const set90 = setInterval(function () {
     if (watchpercentage > 90) {
-      updateWatchtime(parseInt(currentTiming), parseInt(watchpercentage));
+      updateWatchtime(
+        parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME),
+        parseInt(watchpercentage)
+      );
       clearInterval(set90);
     }
   }, 1000);
   const set96 = setInterval(function () {
     if (watchpercentage > 96) {
-      updateWatchtime(totalDurationTime, 100);
+      updateWatchtime(videoUtils.default.initialState.VIDEO_TOTAL_TIME, 100);
       clearInterval(set96);
     }
   }, 1000);
@@ -504,7 +543,7 @@ async function video_Int() {
     // track path clicked event to mixpanel
     // trackMixPanelEvent(`${videoType}: ${path_name} Clicked`, {
     //   companyId: readCookie("COMPANY_ID"),
-    //   video_prospect_id,
+    //   videoUtils.default.initialState.VIDEO_PROSPECT_ID,
     //   pathChoosen: path_name,
     // });
 
@@ -522,7 +561,8 @@ async function video_Int() {
           url: getPathOptionsAPI_URL(path_name),
         })
           .then(function (response) {
-            options = response.data.data[0].options;
+            videoUtils.default.initialState.PATH_OPTIONS =
+              response.data.data[0].options;
             render_options();
           })
           .catch(function (error) {
@@ -544,12 +584,15 @@ async function video_Int() {
 
     if (check_element.hasClass("active")) {
       if (typeof get_value === "string") {
-        mcq.splice(mcq.indexOf(get_value), 1);
+        videoUtils.default.initialState.MCQ_OPTIONS.splice(
+          videoUtils.default.initialState.MCQ_OPTIONS.indexOf(get_value),
+          1
+        );
         check_element.removeClass("active");
       }
     } else {
       if (typeof get_value === "string") {
-        mcq.push(get_value);
+        videoUtils.default.initialState.MCQ_OPTIONS.push(get_value);
         check_element.addClass("active");
       }
     }
@@ -562,14 +605,14 @@ async function video_Int() {
       "/api/v1/users/company/" +
       readCookie("COMPANY_ID") +
       "/videoProspects/" +
-      video_prospect_id;
+      videoUtils.default.initialState.VIDEO_PROSPECT_ID;
 
-    if (mcq.length !== 0) {
+    if (videoUtils.default.initialState.MCQ_OPTIONS.length !== 0) {
       axios({
         method: "put",
         url: setPathOptionsAPI,
         data: {
-          interests: mcq,
+          interests: videoUtils.default.initialState.MCQ_OPTIONS,
         },
       })
         .then(function (response) {
@@ -610,3 +653,5 @@ async function video_Int() {
     $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
   });
 }
+
+module.exports = video_Int;

@@ -216,11 +216,11 @@ const createVideoProspectID_URL = () => {
   )}/videoProspects`;
 };
 
-const updateWatchTimeAPI_URL = () => {
+const updateWatchTimeAPI_URL = (video_prospect_id) => {
   return `https://
 ${api_url}/api/v1/users/company/${readCookie(
     "COMPANY_ID"
-  )}/videoProspects/video_prospect_id`;
+  )}/videoProspects/${video_prospect_id}`;
 };
 
 const getPathOptionsAPI_URL = (path_name) => {

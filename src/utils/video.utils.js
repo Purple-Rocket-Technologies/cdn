@@ -95,7 +95,7 @@ const videoUtils = {
     },
     setTotalDuration() {
       player.getDuration().then(function (duration) {
-        totalDurationTime = duration;
+        this.initialState.VIDEO_TOTAL_TIME = duration;
         $(".totaltime").text(format(duration));
       });
     },
