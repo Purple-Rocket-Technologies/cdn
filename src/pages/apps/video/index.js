@@ -2,20 +2,17 @@ const { BasePage, finBaseUrl } = require("../../../utils");
 const { getUser } = require("../../../service/fin/onboarding.service");
 const { onBoarding } = require("../../../utils/onboarding.utils");
 const {
+  fetchVideoService,
   getVideoProspect,
   fetchValidateVideoType,
+  getPathsContentAPI,
+  createVideoProspectService,
+  updateWatchTimeAPI,
+  updateVideoProspect,
+  getPathOptions,
+  setPathOptionsAPI,
 } = require("../../../service/video");
 const videoUtils = require("../../../utils/video.utils");
-const {
-  validateVideoTypeAPI_URL,
-  pathsContentAPI,
-  checkVideoProspectAPI,
-  createVideoProspectID_URL,
-  updateWatchTimeAPI_URL,
-  getPathOptionsAPI_URL,
-  setPathAPI_URL,
-} = require("../../../schema/constants");
-
 class videoPage extends BasePage {
   constructor(_object) {
     super(_object);
@@ -101,7 +98,6 @@ async function setPathsContentVariable(videoType) {
     });
 }
 
-//done
 async function validateVideoType(typeName) {
   await fetchValidateVideoType(typeName)
     .then(function (response) {
@@ -120,7 +116,6 @@ async function validateVideoType(typeName) {
     });
 }
 
-//done
 // Check Video Prospect
 async function checkVideoProspect(email_val) {
   let companyId = readCookie("COMPANY_ID");
@@ -153,7 +148,6 @@ async function checkVideoProspect(email_val) {
     });
 }
 
-//done
 // Create Video Prospect
 async function createVideoProspect() {
   await videoUtils.default.methods.fetchVideo(
@@ -180,7 +174,7 @@ async function createVideoProspect() {
   if (readCookie("isAffiliateUrl") === "true") {
     data.affiliateId = readCookie("affiliateId");
   }
-  await createVideoProspect(data.companyId, data)
+  await createVideoProspectService(data.companyId, data)
     .then(function (response) {
       videoUtils.default.initialState.VIDEO_PROSPECT_ID =
         response.data.data._id;
@@ -194,7 +188,6 @@ async function createVideoProspect() {
     });
 }
 
-//done
 // Update watch percentage
 async function updateWatchtime(time, percentage) {
   let companyId = readCookie("COMPANY_ID");

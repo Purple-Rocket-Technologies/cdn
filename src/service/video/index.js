@@ -20,7 +20,7 @@ const getVideoProspect = async (COMPANY_ID, EMAIL) => {
   });
 };
 
-const createVideoProspect = async (COMPANY_ID, BODY) => {
+const createVideoProspectService = async (COMPANY_ID, BODY) => {
   const createNewVideoProspect = new Service(
     `company/${COMPANY_ID}/videoProspects`
   );
@@ -187,7 +187,7 @@ export {
   getVideoProspect,
   fetchValidateVideoType,
   getPathsContentAPI,
-  createVideoProspect,
+  createVideoProspectService,
   updateWatchTimeAPI,
   updateVideoProspect,
   getPathOptions,
