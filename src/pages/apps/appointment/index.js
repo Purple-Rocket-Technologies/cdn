@@ -17,6 +17,19 @@ async function initAppointment() {
     IS_OLD_LINK: url.query.get("company") || false,
   });
 
+  /**
+   * @description: to fix typos in features list
+   */
+  const els = document.querySelectorAll(".list-3");
+  for (let i = 0; i < els.length; i++) {
+    const el = els[i];
+    el.innerHTML = el.innerHTML.replace(
+      /Fear about your financial/,
+      "Fear about your finances"
+    );
+    el.innerHTML = el.innerHTML.replace(/Enjoy like more/, "Enjoy life more");
+  }
+
   // read for url and set state
   if (url.query.get("video")) {
     page.IS_VIDEO_APP = true;
