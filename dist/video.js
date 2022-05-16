@@ -3337,7 +3337,7 @@ async function video_Int() {
     videoUtils.methods.fetchVideo(videoType, page.COUNTRY, page.LANG);
   });
   $(".non-clicker").click(function () {
-    error_show("Please select a language first.");
+    videoUtils.methods.showError("Please select a language first.");
   });
   $(".onboad").click(function () {
     if (page.COUNTRY !== "") {
@@ -3345,13 +3345,13 @@ async function video_Int() {
         if (isEmail($("#email").val())) {
           checkVideoProspect($("#email").val());
         } else {
-          error_show("Please enter a correct email.");
+          videoUtils.methods.showError("Please enter a correct email.");
         }
       } else {
-        error_show("Please fill in all details.");
+        videoUtils.methods.showError("Please fill in all details.");
       }
     } else {
-      error_show("Please select your country.");
+      videoUtils.methods.showError("Please select your country.");
     }
   }); // Updating watch time percentage thorough api
 
@@ -3467,12 +3467,12 @@ async function video_Int() {
       }).catch(function (error) {
         console.log(error.status);
         console.log(error.statusText);
-        error_show("Oops, There was an unexpected error.");
+        videoUtils.methods.showError("Oops, There was an unexpected error.");
       });
     }).catch(function (error) {
       console.log(error.status);
       console.log(error.statusText);
-      error_show("Oops, There was an unexpected error.");
+      videoUtils.methods.showError("Oops, There was an unexpected error.");
     });
   }
 
