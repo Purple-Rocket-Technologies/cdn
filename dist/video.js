@@ -2310,7 +2310,9 @@ const updateVideoProspect = async (COMPANY_ID, PROSPECT_ID, BODY) => {
   updateVideoProspect.set(BODY);
   return new Promise((resolve, reject) => {
     updateVideoProspect.update(PROSPECT_ID).then(res => {
-      if (res.data.count > 0) {
+      console.log(res.data.success, "myres");
+
+      if (res.data.success) {
         resolve(updateVideoProspect.parseResponse(res.data));
       } else {
         reject(res);
@@ -2325,8 +2327,11 @@ const getPathOptions = async path_name => {
   const service = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())(`videoProspects/paths?name=${path_name}`);
   return new Promise((resolve, reject) => {
     service.find().then(res => {
+      console.log(res, "this is my res");
+      console.log(res.count, "this is my res couunnt");
+
       if (res.count > 0) {
-        resolve(service.parseResponse(res.data));
+        resolve(service.parseResponse(res));
       } else {
         reject(res);
       }
@@ -3015,6 +3020,7 @@ const {
 let videoType = window.location.pathname.replace("/", "");
 let watchpercentage = 0;
 let page = null;
+let path_name;
 
 class videoPage extends BasePage {
   constructor(_object) {
@@ -3063,7 +3069,6 @@ async function setPathsContentVariable(videoType) {
     });
     let description_item_text;
     let description_array;
-    let path_name;
 
     for (let i = 0; i < response.length; i++) {
       let it = response[i]; //setting title of path
@@ -3098,7 +3103,7 @@ async function setPathsContentVariable(videoType) {
     $(".main-app-container").addClass("show");
   }).catch(function (error) {
     videoUtils.methods.showError("Oops, There was an unexpected error.");
-    console.error(error);
+    console.error(error, "err1");
   });
 }
 
@@ -3448,6 +3453,7 @@ async function video_Int() {
   });
 
   async function triggerRenderOptions(path_name) {
+    debugger;
     let COMPANY_ID = cookies.get("COMPANY_ID");
     $(".path-heading").text(path_name);
     path_name = path_name.includes("1") ? "Path 1" : path_name.includes("2") ? "Path 2" : path_name.includes("3") ? "Path 3" : ""; // track path clicked event to mixpanel
@@ -3457,9 +3463,10 @@ async function video_Int() {
     //   pathChoosen: path_name,
     // });
 
-    await updateVideoProspect(COMPANY_ID, page.VIDEO_PROSPECT_ID, {
+    let BODY = {
       pathChoosen: path_name
-    }).then(async function (response) {
+    };
+    await updateVideoProspect(COMPANY_ID, page.VIDEO_PROSPECT_ID, BODY).then(async function (response) {
       // Getting path options afte a successfull post
       await getPathOptions(path_name).then(function (response) {
         page.PATH_OPTIONS = response[0].options;
@@ -3469,7 +3476,7 @@ async function video_Int() {
         videoUtils.methods.showError("Oops, There was an unexpected error.");
       });
     }).catch(function (error) {
-      console.log(error.status);
+      console.log(error, "err2");
       videoUtils.methods.showError("Oops, There was an unexpected error.");
     });
   }
@@ -3510,8 +3517,7 @@ async function video_Int() {
         $(".appointment-iframe .w-iframe iframe").attr("src", page.APPOINTMENT_LINK);
         $(".last-popup").addClass("active");
       }).catch(function (error) {
-        console.log(error.status);
-        console.log(error.statusText);
+        console.log(error, "err3");
         videoUtils.methods.showError("Oops, There was an unexpected error.");
       });
     } else {

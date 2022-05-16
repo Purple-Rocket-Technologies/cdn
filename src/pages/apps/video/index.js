@@ -15,6 +15,7 @@ const { url } = require("../../../utils/index");
 let videoType = window.location.pathname.replace("/", "");
 let watchpercentage = 0;
 let page = null;
+let path_name;
 class videoPage extends BasePage {
   constructor(_object) {
     super(_object);
@@ -58,7 +59,7 @@ async function setPathsContentVariable(videoType) {
 
       let description_item_text;
       let description_array;
-      let path_name;
+
       for (let i = 0; i < response.length; i++) {
         let it = response[i];
         //setting title of path
@@ -95,7 +96,7 @@ async function setPathsContentVariable(videoType) {
     })
     .catch(function (error) {
       videoUtils.methods.showError("Oops, There was an unexpected error.");
-      console.error(error);
+      console.error(error, "err1");
     });
 }
 
@@ -502,6 +503,7 @@ async function video_Int() {
   });
 
   async function triggerRenderOptions(path_name) {
+    debugger;
     let COMPANY_ID = cookies.get("COMPANY_ID");
     $(".path-heading").text(path_name);
     path_name = path_name.includes("1")
@@ -518,9 +520,10 @@ async function video_Int() {
     //   page.VIDEO_PROSPECT_ID,
     //   pathChoosen: path_name,
     // });
-    await updateVideoProspect(COMPANY_ID, page.VIDEO_PROSPECT_ID, {
+    let BODY = {
       pathChoosen: path_name,
-    })
+    };
+    await updateVideoProspect(COMPANY_ID, page.VIDEO_PROSPECT_ID, BODY)
       .then(async function (response) {
         // Getting path options afte a successfull post
         await getPathOptions(path_name)
@@ -536,7 +539,7 @@ async function video_Int() {
           });
       })
       .catch(function (error) {
-        console.log(error.status);
+        console.log(error, "err2");
         videoUtils.methods.showError("Oops, There was an unexpected error.");
       });
   }
@@ -588,8 +591,7 @@ async function video_Int() {
           $(".last-popup").addClass("active");
         })
         .catch(function (error) {
-          console.log(error.status);
-          console.log(error.statusText);
+          console.log(error, "err3");
           videoUtils.methods.showError("Oops, There was an unexpected error.");
         });
     } else {

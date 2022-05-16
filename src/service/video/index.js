@@ -90,7 +90,8 @@ const updateVideoProspect = async (COMPANY_ID, PROSPECT_ID, BODY) => {
     updateVideoProspect
       .update(PROSPECT_ID)
       .then((res) => {
-        if (res.data.count > 0) {
+        console.log(res.data.success, "myres");
+        if (res.data.success) {
           resolve(updateVideoProspect.parseResponse(res.data));
         } else {
           reject(res);
@@ -108,8 +109,10 @@ const getPathOptions = async (path_name) => {
     service
       .find()
       .then((res) => {
+        console.log(res, "this is my res");
+        console.log(res.count, "this is my res couunnt");
         if (res.count > 0) {
-          resolve(service.parseResponse(res.data));
+          resolve(service.parseResponse(res));
         } else {
           reject(res);
         }
