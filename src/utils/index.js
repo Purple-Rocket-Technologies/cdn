@@ -140,33 +140,57 @@ const isEmpty = (value) => {
 };
 
 const getVideoBaseUrl = () => {
-  if (window.location.host === "dev.discoverfin.io") {
+  if (
+    window.location.host === "devvideo.discoverfin.io" ||
+    window.location.host === "dev.discoverfin.io"
+  ) {
     return "https://devvideo.discoverfin.io/";
-  } else if (window.location.host === "staging.discoverfin.io") {
+  } else if (
+    window.location.host === "staging.discoverfin.io" ||
+    window.location.host === "dev.discoverfin.io"
+  ) {
     return "https://stagingvideo.discoverfin.io/";
-  } else if (window.location.host === "discoverfin.io") {
+  } else if (
+    window.location.host === "discoverfin.io" ||
+    window.location.host === "dev.discoverfin.io"
+  ) {
     return "https://video.discoverfin.io/";
-  } else if (window.location.host === "qa.discoverfin.io") {
+  } else if (
+    window.location.host === "qa.discoverfin.io" ||
+    window.location.host === "dev.discoverfin.io"
+  ) {
     return "https://qavideo.discoverfin.io/";
   }
 };
 const getBaseUrl = () => {
-  if (window.location.host === "dev.discoverfin.io") {
+  if (
+    window.location.host === "dev.discoverfin.io" ||
+    window.location.host === "devvideo.discoverfin.io"
+  ) {
     return "https://dev.discoverfin.io/";
-  } else if (window.location.host === "staging.discoverfin.io") {
+  } else if (
+    window.location.host === "staging.discoverfin.io" ||
+    window.location.host === "devvideo.discoverfin.io"
+  ) {
     return "https://staging.discoverfin.io/";
-  } else if (window.location.host === "discoverfin.io") {
+  } else if (
+    window.location.host === "discoverfin.io" ||
+    window.location.host === "devvideo.discoverfin.io"
+  ) {
     return "https://discoverfin.io/";
-  } else if (window.location.host === "qa.discoverfin.io") {
+  } else if (
+    window.location.host === "qa.discoverfin.io" ||
+    window.location.host === "devvideo.discoverfin.io"
+  ) {
     return "https://qa.discoverfin.io/";
   }
 };
 
-const finBaseUrl = (user, company, type, start) => {
+function finBaseUrl(user, company, type, start) {
   return company
-    ? `${this[type](user, company)}${start}?company=${company}&user=${user}`
-    : `${this[type](user, company)}${start}?id=${user}`;
-};
+    ? `${eval(type)(user, company)}${start}?company=${company}&user=${user}`
+    : `${eval(type)(user, company)}${start}?id=${user}`;
+}
 
 const videoLink = (user, company, type, videoName) => {
   const url = finBaseUrl(user, company, type, "video_type");
@@ -219,5 +243,5 @@ export {
   formatAnswers,
   isEmail,
   isAppointmentPage,
-  toDollar
+  toDollar,
 };

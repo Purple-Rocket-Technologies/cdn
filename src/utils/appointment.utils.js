@@ -86,7 +86,7 @@ const appointmentUtils = {
   },
   mapDataToPage: function (page) {
     $("#rep-name").text(page.REP_NAME);
-    setPageMetaContent(rep_name, page.REP_IMAGE);
+    this.setMetaData(page);
     const watchVideoWrapper = $("#video-watch-wrapper");
     const profileVideoArea = $("#profile-video-area");
     $("#rep-image-container").css("background-image", `url(${page.REP_IMAGE})`);
@@ -97,7 +97,20 @@ const appointmentUtils = {
     } else {
       const profileVideo = $("#profile-video");
       const profileVideoIframe = $("#profile-video iframe");
-      profileVideo.html(page.PROFILE_VIDEO_URL);
+
+      function checkIsIframeCode(url) {
+        return url.includes("iframe");
+      }
+
+      function convertToIframeCode(url) {
+        return `<iframe src="${url}" width="100%" height="100%" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      }
+
+      profileVideo.html(
+        checkIsIframeCode(page.PROFILE_VIDEO_URL)
+          ? page.PROFILE_VIDEO_URL
+          : convertToIframeCode(page.PROFILE_VIDEO_URL)
+      );
       profileVideoIframe.attr("width", "100%");
       profileVideoIframe.attr("class", "appointment-page-video");
       profileVideoArea.css("display", "flex");
@@ -123,10 +136,10 @@ const appointmentUtils = {
     );
 
     $("#phone-btn").click(() => {
-      this.openLink(`tel:${rep_phone}`);
+      this.openLink(`tel:${page.REP_PHONE}`);
     });
     $("#mail-btn").click(() => {
-      this.openLink(`mailto:${rep_email}`);
+      this.openLink(`mailto:${page.REP_EMAIL}`);
     });
 
     const onlyVideoAppElement = $("#only-video-app");
@@ -157,11 +170,11 @@ const appointmentUtils = {
     const videos = [
       {
         id: "financial-video",
-        link: finBusinessVideoAppLink(page.USER_URL, page.COMPANY_URL),
+        link: finFinancialSuccessVideoAppLink(page.USER_URL, page.COMPANY_URL),
       },
       {
         id: "business-video",
-        link: finFinancialSuccessVideoAppLink(page.USER_URL, page.COMPANY_URL),
+        link: finBusinessVideoAppLink(page.USER_URL, page.COMPANY_URL),
       },
     ];
     videos.forEach((video) => {

@@ -18,6 +18,7 @@ const videoUtils = {
     COMPANY_ID: null,
     IS_OLD_LINK: false,
     ADVISOR: {},
+    MCQ_OPTIONS_ARR: [],
   },
   methods: {
     showError(error) {
@@ -40,6 +41,18 @@ const videoUtils = {
           .click();
       });
     },
+    letsStart() {
+      $(function () {
+        $(".nav-bullet-dot:nth-child(2)")
+          .click(function () {
+            this.click();
+          })
+          .click();
+      });
+      $(".onboarding").addClass("pan-out");
+      $(".watch-video").addClass("pan-in");
+      $("*").scrollTop(0);
+    },
     formatSecondsToTime(time) {
       const hrs = ~~(time / 3600);
       const mins = ~~((time % 3600) / 60);
@@ -61,45 +74,60 @@ const videoUtils = {
         $("#peoplewatching").val(1);
         $("#country-us").click();
         $("#country-us").toggleClass("active");
-        lang_val = "EN";
-        country_val = "US";
-        fetchVideo(videoType, "US", "EN");
+        videoUtils.methods.fetchVideo(videoType, "US", "EN");
       }
     },
     fetchVideo(type, country, lang) {
-      fetchVideoService(type, country, lang)
+      console.log("fetching video");
+      fetchVideoService([
+        {
+          key: "type",
+          value: type,
+        },
+        {
+          key: "countryCode",
+          value: country,
+        },
+        {
+          key: "language",
+          value: lang,
+        },
+      ])
         .then(function (response) {
-          video_id = response.url;
+          console.log("video fetched", response);
           $(".video-container").css(
             "height",
             $(".video-container").width() / (16 / 9)
           );
-          renderVideo(video_id);
+          videoUtils.methods.renderVideo(response.url);
         })
         .catch(function (error) {
-          this.showError("Oops, There was an unexpected error.");
+          videoUtils.methods.showError("Oops! Something went wrong.");
+          console.log(error, "error", type, country, lang);
         });
     },
     renderVideo(videoID) {
-      iframe = document.getElementById("video");
-      player = new Vimeo.Player(iframe);
-      player
-        .loadVideo(videoID)
+      videoUtils.initialState.PLAYER = new Vimeo.Player(
+        document.getElementById("video")
+      );
+      videoUtils.initialState.PLAYER.loadVideo(videoID)
         .then(function (id) {
-          this.setTotalDuration();
-          playerinitialized = 1;
-          player.pause();
-          this.setFinalFunction();
+          videoUtils.methods.setTotalDuration();
+          videoUtils.initialState.PLAYER.pause();
         })
         .catch(function (error) {});
     },
     setTotalDuration() {
+      const player = new Vimeo.Player(document.getElementById("video"));
       player.getDuration().then(function (duration) {
-        totalDurationTime = duration;
-        $(".totaltime").text(format(duration));
+        videoUtils.methods.setFinalFunction();
+        $(".totaltime").text(videoUtils.methods.formatSecondsToTime(duration));
       });
     },
     setFinalFunction() {
+      console.log("setting final function");
+      const player = new Vimeo.Player(document.getElementById("video"));
+      console.log("player", player);
       player.on("ended", function () {
         $(function () {
           $(".nav-bullet-dot:nth-child(3)")
@@ -116,6 +144,14 @@ const videoUtils = {
       return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
         e
       );
+    },
+    toggleFocus(e) {
+      console.log(e.type);
+      if (e.type === "focus") {
+        $(".email_help_text").addClass("active");
+      } else {
+        $(".email_help_text").removeClass("active");
+      }
     },
   },
 };
