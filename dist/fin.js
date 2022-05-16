@@ -19450,7 +19450,7 @@ const isEmpty = value => {
 };
 
 const getVideoBaseUrl = () => {
-  if (window.location.host === "dev.discoverfin.io") {
+  if (window.location.host === "devvideo.discoverfin.io") {
     return "https://devvideo.discoverfin.io/";
   } else if (window.location.host === "staging.discoverfin.io") {
     return "https://stagingvideo.discoverfin.io/";

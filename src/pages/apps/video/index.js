@@ -13,6 +13,9 @@ const {
   setPathOptionsAPI,
 } = require("../../../service/video");
 const videoUtils = require("../../../utils/video.utils");
+const { url, getVideoBaseUrl } = require("../../../utils/index");
+let videoType = getVideoBaseUrl();
+let watchpercentage = 0;
 class videoPage extends BasePage {
   constructor(_object) {
     super(_object);
@@ -283,16 +286,18 @@ async function render_options() {
 
 async function video_Int() {
   const USER_URL = url.query.get("id") || url.query.get("user");
+  const TYPE = getVideoBaseUrl();
+  const appLink = finBaseUrl(
+    USER_URL,
+    url.query.get("company"),
+    TYPE,
+    "appointment"
+  );
   let page = new videoPage({
     ...videoUtils.initialState,
     USER_URL,
     IS_OLD_LINK: url.query.get("company"),
-    APPOINTMENT_LINK: `${finBaseUrl(
-      USER_URL,
-      url.query.get("company"),
-      "getBaseUrl",
-      "appointment"
-    )}&video=true`,
+    APPOINTMENT_LINK: `${appLink}&video=true`,
   });
   try {
     page = await fetchAdvisor(page);

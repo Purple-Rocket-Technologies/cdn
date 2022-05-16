@@ -2559,7 +2559,7 @@ const isEmpty = value => {
 };
 
 const getVideoBaseUrl = () => {
-  if (window.location.host === "dev.discoverfin.io") {
+  if (window.location.host === "devvideo.discoverfin.io") {
     return "https://devvideo.discoverfin.io/";
   } else if (window.location.host === "staging.discoverfin.io") {
     return "https://stagingvideo.discoverfin.io/";
@@ -3041,6 +3041,14 @@ const {
 
 const videoUtils = __webpack_require__(4265);
 
+const {
+  url,
+  getVideoBaseUrl
+} = __webpack_require__(8903);
+
+let videoType = getVideoBaseUrl();
+let watchpercentage = 0;
+
 class videoPage extends BasePage {
   constructor(_object) {
     super(_object);
@@ -3280,10 +3288,12 @@ async function render_options() {
 
 async function video_Int() {
   const USER_URL = url.query.get("id") || url.query.get("user");
+  const TYPE = getVideoBaseUrl();
+  const appLink = finBaseUrl(USER_URL, url.query.get("company"), TYPE, "appointment");
   let page = new videoPage({ ...videoUtils.initialState,
     USER_URL,
     IS_OLD_LINK: url.query.get("company"),
-    APPOINTMENT_LINK: `${finBaseUrl(USER_URL, url.query.get("company"), "getBaseUrl", "appointment")}&video=true`
+    APPOINTMENT_LINK: `${appLink}&video=true`
   });
 
   try {
