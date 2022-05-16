@@ -8,7 +8,7 @@ class Service {
       endpoint = endpoint.replace("/", "");
     }
     this.axios = axios;
-    this.baseUrl = `https://devbackendapp.discoverfin.io/api/v1/users/${endpoint}`;
+    this.baseUrl = `https://${api_url}/api/v1/users/${endpoint}`;
     this.query = ``;
     this.body = {};
   }
