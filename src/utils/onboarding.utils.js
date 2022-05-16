@@ -136,7 +136,6 @@ const onBoarding = {
                 linkBlock.attr("href", "/questions");
                 if (!isMobile()) {
                   $(".link-block .cta_btn").addClass("active");
-                  $(".cta_btn").addClass("active");
                 } else {
                   $("#unlock-btn .cta_btn").addClass("active");
                 }
