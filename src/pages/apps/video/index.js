@@ -503,7 +503,6 @@ async function video_Int() {
   });
 
   async function triggerRenderOptions(path_name) {
-    debugger;
     let COMPANY_ID = cookies.get("COMPANY_ID");
     $(".path-heading").text(path_name);
     path_name = path_name.includes("1")
@@ -544,18 +543,39 @@ async function video_Int() {
       });
   }
 
+  // $(".checkbox-field").click(function () {
+  //   debugger;
+  //   const get_value = $(this).children(".checkbox-label").attr("en");
+  //   const check_element = $(this).children(".checkbox");
+
+  //   if (check_element.hasClass("active")) {
+  //     if (typeof get_value === "string") {
+  //       page.MCQ_OPTIONS.splice(page.MCQ_OPTIONS.indexOf(get_value), 1);
+  //       check_element.removeClass("active");
+  //     }
+  //   } else {
+  //     if (typeof get_value === "string") {
+  //       page.MCQ_OPTIONS.push(get_value);
+  //       check_element.addClass("active");
+  //     }
+  //   }
+  // });
+
   $(".checkbox-field").click(function () {
     const get_value = $(this).children(".checkbox-label").attr("en");
     const check_element = $(this).children(".checkbox");
 
     if (check_element.hasClass("active")) {
       if (typeof get_value === "string") {
-        page.MCQ_OPTIONS.splice(page.MCQ_OPTIONS.indexOf(get_value), 1);
+        videoUtils.initialState.MCQ_OPTIONS_ARR.splice(
+          videoUtils.initialState.MCQ_OPTIONS_ARR.indexOf(get_value),
+          1
+        );
         check_element.removeClass("active");
       }
     } else {
       if (typeof get_value === "string") {
-        page.MCQ_OPTIONS.push(get_value);
+        videoUtils.initialState.MCQ_OPTIONS_ARR.push(get_value);
         check_element.addClass("active");
       }
     }
@@ -564,9 +584,9 @@ async function video_Int() {
   $(".submit.paths").click(async () => {
     let COMPANY_ID = cookies.get("COMPANY_ID");
 
-    if (page.MCQ_OPTIONS.length !== 0) {
+    if (videoUtils.initialState.MCQ_OPTIONS_ARR.length !== 0) {
       let BODY = {
-        interests: page.MCQ_OPTIONS,
+        interests: videoUtils.initialState.MCQ_OPTIONS_ARR,
       };
       await updateVideoProspect(COMPANY_ID, page.VIDEO_PROSPECT_ID, BODY)
         .then(function (response) {

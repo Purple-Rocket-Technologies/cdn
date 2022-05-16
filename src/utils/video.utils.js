@@ -18,6 +18,7 @@ const videoUtils = {
     COMPANY_ID: null,
     IS_OLD_LINK: false,
     ADVISOR: {},
+    MCQ_OPTIONS_ARR: [],
   },
   methods: {
     showError(error) {
