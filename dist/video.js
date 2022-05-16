@@ -1,1 +1,3557 @@
-(()=>{var __webpack_modules__={9669:(e,t,n)=>{e.exports=n(1609)},5448:(e,t,n)=>{"use strict";var a=n(4867),i=n(6026),r=n(4372),o=n(5327),s=n(4097),c=n(4109),l=n(7985),u=n(5061),d=n(7874),p=n(5263);e.exports=function(e){return new Promise((function(t,n){var f,h=e.data,m=e.headers,v=e.responseType;function _(){e.cancelToken&&e.cancelToken.unsubscribe(f),e.signal&&e.signal.removeEventListener("abort",f)}a.isFormData(h)&&delete m["Content-Type"];var g=new XMLHttpRequest;if(e.auth){var y=e.auth.username||"",w=e.auth.password?unescape(encodeURIComponent(e.auth.password)):"";m.Authorization="Basic "+btoa(y+":"+w)}var P=s(e.baseURL,e.url);function E(){if(g){var a="getAllResponseHeaders"in g?c(g.getAllResponseHeaders()):null,r={data:v&&"text"!==v&&"json"!==v?g.response:g.responseText,status:g.status,statusText:g.statusText,headers:a,config:e,request:g};i((function(e){t(e),_()}),(function(e){n(e),_()}),r),g=null}}if(g.open(e.method.toUpperCase(),o(P,e.params,e.paramsSerializer),!0),g.timeout=e.timeout,"onloadend"in g?g.onloadend=E:g.onreadystatechange=function(){g&&4===g.readyState&&(0!==g.status||g.responseURL&&0===g.responseURL.indexOf("file:"))&&setTimeout(E)},g.onabort=function(){g&&(n(u("Request aborted",e,"ECONNABORTED",g)),g=null)},g.onerror=function(){n(u("Network Error",e,null,g)),g=null},g.ontimeout=function(){var t=e.timeout?"timeout of "+e.timeout+"ms exceeded":"timeout exceeded",a=e.transitional||d;e.timeoutErrorMessage&&(t=e.timeoutErrorMessage),n(u(t,e,a.clarifyTimeoutError?"ETIMEDOUT":"ECONNABORTED",g)),g=null},a.isStandardBrowserEnv()){var b=(e.withCredentials||l(P))&&e.xsrfCookieName?r.read(e.xsrfCookieName):void 0;b&&(m[e.xsrfHeaderName]=b)}"setRequestHeader"in g&&a.forEach(m,(function(e,t){void 0===h&&"content-type"===t.toLowerCase()?delete m[t]:g.setRequestHeader(t,e)})),a.isUndefined(e.withCredentials)||(g.withCredentials=!!e.withCredentials),v&&"json"!==v&&(g.responseType=e.responseType),"function"==typeof e.onDownloadProgress&&g.addEventListener("progress",e.onDownloadProgress),"function"==typeof e.onUploadProgress&&g.upload&&g.upload.addEventListener("progress",e.onUploadProgress),(e.cancelToken||e.signal)&&(f=function(e){g&&(n(!e||e&&e.type?new p("canceled"):e),g.abort(),g=null)},e.cancelToken&&e.cancelToken.subscribe(f),e.signal&&(e.signal.aborted?f():e.signal.addEventListener("abort",f))),h||(h=null),g.send(h)}))}},1609:(e,t,n)=>{"use strict";var a=n(4867),i=n(1849),r=n(321),o=n(7185);var s=function e(t){var n=new r(t),s=i(r.prototype.request,n);return a.extend(s,r.prototype,n),a.extend(s,n),s.create=function(n){return e(o(t,n))},s}(n(5546));s.Axios=r,s.Cancel=n(5263),s.CancelToken=n(4972),s.isCancel=n(6502),s.VERSION=n(7288).version,s.all=function(e){return Promise.all(e)},s.spread=n(8713),s.isAxiosError=n(6268),e.exports=s,e.exports.default=s},5263:e=>{"use strict";function t(e){this.message=e}t.prototype.toString=function(){return"Cancel"+(this.message?": "+this.message:"")},t.prototype.__CANCEL__=!0,e.exports=t},4972:(e,t,n)=>{"use strict";var a=n(5263);function i(e){if("function"!=typeof e)throw new TypeError("executor must be a function.");var t;this.promise=new Promise((function(e){t=e}));var n=this;this.promise.then((function(e){if(n._listeners){var t,a=n._listeners.length;for(t=0;t<a;t++)n._listeners[t](e);n._listeners=null}})),this.promise.then=function(e){var t,a=new Promise((function(e){n.subscribe(e),t=e})).then(e);return a.cancel=function(){n.unsubscribe(t)},a},e((function(e){n.reason||(n.reason=new a(e),t(n.reason))}))}i.prototype.throwIfRequested=function(){if(this.reason)throw this.reason},i.prototype.subscribe=function(e){this.reason?e(this.reason):this._listeners?this._listeners.push(e):this._listeners=[e]},i.prototype.unsubscribe=function(e){if(this._listeners){var t=this._listeners.indexOf(e);-1!==t&&this._listeners.splice(t,1)}},i.source=function(){var e;return{token:new i((function(t){e=t})),cancel:e}},e.exports=i},6502:e=>{"use strict";e.exports=function(e){return!(!e||!e.__CANCEL__)}},321:(e,t,n)=>{"use strict";var a=n(4867),i=n(5327),r=n(782),o=n(3572),s=n(7185),c=n(4875),l=c.validators;function u(e){this.defaults=e,this.interceptors={request:new r,response:new r}}u.prototype.request=function(e,t){"string"==typeof e?(t=t||{}).url=e:t=e||{},(t=s(this.defaults,t)).method?t.method=t.method.toLowerCase():this.defaults.method?t.method=this.defaults.method.toLowerCase():t.method="get";var n=t.transitional;void 0!==n&&c.assertOptions(n,{silentJSONParsing:l.transitional(l.boolean),forcedJSONParsing:l.transitional(l.boolean),clarifyTimeoutError:l.transitional(l.boolean)},!1);var a=[],i=!0;this.interceptors.request.forEach((function(e){"function"==typeof e.runWhen&&!1===e.runWhen(t)||(i=i&&e.synchronous,a.unshift(e.fulfilled,e.rejected))}));var r,u=[];if(this.interceptors.response.forEach((function(e){u.push(e.fulfilled,e.rejected)})),!i){var d=[o,void 0];for(Array.prototype.unshift.apply(d,a),d=d.concat(u),r=Promise.resolve(t);d.length;)r=r.then(d.shift(),d.shift());return r}for(var p=t;a.length;){var f=a.shift(),h=a.shift();try{p=f(p)}catch(e){h(e);break}}try{r=o(p)}catch(e){return Promise.reject(e)}for(;u.length;)r=r.then(u.shift(),u.shift());return r},u.prototype.getUri=function(e){return e=s(this.defaults,e),i(e.url,e.params,e.paramsSerializer).replace(/^\?/,"")},a.forEach(["delete","get","head","options"],(function(e){u.prototype[e]=function(t,n){return this.request(s(n||{},{method:e,url:t,data:(n||{}).data}))}})),a.forEach(["post","put","patch"],(function(e){u.prototype[e]=function(t,n,a){return this.request(s(a||{},{method:e,url:t,data:n}))}})),e.exports=u},782:(e,t,n)=>{"use strict";var a=n(4867);function i(){this.handlers=[]}i.prototype.use=function(e,t,n){return this.handlers.push({fulfilled:e,rejected:t,synchronous:!!n&&n.synchronous,runWhen:n?n.runWhen:null}),this.handlers.length-1},i.prototype.eject=function(e){this.handlers[e]&&(this.handlers[e]=null)},i.prototype.forEach=function(e){a.forEach(this.handlers,(function(t){null!==t&&e(t)}))},e.exports=i},4097:(e,t,n)=>{"use strict";var a=n(1793),i=n(7303);e.exports=function(e,t){return e&&!a(t)?i(e,t):t}},5061:(e,t,n)=>{"use strict";var a=n(481);e.exports=function(e,t,n,i,r){var o=new Error(e);return a(o,t,n,i,r)}},3572:(e,t,n)=>{"use strict";var a=n(4867),i=n(8527),r=n(6502),o=n(5546),s=n(5263);function c(e){if(e.cancelToken&&e.cancelToken.throwIfRequested(),e.signal&&e.signal.aborted)throw new s("canceled")}e.exports=function(e){return c(e),e.headers=e.headers||{},e.data=i.call(e,e.data,e.headers,e.transformRequest),e.headers=a.merge(e.headers.common||{},e.headers[e.method]||{},e.headers),a.forEach(["delete","get","head","post","put","patch","common"],(function(t){delete e.headers[t]})),(e.adapter||o.adapter)(e).then((function(t){return c(e),t.data=i.call(e,t.data,t.headers,e.transformResponse),t}),(function(t){return r(t)||(c(e),t&&t.response&&(t.response.data=i.call(e,t.response.data,t.response.headers,e.transformResponse))),Promise.reject(t)}))}},481:e=>{"use strict";e.exports=function(e,t,n,a,i){return e.config=t,n&&(e.code=n),e.request=a,e.response=i,e.isAxiosError=!0,e.toJSON=function(){return{message:this.message,name:this.name,description:this.description,number:this.number,fileName:this.fileName,lineNumber:this.lineNumber,columnNumber:this.columnNumber,stack:this.stack,config:this.config,code:this.code,status:this.response&&this.response.status?this.response.status:null}},e}},7185:(e,t,n)=>{"use strict";var a=n(4867);e.exports=function(e,t){t=t||{};var n={};function i(e,t){return a.isPlainObject(e)&&a.isPlainObject(t)?a.merge(e,t):a.isPlainObject(t)?a.merge({},t):a.isArray(t)?t.slice():t}function r(n){return a.isUndefined(t[n])?a.isUndefined(e[n])?void 0:i(void 0,e[n]):i(e[n],t[n])}function o(e){if(!a.isUndefined(t[e]))return i(void 0,t[e])}function s(n){return a.isUndefined(t[n])?a.isUndefined(e[n])?void 0:i(void 0,e[n]):i(void 0,t[n])}function c(n){return n in t?i(e[n],t[n]):n in e?i(void 0,e[n]):void 0}var l={url:o,method:o,data:o,baseURL:s,transformRequest:s,transformResponse:s,paramsSerializer:s,timeout:s,timeoutMessage:s,withCredentials:s,adapter:s,responseType:s,xsrfCookieName:s,xsrfHeaderName:s,onUploadProgress:s,onDownloadProgress:s,decompress:s,maxContentLength:s,maxBodyLength:s,transport:s,httpAgent:s,httpsAgent:s,cancelToken:s,socketPath:s,responseEncoding:s,validateStatus:c};return a.forEach(Object.keys(e).concat(Object.keys(t)),(function(e){var t=l[e]||r,i=t(e);a.isUndefined(i)&&t!==c||(n[e]=i)})),n}},6026:(e,t,n)=>{"use strict";var a=n(5061);e.exports=function(e,t,n){var i=n.config.validateStatus;n.status&&i&&!i(n.status)?t(a("Request failed with status code "+n.status,n.config,null,n.request,n)):e(n)}},8527:(e,t,n)=>{"use strict";var a=n(4867),i=n(5546);e.exports=function(e,t,n){var r=this||i;return a.forEach(n,(function(n){e=n.call(r,e,t)})),e}},5546:(e,t,n)=>{"use strict";var a=n(4867),i=n(6016),r=n(481),o=n(7874),s={"Content-Type":"application/x-www-form-urlencoded"};function c(e,t){!a.isUndefined(e)&&a.isUndefined(e["Content-Type"])&&(e["Content-Type"]=t)}var l,u={transitional:o,adapter:(("undefined"!=typeof XMLHttpRequest||"undefined"!=typeof process&&"[object process]"===Object.prototype.toString.call(process))&&(l=n(5448)),l),transformRequest:[function(e,t){return i(t,"Accept"),i(t,"Content-Type"),a.isFormData(e)||a.isArrayBuffer(e)||a.isBuffer(e)||a.isStream(e)||a.isFile(e)||a.isBlob(e)?e:a.isArrayBufferView(e)?e.buffer:a.isURLSearchParams(e)?(c(t,"application/x-www-form-urlencoded;charset=utf-8"),e.toString()):a.isObject(e)||t&&"application/json"===t["Content-Type"]?(c(t,"application/json"),function(e,t,n){if(a.isString(e))try{return(t||JSON.parse)(e),a.trim(e)}catch(e){if("SyntaxError"!==e.name)throw e}return(n||JSON.stringify)(e)}(e)):e}],transformResponse:[function(e){var t=this.transitional||u.transitional,n=t&&t.silentJSONParsing,i=t&&t.forcedJSONParsing,o=!n&&"json"===this.responseType;if(o||i&&a.isString(e)&&e.length)try{return JSON.parse(e)}catch(e){if(o){if("SyntaxError"===e.name)throw r(e,this,"E_JSON_PARSE");throw e}}return e}],timeout:0,xsrfCookieName:"XSRF-TOKEN",xsrfHeaderName:"X-XSRF-TOKEN",maxContentLength:-1,maxBodyLength:-1,validateStatus:function(e){return e>=200&&e<300},headers:{common:{Accept:"application/json, text/plain, */*"}}};a.forEach(["delete","get","head"],(function(e){u.headers[e]={}})),a.forEach(["post","put","patch"],(function(e){u.headers[e]=a.merge(s)})),e.exports=u},7874:e=>{"use strict";e.exports={silentJSONParsing:!0,forcedJSONParsing:!0,clarifyTimeoutError:!1}},7288:e=>{e.exports={version:"0.26.1"}},1849:e=>{"use strict";e.exports=function(e,t){return function(){for(var n=new Array(arguments.length),a=0;a<n.length;a++)n[a]=arguments[a];return e.apply(t,n)}}},5327:(e,t,n)=>{"use strict";var a=n(4867);function i(e){return encodeURIComponent(e).replace(/%3A/gi,":").replace(/%24/g,"$").replace(/%2C/gi,",").replace(/%20/g,"+").replace(/%5B/gi,"[").replace(/%5D/gi,"]")}e.exports=function(e,t,n){if(!t)return e;var r;if(n)r=n(t);else if(a.isURLSearchParams(t))r=t.toString();else{var o=[];a.forEach(t,(function(e,t){null!=e&&(a.isArray(e)?t+="[]":e=[e],a.forEach(e,(function(e){a.isDate(e)?e=e.toISOString():a.isObject(e)&&(e=JSON.stringify(e)),o.push(i(t)+"="+i(e))})))})),r=o.join("&")}if(r){var s=e.indexOf("#");-1!==s&&(e=e.slice(0,s)),e+=(-1===e.indexOf("?")?"?":"&")+r}return e}},7303:e=>{"use strict";e.exports=function(e,t){return t?e.replace(/\/+$/,"")+"/"+t.replace(/^\/+/,""):e}},4372:(e,t,n)=>{"use strict";var a=n(4867);e.exports=a.isStandardBrowserEnv()?{write:function(e,t,n,i,r,o){var s=[];s.push(e+"="+encodeURIComponent(t)),a.isNumber(n)&&s.push("expires="+new Date(n).toGMTString()),a.isString(i)&&s.push("path="+i),a.isString(r)&&s.push("domain="+r),!0===o&&s.push("secure"),document.cookie=s.join("; ")},read:function(e){var t=document.cookie.match(new RegExp("(^|;\\s*)("+e+")=([^;]*)"));return t?decodeURIComponent(t[3]):null},remove:function(e){this.write(e,"",Date.now()-864e5)}}:{write:function(){},read:function(){return null},remove:function(){}}},1793:e=>{"use strict";e.exports=function(e){return/^([a-z][a-z\d+\-.]*:)?\/\//i.test(e)}},6268:(e,t,n)=>{"use strict";var a=n(4867);e.exports=function(e){return a.isObject(e)&&!0===e.isAxiosError}},7985:(e,t,n)=>{"use strict";var a=n(4867);e.exports=a.isStandardBrowserEnv()?function(){var e,t=/(msie|trident)/i.test(navigator.userAgent),n=document.createElement("a");function i(e){var a=e;return t&&(n.setAttribute("href",a),a=n.href),n.setAttribute("href",a),{href:n.href,protocol:n.protocol?n.protocol.replace(/:$/,""):"",host:n.host,search:n.search?n.search.replace(/^\?/,""):"",hash:n.hash?n.hash.replace(/^#/,""):"",hostname:n.hostname,port:n.port,pathname:"/"===n.pathname.charAt(0)?n.pathname:"/"+n.pathname}}return e=i(window.location.href),function(t){var n=a.isString(t)?i(t):t;return n.protocol===e.protocol&&n.host===e.host}}():function(){return!0}},6016:(e,t,n)=>{"use strict";var a=n(4867);e.exports=function(e,t){a.forEach(e,(function(n,a){a!==t&&a.toUpperCase()===t.toUpperCase()&&(e[t]=n,delete e[a])}))}},4109:(e,t,n)=>{"use strict";var a=n(4867),i=["age","authorization","content-length","content-type","etag","expires","from","host","if-modified-since","if-unmodified-since","last-modified","location","max-forwards","proxy-authorization","referer","retry-after","user-agent"];e.exports=function(e){var t,n,r,o={};return e?(a.forEach(e.split("\n"),(function(e){if(r=e.indexOf(":"),t=a.trim(e.substr(0,r)).toLowerCase(),n=a.trim(e.substr(r+1)),t){if(o[t]&&i.indexOf(t)>=0)return;o[t]="set-cookie"===t?(o[t]?o[t]:[]).concat([n]):o[t]?o[t]+", "+n:n}})),o):o}},8713:e=>{"use strict";e.exports=function(e){return function(t){return e.apply(null,t)}}},4875:(e,t,n)=>{"use strict";var a=n(7288).version,i={};["object","boolean","number","function","string","symbol"].forEach((function(e,t){i[e]=function(n){return typeof n===e||"a"+(t<1?"n ":" ")+e}}));var r={};i.transitional=function(e,t,n){return function(i,o,s){if(!1===e)throw new Error(function(e,t){return"[Axios v"+a+"] Transitional option '"+e+"'"+t+(n?". "+n:"")}(o," has been removed"+(t?" in "+t:"")));return t&&!r[o]&&(r[o]=!0),!e||e(i,o,s)}},e.exports={assertOptions:function(e,t,n){if("object"!=typeof e)throw new TypeError("options must be an object");for(var a=Object.keys(e),i=a.length;i-- >0;){var r=a[i],o=t[r];if(o){var s=e[r],c=void 0===s||o(s,r,e);if(!0!==c)throw new TypeError("option "+r+" must be "+c)}else if(!0!==n)throw Error("Unknown option "+r)}},validators:i}},4867:(e,t,n)=>{"use strict";var a=n(1849),i=Object.prototype.toString;function r(e){return Array.isArray(e)}function o(e){return void 0===e}function s(e){return"[object ArrayBuffer]"===i.call(e)}function c(e){return null!==e&&"object"==typeof e}function l(e){if("[object Object]"!==i.call(e))return!1;var t=Object.getPrototypeOf(e);return null===t||t===Object.prototype}function u(e){return"[object Function]"===i.call(e)}function d(e,t){if(null!=e)if("object"!=typeof e&&(e=[e]),r(e))for(var n=0,a=e.length;n<a;n++)t.call(null,e[n],n,e);else for(var i in e)Object.prototype.hasOwnProperty.call(e,i)&&t.call(null,e[i],i,e)}e.exports={isArray:r,isArrayBuffer:s,isBuffer:function(e){return null!==e&&!o(e)&&null!==e.constructor&&!o(e.constructor)&&"function"==typeof e.constructor.isBuffer&&e.constructor.isBuffer(e)},isFormData:function(e){return"[object FormData]"===i.call(e)},isArrayBufferView:function(e){return"undefined"!=typeof ArrayBuffer&&ArrayBuffer.isView?ArrayBuffer.isView(e):e&&e.buffer&&s(e.buffer)},isString:function(e){return"string"==typeof e},isNumber:function(e){return"number"==typeof e},isObject:c,isPlainObject:l,isUndefined:o,isDate:function(e){return"[object Date]"===i.call(e)},isFile:function(e){return"[object File]"===i.call(e)},isBlob:function(e){return"[object Blob]"===i.call(e)},isFunction:u,isStream:function(e){return c(e)&&u(e.pipe)},isURLSearchParams:function(e){return"[object URLSearchParams]"===i.call(e)},isStandardBrowserEnv:function(){return("undefined"==typeof navigator||"ReactNative"!==navigator.product&&"NativeScript"!==navigator.product&&"NS"!==navigator.product)&&("undefined"!=typeof window&&"undefined"!=typeof document)},forEach:d,merge:function e(){var t={};function n(n,a){l(t[a])&&l(n)?t[a]=e(t[a],n):l(n)?t[a]=e({},n):r(n)?t[a]=n.slice():t[a]=n}for(var a=0,i=arguments.length;a<i;a++)d(arguments[a],n);return t},extend:function(e,t,n){return d(t,(function(t,i){e[i]=n&&"function"==typeof t?a(t,n):t})),e},trim:function(e){return e.trim?e.trim():e.replace(/^\s+|\s+$/g,"")},stripBOM:function(e){return 65279===e.charCodeAt(0)&&(e=e.slice(1)),e}}},5908:e=>{const t={US:{ENGLISH:"445268145",SPANISH:"452754620"},CA:{ENGLISH:"551499288",SPANISH:"452754620"}},n=(e,t=!1)=>t?e?"Canada":"United States":e?"CA":"US";e.exports={getVideoUrl:(e,a)=>{let i=n(a);return"en"===e?t[i].ENGLISH:t[i].SPANISH},getCountry:n}},3912:(e,t,n)=>{const{isEmpty:a}=n(8903),i=n(9669);e.exports=class{constructor(e){e.startsWith("/")&&(e=e.replace("/","")),this.axios=i,this.baseUrl=`https://devbackendapp.discoverfin.io/api/v1/users/${e}`,this.query="",this.body={}}equals(e,t){this.query=`${this.query}&${e}=${t}`}limit(e){this.query=`${this.query}&limit=${e}`}async find(){const e=a(this.query)?this.baseUrl:`${this.baseUrl}?${this.query}`;return await new Promise(((t,n)=>{this.axios.get(e).then((e=>{t(e.data)})).catch((e=>{n(e)}))}))}parseResponse(e){return e.data}async first(){return await this.axios.get(`${this.baseUrl}?${this.query}&limit=1`)}set(e){this.body=e}async create(){return await this.axios.post(this.baseUrl,this.body)}async update(e){return await this.axios.put(`${this.baseUrl}/${e}`,this.body)}}},2014:(e,t,n)=>{"use strict";n.r(t),n.d(t,{getProspect:()=>o,getUser:()=>r});const a=n(3912),{isEmpty:i}=n(8903),r=async(e,t)=>{const n=i(t)?"/getUserByUrl/"+e:`/getCompany/name/${t}/${e}`,r=new a(n);return await new Promise(((e,t)=>{r.find().then((t=>{e(r.parseResponse(t))}),(e=>{t(e)}))}))},o=async(e,t,n)=>{const i=new a(`company/${t}/prospects`);return i.equals("email",n),i.equals("userId",e),await new Promise(((e,t)=>{i.find().then((n=>{0===n.count||n.error?t(n):e(i.parseResponse(n).first())}),(e=>{t(e)}))}))}},2379:(e,t,n)=>{"use strict";n.r(t),n.d(t,{createVideoProspectService:()=>o,fetchValidateVideoType:()=>c,fetchVideoService:()=>s,getPathOptions:()=>p,getPathsContentAPI:()=>l,getVideoProspect:()=>r,setPathOptionsAPI:()=>f,updateVideoProspect:()=>d,updateWatchTimeAPI:()=>u});var a=n(3912),i=n.n(a);const r=async(e,t)=>{const n=new(i())(`company/${e}/videoProspects?email=${t}`);return new Promise(((e,t)=>{n.find().then((a=>{a.count>0?e(n.parseResponse(a.data)):t(a)})).catch((e=>{t(e)}))}))},o=async(e,t)=>{const n=new(i())(`company/${e}/videoProspects`);return n.set(t),new Promise(((e,t)=>{n.create().then((n=>{n.count>0?e(service.parseResponse(n.data)):t(n)})).catch((e=>{t(e)}))}))};async function s(e,t,n){const a=new(i())("videoProspects/leadCapturingVideos");return a.equals("type",e),a.equals("countryCode",t),a.equals("language",n),new Promise(((e,t)=>{a.find().then((n=>{n.count>0?e(a):t(n)})).catch((e=>{t(e)}))}))}async function c(e){const t=new(i())("videoProspects/leadCapturingVideos");return t.equals("type",e),new Promise(((e,n)=>{t.find().then((a=>{a.count>0?e(t):n(a)})).catch((e=>{n(e)}))}))}async function l(e){const t=new(i())("videoProspects/paths");return t.equals("type",e),new Promise(((e,n)=>{t.find().then((a=>{a.count>0?e(t):n(a)})).catch((e=>{n(e)}))}))}async function u(e,t,n){return new Promise(((a,r)=>{const o=new(i())(`company/${e}/videoProspects/${t}`);o.set(n),o.update(t).then((function(e){e&&e.data&&e.data.data?a(prospectService.parseResponse(e.data)):r(e)})).catch((function(e){r(e)}))}))}const d=async(e,t,n)=>{const a=new(i())(`company/${e}/videoProspects/${t}`);return a.set(n),new Promise(((e,t)=>{a.update().then((n=>{n.count>0?e(a.parseResponse(n.data)):t(n)})).catch((e=>{t(e)}))}))},p=async e=>{const t=new(i())(`videoProspects/paths?name=${e}`);return new Promise(((e,n)=>{t.find().then((a=>{a.count>0?e(t.parseResponse(a.data)):n(a)})).catch((e=>{n(e)}))}))},f=async(e,t,n)=>new Promise(((a,r)=>{const o=new(i())(`company/${e}/videoProspects`);o.set(n),o.update(t).then((function(e){e&&e.data&&e.data.data?a(prospectService.parseResponse(e.data)):r(e)})).catch((function(e){r(e)}))}))},8903:(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";__webpack_require__.r(__webpack_exports__),__webpack_require__.d(__webpack_exports__,{BasePage:()=>BasePage,cookies:()=>cookies,finBaseUrl:()=>finBaseUrl,finBusinessVideoAppLink:()=>finBusinessVideoAppLink,finFinancialSuccessVideoAppLink:()=>finFinancialSuccessVideoAppLink,formatAnswers:()=>formatAnswers,getBaseUrl:()=>getBaseUrl,getUrlParameter:()=>getUrlParameter,getVideoBaseUrl:()=>getVideoBaseUrl,isAppointmentPage:()=>isAppointmentPage,isEmail:()=>isEmail,isEmpty:()=>isEmpty,isMobile:()=>isMobile,isOnBoardingPage:()=>isOnBoardingPage,isQuestionPage:()=>isQuestionPage,isResultPage:()=>isResultPage,isRouteQuestionPage:()=>isRouteQuestionPage,isRouteSelectedPage:()=>isRouteSelectedPage,toDollar:()=>toDollar,url:()=>url}),Array.prototype.first=function(){return this&&this[0]},Array.prototype.last=function(){return this&&this[this.length-1]},Array.prototype.remove=function(e){const t=this.indexOf(e);t>-1&&this.splice(t,1)},String.prototype.isEmail=function(){return/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this)};class BasePage{constructor(e){Object.assign(this,{...e})}track(e,t){trackMixPanelEvent(e,t)}on(e,t,n){$(`${t}`).on(e,n)}}const isOnBoardingPage=()=>window.location.pathname.startsWith("/en"),isRouteSelectedPage=()=>{const e=window.location.pathname;return e.startsWith("/route")&&!e.includes("make-more-money")&&!e.includes("manage-money-better")&&!e.includes("both")},isResultPage=()=>window.location.pathname.startsWith("/result"),isQuestionPage=()=>window.location.pathname.startsWith("/questions"),isRouteQuestionPage=e=>{const t=window.location.pathname,n=t.startsWith("/route")&&(t.includes("make-more-money")||t.includes("manage-money-better")||t.includes("both"));return e?n&&t.includes("/video")&&e:n&&!t.includes("/video")},getUrlParameter=e=>{const t=new RegExp(`(^|&)${e}=([^&]*)(&|$)`),n=window.location.search.substr(1).match(t);return null!=n?decodeURIComponent(n[2]):null},url={query:{get:getUrlParameter}},cookies={get:e=>{const t=new RegExp(`(^| )${e}=([^;]*)(;|$)`),n=document.cookie.match(t);return null!=n?decodeURIComponent(n[2]):null},set:(e,t,n,a="/",i,r)=>{let o=`${e}=${t}`;n&&(o+=`; expires=${n}`),a&&(o+=`; path=${a}`),i&&(o+=`; domain=${i}`),r&&(o+=`; secure=${r}`),document.cookie=o},unset:(e,t,n,a)=>{(void 0).set(e,"",new Date(0),t,n,a)},setMultiple:e=>{e.forEach((({key:e,value:t,expires:n,path:a,domain:i,secure:r})=>{cookies.set(e,t,n,a,i,r)}))}},isMobile=()=>/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),formatAnswers=e=>e.map(((e,t)=>({[`ques_${t+1}`]:`${e.question} * ${e.answer.join(" * ")}`}))).reduce(((e,t)=>({...e,...t}))),isEmpty=e=>null==e||("string"==typeof e&&""===e.trim()||"object"==typeof e&&0===Object.keys(e).length),getVideoBaseUrl=()=>"dev.discoverfin.io"===window.location.host?"https://devvideo.discoverfin.io/":"staging.discoverfin.io"===window.location.host?"https://stagingvideo.discoverfin.io/":"discoverfin.io"===window.location.host?"https://video.discoverfin.io/":"qa.discoverfin.io"===window.location.host?"https://qavideo.discoverfin.io/":void 0,getBaseUrl=()=>"dev.discoverfin.io"===window.location.host?"https://dev.discoverfin.io/":"staging.discoverfin.io"===window.location.host?"https://staging.discoverfin.io/":"discoverfin.io"===window.location.host?"https://discoverfin.io/":"qa.discoverfin.io"===window.location.host?"https://qa.discoverfin.io/":void 0;function finBaseUrl(user,company,type,start){return company?`${eval(type)(user,company)}${start}?company=${company}&user=${user}`:`${eval(type)(user,company)}${start}?id=${user}`}const videoLink=(e,t,n,a)=>finBaseUrl(e,t,n,"video_type").replace("video_type",a),finBusinessVideoAppLink=(e,t)=>videoLink(e,t,"getVideoBaseUrl","businessOverview"),finFinancialSuccessVideoAppLink=(e,t)=>videoLink(e,t,"getVideoBaseUrl","financialHouse"),isAppointmentPage=()=>window.location.pathname.startsWith("/appointment"),isEmail=e=>/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(String(e).toLowerCase()),toDollar=e=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(e)},4401:(e,t,n)=>{"use strict";n.r(t),n.d(t,{onBoarding:()=>c});const{cookies:a,isEmpty:i,isMobile:r}=n(8903),{getVideoUrl:o,getCountry:s}=n(5908),c={advisor:{setCookies:function(e,t){a.setMultiple([{key:"isAffiliateUrl",value:e.isAffiliateUrl},{key:"COMPANY_ID",value:e.companyId},{key:"COMPANY_URL",value:e.companyUrl},{key:"USER_ID",value:e.userId},{key:"IS_OLD_LINK",value:t},{key:"URL_COMPANY",value:e.companyUrl},{key:"URL_USER",value:e.companies&&e.companies[0].url},{key:"USER_URL",value:e.companies&&e.companies[0].url},{key:"affiliateId",value:e.affiliateId},{key:"APTMT_LINK",value:e.appointmentBookingLink},{key:"REP_NAME",value:e.firstName+" "+e.lastName},{key:"PIC",value:e.profilePic},{key:"PHONE",value:e.phone},{key:"EMAIL",value:e.email},{key:"VIDEO",value:e.videoProfileLink}])}},prospect:{setCookies:function(e){a.set("PROSPECT_ID",e._id),a.set("Name",e.first_name),a.set("FIN Number",e.fin_number)},handleRedirect:function(e){const t=e.route_choice;i(t)?window.location.href=`/route/${t.split(" ").join("-").toLowerCase()}`:window.location.href="/route"}},videos:{player:function(){return new Vimeo.Player(document.getElementById("video"))},handleLang({selector:e,language:t},n){const i=this;$(e).click((function(){"es"===t&&($("#temp_en").addClass("hide"),$("#temp_es").removeClass("hide")),i.renderVideo(o(t,n)),Weglot.switchTo(t),a.set("country",s(n,!0))}))},setTotalDuration:function(){return new Promise((e=>{this.player().getDuration().then((function(t){e(t)}))}))},renderVideo:function(e){const t=this;let n=0,a=!1;this.player().loadVideo(e).then((async function(e){n=await t.setTotalDuration(),a=!0,t.player().pause()})),setInterval((function(){a&&t.player().getCurrentTime().then((function(e){const a=$(".show-after-unlock"),i=$(".hide-after-unlock"),o=$(".link-block");e/n*100>=90?(o.attr("href","/questions"),r()?$("#unlock-btn .cta_btn").addClass("active"):($(".link-block .cta_btn").addClass("active"),$(".cta_btn").addClass("active")),a.css("display","block"),i.css("display","none")):(o.on("click",(function(){t.player().play()})),o.attr("href","#"),a.css("display","none"),i.css("display","block"),$(".link-block .cta_btn").removeClass("active"))}))}),200)},handleLanguages:function(e){[{selector:"#lang_us",language:"en"},{selector:"#lang_es",language:"es"}].forEach((t=>{c.videos.handleLang(t,e)}))},handlePlayer:function(e){c.videos.handleLanguages(e)}}}},4265:(e,t,n)=>{"use strict";n.r(t),n.d(t,{default:()=>i});var a=n(2379);const i={initialState:{VIDEO_TYPE:"",COUNTRY:"",LANG:"",VIDEO_ID:"",USER_URL:"",VIDEO_PROSPECT_ID:"",VIDEO_TOTAL_TIME:"",IS_PLAYER_LOADED:!1,PLAYER_CURRENT_TIME:0,VIDEO_WATCH_PERCENTAGE:0,PATH_OPTIONS:null,MCQ_OPTIONS:null,PLAYER:null,APPOINTMENT_LINK:null,COMPANY_ID:null,IS_OLD_LINK:!1,ADVISOR:{}},methods:{showError(e){$("#error_msg").text(e),$((function(){$(".error-triggerer").click((function(){this.click()})).click()}))},showSuccess(e){$(".success-msg-text").text(e),$((function(){$(".success-triggerer").click((function(){this.click()})).click()}))},formatSecondsToTime(e){const t=~~(e/3600),n=~~(e%3600/60),a=~~e%60;let i="";return t>0&&(i+=t+":"+(n<10?"0":"")),i+=n+":"+(a<10?"0":""),i+=""+a,i},autoFill(){const e=url.query.get("fname"),t=url.query.get("email");e&&t&&($("#fname").val(e),$("#email").val(t),$("#peoplewatching").val(1),$("#country-us").click(),$("#country-us").toggleClass("active"),lang_val="EN",country_val="US",fetchVideo(videoType,"US","EN"))},fetchVideo(e,t,n){(0,a.fetchVideoService)(e,t,n).then((function(e){video_id=e.url,$(".video-container").css("height",$(".video-container").width()/(16/9)),renderVideo(video_id)})).catch((function(e){this.showError("Oops, There was an unexpected error.")}))},renderVideo(e){iframe=document.getElementById("video"),player=new Vimeo.Player(iframe),player.loadVideo(e).then((function(e){this.setTotalDuration(),playerinitialized=1,player.pause(),this.setFinalFunction()})).catch((function(e){}))},setTotalDuration(){iframe=document.getElementById("video"),player=new Vimeo.Player(iframe),player.getDuration().then((function(e){this.initialState.VIDEO_TOTAL_TIME=e,$(".totaltime").text(format(e))}))},setFinalFunction(){iframe=document.getElementById("video"),player=new Vimeo.Player(iframe),player.on("ended",(function(){$((function(){$(".nav-bullet-dot:nth-child(3)").click((function(){this.click()})).click()})),$(".site-content-wrapper.video").addClass("move"),$(".site-content-wrapper.paths").addClass("move")}))},isEmail:e=>/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(e),toggleFocus(e){"focus"===e.type?$(".email_help_text").addClass("active"):$(".email_help_text").removeClass("active")}}}}},__webpack_module_cache__={};function __webpack_require__(e){var t=__webpack_module_cache__[e];if(void 0!==t)return t.exports;var n=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](n,n.exports,__webpack_require__),n.exports}__webpack_require__.n=e=>{var t=e&&e.__esModule?()=>e.default:()=>e;return __webpack_require__.d(t,{a:t}),t},__webpack_require__.d=(e,t)=>{for(var n in t)__webpack_require__.o(t,n)&&!__webpack_require__.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},__webpack_require__.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__={};(()=>{const{BasePage:e,finBaseUrl:t}=__webpack_require__(8903),{getUser:n}=__webpack_require__(2014),{onBoarding:a}=__webpack_require__(4401),{fetchVideoService:r,getVideoProspect:o,fetchValidateVideoType:s,getPathsContentAPI:c,createVideoProspectService:l,updateWatchTimeAPI:u,updateVideoProspect:d,getPathOptions:p,setPathOptionsAPI:f}=__webpack_require__(2379),h=__webpack_require__(4265);class m extends e{constructor(e){super(e)}}async function v(e){await s(e).then((function(e){document.title=e.data.data[0].name,$("#video-title").text(e.data.data[0].name),h.methods.renderVideo(e.data.data[0].url),e.data.count>0?(validateUrl(getUrlParameter("company"),getUrlParameter("user")),async function(e){await c(e).then((async function(e){let t,n,a;[...$(".path-option")].forEach((e=>{let t=[];for(let n=0;n<e.childNodes.length;n++){const a=e.childNodes[n];a.className.includes("path-text")||t.push(a)}e.innerHTML="",t.forEach((t=>{e.append(t)}))}));for(let i=0;i<e.data.data.length;i++){let r=e.data.data[i];a="es"===await Weglot.getCurrentLang()?await translateToLanguage([r.name],"en","es"):r.name,$(".path-option:nth-child("+(i+1)+") .heading").text(a),n=r.description;for(let e=0;e<n.length;e++){let a=n[e];t="es"===await Weglot.getCurrentLang()?await translateToLanguage([a],"en","es"):a;const r=$(`.path-option:nth-child(${i+1})`);r[0].innerHTML.includes(t)||r.append(`<div class='path-text'>${t}</div>`)}}})).catch((function(e){h.methods.error_show("Oops, There was an unexpected error.")}))}(videoType)):$(".fourofour").addClass("show")})).catch((function(e){$(".fourofour").addClass("show")}))}async function _(e){let t=readCookie("COMPANY_ID");await o(t,e).then((function(e){1===e.data.count?(h.default.initialState.VIDEO_PROSPECT_ID=e.data.data[0]._id,getUrlParameter("prospectEmail")||h.default.methods.showSuccess("Welcome "+e.data.data[0].firstName+"! Enjoy your video"),h.default.initialState.COUNTRY=e.data.data[0].country||"US",h.default.initialState.LANG=e.data.data[0].language||"EN",h.default.methods.fetchVideo(videoType,h.default.initialState.COUNTRY,h.default.initialState.LANG),letsStart()):async function(){await h.default.methods.fetchVideo(videoType,h.default.initialState.COUNTRY||"US",h.default.initialState.LANG||"EN");const e={videoName:document.title,firstName:$("#fname").val(),lastName:$("#lname").val(),email:$("#email").val(),phone:Inputmask.unmask($("#phone").val(),{mask:"(999) 999-9999"}),country:h.default.initialState.COUNTRY||"US",language:h.default.initialState.LANG||"EN",watchingWith:$("#peoplewatching").val(),watchedTime:0,totalVideoTime:format(h.default.initialState.VIDEO_TOTAL_TIME),watchPercentage:0,appointmentCompleted:!1,userId:readCookie("USER_ID"),companyId:readCookie("COMPANY_ID")};"true"===readCookie("isAffiliateUrl")&&(e.affiliateId=readCookie("affiliateId"));await l(e.companyId,e).then((function(e){h.default.initialState.VIDEO_PROSPECT_ID=e.data.data._id,h.default.methods.showSuccess("Your details have been verified, Enjoy your video!"),letsStart()})).catch((function(e){h.default.methods.showError(e.response.data.message)}))}()})).catch((function(e){error_show(e.response.data.message)}))}async function g(e,t){let n=readCookie("COMPANY_ID"),a={watchedTime:format(e),watchPercentage:parseInt(t)};await u(n,h.default.initialState.VIDEO_PROSPECT_ID,a).then((function(e){})).catch((function(e){}))}setInterval((function(){h.default.initialState.IS_PLAYER_LOADED&&(h.default.initialState.PLAYER.getCurrentTime().then((function(e){watchpercentage=e/h.default.initialState.VIDEO_TOTAL_TIME*100})),$(".progress-bar-inner").css("width",watchpercentage+"%"))}),200),setInterval((function(){h.default.initialState.IS_PLAYER_LOADED&&h.default.initialState.PLAYER.getCurrentTime().then((function(e){$(".elapsedtime").text(format(e));$(".schedule-footer");watchpercentage=e/h.default.initialState.VIDEO_TOTAL_TIME*100,h.default.initialState.PLAYER_CURRENT_TIME=e}))}),200),async function(){const e=url.query.get("id")||url.query.get("user");let r=new m({...h.initialState,USER_URL:e,IS_OLD_LINK:url.query.get("company"),APPOINTMENT_LINK:`${t(e,url.query.get("company"),"getBaseUrl","appointment")}&video=true`});try{r=await async function(e){const{USER_URL:t,COMPANY_URL:i,IS_OLD_LINK:r}=e,o=await n(t,i);return e.COMPANY_ID=o.company_id,a.advisor.setCookies(o,r),e.ADVISOR=o,e}(r),r.track("Prospect Visited Appointment page",{rep:r.advisor.firstName})}catch(e){$(".fourofour").addClass("show")}$("#phone").inputmask("(999) 999-9999"),$(".checkbox-field").hide(),v(videoType),$("#country-us").click((function(){Weglot.switchTo("en"),v(videoType)})),$("#country-es").click((function(){Weglot.switchTo("es"),v(videoType)})),$("#country-ca").click((function(){Weglot.switchTo("en"),v(videoType)})),$("#country-ca-es").click((function(){Weglot.switchTo("es"),v(videoType)})),$("#email").on("focus blur",(function(e){"focus"===e.type?$(".email_help_text").addClass("active"):$(".email_help_text").removeClass("active")})),$("#fname").keyup((function(){setCookies("Name",$(this).val())})),$(".country-btn").click((function(){$(".country-btn").removeClass("active"),$(this).addClass("active"),h.default.initialState.COUNTRY=$(this).attr("data-country"),h.default.initialState.LANG=$(this).attr("data-lang"),fetchVideo(videoType,h.default.initialState.COUNTRY,h.default.initialState.LANG)})),$(".non-clicker").click((function(){error_show("Please select a language first.")})),$(".onboad").click((function(){""!==h.default.initialState.COUNTRY?""!=$("#peoplewatching").val()&&""!=$("#phone").val()&&""!=$("#fname").val()?isEmail($("#email").val())?_($("#email").val()):error_show("Please enter a correct email."):error_show("Please fill in all details."):error_show("Please select your country.")}));const o=setInterval((function(){watchpercentage>10&&(g(parseInt(h.default.initialState.PLAYER_CURRENT_TIME),parseInt(watchpercentage)),clearInterval(o))}),1e3),s=setInterval((function(){watchpercentage>20&&(g(parseInt(h.default.initialState.PLAYER_CURRENT_TIME),parseInt(watchpercentage)),clearInterval(s))}),1e3),c=setInterval((function(){watchpercentage>30&&(g(parseInt(h.default.initialState.PLAYER_CURRENT_TIME),parseInt(watchpercentage)),clearInterval(c))}),1e3),l=setInterval((function(){watchpercentage>40&&(g(parseInt(h.default.initialState.PLAYER_CURRENT_TIME),parseInt(watchpercentage)),clearInterval(l))}),1e3),u=setInterval((function(){watchpercentage>50&&(g(parseInt(h.default.initialState.PLAYER_CURRENT_TIME),parseInt(watchpercentage)),clearInterval(u))}),1e3),y=setInterval((function(){watchpercentage>60&&(g(parseInt(h.default.initialState.PLAYER_CURRENT_TIME),parseInt(watchpercentage)),clearInterval(y))}),1e3),w=setInterval((function(){watchpercentage>70&&(g(parseInt(h.default.initialState.PLAYER_CURRENT_TIME),parseInt(watchpercentage)),clearInterval(w))}),1e3),P=setInterval((function(){watchpercentage>80&&(g(parseInt(h.default.initialState.PLAYER_CURRENT_TIME),parseInt(watchpercentage)),clearInterval(P))}),1e3),E=setInterval((function(){watchpercentage>90&&(g(parseInt(h.default.initialState.PLAYER_CURRENT_TIME),parseInt(watchpercentage)),clearInterval(E))}),1e3),b=setInterval((function(){watchpercentage>96&&(g(h.default.initialState.VIDEO_TOTAL_TIME,100),clearInterval(b))}),1e3),S=setInterval((function(){watchpercentage<32&&($(".interval_text_item:nth-child(1)").addClass("active"),$(".interval_text_item:nth-child(2)").removeClass("active"),$(".interval_text_item:nth-child(3)").removeClass("active"),clearInterval(S))}),1e3),I=setInterval((function(){watchpercentage>67&&($(".interval_text_item:nth-child(2)").addClass("active"),$(".interval_text_item:nth-child(1)").removeClass("active"),$(".interval_text_item:nth-child(3)").removeClass("active"),clearInterval(I))}),1e3),k=setInterval((function(){watchpercentage>96&&($(".interval_text_item:nth-child(3)").addClass("active"),$(".interval_text_item:nth-child(2)").removeClass("active"),$(".interval_text_item:nth-child(1)").removeClass("active"),clearInterval(k))}),1e3);$(".path-option").click((function(){!async function(e){let t=readCookie("COMPANY_ID");$(".path-heading").text(e),e=e.includes("1")?"Path 1":e.includes("2")?"Path 2":e.includes("3")?"Path 3":"",await d(t,h.default.initialState.VIDEO_PROSPECT_ID,BODY).then((async function(t){await p(e).then((function(e){h.default.initialState.PATH_OPTIONS=e.data.data[0].options,async function(){for(i=0;i<=h.default.initialState.PATH_OPTIONS.length;i++){$(".checkbox-field:nth-child("+i+")").show();let e=h.default.initialState.PATH_OPTIONS[i];"es"===await Weglot.getCurrentLang()&&e&&(e=await translateToLanguage([e],"en","es")),$(".checkbox-field:nth-child("+(i+1)+") .checkbox-label").text(e),$(".checkbox-field:nth-child("+(i+1)+") .checkbox-label").attr("en",h.default.initialState.PATH_OPTIONS[i])}$((function(){$(".nav-bullet-dot:nth-child(4)").click((function(){this.click()})).click()})),$(".watch-video").addClass("pan-out"),$(".path-container").addClass("pan-in")}()})).catch((function(e){error_show("Oops, There was an unexpected error.")}))})).catch((function(e){error_show("Oops, There was an unexpected error.")}))}($(this).children(".heading").text())})),$(".checkbox-field").click((function(){const e=$(this).children(".checkbox-label").attr("en"),t=$(this).children(".checkbox");t.hasClass("active")?"string"==typeof e&&(h.default.initialState.MCQ_OPTIONS.splice(h.default.initialState.MCQ_OPTIONS.indexOf(e),1),t.removeClass("active")):"string"==typeof e&&(h.default.initialState.MCQ_OPTIONS.push(e),t.addClass("active"))})),$(".submit.paths").click((async()=>{let e=readCookie("COMPANY_ID");if(0!==h.default.initialState.MCQ_OPTIONS.length){let t={interests:h.default.initialState.MCQ_OPTIONS};await f(e,h.default.initialState.VIDEO_PROSPECT_ID,t).then((function(e){$(".user_name").text($("#fname").val()),$(".rep_name, .rep_name_cta").text(readCookie("REP_NAME")),$(".rep-phoito").css("background-image","url('"+readCookie("PIC")+"')"),h.default.methods.showSuccess("Your answers have been sent successfully!"),$(".appointment-iframe .w-iframe iframe").attr("src",appointment_link),$(".last-popup").addClass("active")})).catch((function(e){h.default.methods.showError("Oops, There was an unexpected error.")}))}else h.default.methods.showError("Please select at least one option")})),$(".iframe-back").click((function(){$(".appointment-iframe .w-iframe iframe").attr("src",appointment_link)})),$(".closer-last").click((function(){$(".last-popup").removeClass("active"),$(".appointment-iframe .w-iframe iframe").attr("src",appointment_link)}))}()})()})();
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 9669:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(1609);
+
+/***/ }),
+
+/***/ 5448:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+var settle = __webpack_require__(6026);
+var cookies = __webpack_require__(4372);
+var buildURL = __webpack_require__(5327);
+var buildFullPath = __webpack_require__(4097);
+var parseHeaders = __webpack_require__(4109);
+var isURLSameOrigin = __webpack_require__(7985);
+var createError = __webpack_require__(5061);
+var transitionalDefaults = __webpack_require__(7874);
+var Cancel = __webpack_require__(5263);
+
+module.exports = function xhrAdapter(config) {
+  return new Promise(function dispatchXhrRequest(resolve, reject) {
+    var requestData = config.data;
+    var requestHeaders = config.headers;
+    var responseType = config.responseType;
+    var onCanceled;
+    function done() {
+      if (config.cancelToken) {
+        config.cancelToken.unsubscribe(onCanceled);
+      }
+
+      if (config.signal) {
+        config.signal.removeEventListener('abort', onCanceled);
+      }
+    }
+
+    if (utils.isFormData(requestData)) {
+      delete requestHeaders['Content-Type']; // Let the browser set it
+    }
+
+    var request = new XMLHttpRequest();
+
+    // HTTP basic authentication
+    if (config.auth) {
+      var username = config.auth.username || '';
+      var password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : '';
+      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
+    }
+
+    var fullPath = buildFullPath(config.baseURL, config.url);
+    request.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
+
+    // Set the request timeout in MS
+    request.timeout = config.timeout;
+
+    function onloadend() {
+      if (!request) {
+        return;
+      }
+      // Prepare the response
+      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
+      var responseData = !responseType || responseType === 'text' ||  responseType === 'json' ?
+        request.responseText : request.response;
+      var response = {
+        data: responseData,
+        status: request.status,
+        statusText: request.statusText,
+        headers: responseHeaders,
+        config: config,
+        request: request
+      };
+
+      settle(function _resolve(value) {
+        resolve(value);
+        done();
+      }, function _reject(err) {
+        reject(err);
+        done();
+      }, response);
+
+      // Clean up request
+      request = null;
+    }
+
+    if ('onloadend' in request) {
+      // Use onloadend if available
+      request.onloadend = onloadend;
+    } else {
+      // Listen for ready state to emulate onloadend
+      request.onreadystatechange = function handleLoad() {
+        if (!request || request.readyState !== 4) {
+          return;
+        }
+
+        // The request errored out and we didn't get a response, this will be
+        // handled by onerror instead
+        // With one exception: request that using file: protocol, most browsers
+        // will return status as 0 even though it's a successful request
+        if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
+          return;
+        }
+        // readystate handler is calling before onerror or ontimeout handlers,
+        // so we should call onloadend on the next 'tick'
+        setTimeout(onloadend);
+      };
+    }
+
+    // Handle browser request cancellation (as opposed to a manual cancellation)
+    request.onabort = function handleAbort() {
+      if (!request) {
+        return;
+      }
+
+      reject(createError('Request aborted', config, 'ECONNABORTED', request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle low level network errors
+    request.onerror = function handleError() {
+      // Real errors are hidden from us by the browser
+      // onerror should only fire if it's a network error
+      reject(createError('Network Error', config, null, request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle timeout
+    request.ontimeout = function handleTimeout() {
+      var timeoutErrorMessage = config.timeout ? 'timeout of ' + config.timeout + 'ms exceeded' : 'timeout exceeded';
+      var transitional = config.transitional || transitionalDefaults;
+      if (config.timeoutErrorMessage) {
+        timeoutErrorMessage = config.timeoutErrorMessage;
+      }
+      reject(createError(
+        timeoutErrorMessage,
+        config,
+        transitional.clarifyTimeoutError ? 'ETIMEDOUT' : 'ECONNABORTED',
+        request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Add xsrf header
+    // This is only done if running in a standard browser environment.
+    // Specifically not if we're in a web worker, or react-native.
+    if (utils.isStandardBrowserEnv()) {
+      // Add xsrf header
+      var xsrfValue = (config.withCredentials || isURLSameOrigin(fullPath)) && config.xsrfCookieName ?
+        cookies.read(config.xsrfCookieName) :
+        undefined;
+
+      if (xsrfValue) {
+        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+      }
+    }
+
+    // Add headers to the request
+    if ('setRequestHeader' in request) {
+      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
+          // Remove Content-Type if data is undefined
+          delete requestHeaders[key];
+        } else {
+          // Otherwise add header to the request
+          request.setRequestHeader(key, val);
+        }
+      });
+    }
+
+    // Add withCredentials to request if needed
+    if (!utils.isUndefined(config.withCredentials)) {
+      request.withCredentials = !!config.withCredentials;
+    }
+
+    // Add responseType to request if needed
+    if (responseType && responseType !== 'json') {
+      request.responseType = config.responseType;
+    }
+
+    // Handle progress if needed
+    if (typeof config.onDownloadProgress === 'function') {
+      request.addEventListener('progress', config.onDownloadProgress);
+    }
+
+    // Not all browsers support upload events
+    if (typeof config.onUploadProgress === 'function' && request.upload) {
+      request.upload.addEventListener('progress', config.onUploadProgress);
+    }
+
+    if (config.cancelToken || config.signal) {
+      // Handle cancellation
+      // eslint-disable-next-line func-names
+      onCanceled = function(cancel) {
+        if (!request) {
+          return;
+        }
+        reject(!cancel || (cancel && cancel.type) ? new Cancel('canceled') : cancel);
+        request.abort();
+        request = null;
+      };
+
+      config.cancelToken && config.cancelToken.subscribe(onCanceled);
+      if (config.signal) {
+        config.signal.aborted ? onCanceled() : config.signal.addEventListener('abort', onCanceled);
+      }
+    }
+
+    if (!requestData) {
+      requestData = null;
+    }
+
+    // Send the request
+    request.send(requestData);
+  });
+};
+
+
+/***/ }),
+
+/***/ 1609:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+var bind = __webpack_require__(1849);
+var Axios = __webpack_require__(321);
+var mergeConfig = __webpack_require__(7185);
+var defaults = __webpack_require__(5546);
+
+/**
+ * Create an instance of Axios
+ *
+ * @param {Object} defaultConfig The default config for the instance
+ * @return {Axios} A new instance of Axios
+ */
+function createInstance(defaultConfig) {
+  var context = new Axios(defaultConfig);
+  var instance = bind(Axios.prototype.request, context);
+
+  // Copy axios.prototype to instance
+  utils.extend(instance, Axios.prototype, context);
+
+  // Copy context to instance
+  utils.extend(instance, context);
+
+  // Factory for creating new instances
+  instance.create = function create(instanceConfig) {
+    return createInstance(mergeConfig(defaultConfig, instanceConfig));
+  };
+
+  return instance;
+}
+
+// Create the default instance to be exported
+var axios = createInstance(defaults);
+
+// Expose Axios class to allow class inheritance
+axios.Axios = Axios;
+
+// Expose Cancel & CancelToken
+axios.Cancel = __webpack_require__(5263);
+axios.CancelToken = __webpack_require__(4972);
+axios.isCancel = __webpack_require__(6502);
+axios.VERSION = (__webpack_require__(7288).version);
+
+// Expose all/spread
+axios.all = function all(promises) {
+  return Promise.all(promises);
+};
+axios.spread = __webpack_require__(8713);
+
+// Expose isAxiosError
+axios.isAxiosError = __webpack_require__(6268);
+
+module.exports = axios;
+
+// Allow use of default import syntax in TypeScript
+module.exports["default"] = axios;
+
+
+/***/ }),
+
+/***/ 5263:
+/***/ ((module) => {
+
+"use strict";
+
+
+/**
+ * A `Cancel` is an object that is thrown when an operation is canceled.
+ *
+ * @class
+ * @param {string=} message The message.
+ */
+function Cancel(message) {
+  this.message = message;
+}
+
+Cancel.prototype.toString = function toString() {
+  return 'Cancel' + (this.message ? ': ' + this.message : '');
+};
+
+Cancel.prototype.__CANCEL__ = true;
+
+module.exports = Cancel;
+
+
+/***/ }),
+
+/***/ 4972:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var Cancel = __webpack_require__(5263);
+
+/**
+ * A `CancelToken` is an object that can be used to request cancellation of an operation.
+ *
+ * @class
+ * @param {Function} executor The executor function.
+ */
+function CancelToken(executor) {
+  if (typeof executor !== 'function') {
+    throw new TypeError('executor must be a function.');
+  }
+
+  var resolvePromise;
+
+  this.promise = new Promise(function promiseExecutor(resolve) {
+    resolvePromise = resolve;
+  });
+
+  var token = this;
+
+  // eslint-disable-next-line func-names
+  this.promise.then(function(cancel) {
+    if (!token._listeners) return;
+
+    var i;
+    var l = token._listeners.length;
+
+    for (i = 0; i < l; i++) {
+      token._listeners[i](cancel);
+    }
+    token._listeners = null;
+  });
+
+  // eslint-disable-next-line func-names
+  this.promise.then = function(onfulfilled) {
+    var _resolve;
+    // eslint-disable-next-line func-names
+    var promise = new Promise(function(resolve) {
+      token.subscribe(resolve);
+      _resolve = resolve;
+    }).then(onfulfilled);
+
+    promise.cancel = function reject() {
+      token.unsubscribe(_resolve);
+    };
+
+    return promise;
+  };
+
+  executor(function cancel(message) {
+    if (token.reason) {
+      // Cancellation has already been requested
+      return;
+    }
+
+    token.reason = new Cancel(message);
+    resolvePromise(token.reason);
+  });
+}
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+CancelToken.prototype.throwIfRequested = function throwIfRequested() {
+  if (this.reason) {
+    throw this.reason;
+  }
+};
+
+/**
+ * Subscribe to the cancel signal
+ */
+
+CancelToken.prototype.subscribe = function subscribe(listener) {
+  if (this.reason) {
+    listener(this.reason);
+    return;
+  }
+
+  if (this._listeners) {
+    this._listeners.push(listener);
+  } else {
+    this._listeners = [listener];
+  }
+};
+
+/**
+ * Unsubscribe from the cancel signal
+ */
+
+CancelToken.prototype.unsubscribe = function unsubscribe(listener) {
+  if (!this._listeners) {
+    return;
+  }
+  var index = this._listeners.indexOf(listener);
+  if (index !== -1) {
+    this._listeners.splice(index, 1);
+  }
+};
+
+/**
+ * Returns an object that contains a new `CancelToken` and a function that, when called,
+ * cancels the `CancelToken`.
+ */
+CancelToken.source = function source() {
+  var cancel;
+  var token = new CancelToken(function executor(c) {
+    cancel = c;
+  });
+  return {
+    token: token,
+    cancel: cancel
+  };
+};
+
+module.exports = CancelToken;
+
+
+/***/ }),
+
+/***/ 6502:
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
+};
+
+
+/***/ }),
+
+/***/ 321:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+var buildURL = __webpack_require__(5327);
+var InterceptorManager = __webpack_require__(782);
+var dispatchRequest = __webpack_require__(3572);
+var mergeConfig = __webpack_require__(7185);
+var validator = __webpack_require__(4875);
+
+var validators = validator.validators;
+/**
+ * Create a new instance of Axios
+ *
+ * @param {Object} instanceConfig The default config for the instance
+ */
+function Axios(instanceConfig) {
+  this.defaults = instanceConfig;
+  this.interceptors = {
+    request: new InterceptorManager(),
+    response: new InterceptorManager()
+  };
+}
+
+/**
+ * Dispatch a request
+ *
+ * @param {Object} config The config specific for this request (merged with this.defaults)
+ */
+Axios.prototype.request = function request(configOrUrl, config) {
+  /*eslint no-param-reassign:0*/
+  // Allow for axios('example/url'[, config]) a la fetch API
+  if (typeof configOrUrl === 'string') {
+    config = config || {};
+    config.url = configOrUrl;
+  } else {
+    config = configOrUrl || {};
+  }
+
+  config = mergeConfig(this.defaults, config);
+
+  // Set config.method
+  if (config.method) {
+    config.method = config.method.toLowerCase();
+  } else if (this.defaults.method) {
+    config.method = this.defaults.method.toLowerCase();
+  } else {
+    config.method = 'get';
+  }
+
+  var transitional = config.transitional;
+
+  if (transitional !== undefined) {
+    validator.assertOptions(transitional, {
+      silentJSONParsing: validators.transitional(validators.boolean),
+      forcedJSONParsing: validators.transitional(validators.boolean),
+      clarifyTimeoutError: validators.transitional(validators.boolean)
+    }, false);
+  }
+
+  // filter out skipped interceptors
+  var requestInterceptorChain = [];
+  var synchronousRequestInterceptors = true;
+  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+    if (typeof interceptor.runWhen === 'function' && interceptor.runWhen(config) === false) {
+      return;
+    }
+
+    synchronousRequestInterceptors = synchronousRequestInterceptors && interceptor.synchronous;
+
+    requestInterceptorChain.unshift(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  var responseInterceptorChain = [];
+  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+    responseInterceptorChain.push(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  var promise;
+
+  if (!synchronousRequestInterceptors) {
+    var chain = [dispatchRequest, undefined];
+
+    Array.prototype.unshift.apply(chain, requestInterceptorChain);
+    chain = chain.concat(responseInterceptorChain);
+
+    promise = Promise.resolve(config);
+    while (chain.length) {
+      promise = promise.then(chain.shift(), chain.shift());
+    }
+
+    return promise;
+  }
+
+
+  var newConfig = config;
+  while (requestInterceptorChain.length) {
+    var onFulfilled = requestInterceptorChain.shift();
+    var onRejected = requestInterceptorChain.shift();
+    try {
+      newConfig = onFulfilled(newConfig);
+    } catch (error) {
+      onRejected(error);
+      break;
+    }
+  }
+
+  try {
+    promise = dispatchRequest(newConfig);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+
+  while (responseInterceptorChain.length) {
+    promise = promise.then(responseInterceptorChain.shift(), responseInterceptorChain.shift());
+  }
+
+  return promise;
+};
+
+Axios.prototype.getUri = function getUri(config) {
+  config = mergeConfig(this.defaults, config);
+  return buildURL(config.url, config.params, config.paramsSerializer).replace(/^\?/, '');
+};
+
+// Provide aliases for supported request methods
+utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function(url, config) {
+    return this.request(mergeConfig(config || {}, {
+      method: method,
+      url: url,
+      data: (config || {}).data
+    }));
+  };
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function(url, data, config) {
+    return this.request(mergeConfig(config || {}, {
+      method: method,
+      url: url,
+      data: data
+    }));
+  };
+});
+
+module.exports = Axios;
+
+
+/***/ }),
+
+/***/ 782:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+
+function InterceptorManager() {
+  this.handlers = [];
+}
+
+/**
+ * Add a new interceptor to the stack
+ *
+ * @param {Function} fulfilled The function to handle `then` for a `Promise`
+ * @param {Function} rejected The function to handle `reject` for a `Promise`
+ *
+ * @return {Number} An ID used to remove interceptor later
+ */
+InterceptorManager.prototype.use = function use(fulfilled, rejected, options) {
+  this.handlers.push({
+    fulfilled: fulfilled,
+    rejected: rejected,
+    synchronous: options ? options.synchronous : false,
+    runWhen: options ? options.runWhen : null
+  });
+  return this.handlers.length - 1;
+};
+
+/**
+ * Remove an interceptor from the stack
+ *
+ * @param {Number} id The ID that was returned by `use`
+ */
+InterceptorManager.prototype.eject = function eject(id) {
+  if (this.handlers[id]) {
+    this.handlers[id] = null;
+  }
+};
+
+/**
+ * Iterate over all the registered interceptors
+ *
+ * This method is particularly useful for skipping over any
+ * interceptors that may have become `null` calling `eject`.
+ *
+ * @param {Function} fn The function to call for each interceptor
+ */
+InterceptorManager.prototype.forEach = function forEach(fn) {
+  utils.forEach(this.handlers, function forEachHandler(h) {
+    if (h !== null) {
+      fn(h);
+    }
+  });
+};
+
+module.exports = InterceptorManager;
+
+
+/***/ }),
+
+/***/ 4097:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var isAbsoluteURL = __webpack_require__(1793);
+var combineURLs = __webpack_require__(7303);
+
+/**
+ * Creates a new URL by combining the baseURL with the requestedURL,
+ * only when the requestedURL is not already an absolute URL.
+ * If the requestURL is absolute, this function returns the requestedURL untouched.
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} requestedURL Absolute or relative URL to combine
+ * @returns {string} The combined full path
+ */
+module.exports = function buildFullPath(baseURL, requestedURL) {
+  if (baseURL && !isAbsoluteURL(requestedURL)) {
+    return combineURLs(baseURL, requestedURL);
+  }
+  return requestedURL;
+};
+
+
+/***/ }),
+
+/***/ 5061:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var enhanceError = __webpack_require__(481);
+
+/**
+ * Create an Error with the specified message, config, error code, request and response.
+ *
+ * @param {string} message The error message.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The created error.
+ */
+module.exports = function createError(message, config, code, request, response) {
+  var error = new Error(message);
+  return enhanceError(error, config, code, request, response);
+};
+
+
+/***/ }),
+
+/***/ 3572:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+var transformData = __webpack_require__(8527);
+var isCancel = __webpack_require__(6502);
+var defaults = __webpack_require__(5546);
+var Cancel = __webpack_require__(5263);
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
+
+  if (config.signal && config.signal.aborted) {
+    throw new Cancel('canceled');
+  }
+}
+
+/**
+ * Dispatch a request to the server using the configured adapter.
+ *
+ * @param {object} config The config that is to be used for the request
+ * @returns {Promise} The Promise to be fulfilled
+ */
+module.exports = function dispatchRequest(config) {
+  throwIfCancellationRequested(config);
+
+  // Ensure headers exist
+  config.headers = config.headers || {};
+
+  // Transform request data
+  config.data = transformData.call(
+    config,
+    config.data,
+    config.headers,
+    config.transformRequest
+  );
+
+  // Flatten headers
+  config.headers = utils.merge(
+    config.headers.common || {},
+    config.headers[config.method] || {},
+    config.headers
+  );
+
+  utils.forEach(
+    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
+    function cleanHeaderConfig(method) {
+      delete config.headers[method];
+    }
+  );
+
+  var adapter = config.adapter || defaults.adapter;
+
+  return adapter(config).then(function onAdapterResolution(response) {
+    throwIfCancellationRequested(config);
+
+    // Transform response data
+    response.data = transformData.call(
+      config,
+      response.data,
+      response.headers,
+      config.transformResponse
+    );
+
+    return response;
+  }, function onAdapterRejection(reason) {
+    if (!isCancel(reason)) {
+      throwIfCancellationRequested(config);
+
+      // Transform response data
+      if (reason && reason.response) {
+        reason.response.data = transformData.call(
+          config,
+          reason.response.data,
+          reason.response.headers,
+          config.transformResponse
+        );
+      }
+    }
+
+    return Promise.reject(reason);
+  });
+};
+
+
+/***/ }),
+
+/***/ 481:
+/***/ ((module) => {
+
+"use strict";
+
+
+/**
+ * Update an Error with the specified config, error code, and response.
+ *
+ * @param {Error} error The error to update.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The error.
+ */
+module.exports = function enhanceError(error, config, code, request, response) {
+  error.config = config;
+  if (code) {
+    error.code = code;
+  }
+
+  error.request = request;
+  error.response = response;
+  error.isAxiosError = true;
+
+  error.toJSON = function toJSON() {
+    return {
+      // Standard
+      message: this.message,
+      name: this.name,
+      // Microsoft
+      description: this.description,
+      number: this.number,
+      // Mozilla
+      fileName: this.fileName,
+      lineNumber: this.lineNumber,
+      columnNumber: this.columnNumber,
+      stack: this.stack,
+      // Axios
+      config: this.config,
+      code: this.code,
+      status: this.response && this.response.status ? this.response.status : null
+    };
+  };
+  return error;
+};
+
+
+/***/ }),
+
+/***/ 7185:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+
+/**
+ * Config-specific merge-function which creates a new config-object
+ * by merging two configuration objects together.
+ *
+ * @param {Object} config1
+ * @param {Object} config2
+ * @returns {Object} New object resulting from merging config2 to config1
+ */
+module.exports = function mergeConfig(config1, config2) {
+  // eslint-disable-next-line no-param-reassign
+  config2 = config2 || {};
+  var config = {};
+
+  function getMergedValue(target, source) {
+    if (utils.isPlainObject(target) && utils.isPlainObject(source)) {
+      return utils.merge(target, source);
+    } else if (utils.isPlainObject(source)) {
+      return utils.merge({}, source);
+    } else if (utils.isArray(source)) {
+      return source.slice();
+    }
+    return source;
+  }
+
+  // eslint-disable-next-line consistent-return
+  function mergeDeepProperties(prop) {
+    if (!utils.isUndefined(config2[prop])) {
+      return getMergedValue(config1[prop], config2[prop]);
+    } else if (!utils.isUndefined(config1[prop])) {
+      return getMergedValue(undefined, config1[prop]);
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  function valueFromConfig2(prop) {
+    if (!utils.isUndefined(config2[prop])) {
+      return getMergedValue(undefined, config2[prop]);
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  function defaultToConfig2(prop) {
+    if (!utils.isUndefined(config2[prop])) {
+      return getMergedValue(undefined, config2[prop]);
+    } else if (!utils.isUndefined(config1[prop])) {
+      return getMergedValue(undefined, config1[prop]);
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  function mergeDirectKeys(prop) {
+    if (prop in config2) {
+      return getMergedValue(config1[prop], config2[prop]);
+    } else if (prop in config1) {
+      return getMergedValue(undefined, config1[prop]);
+    }
+  }
+
+  var mergeMap = {
+    'url': valueFromConfig2,
+    'method': valueFromConfig2,
+    'data': valueFromConfig2,
+    'baseURL': defaultToConfig2,
+    'transformRequest': defaultToConfig2,
+    'transformResponse': defaultToConfig2,
+    'paramsSerializer': defaultToConfig2,
+    'timeout': defaultToConfig2,
+    'timeoutMessage': defaultToConfig2,
+    'withCredentials': defaultToConfig2,
+    'adapter': defaultToConfig2,
+    'responseType': defaultToConfig2,
+    'xsrfCookieName': defaultToConfig2,
+    'xsrfHeaderName': defaultToConfig2,
+    'onUploadProgress': defaultToConfig2,
+    'onDownloadProgress': defaultToConfig2,
+    'decompress': defaultToConfig2,
+    'maxContentLength': defaultToConfig2,
+    'maxBodyLength': defaultToConfig2,
+    'transport': defaultToConfig2,
+    'httpAgent': defaultToConfig2,
+    'httpsAgent': defaultToConfig2,
+    'cancelToken': defaultToConfig2,
+    'socketPath': defaultToConfig2,
+    'responseEncoding': defaultToConfig2,
+    'validateStatus': mergeDirectKeys
+  };
+
+  utils.forEach(Object.keys(config1).concat(Object.keys(config2)), function computeConfigValue(prop) {
+    var merge = mergeMap[prop] || mergeDeepProperties;
+    var configValue = merge(prop);
+    (utils.isUndefined(configValue) && merge !== mergeDirectKeys) || (config[prop] = configValue);
+  });
+
+  return config;
+};
+
+
+/***/ }),
+
+/***/ 6026:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var createError = __webpack_require__(5061);
+
+/**
+ * Resolve or reject a Promise based on response status.
+ *
+ * @param {Function} resolve A function that resolves the promise.
+ * @param {Function} reject A function that rejects the promise.
+ * @param {object} response The response.
+ */
+module.exports = function settle(resolve, reject, response) {
+  var validateStatus = response.config.validateStatus;
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
+    resolve(response);
+  } else {
+    reject(createError(
+      'Request failed with status code ' + response.status,
+      response.config,
+      null,
+      response.request,
+      response
+    ));
+  }
+};
+
+
+/***/ }),
+
+/***/ 8527:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+var defaults = __webpack_require__(5546);
+
+/**
+ * Transform the data for a request or a response
+ *
+ * @param {Object|String} data The data to be transformed
+ * @param {Array} headers The headers for the request or response
+ * @param {Array|Function} fns A single function or Array of functions
+ * @returns {*} The resulting transformed data
+ */
+module.exports = function transformData(data, headers, fns) {
+  var context = this || defaults;
+  /*eslint no-param-reassign:0*/
+  utils.forEach(fns, function transform(fn) {
+    data = fn.call(context, data, headers);
+  });
+
+  return data;
+};
+
+
+/***/ }),
+
+/***/ 5546:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+var normalizeHeaderName = __webpack_require__(6016);
+var enhanceError = __webpack_require__(481);
+var transitionalDefaults = __webpack_require__(7874);
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(5448);
+  } else if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(5448);
+  }
+  return adapter;
+}
+
+function stringifySafely(rawValue, parser, encoder) {
+  if (utils.isString(rawValue)) {
+    try {
+      (parser || JSON.parse)(rawValue);
+      return utils.trim(rawValue);
+    } catch (e) {
+      if (e.name !== 'SyntaxError') {
+        throw e;
+      }
+    }
+  }
+
+  return (encoder || JSON.stringify)(rawValue);
+}
+
+var defaults = {
+
+  transitional: transitionalDefaults,
+
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Accept');
+    normalizeHeaderName(headers, 'Content-Type');
+
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data) || (headers && headers['Content-Type'] === 'application/json')) {
+      setContentTypeIfUnset(headers, 'application/json');
+      return stringifySafely(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    var transitional = this.transitional || defaults.transitional;
+    var silentJSONParsing = transitional && transitional.silentJSONParsing;
+    var forcedJSONParsing = transitional && transitional.forcedJSONParsing;
+    var strictJSONParsing = !silentJSONParsing && this.responseType === 'json';
+
+    if (strictJSONParsing || (forcedJSONParsing && utils.isString(data) && data.length)) {
+      try {
+        return JSON.parse(data);
+      } catch (e) {
+        if (strictJSONParsing) {
+          if (e.name === 'SyntaxError') {
+            throw enhanceError(e, this, 'E_JSON_PARSE');
+          }
+          throw e;
+        }
+      }
+    }
+
+    return data;
+  }],
+
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+  maxBodyLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  },
+
+  headers: {
+    common: {
+      'Accept': 'application/json, text/plain, */*'
+    }
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+
+/***/ }),
+
+/***/ 7874:
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = {
+  silentJSONParsing: true,
+  forcedJSONParsing: true,
+  clarifyTimeoutError: false
+};
+
+
+/***/ }),
+
+/***/ 7288:
+/***/ ((module) => {
+
+module.exports = {
+  "version": "0.26.1"
+};
+
+/***/ }),
+
+/***/ 1849:
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = function bind(fn, thisArg) {
+  return function wrap() {
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+    return fn.apply(thisArg, args);
+  };
+};
+
+
+/***/ }),
+
+/***/ 5327:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+
+function encode(val) {
+  return encodeURIComponent(val).
+    replace(/%3A/gi, ':').
+    replace(/%24/g, '$').
+    replace(/%2C/gi, ',').
+    replace(/%20/g, '+').
+    replace(/%5B/gi, '[').
+    replace(/%5D/gi, ']');
+}
+
+/**
+ * Build a URL by appending params to the end
+ *
+ * @param {string} url The base of the url (e.g., http://www.google.com)
+ * @param {object} [params] The params to be appended
+ * @returns {string} The formatted url
+ */
+module.exports = function buildURL(url, params, paramsSerializer) {
+  /*eslint no-param-reassign:0*/
+  if (!params) {
+    return url;
+  }
+
+  var serializedParams;
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params);
+  } else if (utils.isURLSearchParams(params)) {
+    serializedParams = params.toString();
+  } else {
+    var parts = [];
+
+    utils.forEach(params, function serialize(val, key) {
+      if (val === null || typeof val === 'undefined') {
+        return;
+      }
+
+      if (utils.isArray(val)) {
+        key = key + '[]';
+      } else {
+        val = [val];
+      }
+
+      utils.forEach(val, function parseValue(v) {
+        if (utils.isDate(v)) {
+          v = v.toISOString();
+        } else if (utils.isObject(v)) {
+          v = JSON.stringify(v);
+        }
+        parts.push(encode(key) + '=' + encode(v));
+      });
+    });
+
+    serializedParams = parts.join('&');
+  }
+
+  if (serializedParams) {
+    var hashmarkIndex = url.indexOf('#');
+    if (hashmarkIndex !== -1) {
+      url = url.slice(0, hashmarkIndex);
+    }
+
+    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+  }
+
+  return url;
+};
+
+
+/***/ }),
+
+/***/ 7303:
+/***/ ((module) => {
+
+"use strict";
+
+
+/**
+ * Creates a new URL by combining the specified URLs
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} relativeURL The relative URL
+ * @returns {string} The combined URL
+ */
+module.exports = function combineURLs(baseURL, relativeURL) {
+  return relativeURL
+    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+    : baseURL;
+};
+
+
+/***/ }),
+
+/***/ 4372:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+
+module.exports = (
+  utils.isStandardBrowserEnv() ?
+
+  // Standard browser envs support document.cookie
+    (function standardBrowserEnv() {
+      return {
+        write: function write(name, value, expires, path, domain, secure) {
+          var cookie = [];
+          cookie.push(name + '=' + encodeURIComponent(value));
+
+          if (utils.isNumber(expires)) {
+            cookie.push('expires=' + new Date(expires).toGMTString());
+          }
+
+          if (utils.isString(path)) {
+            cookie.push('path=' + path);
+          }
+
+          if (utils.isString(domain)) {
+            cookie.push('domain=' + domain);
+          }
+
+          if (secure === true) {
+            cookie.push('secure');
+          }
+
+          document.cookie = cookie.join('; ');
+        },
+
+        read: function read(name) {
+          var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+          return (match ? decodeURIComponent(match[3]) : null);
+        },
+
+        remove: function remove(name) {
+          this.write(name, '', Date.now() - 86400000);
+        }
+      };
+    })() :
+
+  // Non standard browser env (web workers, react-native) lack needed support.
+    (function nonStandardBrowserEnv() {
+      return {
+        write: function write() {},
+        read: function read() { return null; },
+        remove: function remove() {}
+      };
+    })()
+);
+
+
+/***/ }),
+
+/***/ 1793:
+/***/ ((module) => {
+
+"use strict";
+
+
+/**
+ * Determines whether the specified URL is absolute
+ *
+ * @param {string} url The URL to test
+ * @returns {boolean} True if the specified URL is absolute, otherwise false
+ */
+module.exports = function isAbsoluteURL(url) {
+  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+  // by any combination of letters, digits, plus, period, or hyphen.
+  return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url);
+};
+
+
+/***/ }),
+
+/***/ 6268:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+
+/**
+ * Determines whether the payload is an error thrown by Axios
+ *
+ * @param {*} payload The value to test
+ * @returns {boolean} True if the payload is an error thrown by Axios, otherwise false
+ */
+module.exports = function isAxiosError(payload) {
+  return utils.isObject(payload) && (payload.isAxiosError === true);
+};
+
+
+/***/ }),
+
+/***/ 7985:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+
+module.exports = (
+  utils.isStandardBrowserEnv() ?
+
+  // Standard browser envs have full support of the APIs needed to test
+  // whether the request URL is of the same origin as current location.
+    (function standardBrowserEnv() {
+      var msie = /(msie|trident)/i.test(navigator.userAgent);
+      var urlParsingNode = document.createElement('a');
+      var originURL;
+
+      /**
+    * Parse a URL to discover it's components
+    *
+    * @param {String} url The URL to be parsed
+    * @returns {Object}
+    */
+      function resolveURL(url) {
+        var href = url;
+
+        if (msie) {
+        // IE needs attribute set twice to normalize properties
+          urlParsingNode.setAttribute('href', href);
+          href = urlParsingNode.href;
+        }
+
+        urlParsingNode.setAttribute('href', href);
+
+        // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+        return {
+          href: urlParsingNode.href,
+          protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+          host: urlParsingNode.host,
+          search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+          hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+          hostname: urlParsingNode.hostname,
+          port: urlParsingNode.port,
+          pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
+            urlParsingNode.pathname :
+            '/' + urlParsingNode.pathname
+        };
+      }
+
+      originURL = resolveURL(window.location.href);
+
+      /**
+    * Determine if a URL shares the same origin as the current location
+    *
+    * @param {String} requestURL The URL to test
+    * @returns {boolean} True if URL shares the same origin, otherwise false
+    */
+      return function isURLSameOrigin(requestURL) {
+        var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
+        return (parsed.protocol === originURL.protocol &&
+            parsed.host === originURL.host);
+      };
+    })() :
+
+  // Non standard browser envs (web workers, react-native) lack needed support.
+    (function nonStandardBrowserEnv() {
+      return function isURLSameOrigin() {
+        return true;
+      };
+    })()
+);
+
+
+/***/ }),
+
+/***/ 6016:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+
+module.exports = function normalizeHeaderName(headers, normalizedName) {
+  utils.forEach(headers, function processHeader(value, name) {
+    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
+      headers[normalizedName] = value;
+      delete headers[name];
+    }
+  });
+};
+
+
+/***/ }),
+
+/***/ 4109:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(4867);
+
+// Headers whose duplicates are ignored by node
+// c.f. https://nodejs.org/api/http.html#http_message_headers
+var ignoreDuplicateOf = [
+  'age', 'authorization', 'content-length', 'content-type', 'etag',
+  'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since',
+  'last-modified', 'location', 'max-forwards', 'proxy-authorization',
+  'referer', 'retry-after', 'user-agent'
+];
+
+/**
+ * Parse headers into an object
+ *
+ * ```
+ * Date: Wed, 27 Aug 2014 08:58:49 GMT
+ * Content-Type: application/json
+ * Connection: keep-alive
+ * Transfer-Encoding: chunked
+ * ```
+ *
+ * @param {String} headers Headers needing to be parsed
+ * @returns {Object} Headers parsed into an object
+ */
+module.exports = function parseHeaders(headers) {
+  var parsed = {};
+  var key;
+  var val;
+  var i;
+
+  if (!headers) { return parsed; }
+
+  utils.forEach(headers.split('\n'), function parser(line) {
+    i = line.indexOf(':');
+    key = utils.trim(line.substr(0, i)).toLowerCase();
+    val = utils.trim(line.substr(i + 1));
+
+    if (key) {
+      if (parsed[key] && ignoreDuplicateOf.indexOf(key) >= 0) {
+        return;
+      }
+      if (key === 'set-cookie') {
+        parsed[key] = (parsed[key] ? parsed[key] : []).concat([val]);
+      } else {
+        parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+      }
+    }
+  });
+
+  return parsed;
+};
+
+
+/***/ }),
+
+/***/ 8713:
+/***/ ((module) => {
+
+"use strict";
+
+
+/**
+ * Syntactic sugar for invoking a function and expanding an array for arguments.
+ *
+ * Common use case would be to use `Function.prototype.apply`.
+ *
+ *  ```js
+ *  function f(x, y, z) {}
+ *  var args = [1, 2, 3];
+ *  f.apply(null, args);
+ *  ```
+ *
+ * With `spread` this example can be re-written.
+ *
+ *  ```js
+ *  spread(function(x, y, z) {})([1, 2, 3]);
+ *  ```
+ *
+ * @param {Function} callback
+ * @returns {Function}
+ */
+module.exports = function spread(callback) {
+  return function wrap(arr) {
+    return callback.apply(null, arr);
+  };
+};
+
+
+/***/ }),
+
+/***/ 4875:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var VERSION = (__webpack_require__(7288).version);
+
+var validators = {};
+
+// eslint-disable-next-line func-names
+['object', 'boolean', 'number', 'function', 'string', 'symbol'].forEach(function(type, i) {
+  validators[type] = function validator(thing) {
+    return typeof thing === type || 'a' + (i < 1 ? 'n ' : ' ') + type;
+  };
+});
+
+var deprecatedWarnings = {};
+
+/**
+ * Transitional option validator
+ * @param {function|boolean?} validator - set to false if the transitional option has been removed
+ * @param {string?} version - deprecated version / removed since version
+ * @param {string?} message - some message with additional info
+ * @returns {function}
+ */
+validators.transitional = function transitional(validator, version, message) {
+  function formatMessage(opt, desc) {
+    return '[Axios v' + VERSION + '] Transitional option \'' + opt + '\'' + desc + (message ? '. ' + message : '');
+  }
+
+  // eslint-disable-next-line func-names
+  return function(value, opt, opts) {
+    if (validator === false) {
+      throw new Error(formatMessage(opt, ' has been removed' + (version ? ' in ' + version : '')));
+    }
+
+    if (version && !deprecatedWarnings[opt]) {
+      deprecatedWarnings[opt] = true;
+      // eslint-disable-next-line no-console
+      console.warn(
+        formatMessage(
+          opt,
+          ' has been deprecated since v' + version + ' and will be removed in the near future'
+        )
+      );
+    }
+
+    return validator ? validator(value, opt, opts) : true;
+  };
+};
+
+/**
+ * Assert object's properties type
+ * @param {object} options
+ * @param {object} schema
+ * @param {boolean?} allowUnknown
+ */
+
+function assertOptions(options, schema, allowUnknown) {
+  if (typeof options !== 'object') {
+    throw new TypeError('options must be an object');
+  }
+  var keys = Object.keys(options);
+  var i = keys.length;
+  while (i-- > 0) {
+    var opt = keys[i];
+    var validator = schema[opt];
+    if (validator) {
+      var value = options[opt];
+      var result = value === undefined || validator(value, opt, options);
+      if (result !== true) {
+        throw new TypeError('option ' + opt + ' must be ' + result);
+      }
+      continue;
+    }
+    if (allowUnknown !== true) {
+      throw Error('Unknown option ' + opt);
+    }
+  }
+}
+
+module.exports = {
+  assertOptions: assertOptions,
+  validators: validators
+};
+
+
+/***/ }),
+
+/***/ 4867:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var bind = __webpack_require__(1849);
+
+// utils is a library of generic helper functions non-specific to axios
+
+var toString = Object.prototype.toString;
+
+/**
+ * Determine if a value is an Array
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Array, otherwise false
+ */
+function isArray(val) {
+  return Array.isArray(val);
+}
+
+/**
+ * Determine if a value is undefined
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if the value is undefined, otherwise false
+ */
+function isUndefined(val) {
+  return typeof val === 'undefined';
+}
+
+/**
+ * Determine if a value is a Buffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Buffer, otherwise false
+ */
+function isBuffer(val) {
+  return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor)
+    && typeof val.constructor.isBuffer === 'function' && val.constructor.isBuffer(val);
+}
+
+/**
+ * Determine if a value is an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+ */
+function isArrayBuffer(val) {
+  return toString.call(val) === '[object ArrayBuffer]';
+}
+
+/**
+ * Determine if a value is a FormData
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an FormData, otherwise false
+ */
+function isFormData(val) {
+  return toString.call(val) === '[object FormData]';
+}
+
+/**
+ * Determine if a value is a view on an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+ */
+function isArrayBufferView(val) {
+  var result;
+  if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
+    result = ArrayBuffer.isView(val);
+  } else {
+    result = (val) && (val.buffer) && (isArrayBuffer(val.buffer));
+  }
+  return result;
+}
+
+/**
+ * Determine if a value is a String
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a String, otherwise false
+ */
+function isString(val) {
+  return typeof val === 'string';
+}
+
+/**
+ * Determine if a value is a Number
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Number, otherwise false
+ */
+function isNumber(val) {
+  return typeof val === 'number';
+}
+
+/**
+ * Determine if a value is an Object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Object, otherwise false
+ */
+function isObject(val) {
+  return val !== null && typeof val === 'object';
+}
+
+/**
+ * Determine if a value is a plain Object
+ *
+ * @param {Object} val The value to test
+ * @return {boolean} True if value is a plain Object, otherwise false
+ */
+function isPlainObject(val) {
+  if (toString.call(val) !== '[object Object]') {
+    return false;
+  }
+
+  var prototype = Object.getPrototypeOf(val);
+  return prototype === null || prototype === Object.prototype;
+}
+
+/**
+ * Determine if a value is a Date
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Date, otherwise false
+ */
+function isDate(val) {
+  return toString.call(val) === '[object Date]';
+}
+
+/**
+ * Determine if a value is a File
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a File, otherwise false
+ */
+function isFile(val) {
+  return toString.call(val) === '[object File]';
+}
+
+/**
+ * Determine if a value is a Blob
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Blob, otherwise false
+ */
+function isBlob(val) {
+  return toString.call(val) === '[object Blob]';
+}
+
+/**
+ * Determine if a value is a Function
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Function, otherwise false
+ */
+function isFunction(val) {
+  return toString.call(val) === '[object Function]';
+}
+
+/**
+ * Determine if a value is a Stream
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Stream, otherwise false
+ */
+function isStream(val) {
+  return isObject(val) && isFunction(val.pipe);
+}
+
+/**
+ * Determine if a value is a URLSearchParams object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+ */
+function isURLSearchParams(val) {
+  return toString.call(val) === '[object URLSearchParams]';
+}
+
+/**
+ * Trim excess whitespace off the beginning and end of a string
+ *
+ * @param {String} str The String to trim
+ * @returns {String} The String freed of excess whitespace
+ */
+function trim(str) {
+  return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
+}
+
+/**
+ * Determine if we're running in a standard browser environment
+ *
+ * This allows axios to run in a web worker, and react-native.
+ * Both environments support XMLHttpRequest, but not fully standard globals.
+ *
+ * web workers:
+ *  typeof window -> undefined
+ *  typeof document -> undefined
+ *
+ * react-native:
+ *  navigator.product -> 'ReactNative'
+ * nativescript
+ *  navigator.product -> 'NativeScript' or 'NS'
+ */
+function isStandardBrowserEnv() {
+  if (typeof navigator !== 'undefined' && (navigator.product === 'ReactNative' ||
+                                           navigator.product === 'NativeScript' ||
+                                           navigator.product === 'NS')) {
+    return false;
+  }
+  return (
+    typeof window !== 'undefined' &&
+    typeof document !== 'undefined'
+  );
+}
+
+/**
+ * Iterate over an Array or an Object invoking a function for each item.
+ *
+ * If `obj` is an Array callback will be called passing
+ * the value, index, and complete array for each item.
+ *
+ * If 'obj' is an Object callback will be called passing
+ * the value, key, and complete object for each property.
+ *
+ * @param {Object|Array} obj The object to iterate
+ * @param {Function} fn The callback to invoke for each item
+ */
+function forEach(obj, fn) {
+  // Don't bother if no value provided
+  if (obj === null || typeof obj === 'undefined') {
+    return;
+  }
+
+  // Force an array if not already something iterable
+  if (typeof obj !== 'object') {
+    /*eslint no-param-reassign:0*/
+    obj = [obj];
+  }
+
+  if (isArray(obj)) {
+    // Iterate over array values
+    for (var i = 0, l = obj.length; i < l; i++) {
+      fn.call(null, obj[i], i, obj);
+    }
+  } else {
+    // Iterate over object keys
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        fn.call(null, obj[key], key, obj);
+      }
+    }
+  }
+}
+
+/**
+ * Accepts varargs expecting each argument to be an object, then
+ * immutably merges the properties of each object and returns result.
+ *
+ * When multiple objects contain the same key the later object in
+ * the arguments list will take precedence.
+ *
+ * Example:
+ *
+ * ```js
+ * var result = merge({foo: 123}, {foo: 456});
+ * console.log(result.foo); // outputs 456
+ * ```
+ *
+ * @param {Object} obj1 Object to merge
+ * @returns {Object} Result of all merge properties
+ */
+function merge(/* obj1, obj2, obj3, ... */) {
+  var result = {};
+  function assignValue(val, key) {
+    if (isPlainObject(result[key]) && isPlainObject(val)) {
+      result[key] = merge(result[key], val);
+    } else if (isPlainObject(val)) {
+      result[key] = merge({}, val);
+    } else if (isArray(val)) {
+      result[key] = val.slice();
+    } else {
+      result[key] = val;
+    }
+  }
+
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
+ * Extends object a by mutably adding to it the properties of object b.
+ *
+ * @param {Object} a The object to be extended
+ * @param {Object} b The object to copy properties from
+ * @param {Object} thisArg The object to bind function to
+ * @return {Object} The resulting value of object a
+ */
+function extend(a, b, thisArg) {
+  forEach(b, function assignValue(val, key) {
+    if (thisArg && typeof val === 'function') {
+      a[key] = bind(val, thisArg);
+    } else {
+      a[key] = val;
+    }
+  });
+  return a;
+}
+
+/**
+ * Remove byte order marker. This catches EF BB BF (the UTF-8 BOM)
+ *
+ * @param {string} content with BOM
+ * @return {string} content value without BOM
+ */
+function stripBOM(content) {
+  if (content.charCodeAt(0) === 0xFEFF) {
+    content = content.slice(1);
+  }
+  return content;
+}
+
+module.exports = {
+  isArray: isArray,
+  isArrayBuffer: isArrayBuffer,
+  isBuffer: isBuffer,
+  isFormData: isFormData,
+  isArrayBufferView: isArrayBufferView,
+  isString: isString,
+  isNumber: isNumber,
+  isObject: isObject,
+  isPlainObject: isPlainObject,
+  isUndefined: isUndefined,
+  isDate: isDate,
+  isFile: isFile,
+  isBlob: isBlob,
+  isFunction: isFunction,
+  isStream: isStream,
+  isURLSearchParams: isURLSearchParams,
+  isStandardBrowserEnv: isStandardBrowserEnv,
+  forEach: forEach,
+  merge: merge,
+  extend: extend,
+  trim: trim,
+  stripBOM: stripBOM
+};
+
+
+/***/ }),
+
+/***/ 5908:
+/***/ ((module) => {
+
+const FIN = {
+  US: {
+    ENGLISH: "445268145",
+    SPANISH: "452754620"
+  },
+  CA: {
+    ENGLISH: "551499288",
+    SPANISH: "452754620"
+  }
+};
+
+const getVideoUrl = (language, isCanadian) => {
+  let country = getCountry(isCanadian);
+
+  if (language === "en") {
+    return FIN[country].ENGLISH;
+  } else {
+    return FIN[country].SPANISH;
+  }
+};
+
+const getCountry = (isCanadian, longName = false) => {
+  if (longName) {
+    return isCanadian ? "Canada" : "United States";
+  }
+
+  return isCanadian ? "CA" : "US";
+};
+
+module.exports = {
+  getVideoUrl,
+  getCountry
+};
+
+/***/ }),
+
+/***/ 3912:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const {
+  isEmpty
+} = __webpack_require__(8903);
+
+const axios = __webpack_require__(9669);
+
+class Service {
+  constructor(endpoint) {
+    if (endpoint.startsWith("/")) {
+      endpoint = endpoint.replace("/", "");
+    }
+
+    this.axios = axios;
+    this.baseUrl = `https://devbackendapp.discoverfin.io/api/v1/users/${endpoint}`;
+    this.query = ``;
+    this.body = {};
+  }
+
+  equals(key, val) {
+    this.query = `${this.query}&${key}=${val}`;
+  }
+
+  limit(val) {
+    this.query = `${this.query}&limit=${val}`;
+  }
+
+  async find() {
+    const url = !isEmpty(this.query) ? `${this.baseUrl}?${this.query}` : this.baseUrl;
+    return await new Promise((resolve, reject) => {
+      this.axios.get(url).then(response => {
+        resolve(response.data);
+      }).catch(error => {
+        reject(error);
+      });
+    });
+  }
+
+  parseResponse(response) {
+    return response.data;
+  }
+
+  async first() {
+    return await this.axios.get(`${this.baseUrl}?${this.query}&limit=1`);
+  }
+
+  set(object) {
+    this.body = object;
+  }
+
+  async create() {
+    return await this.axios.post(this.baseUrl, this.body);
+  }
+
+  async update(id) {
+    return await this.axios.put(`${this.baseUrl}/${id}`, this.body);
+  }
+
+}
+
+module.exports = Service;
+
+/***/ }),
+
+/***/ 2014:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getProspect": () => (/* binding */ getProspect),
+/* harmony export */   "getUser": () => (/* binding */ getUser)
+/* harmony export */ });
+const Service = __webpack_require__(3912);
+
+const {
+  isEmpty
+} = __webpack_require__(8903);
+
+const getUser = async (USER_URL, COMPANY_URL) => {
+  const endpoint = !isEmpty(COMPANY_URL) ? `/getCompany/name/${COMPANY_URL}/${USER_URL}` : "/getUserByUrl/" + USER_URL;
+  const user = new Service(endpoint);
+  return await new Promise((resolve, reject) => {
+    user.find().then(response => {
+      resolve(user.parseResponse(response));
+    }, error => {
+      reject(error);
+    });
+  });
+};
+
+const getProspect = async (ADVISOR_ID, COMPANY_ID, EMAIL) => {
+  const endpoint = `company/${COMPANY_ID}/prospects`;
+  const prospect = new Service(endpoint);
+  prospect.equals("email", EMAIL);
+  prospect.equals("userId", ADVISOR_ID);
+  return await new Promise((resolve, reject) => {
+    prospect.find().then(response => {
+      response.count === 0 || response.error ? reject(response) : resolve(prospect.parseResponse(response).first());
+    }, error => {
+      reject(error);
+    });
+  });
+};
+
+
+
+/***/ }),
+
+/***/ 2379:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "createVideoProspectService": () => (/* binding */ createVideoProspectService),
+/* harmony export */   "fetchValidateVideoType": () => (/* binding */ fetchValidateVideoType),
+/* harmony export */   "fetchVideoService": () => (/* binding */ fetchVideoService),
+/* harmony export */   "getPathOptions": () => (/* binding */ getPathOptions),
+/* harmony export */   "getPathsContentAPI": () => (/* binding */ getPathsContentAPI),
+/* harmony export */   "getVideoProspect": () => (/* binding */ getVideoProspect),
+/* harmony export */   "setPathOptionsAPI": () => (/* binding */ setPathOptionsAPI),
+/* harmony export */   "updateVideoProspect": () => (/* binding */ updateVideoProspect),
+/* harmony export */   "updateWatchTimeAPI": () => (/* binding */ updateWatchTimeAPI)
+/* harmony export */ });
+/* harmony import */ var _Service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3912);
+/* harmony import */ var _Service__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_Service__WEBPACK_IMPORTED_MODULE_0__);
+
+
+const getVideoProspect = async (COMPANY_ID, EMAIL) => {
+  const service = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())(`company/${COMPANY_ID}/videoProspects?email=${EMAIL}`);
+  return new Promise((resolve, reject) => {
+    service.find().then(res => {
+      if (res.count > 0) {
+        resolve(service.parseResponse(res.data));
+      } else {
+        reject(res);
+      }
+    }).catch(err => {
+      reject(err);
+    });
+  });
+};
+
+const createVideoProspectService = async (COMPANY_ID, BODY) => {
+  const createNewVideoProspect = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())(`company/${COMPANY_ID}/videoProspects`);
+  createNewVideoProspect.set(BODY);
+  return new Promise((resolve, reject) => {
+    createNewVideoProspect.create().then(res => {
+      if (res.count > 0) {
+        resolve(service.parseResponse(res.data));
+      } else {
+        reject(res);
+      }
+    }).catch(err => {
+      reject(err);
+    });
+  });
+};
+
+async function fetchVideoService(type, country, lang) {
+  const fetchVideoAPI = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())("videoProspects/leadCapturingVideos");
+  fetchVideoAPI.equals("type", type);
+  fetchVideoAPI.equals("countryCode", country);
+  fetchVideoAPI.equals("language", lang);
+  return new Promise((resolve, reject) => {
+    fetchVideoAPI.find().then(res => {
+      if (res.count > 0) {
+        resolve(fetchVideoAPI);
+      } else {
+        reject(res);
+      }
+    }).catch(err => {
+      reject(err);
+    });
+  });
+}
+
+async function fetchValidateVideoType(type) {
+  const validateVideo = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())("videoProspects/leadCapturingVideos");
+  validateVideo.equals("type", type);
+  return new Promise((resolve, reject) => {
+    validateVideo.find().then(res => {
+      if (res.count > 0) {
+        resolve(validateVideo);
+      } else {
+        reject(res);
+      }
+    }).catch(err => {
+      reject(err);
+    });
+  });
+}
+
+async function getPathsContentAPI(videoType) {
+  const patchContentAPI_URL = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())("videoProspects/paths");
+  patchContentAPI_URL.equals("type", videoType);
+  return new Promise((resolve, reject) => {
+    patchContentAPI_URL.find().then(res => {
+      if (res.count > 0) {
+        resolve(patchContentAPI_URL);
+      } else {
+        reject(res);
+      }
+    }).catch(err => {
+      reject(err);
+    });
+  });
+}
+
+async function updateWatchTimeAPI(COMPANY_ID, PROSPECT_ID, UPDATE_DATA) {
+  return new Promise((resolve, reject) => {
+    const watchTime = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())(`company/${COMPANY_ID}/videoProspects/${PROSPECT_ID}`);
+    watchTime.set(UPDATE_DATA);
+    watchTime.update(PROSPECT_ID).then(function (response) {
+      if (response && response.data && response.data.data) {
+        resolve(prospectService.parseResponse(response.data));
+      } else {
+        reject(response);
+      }
+    }).catch(function (error) {
+      reject(error);
+    });
+  });
+}
+
+const updateVideoProspect = async (COMPANY_ID, PROSPECT_ID, BODY) => {
+  const updateVideoProspect = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())(`company/${COMPANY_ID}/videoProspects/${PROSPECT_ID}`);
+  updateVideoProspect.set(BODY);
+  return new Promise((resolve, reject) => {
+    updateVideoProspect.update().then(res => {
+      if (res.count > 0) {
+        resolve(updateVideoProspect.parseResponse(res.data));
+      } else {
+        reject(res);
+      }
+    }).catch(err => {
+      reject(err);
+    });
+  });
+};
+
+const getPathOptions = async path_name => {
+  const service = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())(`videoProspects/paths?name=${path_name}`);
+  return new Promise((resolve, reject) => {
+    service.find().then(res => {
+      if (res.count > 0) {
+        resolve(service.parseResponse(res.data));
+      } else {
+        reject(res);
+      }
+    }).catch(err => {
+      reject(err);
+    });
+  });
+};
+
+const setPathOptionsAPI = async (COMPANY_ID, VIDEO_PROSPECT_ID, UPDATE_DATA) => {
+  return new Promise((resolve, reject) => {
+    const setpathAPI = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())(`company/${COMPANY_ID}/videoProspects`);
+    setpathAPI.set(UPDATE_DATA);
+    setpathAPI.update(VIDEO_PROSPECT_ID).then(function (response) {
+      if (response && response.data && response.data.data) {
+        resolve(prospectService.parseResponse(response.data));
+      } else {
+        reject(response);
+      }
+    }).catch(function (error) {
+      reject(error);
+    });
+  });
+};
+
+
+
+/***/ }),
+
+/***/ 8903:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "BasePage": () => (/* binding */ BasePage),
+/* harmony export */   "cookies": () => (/* binding */ cookies),
+/* harmony export */   "finBaseUrl": () => (/* binding */ finBaseUrl),
+/* harmony export */   "finBusinessVideoAppLink": () => (/* binding */ finBusinessVideoAppLink),
+/* harmony export */   "finFinancialSuccessVideoAppLink": () => (/* binding */ finFinancialSuccessVideoAppLink),
+/* harmony export */   "formatAnswers": () => (/* binding */ formatAnswers),
+/* harmony export */   "getBaseUrl": () => (/* binding */ getBaseUrl),
+/* harmony export */   "getUrlParameter": () => (/* binding */ getUrlParameter),
+/* harmony export */   "getVideoBaseUrl": () => (/* binding */ getVideoBaseUrl),
+/* harmony export */   "isAppointmentPage": () => (/* binding */ isAppointmentPage),
+/* harmony export */   "isEmail": () => (/* binding */ isEmail),
+/* harmony export */   "isEmpty": () => (/* binding */ isEmpty),
+/* harmony export */   "isMobile": () => (/* binding */ isMobile),
+/* harmony export */   "isOnBoardingPage": () => (/* binding */ isOnBoardingPage),
+/* harmony export */   "isQuestionPage": () => (/* binding */ isQuestionPage),
+/* harmony export */   "isResultPage": () => (/* binding */ isResultPage),
+/* harmony export */   "isRouteQuestionPage": () => (/* binding */ isRouteQuestionPage),
+/* harmony export */   "isRouteSelectedPage": () => (/* binding */ isRouteSelectedPage),
+/* harmony export */   "toDollar": () => (/* binding */ toDollar),
+/* harmony export */   "url": () => (/* binding */ url)
+/* harmony export */ });
+Array.prototype.first = function () {
+  return this && this[0];
+};
+
+Array.prototype.last = function () {
+  return this && this[this.length - 1];
+};
+
+Array.prototype.remove = function (item) {
+  const index = this.indexOf(item);
+
+  if (index > -1) {
+    this.splice(index, 1);
+  }
+};
+
+String.prototype.isEmail = function () {
+  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this);
+};
+
+class BasePage {
+  constructor(object) {
+    Object.assign(this, { ...object
+    });
+  }
+
+  track(event, data) {
+    trackMixPanelEvent(event, data);
+  }
+
+  on(event, selector, callback) {
+    $(`${selector}`).on(event, callback);
+  }
+
+}
+
+const isOnBoardingPage = () => {
+  return window.location.pathname.startsWith("/en");
+};
+
+const isRouteSelectedPage = () => {
+  const path = window.location.pathname;
+  return path.startsWith("/route") && !path.includes("make-more-money") && !path.includes("manage-money-better") && !path.includes("both");
+};
+
+const isResultPage = () => {
+  const path = window.location.pathname;
+  return path.startsWith("/result");
+};
+
+const isQuestionPage = () => {
+  const path = window.location.pathname;
+  return path.startsWith("/questions");
+};
+
+const isRouteQuestionPage = checkisVideo => {
+  const path = window.location.pathname;
+  const baseCondition = path.startsWith("/route") && (path.includes("make-more-money") || path.includes("manage-money-better") || path.includes("both"));
+
+  if (checkisVideo) {
+    return baseCondition && path.includes("/video") && checkisVideo;
+  } else {
+    return baseCondition && !path.includes("/video");
+  }
+};
+
+const getUrlParameter = name => {
+  const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`);
+  const r = window.location.search.substr(1).match(reg);
+  if (r != null) return decodeURIComponent(r[2]);
+  return null;
+};
+
+const url = {
+  query: {
+    get: getUrlParameter
+  }
+};
+const cookies = {
+  get: name => {
+    const reg = new RegExp(`(^| )${name}=([^;]*)(;|$)`);
+    const r = document.cookie.match(reg);
+    if (r != null) return decodeURIComponent(r[2]);
+    return null;
+  },
+  set: (name, value, expires, path = "/", domain, secure) => {
+    let cookie = `${name}=${value}`;
+
+    if (expires) {
+      cookie += `; expires=${expires}`;
+    }
+
+    if (path) {
+      cookie += `; path=${path}`;
+    }
+
+    if (domain) {
+      cookie += `; domain=${domain}`;
+    }
+
+    if (secure) {
+      cookie += `; secure=${secure}`;
+    }
+
+    document.cookie = cookie;
+  },
+  unset: (name, path, domain, secure) => {
+    undefined.set(name, "", new Date(0), path, domain, secure);
+  },
+  setMultiple: array => {
+    array.forEach(({
+      key,
+      value,
+      expires,
+      path,
+      domain,
+      secure
+    }) => {
+      cookies.set(key, value, expires, path, domain, secure);
+    });
+  }
+}; //ismobile
+
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}; //formarans
+
+
+const formatAnswers = list => list.map((question, index) => ({
+  [`ques_${index + 1}`]: `${question.question} * ${question.answer.join(" * ")}`
+})).reduce((acc, curr) => ({ ...acc,
+  ...curr
+}));
+
+const isEmpty = value => {
+  if (value === null || value === undefined) return true;
+  if (typeof value === "string" && value.trim() === "") return true;
+  return typeof value === "object" && Object.keys(value).length === 0;
+};
+
+const getVideoBaseUrl = () => {
+  if (window.location.host === "dev.discoverfin.io") {
+    return "https://devvideo.discoverfin.io/";
+  } else if (window.location.host === "staging.discoverfin.io") {
+    return "https://stagingvideo.discoverfin.io/";
+  } else if (window.location.host === "discoverfin.io") {
+    return "https://video.discoverfin.io/";
+  } else if (window.location.host === "qa.discoverfin.io") {
+    return "https://qavideo.discoverfin.io/";
+  }
+};
+
+const getBaseUrl = () => {
+  if (window.location.host === "dev.discoverfin.io") {
+    return "https://dev.discoverfin.io/";
+  } else if (window.location.host === "staging.discoverfin.io") {
+    return "https://staging.discoverfin.io/";
+  } else if (window.location.host === "discoverfin.io") {
+    return "https://discoverfin.io/";
+  } else if (window.location.host === "qa.discoverfin.io") {
+    return "https://qa.discoverfin.io/";
+  }
+};
+
+function finBaseUrl(user, company, type, start) {
+  return company ? `${eval(type)(user, company)}${start}?company=${company}&user=${user}` : `${eval(type)(user, company)}${start}?id=${user}`;
+}
+
+const videoLink = (user, company, type, videoName) => {
+  const url = finBaseUrl(user, company, type, "video_type");
+  return url.replace(`video_type`, videoName);
+};
+
+const finBusinessVideoAppLink = (user, company) => {
+  return videoLink(user, company, "getVideoBaseUrl", "businessOverview");
+};
+
+const finFinancialSuccessVideoAppLink = (user, company) => {
+  return videoLink(user, company, "getVideoBaseUrl", "financialHouse");
+};
+
+const isAppointmentPage = () => {
+  return window.location.pathname.startsWith("/appointment");
+};
+
+const isEmail = email => {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+};
+
+const toDollar = value => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0
+  }).format(value);
+};
+
+
+
+/***/ }),
+
+/***/ 4401:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "onBoarding": () => (/* binding */ onBoarding)
+/* harmony export */ });
+const {
+  cookies,
+  isEmpty,
+  isMobile
+} = __webpack_require__(8903);
+
+const {
+  getVideoUrl,
+  getCountry
+} = __webpack_require__(5908);
+
+const onBoarding = {
+  advisor: {
+    setCookies: function (advisor, IS_OLD_LINK) {
+      cookies.setMultiple([{
+        key: "isAffiliateUrl",
+        value: advisor.isAffiliateUrl
+      }, {
+        key: "COMPANY_ID",
+        value: advisor.companyId
+      }, {
+        key: "COMPANY_URL",
+        value: advisor.companyUrl
+      }, {
+        key: "USER_ID",
+        value: advisor.userId
+      }, {
+        key: "IS_OLD_LINK",
+        value: IS_OLD_LINK
+      }, {
+        key: "URL_COMPANY",
+        value: advisor.companyUrl
+      }, {
+        key: "URL_USER",
+        value: advisor.companies && advisor.companies[0].url
+      }, {
+        key: "USER_URL",
+        value: advisor.companies && advisor.companies[0].url
+      }, {
+        key: "affiliateId",
+        value: advisor.affiliateId
+      }, {
+        key: "APTMT_LINK",
+        value: advisor.appointmentBookingLink
+      }, {
+        key: "REP_NAME",
+        value: advisor.firstName + " " + advisor.lastName
+      }, {
+        key: "PIC",
+        value: advisor.profilePic
+      }, {
+        key: "PHONE",
+        value: advisor.phone
+      }, {
+        key: "EMAIL",
+        value: advisor.email
+      }, {
+        key: "VIDEO",
+        value: advisor.videoProfileLink
+      }]);
+    }
+  },
+  prospect: {
+    setCookies: function (prospect) {
+      cookies.set("PROSPECT_ID", prospect._id);
+      cookies.set("Name", prospect.first_name);
+      cookies.set("FIN Number", prospect.fin_number);
+    },
+    handleRedirect: function (prospect) {
+      const ROUTE_CHOICE = prospect.route_choice;
+
+      if (isEmpty(ROUTE_CHOICE)) {
+        window.location.href = `/route/${ROUTE_CHOICE.split(" ").join("-").toLowerCase()}`;
+      } else {
+        window.location.href = "/route";
+      }
+    }
+  },
+  videos: {
+    player: function () {
+      return new Vimeo.Player(document.getElementById("video"));
+    },
+
+    handleLang({
+      selector,
+      language
+    }, IS_CANADIAN_LINK) {
+      const that = this;
+      $(selector).click(function () {
+        if (language === "es") {
+          $("#temp_en").addClass("hide");
+          $("#temp_es").removeClass("hide");
+        }
+
+        that.renderVideo(getVideoUrl(language, IS_CANADIAN_LINK));
+        Weglot.switchTo(language);
+        cookies.set("country", getCountry(IS_CANADIAN_LINK, true));
+      });
+    },
+
+    setTotalDuration: function () {
+      return new Promise(resolve => {
+        this.player().getDuration().then(function (duration) {
+          resolve(duration);
+        });
+      });
+    },
+    renderVideo: function (videoId) {
+      const that = this;
+      let totalDurationTime = 0;
+      let playerinitialized = false;
+      this.player().loadVideo(videoId).then(async function (id) {
+        totalDurationTime = await that.setTotalDuration();
+        playerinitialized = true;
+        that.player().pause();
+      });
+      setInterval(function () {
+        if (playerinitialized) {
+          that.player().getCurrentTime().then(function (seconds) {
+            const lockIconEl = $(".show-after-unlock");
+            const arrowEl = $(".hide-after-unlock");
+            const linkBlock = $(".link-block");
+            let watchpercentage = seconds / totalDurationTime * 100;
+
+            if (watchpercentage >= 90) {
+              linkBlock.attr("href", "/questions");
+
+              if (!isMobile()) {
+                $(".link-block .cta_btn").addClass("active");
+                $(".cta_btn").addClass("active");
+              } else {
+                $("#unlock-btn .cta_btn").addClass("active");
+              }
+
+              lockIconEl.css("display", "block");
+              arrowEl.css("display", "none");
+            } else {
+              linkBlock.on("click", function () {
+                that.player().play();
+              });
+              linkBlock.attr("href", "#");
+              lockIconEl.css("display", "none");
+              arrowEl.css("display", "block");
+              $(".link-block .cta_btn").removeClass("active");
+            }
+          });
+        }
+      }, 200);
+    },
+    handleLanguages: function (IS_CANADIAN_LINK) {
+      // handle click on language buttons
+      const languages = [{
+        selector: "#lang_us",
+        language: "en"
+      }, {
+        selector: "#lang_es",
+        language: "es"
+      }];
+      languages.forEach(lang => {
+        onBoarding.videos.handleLang(lang, IS_CANADIAN_LINK);
+      });
+    },
+    handlePlayer: function (IS_CANADIAN_LINK) {
+      onBoarding.videos.handleLanguages(IS_CANADIAN_LINK);
+    }
+  }
+};
+
+
+/***/ }),
+
+/***/ 4265:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _service_video_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2379);
+
+const videoUtils = {
+  initialState: {
+    VIDEO_TYPE: "",
+    COUNTRY: "",
+    LANG: "",
+    VIDEO_ID: "",
+    USER_URL: "",
+    VIDEO_PROSPECT_ID: "",
+    VIDEO_TOTAL_TIME: "",
+    IS_PLAYER_LOADED: false,
+    PLAYER_CURRENT_TIME: 0,
+    VIDEO_WATCH_PERCENTAGE: 0,
+    PATH_OPTIONS: null,
+    MCQ_OPTIONS: null,
+    PLAYER: null,
+    APPOINTMENT_LINK: null,
+    COMPANY_ID: null,
+    IS_OLD_LINK: false,
+    ADVISOR: {}
+  },
+  methods: {
+    showError(error) {
+      $("#error_msg").text(error);
+      $(function () {
+        $(".error-triggerer").click(function () {
+          this.click();
+        }).click();
+      });
+    },
+
+    showSuccess(msg) {
+      $(".success-msg-text").text(msg);
+      $(function () {
+        $(".success-triggerer").click(function () {
+          this.click();
+        }).click();
+      });
+    },
+
+    formatSecondsToTime(time) {
+      const hrs = ~~(time / 3600);
+      const mins = ~~(time % 3600 / 60);
+      const secs = ~~time % 60;
+      let ret = "";
+
+      if (hrs > 0) {
+        ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+      }
+
+      ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+      ret += "" + secs;
+      return ret;
+    },
+
+    autoFill() {
+      const firstName = url.query.get("fname");
+      const email_fill = url.query.get("email");
+
+      if (firstName && email_fill) {
+        $("#fname").val(firstName);
+        $("#email").val(email_fill);
+        $("#peoplewatching").val(1);
+        $("#country-us").click();
+        $("#country-us").toggleClass("active");
+        lang_val = "EN";
+        country_val = "US";
+        fetchVideo(videoType, "US", "EN");
+      }
+    },
+
+    fetchVideo(type, country, lang) {
+      (0,_service_video_index__WEBPACK_IMPORTED_MODULE_0__.fetchVideoService)(type, country, lang).then(function (response) {
+        video_id = response.url;
+        $(".video-container").css("height", $(".video-container").width() / (16 / 9));
+        renderVideo(video_id);
+      }).catch(function (error) {
+        this.showError("Oops, There was an unexpected error.");
+      });
+    },
+
+    renderVideo(videoID) {
+      iframe = document.getElementById("video");
+      player = new Vimeo.Player(iframe);
+      player.loadVideo(videoID).then(function (id) {
+        this.setTotalDuration();
+        playerinitialized = 1;
+        player.pause();
+        this.setFinalFunction();
+      }).catch(function (error) {});
+    },
+
+    setTotalDuration() {
+      iframe = document.getElementById("video");
+      player = new Vimeo.Player(iframe);
+      player.getDuration().then(function (duration) {
+        this.initialState.VIDEO_TOTAL_TIME = duration;
+        $(".totaltime").text(format(duration));
+      });
+    },
+
+    setFinalFunction() {
+      iframe = document.getElementById("video");
+      player = new Vimeo.Player(iframe);
+      player.on("ended", function () {
+        $(function () {
+          $(".nav-bullet-dot:nth-child(3)").click(function () {
+            this.click();
+          }).click();
+        });
+        $(".site-content-wrapper.video").addClass("move");
+        $(".site-content-wrapper.paths").addClass("move");
+      });
+    },
+
+    isEmail(e) {
+      return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(e);
+    },
+
+    toggleFocus(e) {
+      console.log(e.type);
+
+      if (e.type === "focus") {
+        $(".email_help_text").addClass("active");
+      } else {
+        $(".email_help_text").removeClass("active");
+      }
+    }
+
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (videoUtils);
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+const {
+  BasePage,
+  finBaseUrl
+} = __webpack_require__(8903);
+
+const {
+  getUser
+} = __webpack_require__(2014);
+
+const {
+  onBoarding
+} = __webpack_require__(4401);
+
+const {
+  fetchVideoService,
+  getVideoProspect,
+  fetchValidateVideoType,
+  getPathsContentAPI,
+  createVideoProspectService,
+  updateWatchTimeAPI,
+  updateVideoProspect,
+  getPathOptions,
+  setPathOptionsAPI
+} = __webpack_require__(2379);
+
+const videoUtils = __webpack_require__(4265);
+
+class videoPage extends BasePage {
+  constructor(_object) {
+    super(_object);
+  }
+
+}
+
+async function fetchAdvisor(page) {
+  const {
+    USER_URL,
+    COMPANY_URL,
+    IS_OLD_LINK
+  } = page;
+  const advisor = await getUser(USER_URL, COMPANY_URL);
+  page.COMPANY_ID = advisor.company_id;
+  onBoarding.advisor.setCookies(advisor, IS_OLD_LINK);
+  page.ADVISOR = advisor;
+  return page;
+}
+
+async function redirectContinuer(page) {
+  if (url.query.get("prospectEmail")) {
+    const videoProspect = await getVideoProspect(page.COMPANY_ID, url.query.get("prospectEmail"));
+    videoProspect;
+  }
+} //Setting paths content variable
+
+
+async function setPathsContentVariable(videoType) {
+  await getPathsContentAPI(videoType).then(async function (response) {
+    [...$(".path-option")].forEach(elem => {
+      let temp = [];
+
+      for (let i = 0; i < elem.childNodes.length; i++) {
+        const item = elem.childNodes[i];
+
+        if (!item.className.includes("path-text")) {
+          temp.push(item);
+        }
+      }
+
+      elem.innerHTML = "";
+      temp.forEach(item => {
+        elem.append(item);
+      });
+    });
+    let description_item_text;
+    let description_array;
+    let path_name;
+
+    for (let i = 0; i < response.data.data.length; i++) {
+      let it = response.data.data[i]; //setting title of path
+
+      if ((await Weglot.getCurrentLang()) === "es") {
+        path_name = await translateToLanguage([it.name], "en", "es");
+      } else {
+        path_name = it.name;
+      }
+
+      $(".path-option:nth-child(" + (i + 1) + ") .heading").text(path_name); //setting description of path
+
+      description_array = it.description;
+
+      for (let j = 0; j < description_array.length; j++) {
+        let elem = description_array[j];
+
+        if ((await Weglot.getCurrentLang()) === "es") {
+          description_item_text = await translateToLanguage([elem], "en", "es");
+        } else {
+          description_item_text = elem;
+        }
+
+        const html_elem = $(`.path-option:nth-child(${i + 1})`);
+
+        if (!html_elem[0].innerHTML.includes(description_item_text)) {
+          html_elem.append(`<div class='path-text'>${description_item_text}</div>`);
+        }
+      }
+    }
+  }).catch(function (error) {
+    videoUtils.methods.error_show("Oops, There was an unexpected error.");
+    console.error(error);
+  });
+}
+
+async function validateVideoType(typeName) {
+  await fetchValidateVideoType(typeName).then(function (response) {
+    document.title = response.data.data[0].name; // Setting page title
+
+    $("#video-title").text(response.data.data[0].name); // Setting video title
+
+    videoUtils.methods.renderVideo(response.data.data[0].url); // Rendering video
+
+    if (response.data.count > 0) {
+      validateUrl(getUrlParameter("company"), getUrlParameter("user"));
+      setPathsContentVariable(videoType);
+    } else {
+      $(".fourofour").addClass("show");
+    }
+  }).catch(function (error) {
+    $(".fourofour").addClass("show");
+  });
+} // Check Video Prospect
+
+
+async function checkVideoProspect(email_val) {
+  let companyId = readCookie("COMPANY_ID");
+  await getVideoProspect(companyId, email_val).then(function (response) {
+    if (response.data.count === 1) {
+      videoUtils.default.initialState.VIDEO_PROSPECT_ID = response.data.data[0]._id;
+
+      if (!getUrlParameter("prospectEmail")) {
+        videoUtils.default.methods.showSuccess("Welcome " + response.data.data[0].firstName + "! Enjoy your video");
+      }
+
+      videoUtils.default.initialState.COUNTRY = response.data.data[0].country || "US";
+      videoUtils.default.initialState.LANG = response.data.data[0].language || "EN";
+      videoUtils.default.methods.fetchVideo(videoType, videoUtils.default.initialState.COUNTRY, videoUtils.default.initialState.LANG);
+      letsStart();
+    } else {
+      createVideoProspect();
+    }
+  }).catch(function (error) {
+    error_show(error.response.data.message);
+  });
+} // Create Video Prospect
+
+
+async function createVideoProspect() {
+  await videoUtils.default.methods.fetchVideo(videoType, videoUtils.default.initialState.COUNTRY || "US", videoUtils.default.initialState.LANG || "EN");
+  const data = {
+    videoName: document.title,
+    firstName: $("#fname").val(),
+    lastName: $("#lname").val(),
+    email: $("#email").val(),
+    phone: Inputmask.unmask($("#phone").val(), {
+      mask: "(999) 999-9999"
+    }),
+    country: videoUtils.default.initialState.COUNTRY || "US",
+    language: videoUtils.default.initialState.LANG || "EN",
+    watchingWith: $("#peoplewatching").val(),
+    watchedTime: 0,
+    totalVideoTime: format(videoUtils.default.initialState.VIDEO_TOTAL_TIME),
+    watchPercentage: 0,
+    appointmentCompleted: false,
+    userId: readCookie("USER_ID"),
+    companyId: readCookie("COMPANY_ID")
+  };
+
+  if (readCookie("isAffiliateUrl") === "true") {
+    data.affiliateId = readCookie("affiliateId");
+  }
+
+  await createVideoProspectService(data.companyId, data).then(function (response) {
+    videoUtils.default.initialState.VIDEO_PROSPECT_ID = response.data.data._id;
+    videoUtils.default.methods.showSuccess("Your details have been verified, Enjoy your video!");
+    letsStart();
+  }).catch(function (error) {
+    videoUtils.default.methods.showError(error.response.data.message);
+  });
+} // Update watch percentage
+
+
+async function updateWatchtime(time, percentage) {
+  let companyId = readCookie("COMPANY_ID");
+  let UpdateData = {
+    watchedTime: format(time),
+    watchPercentage: parseInt(percentage)
+  };
+  await updateWatchTimeAPI(companyId, videoUtils.default.initialState.VIDEO_PROSPECT_ID, UpdateData).then(function (response) {// trackMixPanelEvent(`Watched ${videoType} ${parseInt(percentage)}%`, {
+    //   videoType,
+    //   percentage: parseInt(percentage),
+    //   watchedTime: format(time),
+    // });
+    //console.log(response.data);
+    //console.log(response.xhr);
+  }).catch(function (error) {//console.log(response.data);
+    //console.log(response.xhr);
+  });
+} // Progress bar update
+
+
+setInterval(function () {
+  if (videoUtils.default.initialState.IS_PLAYER_LOADED) {
+    videoUtils.default.initialState.PLAYER.getCurrentTime().then(function (seconds) {
+      watchpercentage = seconds / videoUtils.default.initialState.VIDEO_TOTAL_TIME * 100;
+    });
+    $(".progress-bar-inner").css("width", watchpercentage + "%");
+  }
+}, 200); // Current timing
+
+setInterval(function () {
+  if (videoUtils.default.initialState.IS_PLAYER_LOADED) {
+    videoUtils.default.initialState.PLAYER.getCurrentTime().then(function (seconds) {
+      $(".elapsedtime").text(format(seconds));
+      const schedule_footer = $(".schedule-footer");
+      watchpercentage = seconds / videoUtils.default.initialState.VIDEO_TOTAL_TIME * 100; //if (watchpercentage >= 93) {
+      //if (schedule_footer.css("display") === "none") {
+      // schedule_footer.css("display", "flex");
+      // $("#window_frame").attr(
+      // "src",
+      //`https://discoverfin.io/appointment?company=${getUrlParameter(
+      // "company"
+      //)}&user=${getUrlParameter("user")}&video=true`
+      //);
+      //}
+      //}
+
+      videoUtils.default.initialState.PLAYER_CURRENT_TIME = seconds;
+    });
+  }
+}, 200); // Rendering path questions based on the path selected
+
+async function render_options() {
+  for (i = 0; i <= videoUtils.default.initialState.PATH_OPTIONS.length; i++) {
+    $(".checkbox-field:nth-child(" + i + ")").show();
+    let text = videoUtils.default.initialState.PATH_OPTIONS[i];
+
+    if ((await Weglot.getCurrentLang()) === "es") {
+      if (text) {
+        text = await translateToLanguage([text], "en", "es");
+      }
+    }
+
+    $(".checkbox-field:nth-child(" + (i + 1) + ") .checkbox-label").text(text);
+    $(".checkbox-field:nth-child(" + (i + 1) + ") .checkbox-label").attr("en", videoUtils.default.initialState.PATH_OPTIONS[i]);
+  }
+
+  $(function () {
+    $(".nav-bullet-dot:nth-child(4)").click(function () {
+      this.click();
+    }).click();
+  });
+  $(".watch-video").addClass("pan-out");
+  $(".path-container").addClass("pan-in");
+}
+
+async function video_Int() {
+  const USER_URL = url.query.get("id") || url.query.get("user");
+  let page = new videoPage({ ...videoUtils.initialState,
+    USER_URL,
+    IS_OLD_LINK: url.query.get("company"),
+    APPOINTMENT_LINK: `${finBaseUrl(USER_URL, url.query.get("company"), "getBaseUrl", "appointment")}&video=true`
+  });
+
+  try {
+    page = await fetchAdvisor(page);
+    page.track("Prospect Visited Appointment page", {
+      rep: page.advisor.firstName
+    });
+  } catch (e) {
+    $(".fourofour").addClass("show");
+    console.log(e);
+  }
+  /********************************/
+
+  /*******PAGE LOAD TRIGGER*******/
+
+  /******************************/
+
+
+  $("#phone").inputmask("(999) 999-9999"); //Masking the phone number field
+
+  $(".checkbox-field").hide();
+  validateVideoType(videoType); //validating video type from the url
+
+  /*********************************/
+
+  /******** EVENT TRIGGERS ********/
+
+  /*******************************/
+
+  $("#country-us").click(function () {
+    Weglot.switchTo("en");
+    validateVideoType(videoType);
+  });
+  $("#country-es").click(function () {
+    Weglot.switchTo("es");
+    validateVideoType(videoType);
+  });
+  $("#country-ca").click(function () {
+    Weglot.switchTo("en");
+    validateVideoType(videoType);
+  });
+  $("#country-ca-es").click(function () {
+    Weglot.switchTo("es");
+    validateVideoType(videoType);
+  }); // email help text
+
+  $("#email").on("focus blur", toggleFocus);
+
+  function toggleFocus(e) {
+    console.log(e.type);
+
+    if (e.type === "focus") {
+      $(".email_help_text").addClass("active");
+    } else {
+      $(".email_help_text").removeClass("active");
+    }
+  } //Setting cookie name
+
+
+  $("#fname").keyup(function () {
+    setCookies("Name", $(this).val()); // trackMixPanelEvent(`Video Prospect Journey Started`, {
+    //   prospectName: $(this).val(),
+    // });
+  }); //Country Button functions
+
+  $(".country-btn").click(function () {
+    $(".country-btn").removeClass("active");
+    $(this).addClass("active");
+    videoUtils.default.initialState.COUNTRY = $(this).attr("data-country");
+    videoUtils.default.initialState.LANG = $(this).attr("data-lang");
+    fetchVideo(videoType, videoUtils.default.initialState.COUNTRY, videoUtils.default.initialState.LANG);
+  });
+  $(".non-clicker").click(function () {
+    error_show("Please select a language first.");
+  });
+  $(".onboad").click(function () {
+    if (videoUtils.default.initialState.COUNTRY !== "") {
+      if ($("#peoplewatching").val() != "" && $("#phone").val() != "" && $("#fname").val() != "") {
+        if (isEmail($("#email").val())) {
+          checkVideoProspect($("#email").val());
+        } else {
+          error_show("Please enter a correct email.");
+        }
+      } else {
+        error_show("Please fill in all details.");
+      }
+    } else {
+      error_show("Please select your country.");
+    }
+  }); // Updating watch time percentage thorough api
+
+  const set10 = setInterval(function () {
+    if (watchpercentage > 10) {
+      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      clearInterval(set10);
+    }
+  }, 1000);
+  const set20 = setInterval(function () {
+    if (watchpercentage > 20) {
+      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      clearInterval(set20);
+    }
+  }, 1000);
+  const set30 = setInterval(function () {
+    if (watchpercentage > 30) {
+      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      clearInterval(set30);
+    }
+  }, 1000);
+  const set40 = setInterval(function () {
+    if (watchpercentage > 40) {
+      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      clearInterval(set40);
+    }
+  }, 1000);
+  const set50 = setInterval(function () {
+    if (watchpercentage > 50) {
+      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      clearInterval(set50);
+    }
+  }, 1000);
+  const set60 = setInterval(function () {
+    if (watchpercentage > 60) {
+      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      clearInterval(set60);
+    }
+  }, 1000);
+  const set70 = setInterval(function () {
+    if (watchpercentage > 70) {
+      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      clearInterval(set70);
+    }
+  }, 1000);
+  const set80 = setInterval(function () {
+    if (watchpercentage > 80) {
+      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      clearInterval(set80);
+    }
+  }, 1000);
+  const set90 = setInterval(function () {
+    if (watchpercentage > 90) {
+      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      clearInterval(set90);
+    }
+  }, 1000);
+  const set96 = setInterval(function () {
+    if (watchpercentage > 96) {
+      updateWatchtime(videoUtils.default.initialState.VIDEO_TOTAL_TIME, 100);
+      clearInterval(set96);
+    }
+  }, 1000); // Changing the video text based on progress
+
+  const set32 = setInterval(function () {
+    if (watchpercentage < 32) {
+      $(".interval_text_item:nth-child(1)").addClass("active");
+      $(".interval_text_item:nth-child(2)").removeClass("active");
+      $(".interval_text_item:nth-child(3)").removeClass("active");
+      clearInterval(set32);
+    }
+  }, 1000);
+  const set35 = setInterval(function () {
+    if (watchpercentage > 67) {
+      $(".interval_text_item:nth-child(2)").addClass("active");
+      $(".interval_text_item:nth-child(1)").removeClass("active");
+      $(".interval_text_item:nth-child(3)").removeClass("active");
+      clearInterval(set35);
+    }
+  }, 1000);
+  const set75 = setInterval(function () {
+    if (watchpercentage > 96) {
+      $(".interval_text_item:nth-child(3)").addClass("active");
+      $(".interval_text_item:nth-child(2)").removeClass("active");
+      $(".interval_text_item:nth-child(1)").removeClass("active");
+      clearInterval(set75);
+    }
+  }, 1000);
+  $(".path-option").click(function () {
+    var path_name_value = $(this).children(".heading").text(); //const schedule_footer = $(".schedule-footer");
+    //schedule_footer.remove();
+
+    triggerRenderOptions(path_name_value);
+  });
+
+  async function triggerRenderOptions(path_name) {
+    let COMPANY_ID = readCookie("COMPANY_ID");
+    $(".path-heading").text(path_name);
+    path_name = path_name.includes("1") ? "Path 1" : path_name.includes("2") ? "Path 2" : path_name.includes("3") ? "Path 3" : ""; // track path clicked event to mixpanel
+    // trackMixPanelEvent(`${videoType}: ${path_name} Clicked`, {
+    //   companyId: readCookie("COMPANY_ID"),
+    //   videoUtils.default.initialState.VIDEO_PROSPECT_ID,
+    //   pathChoosen: path_name,
+    // });
+
+    await updateVideoProspect(COMPANY_ID, videoUtils.default.initialState.VIDEO_PROSPECT_ID, BODY).then(async function (response) {
+      let BODY = {
+        pathChoosen: path_name
+      }; // Getting path options afte a successfull post
+
+      await getPathOptions(path_name).then(function (response) {
+        videoUtils.default.initialState.PATH_OPTIONS = response.data.data[0].options;
+        render_options();
+      }).catch(function (error) {
+        console.log(error.status);
+        console.log(error.statusText);
+        error_show("Oops, There was an unexpected error.");
+      });
+    }).catch(function (error) {
+      console.log(error.status);
+      console.log(error.statusText);
+      error_show("Oops, There was an unexpected error.");
+    });
+  }
+
+  $(".checkbox-field").click(function () {
+    const get_value = $(this).children(".checkbox-label").attr("en");
+    const check_element = $(this).children(".checkbox");
+
+    if (check_element.hasClass("active")) {
+      if (typeof get_value === "string") {
+        videoUtils.default.initialState.MCQ_OPTIONS.splice(videoUtils.default.initialState.MCQ_OPTIONS.indexOf(get_value), 1);
+        check_element.removeClass("active");
+      }
+    } else {
+      if (typeof get_value === "string") {
+        videoUtils.default.initialState.MCQ_OPTIONS.push(get_value);
+        check_element.addClass("active");
+      }
+    }
+  });
+  $(".submit.paths").click(async () => {
+    let COMPANY_ID = readCookie("COMPANY_ID");
+
+    if (videoUtils.default.initialState.MCQ_OPTIONS.length !== 0) {
+      let BODY = {
+        interests: videoUtils.default.initialState.MCQ_OPTIONS
+      };
+      await setPathOptionsAPI(COMPANY_ID, videoUtils.default.initialState.VIDEO_PROSPECT_ID, BODY).then(function (response) {
+        console.log(response.data); // trackMixPanelEvent(
+        //   `Video Prospect Journey Completed`,
+        //   response.data.data
+        // );
+
+        $(".user_name").text($("#fname").val());
+        $(".rep_name, .rep_name_cta").text(readCookie("REP_NAME"));
+        $(".rep-phoito").css("background-image", "url('" + readCookie("PIC") + "')");
+        videoUtils.default.methods.showSuccess("Your answers have been sent successfully!");
+        $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
+        $(".last-popup").addClass("active");
+      }).catch(function (error) {
+        console.log(error.status);
+        console.log(error.statusText);
+        videoUtils.default.methods.showError("Oops, There was an unexpected error.");
+      });
+    } else {
+      videoUtils.default.methods.showError("Please select at least one option");
+    }
+  });
+  $(".iframe-back").click(function () {
+    $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
+  });
+  $(".closer-last").click(function () {
+    $(".last-popup").removeClass("active");
+    $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
+  });
+}
+
+video_Int();
+})();
+
+/******/ })()
+;
