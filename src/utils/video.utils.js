@@ -77,6 +77,7 @@ const videoUtils = {
       }
     },
     fetchVideo(type, country, lang) {
+      console.log("fetching video");
       fetchVideoService([
         {
           key: "type",
@@ -92,6 +93,7 @@ const videoUtils = {
         },
       ])
         .then(function (response) {
+          console.log("video fetched", response);
           $(".video-container").css(
             "height",
             $(".video-container").width() / (16 / 9)
@@ -109,28 +111,22 @@ const videoUtils = {
       );
       videoUtils.initialState.PLAYER.loadVideo(videoID)
         .then(function (id) {
-          console.log("video loaded");
           videoUtils.methods.setTotalDuration();
-          playerinitialized = 1;
           videoUtils.initialState.PLAYER.pause();
-          videoUtils.methods.setFinalFunction();
         })
         .catch(function (error) {});
     },
     setTotalDuration() {
-      return new Promise(function (resolve, reject) {
-        const player = new Vimeo.Player(document.getElementById("video"));
-        player.getDuration().then(function (duration) {
-          $(".totaltime").text(
-            videoUtils.methods.formatSecondsToTime(duration)
-          );
-          resolve(duration);
-        });
+      const player = new Vimeo.Player(document.getElementById("video"));
+      player.getDuration().then(function (duration) {
+        videoUtils.methods.setFinalFunction();
+        $(".totaltime").text(videoUtils.methods.formatSecondsToTime(duration));
       });
     },
     setFinalFunction() {
-      console.log("setFinalFunction");
+      console.log("setting final function");
       const player = new Vimeo.Player(document.getElementById("video"));
+      console.log("player", player);
       player.on("ended", function () {
         $(function () {
           $(".nav-bullet-dot:nth-child(3)")

@@ -9,7 +9,7 @@ const getVideoProspect = async (COMPANY_ID, EMAIL) => {
       .find()
       .then((res) => {
         if (res.count > 0) {
-          resolve(service.parseResponse(res.data));
+          resolve(service.parseResponse(res));
         } else {
           reject(res);
         }
@@ -83,12 +83,12 @@ async function getPathsContentAPI(videoType) {
 
 const updateVideoProspect = async (COMPANY_ID, PROSPECT_ID, BODY) => {
   const updateVideoProspect = new Service(
-    `company/${COMPANY_ID}/videoProspects/${PROSPECT_ID}`
+    `company/${COMPANY_ID}/videoProspects`
   );
   updateVideoProspect.set(BODY);
   return new Promise((resolve, reject) => {
     updateVideoProspect
-      .update()
+      .update(PROSPECT_ID)
       .then((res) => {
         if (res.data.count > 0) {
           resolve(updateVideoProspect.parseResponse(res.data));
@@ -119,30 +119,6 @@ const getPathOptions = async (path_name) => {
       });
   });
 };
-
-const setPathOptionsAPI = async (
-  COMPANY_ID,
-  VIDEO_PROSPECT_ID,
-  UPDATE_DATA
-) => {
-  return new Promise((resolve, reject) => {
-    const setpathAPI = new Service(`company/${COMPANY_ID}/videoProspects`);
-    setpathAPI.set(UPDATE_DATA);
-    setpathAPI
-      .update(VIDEO_PROSPECT_ID)
-      .then(function (response) {
-        if (response && response.data && response.data.data) {
-          resolve(setpathAPI.parseResponse(response.data));
-        } else {
-          reject(response);
-        }
-      })
-      .catch(function (error) {
-        reject(error);
-      });
-  });
-};
-
 export {
   fetchVideoService,
   getVideoProspect,
@@ -150,5 +126,4 @@ export {
   createVideoProspectService,
   updateVideoProspect,
   getPathOptions,
-  setPathOptionsAPI,
 };

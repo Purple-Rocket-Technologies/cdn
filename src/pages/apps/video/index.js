@@ -8,7 +8,6 @@ const {
   createVideoProspectService,
   updateVideoProspect,
   getPathOptions,
-  setPathOptionsAPI,
 } = require("../../../service/video");
 const videoUtils = require("../../../utils/video.utils").default;
 const { isEmail } = videoUtils.methods;
@@ -125,8 +124,9 @@ async function checkVideoProspect(email_val) {
   let companyId = cookies.get("COMPANY_ID");
   await getVideoProspect(companyId, email_val)
     .then(function (response) {
+      console.log(response);
       page.VIDEO_PROSPECT_ID = response[0]._id;
-      if (!getUrlParameter("prospectEmail")) {
+      if (!url.query.get("prospectEmail")) {
         videoUtils.methods.showSuccess(
           "Welcome " + response[0].firstName + "! Enjoy your video"
         );
@@ -134,13 +134,14 @@ async function checkVideoProspect(email_val) {
       page.COUNTRY = response[0].country || "US";
       page.LANG = response[0].language || "EN";
       videoUtils.methods.fetchVideo(videoType, page.COUNTRY, page.LANG);
-      letsStart();
+      videoUtils.methods.letsStart();
     })
     .catch(function (error) {
+      console.log(error, "err");
       if (error.count === 0) {
         createVideoProspect();
       } else {
-        error_show(error.response.data.message);
+        videoUtils.methods.showError(error.response.data.message);
       }
     });
 }
@@ -215,10 +216,13 @@ async function updateWatchtime(time, percentage) {
 // Current timing
 setInterval(function () {
   page.PLAYER = new Vimeo.Player(document.getElementById("video"));
+  page.PLAYER.getDuration().then(function (duration) {
+    page.VIDEO_TOTAL_TIME = duration;
+  });
   if (page.IS_PLAYER_LOADED) {
     page.PLAYER.getCurrentTime().then(function (seconds) {
       $(".elapsedtime").text(videoUtils.methods.formatSecondsToTime(seconds));
-      const schedule_footer = $(".schedule-footer");
+      // const schedule_footer = $(".schedule-footer");
       watchpercentage = (seconds / page.VIDEO_TOTAL_TIME) * 100;
       $(".progress-bar-inner").css("width", watchpercentage + "%");
       //if (watchpercentage >= 93) {
@@ -561,7 +565,7 @@ async function video_Int() {
       let BODY = {
         interests: page.MCQ_OPTIONS,
       };
-      await setPathOptionsAPI(COMPANY_ID, page.VIDEO_PROSPECT_ID, BODY)
+      await updateVideoProspect(COMPANY_ID, page.VIDEO_PROSPECT_ID, BODY)
         .then(function (response) {
           console.log(response.data);
           // trackMixPanelEvent(

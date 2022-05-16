@@ -2234,7 +2234,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getPathOptions": () => (/* binding */ getPathOptions),
 /* harmony export */   "getPathsContentAPI": () => (/* binding */ getPathsContentAPI),
 /* harmony export */   "getVideoProspect": () => (/* binding */ getVideoProspect),
-/* harmony export */   "setPathOptionsAPI": () => (/* binding */ setPathOptionsAPI),
 /* harmony export */   "updateVideoProspect": () => (/* binding */ updateVideoProspect)
 /* harmony export */ });
 /* harmony import */ var _Service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3912);
@@ -2246,7 +2245,7 @@ const getVideoProspect = async (COMPANY_ID, EMAIL) => {
   return new Promise((resolve, reject) => {
     service.find().then(res => {
       if (res.count > 0) {
-        resolve(service.parseResponse(res.data));
+        resolve(service.parseResponse(res));
       } else {
         reject(res);
       }
@@ -2307,10 +2306,10 @@ async function getPathsContentAPI(videoType) {
 }
 
 const updateVideoProspect = async (COMPANY_ID, PROSPECT_ID, BODY) => {
-  const updateVideoProspect = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())(`company/${COMPANY_ID}/videoProspects/${PROSPECT_ID}`);
+  const updateVideoProspect = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())(`company/${COMPANY_ID}/videoProspects`);
   updateVideoProspect.set(BODY);
   return new Promise((resolve, reject) => {
-    updateVideoProspect.update().then(res => {
+    updateVideoProspect.update(PROSPECT_ID).then(res => {
       if (res.data.count > 0) {
         resolve(updateVideoProspect.parseResponse(res.data));
       } else {
@@ -2333,22 +2332,6 @@ const getPathOptions = async path_name => {
       }
     }).catch(err => {
       reject(err);
-    });
-  });
-};
-
-const setPathOptionsAPI = async (COMPANY_ID, VIDEO_PROSPECT_ID, UPDATE_DATA) => {
-  return new Promise((resolve, reject) => {
-    const setpathAPI = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())(`company/${COMPANY_ID}/videoProspects`);
-    setpathAPI.set(UPDATE_DATA);
-    setpathAPI.update(VIDEO_PROSPECT_ID).then(function (response) {
-      if (response && response.data && response.data.data) {
-        resolve(setpathAPI.parseResponse(response.data));
-      } else {
-        reject(response);
-      }
-    }).catch(function (error) {
-      reject(error);
     });
   });
 };
@@ -2854,6 +2837,7 @@ const videoUtils = {
     },
 
     fetchVideo(type, country, lang) {
+      console.log("fetching video");
       (0,_service_video_index__WEBPACK_IMPORTED_MODULE_0__.fetchVideoService)([{
         key: "type",
         value: type
@@ -2864,6 +2848,7 @@ const videoUtils = {
         key: "language",
         value: lang
       }]).then(function (response) {
+        console.log("video fetched", response);
         $(".video-container").css("height", $(".video-container").width() / (16 / 9));
         videoUtils.methods.renderVideo(response.url);
       }).catch(function (error) {
@@ -2875,27 +2860,23 @@ const videoUtils = {
     renderVideo(videoID) {
       videoUtils.initialState.PLAYER = new Vimeo.Player(document.getElementById("video"));
       videoUtils.initialState.PLAYER.loadVideo(videoID).then(function (id) {
-        console.log("video loaded");
         videoUtils.methods.setTotalDuration();
-        playerinitialized = 1;
         videoUtils.initialState.PLAYER.pause();
-        videoUtils.methods.setFinalFunction();
       }).catch(function (error) {});
     },
 
     setTotalDuration() {
-      return new Promise(function (resolve, reject) {
-        const player = new Vimeo.Player(document.getElementById("video"));
-        player.getDuration().then(function (duration) {
-          $(".totaltime").text(videoUtils.methods.formatSecondsToTime(duration));
-          resolve(duration);
-        });
+      const player = new Vimeo.Player(document.getElementById("video"));
+      player.getDuration().then(function (duration) {
+        videoUtils.methods.setFinalFunction();
+        $(".totaltime").text(videoUtils.methods.formatSecondsToTime(duration));
       });
     },
 
     setFinalFunction() {
-      console.log("setFinalFunction");
+      console.log("setting final function");
       const player = new Vimeo.Player(document.getElementById("video"));
+      console.log("player", player);
       player.on("ended", function () {
         $(function () {
           $(".nav-bullet-dot:nth-child(3)").click(function () {
@@ -3018,8 +2999,7 @@ const {
   getPathsContentAPI,
   createVideoProspectService,
   updateVideoProspect,
-  getPathOptions,
-  setPathOptionsAPI
+  getPathOptions
 } = __webpack_require__(2379);
 
 const videoUtils = (__webpack_require__(4265)/* ["default"] */ .Z);
@@ -3147,21 +3127,24 @@ async function validateVideoType(typeName) {
 async function checkVideoProspect(email_val) {
   let companyId = cookies.get("COMPANY_ID");
   await getVideoProspect(companyId, email_val).then(function (response) {
+    console.log(response);
     page.VIDEO_PROSPECT_ID = response[0]._id;
 
-    if (!getUrlParameter("prospectEmail")) {
+    if (!url.query.get("prospectEmail")) {
       videoUtils.methods.showSuccess("Welcome " + response[0].firstName + "! Enjoy your video");
     }
 
     page.COUNTRY = response[0].country || "US";
     page.LANG = response[0].language || "EN";
     videoUtils.methods.fetchVideo(videoType, page.COUNTRY, page.LANG);
-    letsStart();
+    videoUtils.methods.letsStart();
   }).catch(function (error) {
+    console.log(error, "err");
+
     if (error.count === 0) {
       createVideoProspect();
     } else {
-      error_show(error.response.data.message);
+      videoUtils.methods.showError(error.response.data.message);
     }
   });
 } // Create Video Prospect
@@ -3224,11 +3207,14 @@ async function updateWatchtime(time, percentage) {
 
 setInterval(function () {
   page.PLAYER = new Vimeo.Player(document.getElementById("video"));
+  page.PLAYER.getDuration().then(function (duration) {
+    page.VIDEO_TOTAL_TIME = duration;
+  });
 
   if (page.IS_PLAYER_LOADED) {
     page.PLAYER.getCurrentTime().then(function (seconds) {
-      $(".elapsedtime").text(videoUtils.methods.formatSecondsToTime(seconds));
-      const schedule_footer = $(".schedule-footer");
+      $(".elapsedtime").text(videoUtils.methods.formatSecondsToTime(seconds)); // const schedule_footer = $(".schedule-footer");
+
       watchpercentage = seconds / page.VIDEO_TOTAL_TIME * 100;
       $(".progress-bar-inner").css("width", watchpercentage + "%"); //if (watchpercentage >= 93) {
       //if (schedule_footer.css("display") === "none") {
@@ -3513,7 +3499,7 @@ async function video_Int() {
       let BODY = {
         interests: page.MCQ_OPTIONS
       };
-      await setPathOptionsAPI(COMPANY_ID, page.VIDEO_PROSPECT_ID, BODY).then(function (response) {
+      await updateVideoProspect(COMPANY_ID, page.VIDEO_PROSPECT_ID, BODY).then(function (response) {
         console.log(response.data); // trackMixPanelEvent(
         //   `Video Prospect Journey Completed`,
         //   response.data.data
