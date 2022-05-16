@@ -3462,16 +3462,14 @@ async function video_Int() {
     }).then(async function (response) {
       // Getting path options afte a successfull post
       await getPathOptions(path_name).then(function (response) {
-        page.PATH_OPTIONS = response.data.data[0].options;
+        page.PATH_OPTIONS = response[0].options;
         render_options();
       }).catch(function (error) {
         console.log(error.status);
-        console.log(error.statusText);
         videoUtils.methods.showError("Oops, There was an unexpected error.");
       });
     }).catch(function (error) {
       console.log(error.status);
-      console.log(error.statusText);
       videoUtils.methods.showError("Oops, There was an unexpected error.");
     });
   }
