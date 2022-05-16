@@ -14,7 +14,7 @@ const {
 } = require("../../../service/video");
 const videoUtils = require("../../../utils/video.utils");
 const { url, getVideoBaseUrl } = require("../../../utils/index");
-let videoType = getVideoBaseUrl();
+let videoType = window.location.pathname.replace("/", "");
 let watchpercentage = 0;
 class videoPage extends BasePage {
   constructor(_object) {
@@ -25,7 +25,7 @@ class videoPage extends BasePage {
 async function fetchAdvisor(page) {
   const { USER_URL, COMPANY_URL, IS_OLD_LINK } = page;
   const advisor = await getUser(USER_URL, COMPANY_URL);
-  page.COMPANY_ID = advisor.company_id;
+  page.COMPANY_ID = advisor.companyId;
   onBoarding.advisor.setCookies(advisor, IS_OLD_LINK);
   page.ADVISOR = advisor;
   return page;
@@ -102,11 +102,13 @@ async function setPathsContentVariable(videoType) {
 }
 
 async function validateVideoType(typeName) {
+  debugger;
   await fetchValidateVideoType(typeName)
     .then(function (response) {
-      document.title = response.data.data[0].name; // Setting page title
-      $("#video-title").text(response.data.data[0].name); // Setting video title
-      videoUtils.methods.renderVideo(response.data.data[0].url); // Rendering video
+      console.table({ response });
+      document.title = response.data[0].name; // Setting page title
+      $("#video-title").text(response.data[0].name); // Setting video title
+      videoUtils.default.methods.renderVideo(response.data[0].url); // Rendering video
       if (response.data.count > 0) {
         validateUrl(getUrlParameter("company"), getUrlParameter("user"));
         setPathsContentVariable(videoType);
@@ -115,6 +117,7 @@ async function validateVideoType(typeName) {
       }
     })
     .catch(function (error) {
+      console.log(error, "err");
       $(".fourofour").addClass("show");
     });
 }
@@ -286,7 +289,7 @@ async function render_options() {
 
 async function video_Int() {
   const USER_URL = url.query.get("id") || url.query.get("user");
-  const TYPE = getVideoBaseUrl();
+  const TYPE = "getBaseUrl";
   const appLink = finBaseUrl(
     USER_URL,
     url.query.get("company"),
@@ -301,12 +304,12 @@ async function video_Int() {
   });
   try {
     page = await fetchAdvisor(page);
-    page.track("Prospect Visited Appointment page", {
-      rep: page.advisor.firstName,
-    });
+    // page.track("Prospect Visited Appointment page", {
+    //   rep: page.ADVISOR.firstName,
+    // });
   } catch (e) {
-    $(".fourofour").addClass("show");
     console.log(e);
+    $(".fourofour").addClass("show");
   }
 
   /********************************/

@@ -2293,12 +2293,13 @@ async function fetchVideoService(type, country, lang) {
 }
 
 async function fetchValidateVideoType(type) {
+  debugger;
   const validateVideo = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())("videoProspects/leadCapturingVideos");
   validateVideo.equals("type", type);
   return new Promise((resolve, reject) => {
     validateVideo.find().then(res => {
       if (res.count > 0) {
-        resolve(validateVideo);
+        resolve(res);
       } else {
         reject(res);
       }
@@ -2559,25 +2560,25 @@ const isEmpty = value => {
 };
 
 const getVideoBaseUrl = () => {
-  if (window.location.host === "devvideo.discoverfin.io") {
+  if (window.location.host === "devvideo.discoverfin.io" || window.location.host === "dev.discoverfin.io") {
     return "https://devvideo.discoverfin.io/";
-  } else if (window.location.host === "staging.discoverfin.io") {
+  } else if (window.location.host === "staging.discoverfin.io" || window.location.host === "dev.discoverfin.io") {
     return "https://stagingvideo.discoverfin.io/";
-  } else if (window.location.host === "discoverfin.io") {
+  } else if (window.location.host === "discoverfin.io" || window.location.host === "dev.discoverfin.io") {
     return "https://video.discoverfin.io/";
-  } else if (window.location.host === "qa.discoverfin.io") {
+  } else if (window.location.host === "qa.discoverfin.io" || window.location.host === "dev.discoverfin.io") {
     return "https://qavideo.discoverfin.io/";
   }
 };
 
 const getBaseUrl = () => {
-  if (window.location.host === "dev.discoverfin.io") {
+  if (window.location.host === "dev.discoverfin.io" || window.location.host === "devvideo.discoverfin.io") {
     return "https://dev.discoverfin.io/";
-  } else if (window.location.host === "staging.discoverfin.io") {
+  } else if (window.location.host === "staging.discoverfin.io" || window.location.host === "devvideo.discoverfin.io") {
     return "https://staging.discoverfin.io/";
-  } else if (window.location.host === "discoverfin.io") {
+  } else if (window.location.host === "discoverfin.io" || window.location.host === "devvideo.discoverfin.io") {
     return "https://discoverfin.io/";
-  } else if (window.location.host === "qa.discoverfin.io") {
+  } else if (window.location.host === "qa.discoverfin.io" || window.location.host === "devvideo.discoverfin.io") {
     return "https://qa.discoverfin.io/";
   }
 };
@@ -2890,29 +2891,26 @@ const videoUtils = {
     },
 
     renderVideo(videoID) {
+      let iframe;
       iframe = document.getElementById("video");
-      player = new Vimeo.Player(iframe);
-      player.loadVideo(videoID).then(function (id) {
+      videoUtils.initialState.PLAYER = new Vimeo.Player(iframe);
+      videoUtils.initialState.PLAYER.loadVideo(videoID).then(function (id) {
         this.setTotalDuration();
         playerinitialized = 1;
-        player.pause();
+        videoUtils.initialState.PLAYER.pause();
         this.setFinalFunction();
       }).catch(function (error) {});
     },
 
     setTotalDuration() {
-      iframe = document.getElementById("video");
-      player = new Vimeo.Player(iframe);
-      player.getDuration().then(function (duration) {
+      videoUtils.initialState.PLAYER.getDuration().then(function (duration) {
         this.initialState.VIDEO_TOTAL_TIME = duration;
         $(".totaltime").text(format(duration));
       });
     },
 
     setFinalFunction() {
-      iframe = document.getElementById("video");
-      player = new Vimeo.Player(iframe);
-      player.on("ended", function () {
+      videoUtils.initialState.PLAYER.on("ended", function () {
         $(function () {
           $(".nav-bullet-dot:nth-child(3)").click(function () {
             this.click();
@@ -3046,7 +3044,7 @@ const {
   getVideoBaseUrl
 } = __webpack_require__(8903);
 
-let videoType = getVideoBaseUrl();
+let videoType = window.location.pathname.replace("/", "");
 let watchpercentage = 0;
 
 class videoPage extends BasePage {
@@ -3063,7 +3061,7 @@ async function fetchAdvisor(page) {
     IS_OLD_LINK
   } = page;
   const advisor = await getUser(USER_URL, COMPANY_URL);
-  page.COMPANY_ID = advisor.company_id;
+  page.COMPANY_ID = advisor.companyId;
   onBoarding.advisor.setCookies(advisor, IS_OLD_LINK);
   page.ADVISOR = advisor;
   return page;
@@ -3135,12 +3133,16 @@ async function setPathsContentVariable(videoType) {
 }
 
 async function validateVideoType(typeName) {
+  debugger;
   await fetchValidateVideoType(typeName).then(function (response) {
-    document.title = response.data.data[0].name; // Setting page title
+    console.table({
+      response
+    });
+    document.title = response.data[0].name; // Setting page title
 
-    $("#video-title").text(response.data.data[0].name); // Setting video title
+    $("#video-title").text(response.data[0].name); // Setting video title
 
-    videoUtils.methods.renderVideo(response.data.data[0].url); // Rendering video
+    videoUtils.default.methods.renderVideo(response.data[0].url); // Rendering video
 
     if (response.data.count > 0) {
       validateUrl(getUrlParameter("company"), getUrlParameter("user"));
@@ -3149,6 +3151,7 @@ async function validateVideoType(typeName) {
       $(".fourofour").addClass("show");
     }
   }).catch(function (error) {
+    console.log(error, "err");
     $(".fourofour").addClass("show");
   });
 } // Check Video Prospect
@@ -3288,7 +3291,7 @@ async function render_options() {
 
 async function video_Int() {
   const USER_URL = url.query.get("id") || url.query.get("user");
-  const TYPE = getVideoBaseUrl();
+  const TYPE = "getBaseUrl";
   const appLink = finBaseUrl(USER_URL, url.query.get("company"), TYPE, "appointment");
   let page = new videoPage({ ...videoUtils.initialState,
     USER_URL,
@@ -3297,13 +3300,12 @@ async function video_Int() {
   });
 
   try {
-    page = await fetchAdvisor(page);
-    page.track("Prospect Visited Appointment page", {
-      rep: page.advisor.firstName
-    });
+    page = await fetchAdvisor(page); // page.track("Prospect Visited Appointment page", {
+    //   rep: page.ADVISOR.firstName,
+    // });
   } catch (e) {
-    $(".fourofour").addClass("show");
     console.log(e);
+    $(".fourofour").addClass("show");
   }
   /********************************/
 

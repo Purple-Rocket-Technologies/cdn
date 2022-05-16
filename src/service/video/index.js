@@ -63,6 +63,7 @@ async function fetchVideoService(type, country, lang) {
 }
 
 async function fetchValidateVideoType(type) {
+  debugger;
   const validateVideo = new Service("videoProspects/leadCapturingVideos");
   validateVideo.equals("type", type);
   return new Promise((resolve, reject) => {
@@ -70,7 +71,7 @@ async function fetchValidateVideoType(type) {
       .find()
       .then((res) => {
         if (res.count > 0) {
-          resolve(validateVideo);
+          resolve(res);
         } else {
           reject(res);
         }

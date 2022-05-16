@@ -140,24 +140,48 @@ const isEmpty = (value) => {
 };
 
 const getVideoBaseUrl = () => {
-  if (window.location.host === "devvideo.discoverfin.io") {
+  if (
+    window.location.host === "devvideo.discoverfin.io" ||
+    window.location.host === "dev.discoverfin.io"
+  ) {
     return "https://devvideo.discoverfin.io/";
-  } else if (window.location.host === "staging.discoverfin.io") {
+  } else if (
+    window.location.host === "staging.discoverfin.io" ||
+    window.location.host === "dev.discoverfin.io"
+  ) {
     return "https://stagingvideo.discoverfin.io/";
-  } else if (window.location.host === "discoverfin.io") {
+  } else if (
+    window.location.host === "discoverfin.io" ||
+    window.location.host === "dev.discoverfin.io"
+  ) {
     return "https://video.discoverfin.io/";
-  } else if (window.location.host === "qa.discoverfin.io") {
+  } else if (
+    window.location.host === "qa.discoverfin.io" ||
+    window.location.host === "dev.discoverfin.io"
+  ) {
     return "https://qavideo.discoverfin.io/";
   }
 };
 const getBaseUrl = () => {
-  if (window.location.host === "dev.discoverfin.io") {
+  if (
+    window.location.host === "dev.discoverfin.io" ||
+    window.location.host === "devvideo.discoverfin.io"
+  ) {
     return "https://dev.discoverfin.io/";
-  } else if (window.location.host === "staging.discoverfin.io") {
+  } else if (
+    window.location.host === "staging.discoverfin.io" ||
+    window.location.host === "devvideo.discoverfin.io"
+  ) {
     return "https://staging.discoverfin.io/";
-  } else if (window.location.host === "discoverfin.io") {
+  } else if (
+    window.location.host === "discoverfin.io" ||
+    window.location.host === "devvideo.discoverfin.io"
+  ) {
     return "https://discoverfin.io/";
-  } else if (window.location.host === "qa.discoverfin.io") {
+  } else if (
+    window.location.host === "qa.discoverfin.io" ||
+    window.location.host === "devvideo.discoverfin.io"
+  ) {
     return "https://qa.discoverfin.io/";
   }
 };

@@ -81,30 +81,26 @@ const videoUtils = {
         });
     },
     renderVideo(videoID) {
+      let iframe;
       iframe = document.getElementById("video");
-      player = new Vimeo.Player(iframe);
-      player
-        .loadVideo(videoID)
+      videoUtils.initialState.PLAYER = new Vimeo.Player(iframe);
+      videoUtils.initialState.PLAYER.loadVideo(videoID)
         .then(function (id) {
           this.setTotalDuration();
           playerinitialized = 1;
-          player.pause();
+          videoUtils.initialState.PLAYER.pause();
           this.setFinalFunction();
         })
         .catch(function (error) {});
     },
     setTotalDuration() {
-      iframe = document.getElementById("video");
-      player = new Vimeo.Player(iframe);
-      player.getDuration().then(function (duration) {
+      videoUtils.initialState.PLAYER.getDuration().then(function (duration) {
         this.initialState.VIDEO_TOTAL_TIME = duration;
         $(".totaltime").text(format(duration));
       });
     },
     setFinalFunction() {
-      iframe = document.getElementById("video");
-      player = new Vimeo.Player(iframe);
-      player.on("ended", function () {
+      videoUtils.initialState.PLAYER.on("ended", function () {
         $(function () {
           $(".nav-bullet-dot:nth-child(3)")
             .click(function () {
