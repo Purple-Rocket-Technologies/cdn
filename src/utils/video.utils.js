@@ -40,6 +40,18 @@ const videoUtils = {
           .click();
       });
     },
+    letsStart() {
+      $(function () {
+        $(".nav-bullet-dot:nth-child(2)")
+          .click(function () {
+            this.click();
+          })
+          .click();
+      });
+      $(".onboarding").addClass("pan-out");
+      $(".watch-video").addClass("pan-in");
+      $("*").scrollTop(0);
+    },
     formatSecondsToTime(time) {
       const hrs = ~~(time / 3600);
       const mins = ~~((time % 3600) / 60);
@@ -61,46 +73,65 @@ const videoUtils = {
         $("#peoplewatching").val(1);
         $("#country-us").click();
         $("#country-us").toggleClass("active");
-        lang_val = "EN";
-        country_val = "US";
-        fetchVideo(videoType, "US", "EN");
+        videoUtils.methods.fetchVideo(videoType, "US", "EN");
       }
     },
     fetchVideo(type, country, lang) {
-      fetchVideoService(type, country, lang)
+      fetchVideoService([
+        {
+          key: "type",
+          value: type,
+        },
+        {
+          key: "countryCode",
+          value: country,
+        },
+        {
+          key: "language",
+          value: lang,
+        },
+      ])
         .then(function (response) {
-          video_id = response.url;
           $(".video-container").css(
             "height",
             $(".video-container").width() / (16 / 9)
           );
-          renderVideo(video_id);
+          videoUtils.methods.renderVideo(response.url);
         })
         .catch(function (error) {
-          this.showError("Oops, There was an unexpected error.");
+          videoUtils.methods.showError("Oops! Something went wrong.");
+          console.log(error, "error", type, country, lang);
         });
     },
     renderVideo(videoID) {
-      let iframe;
-      iframe = document.getElementById("video");
-      videoUtils.initialState.PLAYER = new Vimeo.Player(iframe);
+      videoUtils.initialState.PLAYER = new Vimeo.Player(
+        document.getElementById("video")
+      );
       videoUtils.initialState.PLAYER.loadVideo(videoID)
         .then(function (id) {
-          this.setTotalDuration();
+          console.log("video loaded");
+          videoUtils.methods.setTotalDuration();
           playerinitialized = 1;
           videoUtils.initialState.PLAYER.pause();
-          this.setFinalFunction();
+          videoUtils.methods.setFinalFunction();
         })
         .catch(function (error) {});
     },
     setTotalDuration() {
-      videoUtils.initialState.PLAYER.getDuration().then(function (duration) {
-        this.initialState.VIDEO_TOTAL_TIME = duration;
-        $(".totaltime").text(format(duration));
+      return new Promise(function (resolve, reject) {
+        const player = new Vimeo.Player(document.getElementById("video"));
+        player.getDuration().then(function (duration) {
+          $(".totaltime").text(
+            videoUtils.methods.formatSecondsToTime(duration)
+          );
+          resolve(duration);
+        });
       });
     },
     setFinalFunction() {
-      videoUtils.initialState.PLAYER.on("ended", function () {
+      console.log("setFinalFunction");
+      const player = new Vimeo.Player(document.getElementById("video"));
+      player.on("ended", function () {
         $(function () {
           $(".nav-bullet-dot:nth-child(3)")
             .click(function () {

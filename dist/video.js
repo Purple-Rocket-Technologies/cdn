@@ -2230,14 +2230,12 @@ const getProspect = async (ADVISOR_ID, COMPANY_ID, EMAIL) => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "createVideoProspectService": () => (/* binding */ createVideoProspectService),
-/* harmony export */   "fetchValidateVideoType": () => (/* binding */ fetchValidateVideoType),
 /* harmony export */   "fetchVideoService": () => (/* binding */ fetchVideoService),
 /* harmony export */   "getPathOptions": () => (/* binding */ getPathOptions),
 /* harmony export */   "getPathsContentAPI": () => (/* binding */ getPathsContentAPI),
 /* harmony export */   "getVideoProspect": () => (/* binding */ getVideoProspect),
 /* harmony export */   "setPathOptionsAPI": () => (/* binding */ setPathOptionsAPI),
-/* harmony export */   "updateVideoProspect": () => (/* binding */ updateVideoProspect),
-/* harmony export */   "updateWatchTimeAPI": () => (/* binding */ updateWatchTimeAPI)
+/* harmony export */   "updateVideoProspect": () => (/* binding */ updateVideoProspect)
 /* harmony export */ });
 /* harmony import */ var _Service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3912);
 /* harmony import */ var _Service__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_Service__WEBPACK_IMPORTED_MODULE_0__);
@@ -2263,8 +2261,8 @@ const createVideoProspectService = async (COMPANY_ID, BODY) => {
   createNewVideoProspect.set(BODY);
   return new Promise((resolve, reject) => {
     createNewVideoProspect.create().then(res => {
-      if (res.count > 0) {
-        resolve(service.parseResponse(res.data));
+      if (res.data && res.data.data && res.data.success) {
+        resolve(createNewVideoProspect.parseResponse(res.data));
       } else {
         reject(res);
       }
@@ -2274,28 +2272,11 @@ const createVideoProspectService = async (COMPANY_ID, BODY) => {
   });
 };
 
-async function fetchVideoService(type, country, lang) {
-  const fetchVideoAPI = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())("videoProspects/leadCapturingVideos");
-  fetchVideoAPI.equals("type", type);
-  fetchVideoAPI.equals("countryCode", country);
-  fetchVideoAPI.equals("language", lang);
-  return new Promise((resolve, reject) => {
-    fetchVideoAPI.find().then(res => {
-      if (res.count > 0) {
-        resolve(fetchVideoAPI);
-      } else {
-        reject(res);
-      }
-    }).catch(err => {
-      reject(err);
-    });
-  });
-}
-
-async function fetchValidateVideoType(type) {
-  debugger;
+async function fetchVideoService(params) {
   const validateVideo = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())("videoProspects/leadCapturingVideos");
-  validateVideo.equals("type", type);
+  params.forEach(element => {
+    validateVideo.equals(element.key, element.value);
+  });
   return new Promise((resolve, reject) => {
     validateVideo.find().then(res => {
       if (res.count > 0) {
@@ -2310,12 +2291,12 @@ async function fetchValidateVideoType(type) {
 }
 
 async function getPathsContentAPI(videoType) {
-  const patchContentAPI_URL = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())("videoProspects/paths");
-  patchContentAPI_URL.equals("type", videoType);
+  const patchContentAPI = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())("videoProspects/paths");
+  patchContentAPI.equals("type", videoType);
   return new Promise((resolve, reject) => {
-    patchContentAPI_URL.find().then(res => {
+    patchContentAPI.find().then(res => {
       if (res.count > 0) {
-        resolve(patchContentAPI_URL);
+        resolve(patchContentAPI.parseResponse(res));
       } else {
         reject(res);
       }
@@ -2325,28 +2306,12 @@ async function getPathsContentAPI(videoType) {
   });
 }
 
-async function updateWatchTimeAPI(COMPANY_ID, PROSPECT_ID, UPDATE_DATA) {
-  return new Promise((resolve, reject) => {
-    const watchTime = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())(`company/${COMPANY_ID}/videoProspects/${PROSPECT_ID}`);
-    watchTime.set(UPDATE_DATA);
-    watchTime.update(PROSPECT_ID).then(function (response) {
-      if (response && response.data && response.data.data) {
-        resolve(prospectService.parseResponse(response.data));
-      } else {
-        reject(response);
-      }
-    }).catch(function (error) {
-      reject(error);
-    });
-  });
-}
-
 const updateVideoProspect = async (COMPANY_ID, PROSPECT_ID, BODY) => {
   const updateVideoProspect = new (_Service__WEBPACK_IMPORTED_MODULE_0___default())(`company/${COMPANY_ID}/videoProspects/${PROSPECT_ID}`);
   updateVideoProspect.set(BODY);
   return new Promise((resolve, reject) => {
     updateVideoProspect.update().then(res => {
-      if (res.count > 0) {
+      if (res.data.count > 0) {
         resolve(updateVideoProspect.parseResponse(res.data));
       } else {
         reject(res);
@@ -2378,7 +2343,7 @@ const setPathOptionsAPI = async (COMPANY_ID, VIDEO_PROSPECT_ID, UPDATE_DATA) => 
     setpathAPI.set(UPDATE_DATA);
     setpathAPI.update(VIDEO_PROSPECT_ID).then(function (response) {
       if (response && response.data && response.data.data) {
-        resolve(prospectService.parseResponse(response.data));
+        resolve(setpathAPI.parseResponse(response.data));
       } else {
         reject(response);
       }
@@ -2804,9 +2769,8 @@ const onBoarding = {
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _service_video_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2379);
 
@@ -2849,6 +2813,17 @@ const videoUtils = {
       });
     },
 
+    letsStart() {
+      $(function () {
+        $(".nav-bullet-dot:nth-child(2)").click(function () {
+          this.click();
+        }).click();
+      });
+      $(".onboarding").addClass("pan-out");
+      $(".watch-video").addClass("pan-in");
+      $("*").scrollTop(0);
+    },
+
     formatSecondsToTime(time) {
       const hrs = ~~(time / 3600);
       const mins = ~~(time % 3600 / 60);
@@ -2874,43 +2849,54 @@ const videoUtils = {
         $("#peoplewatching").val(1);
         $("#country-us").click();
         $("#country-us").toggleClass("active");
-        lang_val = "EN";
-        country_val = "US";
-        fetchVideo(videoType, "US", "EN");
+        videoUtils.methods.fetchVideo(videoType, "US", "EN");
       }
     },
 
     fetchVideo(type, country, lang) {
-      (0,_service_video_index__WEBPACK_IMPORTED_MODULE_0__.fetchVideoService)(type, country, lang).then(function (response) {
-        video_id = response.url;
+      (0,_service_video_index__WEBPACK_IMPORTED_MODULE_0__.fetchVideoService)([{
+        key: "type",
+        value: type
+      }, {
+        key: "countryCode",
+        value: country
+      }, {
+        key: "language",
+        value: lang
+      }]).then(function (response) {
         $(".video-container").css("height", $(".video-container").width() / (16 / 9));
-        renderVideo(video_id);
+        videoUtils.methods.renderVideo(response.url);
       }).catch(function (error) {
-        this.showError("Oops, There was an unexpected error.");
+        videoUtils.methods.showError("Oops! Something went wrong.");
+        console.log(error, "error", type, country, lang);
       });
     },
 
     renderVideo(videoID) {
-      let iframe;
-      iframe = document.getElementById("video");
-      videoUtils.initialState.PLAYER = new Vimeo.Player(iframe);
+      videoUtils.initialState.PLAYER = new Vimeo.Player(document.getElementById("video"));
       videoUtils.initialState.PLAYER.loadVideo(videoID).then(function (id) {
-        this.setTotalDuration();
+        console.log("video loaded");
+        videoUtils.methods.setTotalDuration();
         playerinitialized = 1;
         videoUtils.initialState.PLAYER.pause();
-        this.setFinalFunction();
+        videoUtils.methods.setFinalFunction();
       }).catch(function (error) {});
     },
 
     setTotalDuration() {
-      videoUtils.initialState.PLAYER.getDuration().then(function (duration) {
-        this.initialState.VIDEO_TOTAL_TIME = duration;
-        $(".totaltime").text(format(duration));
+      return new Promise(function (resolve, reject) {
+        const player = new Vimeo.Player(document.getElementById("video"));
+        player.getDuration().then(function (duration) {
+          $(".totaltime").text(videoUtils.methods.formatSecondsToTime(duration));
+          resolve(duration);
+        });
       });
     },
 
     setFinalFunction() {
-      videoUtils.initialState.PLAYER.on("ended", function () {
+      console.log("setFinalFunction");
+      const player = new Vimeo.Player(document.getElementById("video"));
+      player.on("ended", function () {
         $(function () {
           $(".nav-bullet-dot:nth-child(3)").click(function () {
             this.click();
@@ -3014,7 +3000,8 @@ var __webpack_exports__ = {};
 (() => {
 const {
   BasePage,
-  finBaseUrl
+  finBaseUrl,
+  cookies
 } = __webpack_require__(8903);
 
 const {
@@ -3028,24 +3015,26 @@ const {
 const {
   fetchVideoService,
   getVideoProspect,
-  fetchValidateVideoType,
   getPathsContentAPI,
   createVideoProspectService,
-  updateWatchTimeAPI,
   updateVideoProspect,
   getPathOptions,
   setPathOptionsAPI
 } = __webpack_require__(2379);
 
-const videoUtils = __webpack_require__(4265);
+const videoUtils = (__webpack_require__(4265)/* ["default"] */ .Z);
 
 const {
-  url,
-  getVideoBaseUrl
+  isEmail
+} = videoUtils.methods;
+
+const {
+  url
 } = __webpack_require__(8903);
 
 let videoType = window.location.pathname.replace("/", "");
 let watchpercentage = 0;
+let page = null;
 
 class videoPage extends BasePage {
   constructor(_object) {
@@ -3069,8 +3058,7 @@ async function fetchAdvisor(page) {
 
 async function redirectContinuer(page) {
   if (url.query.get("prospectEmail")) {
-    const videoProspect = await getVideoProspect(page.COMPANY_ID, url.query.get("prospectEmail"));
-    videoProspect;
+    getVideoProspect(page.COMPANY_ID, url.query.get("prospectEmail")).then(res => {});
   }
 } //Setting paths content variable
 
@@ -3097,8 +3085,8 @@ async function setPathsContentVariable(videoType) {
     let description_array;
     let path_name;
 
-    for (let i = 0; i < response.data.data.length; i++) {
-      let it = response.data.data[i]; //setting title of path
+    for (let i = 0; i < response.length; i++) {
+      let it = response[i]; //setting title of path
 
       if ((await Weglot.getCurrentLang()) === "es") {
         path_name = await translateToLanguage([it.name], "en", "es");
@@ -3126,15 +3114,19 @@ async function setPathsContentVariable(videoType) {
         }
       }
     }
+
+    $(".main-app-container").addClass("show");
   }).catch(function (error) {
-    videoUtils.methods.error_show("Oops, There was an unexpected error.");
+    videoUtils.methods.showError("Oops, There was an unexpected error.");
     console.error(error);
   });
 }
 
 async function validateVideoType(typeName) {
-  debugger;
-  await fetchValidateVideoType(typeName).then(function (response) {
+  await fetchVideoService([{
+    key: "type",
+    value: typeName
+  }]).then(function (response) {
     console.table({
       response
     });
@@ -3142,14 +3134,9 @@ async function validateVideoType(typeName) {
 
     $("#video-title").text(response.data[0].name); // Setting video title
 
-    videoUtils.default.methods.renderVideo(response.data[0].url); // Rendering video
+    videoUtils.methods.renderVideo(response.data[0].url); // Rendering video
 
-    if (response.data.count > 0) {
-      validateUrl(getUrlParameter("company"), getUrlParameter("user"));
-      setPathsContentVariable(videoType);
-    } else {
-      $(".fourofour").addClass("show");
-    }
+    setPathsContentVariable(videoType);
   }).catch(function (error) {
     console.log(error, "err");
     $(".fourofour").addClass("show");
@@ -3158,30 +3145,31 @@ async function validateVideoType(typeName) {
 
 
 async function checkVideoProspect(email_val) {
-  let companyId = readCookie("COMPANY_ID");
+  let companyId = cookies.get("COMPANY_ID");
   await getVideoProspect(companyId, email_val).then(function (response) {
-    if (response.data.count === 1) {
-      videoUtils.default.initialState.VIDEO_PROSPECT_ID = response.data.data[0]._id;
+    page.VIDEO_PROSPECT_ID = response[0]._id;
 
-      if (!getUrlParameter("prospectEmail")) {
-        videoUtils.default.methods.showSuccess("Welcome " + response.data.data[0].firstName + "! Enjoy your video");
-      }
-
-      videoUtils.default.initialState.COUNTRY = response.data.data[0].country || "US";
-      videoUtils.default.initialState.LANG = response.data.data[0].language || "EN";
-      videoUtils.default.methods.fetchVideo(videoType, videoUtils.default.initialState.COUNTRY, videoUtils.default.initialState.LANG);
-      letsStart();
-    } else {
-      createVideoProspect();
+    if (!getUrlParameter("prospectEmail")) {
+      videoUtils.methods.showSuccess("Welcome " + response[0].firstName + "! Enjoy your video");
     }
+
+    page.COUNTRY = response[0].country || "US";
+    page.LANG = response[0].language || "EN";
+    videoUtils.methods.fetchVideo(videoType, page.COUNTRY, page.LANG);
+    letsStart();
   }).catch(function (error) {
-    error_show(error.response.data.message);
+    if (error.count === 0) {
+      createVideoProspect();
+    } else {
+      error_show(error.response.data.message);
+    }
   });
 } // Create Video Prospect
 
 
 async function createVideoProspect() {
-  await videoUtils.default.methods.fetchVideo(videoType, videoUtils.default.initialState.COUNTRY || "US", videoUtils.default.initialState.LANG || "EN");
+  await videoUtils.methods.fetchVideo(videoType, page.COUNTRY || "US", page.LANG || "EN");
+  console.table(page);
   const data = {
     videoName: document.title,
     firstName: $("#fname").val(),
@@ -3190,38 +3178,38 @@ async function createVideoProspect() {
     phone: Inputmask.unmask($("#phone").val(), {
       mask: "(999) 999-9999"
     }),
-    country: videoUtils.default.initialState.COUNTRY || "US",
-    language: videoUtils.default.initialState.LANG || "EN",
+    country: page.COUNTRY || "US",
+    language: page.LANG || "EN",
     watchingWith: $("#peoplewatching").val(),
     watchedTime: 0,
-    totalVideoTime: format(videoUtils.default.initialState.VIDEO_TOTAL_TIME),
+    totalVideoTime: videoUtils.methods.formatSecondsToTime(page.VIDEO_TOTAL_TIME),
     watchPercentage: 0,
     appointmentCompleted: false,
-    userId: readCookie("USER_ID"),
-    companyId: readCookie("COMPANY_ID")
+    userId: cookies.get("USER_ID"),
+    companyId: cookies.get("COMPANY_ID")
   };
 
-  if (readCookie("isAffiliateUrl") === "true") {
-    data.affiliateId = readCookie("affiliateId");
+  if (cookies.get("isAffiliateUrl") === "true") {
+    data.affiliateId = cookies.get("affiliateId");
   }
 
   await createVideoProspectService(data.companyId, data).then(function (response) {
-    videoUtils.default.initialState.VIDEO_PROSPECT_ID = response.data.data._id;
-    videoUtils.default.methods.showSuccess("Your details have been verified, Enjoy your video!");
-    letsStart();
+    page.VIDEO_PROSPECT_ID = response._id;
+    videoUtils.methods.showSuccess("Your details have been verified, Enjoy your video!");
+    videoUtils.methods.letsStart();
   }).catch(function (error) {
-    videoUtils.default.methods.showError(error.response.data.message);
+    videoUtils.methods.showError(error.response && error.response.data && error.response.data.message);
   });
 } // Update watch percentage
 
 
 async function updateWatchtime(time, percentage) {
-  let companyId = readCookie("COMPANY_ID");
+  let companyId = cookies.get("COMPANY_ID");
   let UpdateData = {
-    watchedTime: format(time),
+    watchedTime: videoUtils.methods.formatSecondsToTime(time),
     watchPercentage: parseInt(percentage)
   };
-  await updateWatchTimeAPI(companyId, videoUtils.default.initialState.VIDEO_PROSPECT_ID, UpdateData).then(function (response) {// trackMixPanelEvent(`Watched ${videoType} ${parseInt(percentage)}%`, {
+  await updateVideoProspect(companyId, page.VIDEO_PROSPECT_ID, UpdateData).then(function (response) {// trackMixPanelEvent(`Watched ${videoType} ${parseInt(percentage)}%`, {
     //   videoType,
     //   percentage: parseInt(percentage),
     //   watchedTime: format(time),
@@ -3231,24 +3219,18 @@ async function updateWatchtime(time, percentage) {
   }).catch(function (error) {//console.log(response.data);
     //console.log(response.xhr);
   });
-} // Progress bar update
+} // Current timing
 
 
 setInterval(function () {
-  if (videoUtils.default.initialState.IS_PLAYER_LOADED) {
-    videoUtils.default.initialState.PLAYER.getCurrentTime().then(function (seconds) {
-      watchpercentage = seconds / videoUtils.default.initialState.VIDEO_TOTAL_TIME * 100;
-    });
-    $(".progress-bar-inner").css("width", watchpercentage + "%");
-  }
-}, 200); // Current timing
+  page.PLAYER = new Vimeo.Player(document.getElementById("video"));
 
-setInterval(function () {
-  if (videoUtils.default.initialState.IS_PLAYER_LOADED) {
-    videoUtils.default.initialState.PLAYER.getCurrentTime().then(function (seconds) {
-      $(".elapsedtime").text(format(seconds));
+  if (page.IS_PLAYER_LOADED) {
+    page.PLAYER.getCurrentTime().then(function (seconds) {
+      $(".elapsedtime").text(videoUtils.methods.formatSecondsToTime(seconds));
       const schedule_footer = $(".schedule-footer");
-      watchpercentage = seconds / videoUtils.default.initialState.VIDEO_TOTAL_TIME * 100; //if (watchpercentage >= 93) {
+      watchpercentage = seconds / page.VIDEO_TOTAL_TIME * 100;
+      $(".progress-bar-inner").css("width", watchpercentage + "%"); //if (watchpercentage >= 93) {
       //if (schedule_footer.css("display") === "none") {
       // schedule_footer.css("display", "flex");
       // $("#window_frame").attr(
@@ -3260,15 +3242,15 @@ setInterval(function () {
       //}
       //}
 
-      videoUtils.default.initialState.PLAYER_CURRENT_TIME = seconds;
+      page.PLAYER_CURRENT_TIME = seconds;
     });
   }
 }, 200); // Rendering path questions based on the path selected
 
 async function render_options() {
-  for (i = 0; i <= videoUtils.default.initialState.PATH_OPTIONS.length; i++) {
+  for (i = 0; i <= page.PATH_OPTIONS.length; i++) {
     $(".checkbox-field:nth-child(" + i + ")").show();
-    let text = videoUtils.default.initialState.PATH_OPTIONS[i];
+    let text = page.PATH_OPTIONS[i];
 
     if ((await Weglot.getCurrentLang()) === "es") {
       if (text) {
@@ -3277,7 +3259,7 @@ async function render_options() {
     }
 
     $(".checkbox-field:nth-child(" + (i + 1) + ") .checkbox-label").text(text);
-    $(".checkbox-field:nth-child(" + (i + 1) + ") .checkbox-label").attr("en", videoUtils.default.initialState.PATH_OPTIONS[i]);
+    $(".checkbox-field:nth-child(" + (i + 1) + ") .checkbox-label").attr("en", page.PATH_OPTIONS[i]);
   }
 
   $(function () {
@@ -3293,7 +3275,7 @@ async function video_Int() {
   const USER_URL = url.query.get("id") || url.query.get("user");
   const TYPE = "getBaseUrl";
   const appLink = finBaseUrl(USER_URL, url.query.get("company"), TYPE, "appointment");
-  let page = new videoPage({ ...videoUtils.initialState,
+  page = new videoPage({ ...videoUtils.initialState,
     USER_URL,
     IS_OLD_LINK: url.query.get("company"),
     APPOINTMENT_LINK: `${appLink}&video=true`
@@ -3317,7 +3299,7 @@ async function video_Int() {
   $("#phone").inputmask("(999) 999-9999"); //Masking the phone number field
 
   $(".checkbox-field").hide();
-  validateVideoType(videoType); //validating video type from the url
+  await validateVideoType(videoType); //validating video type from the url
 
   /*********************************/
 
@@ -3364,15 +3346,15 @@ async function video_Int() {
   $(".country-btn").click(function () {
     $(".country-btn").removeClass("active");
     $(this).addClass("active");
-    videoUtils.default.initialState.COUNTRY = $(this).attr("data-country");
-    videoUtils.default.initialState.LANG = $(this).attr("data-lang");
-    fetchVideo(videoType, videoUtils.default.initialState.COUNTRY, videoUtils.default.initialState.LANG);
+    page.COUNTRY = $(this).attr("data-country");
+    page.LANG = $(this).attr("data-lang");
+    videoUtils.methods.fetchVideo(videoType, page.COUNTRY, page.LANG);
   });
   $(".non-clicker").click(function () {
     error_show("Please select a language first.");
   });
   $(".onboad").click(function () {
-    if (videoUtils.default.initialState.COUNTRY !== "") {
+    if (page.COUNTRY !== "") {
       if ($("#peoplewatching").val() != "" && $("#phone").val() != "" && $("#fname").val() != "") {
         if (isEmail($("#email").val())) {
           checkVideoProspect($("#email").val());
@@ -3389,61 +3371,61 @@ async function video_Int() {
 
   const set10 = setInterval(function () {
     if (watchpercentage > 10) {
-      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      updateWatchtime(parseInt(page.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
       clearInterval(set10);
     }
   }, 1000);
   const set20 = setInterval(function () {
     if (watchpercentage > 20) {
-      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      updateWatchtime(parseInt(page.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
       clearInterval(set20);
     }
   }, 1000);
   const set30 = setInterval(function () {
     if (watchpercentage > 30) {
-      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      updateWatchtime(parseInt(page.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
       clearInterval(set30);
     }
   }, 1000);
   const set40 = setInterval(function () {
     if (watchpercentage > 40) {
-      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      updateWatchtime(parseInt(page.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
       clearInterval(set40);
     }
   }, 1000);
   const set50 = setInterval(function () {
     if (watchpercentage > 50) {
-      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      updateWatchtime(parseInt(page.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
       clearInterval(set50);
     }
   }, 1000);
   const set60 = setInterval(function () {
     if (watchpercentage > 60) {
-      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      updateWatchtime(parseInt(page.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
       clearInterval(set60);
     }
   }, 1000);
   const set70 = setInterval(function () {
     if (watchpercentage > 70) {
-      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      updateWatchtime(parseInt(page.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
       clearInterval(set70);
     }
   }, 1000);
   const set80 = setInterval(function () {
     if (watchpercentage > 80) {
-      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      updateWatchtime(parseInt(page.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
       clearInterval(set80);
     }
   }, 1000);
   const set90 = setInterval(function () {
     if (watchpercentage > 90) {
-      updateWatchtime(parseInt(videoUtils.default.initialState.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
+      updateWatchtime(parseInt(page.PLAYER_CURRENT_TIME), parseInt(watchpercentage));
       clearInterval(set90);
     }
   }, 1000);
   const set96 = setInterval(function () {
     if (watchpercentage > 96) {
-      updateWatchtime(videoUtils.default.initialState.VIDEO_TOTAL_TIME, 100);
+      updateWatchtime(page.VIDEO_TOTAL_TIME, 100);
       clearInterval(set96);
     }
   }, 1000); // Changing the video text based on progress
@@ -3480,22 +3462,21 @@ async function video_Int() {
   });
 
   async function triggerRenderOptions(path_name) {
-    let COMPANY_ID = readCookie("COMPANY_ID");
+    let COMPANY_ID = cookies.get("COMPANY_ID");
     $(".path-heading").text(path_name);
     path_name = path_name.includes("1") ? "Path 1" : path_name.includes("2") ? "Path 2" : path_name.includes("3") ? "Path 3" : ""; // track path clicked event to mixpanel
     // trackMixPanelEvent(`${videoType}: ${path_name} Clicked`, {
     //   companyId: readCookie("COMPANY_ID"),
-    //   videoUtils.default.initialState.VIDEO_PROSPECT_ID,
+    //   page.VIDEO_PROSPECT_ID,
     //   pathChoosen: path_name,
     // });
 
-    await updateVideoProspect(COMPANY_ID, videoUtils.default.initialState.VIDEO_PROSPECT_ID, BODY).then(async function (response) {
-      let BODY = {
-        pathChoosen: path_name
-      }; // Getting path options afte a successfull post
-
+    await updateVideoProspect(COMPANY_ID, page.VIDEO_PROSPECT_ID, {
+      pathChoosen: path_name
+    }).then(async function (response) {
+      // Getting path options afte a successfull post
       await getPathOptions(path_name).then(function (response) {
-        videoUtils.default.initialState.PATH_OPTIONS = response.data.data[0].options;
+        page.PATH_OPTIONS = response.data.data[0].options;
         render_options();
       }).catch(function (error) {
         console.log(error.status);
@@ -3515,54 +3496,62 @@ async function video_Int() {
 
     if (check_element.hasClass("active")) {
       if (typeof get_value === "string") {
-        videoUtils.default.initialState.MCQ_OPTIONS.splice(videoUtils.default.initialState.MCQ_OPTIONS.indexOf(get_value), 1);
+        page.MCQ_OPTIONS.splice(page.MCQ_OPTIONS.indexOf(get_value), 1);
         check_element.removeClass("active");
       }
     } else {
       if (typeof get_value === "string") {
-        videoUtils.default.initialState.MCQ_OPTIONS.push(get_value);
+        page.MCQ_OPTIONS.push(get_value);
         check_element.addClass("active");
       }
     }
   });
   $(".submit.paths").click(async () => {
-    let COMPANY_ID = readCookie("COMPANY_ID");
+    let COMPANY_ID = cookies.get("COMPANY_ID");
 
-    if (videoUtils.default.initialState.MCQ_OPTIONS.length !== 0) {
+    if (page.MCQ_OPTIONS.length !== 0) {
       let BODY = {
-        interests: videoUtils.default.initialState.MCQ_OPTIONS
+        interests: page.MCQ_OPTIONS
       };
-      await setPathOptionsAPI(COMPANY_ID, videoUtils.default.initialState.VIDEO_PROSPECT_ID, BODY).then(function (response) {
+      await setPathOptionsAPI(COMPANY_ID, page.VIDEO_PROSPECT_ID, BODY).then(function (response) {
         console.log(response.data); // trackMixPanelEvent(
         //   `Video Prospect Journey Completed`,
         //   response.data.data
         // );
 
         $(".user_name").text($("#fname").val());
-        $(".rep_name, .rep_name_cta").text(readCookie("REP_NAME"));
-        $(".rep-phoito").css("background-image", "url('" + readCookie("PIC") + "')");
-        videoUtils.default.methods.showSuccess("Your answers have been sent successfully!");
-        $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
+        $(".rep_name, .rep_name_cta").text(cookies.get("REP_NAME"));
+        $(".rep-phoito").css("background-image", "url('" + cookies.get("PIC") + "')");
+        videoUtils.methods.showSuccess("Your answers have been sent successfully!");
+        $(".appointment-iframe .w-iframe iframe").attr("src", page.APPOINTMENT_LINK);
         $(".last-popup").addClass("active");
       }).catch(function (error) {
         console.log(error.status);
         console.log(error.statusText);
-        videoUtils.default.methods.showError("Oops, There was an unexpected error.");
+        videoUtils.methods.showError("Oops, There was an unexpected error.");
       });
     } else {
-      videoUtils.default.methods.showError("Please select at least one option");
+      videoUtils.methods.showError("Please select at least one option");
     }
   });
   $(".iframe-back").click(function () {
-    $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
+    $(".appointment-iframe .w-iframe iframe").attr("src", page.APPOINTMENT_LINK);
   });
   $(".closer-last").click(function () {
     $(".last-popup").removeClass("active");
-    $(".appointment-iframe .w-iframe iframe").attr("src", appointment_link);
+    $(".appointment-iframe .w-iframe iframe").attr("src", page.APPOINTMENT_LINK);
   });
 }
 
-video_Int();
+try {
+  video_Int().then(r => {
+    console.log("video_Int");
+  }).catch(e => {
+    console.error(e);
+  });
+} catch (e) {
+  console.error(e);
+}
 })();
 
 /******/ })()

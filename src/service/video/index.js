@@ -29,8 +29,8 @@ const createVideoProspectService = async (COMPANY_ID, BODY) => {
     createNewVideoProspect
       .create()
       .then((res) => {
-        if (res.count > 0) {
-          resolve(service.parseResponse(res.data));
+        if (res.data && res.data.data && res.data.success) {
+          resolve(createNewVideoProspect.parseResponse(res.data));
         } else {
           reject(res);
         }
@@ -41,31 +41,11 @@ const createVideoProspectService = async (COMPANY_ID, BODY) => {
   });
 };
 
-async function fetchVideoService(type, country, lang) {
-  const fetchVideoAPI = new Service("videoProspects/leadCapturingVideos");
-  fetchVideoAPI.equals("type", type);
-  fetchVideoAPI.equals("countryCode", country);
-  fetchVideoAPI.equals("language", lang);
-  return new Promise((resolve, reject) => {
-    fetchVideoAPI
-      .find()
-      .then((res) => {
-        if (res.count > 0) {
-          resolve(fetchVideoAPI);
-        } else {
-          reject(res);
-        }
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-}
-
-async function fetchValidateVideoType(type) {
-  debugger;
+async function fetchVideoService(params) {
   const validateVideo = new Service("videoProspects/leadCapturingVideos");
-  validateVideo.equals("type", type);
+  params.forEach((element) => {
+    validateVideo.equals(element.key, element.value);
+  });
   return new Promise((resolve, reject) => {
     validateVideo
       .find()
@@ -83,40 +63,20 @@ async function fetchValidateVideoType(type) {
 }
 
 async function getPathsContentAPI(videoType) {
-  const patchContentAPI_URL = new Service("videoProspects/paths");
-  patchContentAPI_URL.equals("type", videoType);
+  const patchContentAPI = new Service("videoProspects/paths");
+  patchContentAPI.equals("type", videoType);
   return new Promise((resolve, reject) => {
-    patchContentAPI_URL
+    patchContentAPI
       .find()
       .then((res) => {
         if (res.count > 0) {
-          resolve(patchContentAPI_URL);
+          resolve(patchContentAPI.parseResponse(res));
         } else {
           reject(res);
         }
       })
       .catch((err) => {
         reject(err);
-      });
-  });
-}
-async function updateWatchTimeAPI(COMPANY_ID, PROSPECT_ID, UPDATE_DATA) {
-  return new Promise((resolve, reject) => {
-    const watchTime = new Service(
-      `company/${COMPANY_ID}/videoProspects/${PROSPECT_ID}`
-    );
-    watchTime.set(UPDATE_DATA);
-    watchTime
-      .update(PROSPECT_ID)
-      .then(function (response) {
-        if (response && response.data && response.data.data) {
-          resolve(prospectService.parseResponse(response.data));
-        } else {
-          reject(response);
-        }
-      })
-      .catch(function (error) {
-        reject(error);
       });
   });
 }
@@ -130,7 +90,7 @@ const updateVideoProspect = async (COMPANY_ID, PROSPECT_ID, BODY) => {
     updateVideoProspect
       .update()
       .then((res) => {
-        if (res.count > 0) {
+        if (res.data.count > 0) {
           resolve(updateVideoProspect.parseResponse(res.data));
         } else {
           reject(res);
@@ -172,7 +132,7 @@ const setPathOptionsAPI = async (
       .update(VIDEO_PROSPECT_ID)
       .then(function (response) {
         if (response && response.data && response.data.data) {
-          resolve(prospectService.parseResponse(response.data));
+          resolve(setpathAPI.parseResponse(response.data));
         } else {
           reject(response);
         }
@@ -186,10 +146,8 @@ const setPathOptionsAPI = async (
 export {
   fetchVideoService,
   getVideoProspect,
-  fetchValidateVideoType,
   getPathsContentAPI,
   createVideoProspectService,
-  updateWatchTimeAPI,
   updateVideoProspect,
   getPathOptions,
   setPathOptionsAPI,
