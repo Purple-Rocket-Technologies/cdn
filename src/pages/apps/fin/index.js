@@ -42,10 +42,12 @@ async function fetchAdvisor() {
   }
 }
 
-function _FetchAdvisor(USERURL, COMPANYURL = null) {
-  USER_URL = USERURL;
-  COMPANY_URL = COMPANYURL;
-  fetchAdvisor();
+function _FetchAdvisor(user, company = null) {
+  USER_URL = user;
+  COMPANY_URL = company;
+  fetchAdvisor().then(() => {
+    console.log("fetchAdvisor");
+  });
 }
 
 async function init() {

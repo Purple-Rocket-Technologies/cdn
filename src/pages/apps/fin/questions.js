@@ -14,7 +14,7 @@ function handleUserFromFinPath() {
     cookies.set("START_OVER_URL", START_OVER_URL);
     cookies.set("INITIAL_LINK", START_OVER_URL);
     $("#start_over").attr("href", START_OVER_URL);
-    _FetchAdvisor();
+    _FetchAdvisor(USER_URL, null);
   }
 }
 
