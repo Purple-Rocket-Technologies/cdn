@@ -2,10 +2,24 @@ const {
   createProspect,
   updateProspectById,
 } = require("../../../service/fin/questions.service");
-const { cookies, isEmail, isMobile } = require("../../../utils");
+const { cookies, isEmail, isMobile, url } = require("../../../utils");
 const { getProspect } = require("../../../service/fin/onboarding.service");
+const { _FetchAdvisor } = require("../../../pages/apps/fin/index.js");
+
+function handleUserFromFinPath() {
+  if (url.query.get("id")) {
+    const USER_URL = url.query.get("id") || url.query.get("user");
+    const START_OVER_URL = `${window.location.hostname}/en?id=${USER_URL}`;
+    cookies.set("isOldUrl", false);
+    cookies.set("START_OVER_URL", START_OVER_URL);
+    cookies.set("INITIAL_LINK", START_OVER_URL);
+    $("#start_over").attr("href", START_OVER_URL);
+    _FetchAdvisor();
+  }
+}
 
 function questionsPageInit() {
+  handleUserFromFinPath();
   $("body").on("scroll mousewheel touchmove", function (e) {
     e.preventDefault();
     e.stopPropagation();

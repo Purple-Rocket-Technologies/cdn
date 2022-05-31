@@ -42,6 +42,12 @@ async function fetchAdvisor() {
   }
 }
 
+function _FetchAdvisor(USERURL, COMPANYURL = null) {
+  USER_URL = USERURL;
+  COMPANY_URL = COMPANYURL;
+  fetchAdvisor();
+}
+
 async function init() {
   // read query string from url
   USER_URL = url.query.get("id") || url.query.get("user");
@@ -66,4 +72,5 @@ async function init() {
 
 module.exports = {
   init,
+  _FetchAdvisor,
 };
