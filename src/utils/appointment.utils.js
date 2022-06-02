@@ -85,7 +85,10 @@ const appointmentUtils = {
     return page;
   },
   mapDataToPage: function (page) {
-    $("#rep-name").text(page.REP_NAME);
+    const repName = $("#rep-name");
+    repName.text(page.REP_NAME);
+    $("#loading-logo").hide();
+    repName.toggleClass("hide");
     this.setMetaData(page);
     const watchVideoWrapper = $("#video-watch-wrapper");
     const profileVideoArea = $("#profile-video-area");
