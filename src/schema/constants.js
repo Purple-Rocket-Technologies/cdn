@@ -48,6 +48,59 @@ const BASE_QUESTIONS = [
     ],
   },
   {
+    question: "Who is with you on your financial journey?",
+    es: "¿Quién está con vos en tu viaje financiero?",
+    answer: [],
+    type: "radio",
+    style: {
+      gridTemplateColumns: "repeat(3, 250px) !important",
+    },
+    options: [
+      {
+        label: "My spouse.  I am married",
+        value: "My spouse.  I am married",
+        es: "Mi cónyuge. Estoy casado",
+        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa43d07080c413621d7_Group%20298.svg",
+      },
+      {
+        label: "My fiance.  I am engaged.",
+        value: "My fiance.  I am engaged.",
+        es: "Mi novio. Estoy comprometido",
+        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa43d07080c413621d7_Group%20298.svg",
+      },
+      // {
+      //   label: "Kids under 18 (or plan to)",
+      //   value: "Kids under 18 (or plan to)",
+      //   es: "Niños menores de 18 años (o planean hacerlo)",
+      //   icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa508009b48e2c5c553_Group%20299.svg",
+      // },
+      {
+        label: "My domestic partner.  I am unmarried.",
+        value: "My domestic partner.  I am unmarried.",
+        es: "Mi pareja doméstica. Estoy soltero",
+        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa4734cdf3e21d7b805_Group%20300.svg",
+      },
+      // {
+      //   label: "Actively saving for retirement",
+      //   value: "Actively saving for retirement",
+      //   es: "Ahorro activo para la jubilación",
+      //   icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5ce5ba4b9e45399b4_Group%20301.svg",
+      // },
+      {
+        label: "Just me.  I am solely responsible",
+        value: "Just me.  I am solely responsible",
+        es: "Sólo yo. Estoy solo responsable",
+        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5f9b0b0373efe4cfe_Group%20302.svg",
+      },
+      // {
+      //   label: "Self-Employed",
+      //   value: "Self-Employed",
+      //   es: "Trabajadores por cuenta propia",
+      //   icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5efe60d8386fb1bfc_Group%20303.svg",
+      // },
+    ],
+  },
+  {
     question: "Now, a little about you and/or your partner.",
     es: "Ahora, un poco sobre ti y/o tu pareja.",
     answer: [],
@@ -56,11 +109,24 @@ const BASE_QUESTIONS = [
       gridTemplateColumns: "repeat(3, 250px) !important",
     },
     options: [
+      // {
+      //   label: "Married or have a domestic partner",
+      //   value: "Married or have a domestic partner",
+      //   es: "Casado o con pareja de hecho",
+      //   icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa43d07080c413621d7_Group%20298.svg",
+      // },
+      //
+      // {
+      //   label: "Buying / Own a home",
+      //   es: "Comprar / Ser dueño de una casa",
+      //   value: "Buying / Own a home",
+      //   icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa4734cdf3e21d7b805_Group%20300.svg",
+      // },
       {
-        label: "Married or have a domestic partner",
-        value: "Married or have a domestic partner",
-        es: "Casado o con pareja de hecho",
-        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa43d07080c413621d7_Group%20298.svg",
+        label: "Actively saving for retirement",
+        value: "Actively saving for retirement",
+        es: "Ahorro activo para la jubilación",
+        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5ce5ba4b9e45399b4_Group%20301.svg",
       },
       {
         label: "Kids under 18 (or plan to)",
@@ -69,27 +135,15 @@ const BASE_QUESTIONS = [
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa508009b48e2c5c553_Group%20299.svg",
       },
       {
-        label: "Buying / Own a home",
-        es: "Comprar / Ser dueño de una casa",
-        value: "Buying / Own a home",
-        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa4734cdf3e21d7b805_Group%20300.svg",
-      },
-      {
-        label: "Actively saving for retirement",
-        value: "Actively saving for retirement",
-        es: "Ahorro activo para la jubilación",
-        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5ce5ba4b9e45399b4_Group%20301.svg",
-      },
-      {
         label: "Employee",
         value: "Employee",
         es: "Empleado",
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5f9b0b0373efe4cfe_Group%20302.svg",
       },
       {
-        label: "Self-Employed",
-        value: "Self-Employed",
-        es: "Trabajadores por cuenta propia",
+        label: "Self-Employed or Business Owner",
+        value: "Self-Employed or Business Owner",
+        es: "Propietario de negocio o empleado",
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5efe60d8386fb1bfc_Group%20303.svg",
       },
     ],
@@ -122,9 +176,9 @@ const BASE_QUESTIONS = [
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5bb0d5e4d9f8f84d5_Group%20306.svg",
       },
       {
-        label: "401k/IRA Investment Selections",
-        value: "401k/IRA Investment Selections",
-        es: "Selección de inversiones de 401k/IRA",
+        label: "401k/403b/IRA Investment Choices",
+        value: "401k/403b/IRA Investment Choices",
+        es: "401k/403b/Inversiones en IRAs",
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5ba9df5475851661f_Group%20307.svg",
       },
       {
@@ -192,8 +246,8 @@ const BASE_QUESTIONS = [
 
 const questions = {
   BOTH: BASE_QUESTIONS,
-  MANAGE_MONEY_BETTER: BASE_QUESTIONS.slice(0, 3),
-  MAKE_MORE_MONEY: [BASE_QUESTIONS[1], BASE_QUESTIONS[3]],
+  MANAGE_MONEY_BETTER: BASE_QUESTIONS.slice(0, 4),
+  MAKE_MORE_MONEY: [BASE_QUESTIONS[1], BASE_QUESTIONS[2], BASE_QUESTIONS[4]],
 };
 
 const getLastSlash = (str) => str.split("/").pop();
