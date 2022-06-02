@@ -133,7 +133,10 @@ export default function initFinalStep() {
   $(".rep_name").text(rep_name);
   $("#rep-name").text(rep_name);
   $(".rep_name_cta").text(rep_name);
-  $("#user-name").text(cookies.get("Name"));
+  const userNameEls = document.querySelectorAll("#user-name");
+  userNameEls.forEach((el) => {
+    el.innerHTML = capitalize(cookies.get("Name"));
+  });
   $("#rep_name").text(rep_name);
   $("#rep-image").attr("src", cookies.get("PIC"));
   $(".rep-phoito").css("background-image", "url('" + cookies.get("PIC") + "')");
@@ -205,6 +208,13 @@ export default function initFinalStep() {
       );
   };
 
+  const openFINPath = (email) => {
+    window.open(
+      `https://finpath.discoverfin.io/${page.URL_USER}/start?email=${email}`,
+      "_blank"
+    );
+  };
+
   const openVideoApp = (email) => {
     window.open(
       !isEmpty(page.IS_OLD_LINK)
@@ -226,33 +236,37 @@ export default function initFinalStep() {
     } catch (e) {
       console.log(e);
     }
-    $("#fin_number").text(
-      Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 0,
-      }).format(prospectAnswers["fin_number"])
-    );
-
-    $("#video-area").click(() => {
-      openVideoApp(prospectAnswers["email"]);
+    $("#fin_number").each(() => {
+      $(this).text(
+        Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+          maximumFractionDigits: 0,
+        }).format(prospectAnswers["fin_number"])
+      );
     });
+
+    // $("#video-area").click(() => {
+    //   openVideoApp(prospectAnswers["email"]);
+    // });
 
     $(".open-video").each(function () {
       $(this).click(() => {
-        openVideoApp(prospectAnswers["email"]);
+        openFINPath(prospectAnswers["email"]);
+        // openVideoApp(prospectAnswers["email"]);
       });
     });
 
-    const isMakeMoreMoney =
-      window.location.pathname.includes("make-more-money");
+    // const isMakeMoreMoney =
+    //   window.location.pathname.includes("make-more-money");
 
-    if (!isMakeMoreMoney) {
-      $(".manage-both").css("display", "block");
-      parent.html(questionAndAnswersOfProspect(prospectAnswers));
-    } else {
-      $(".manage-both").css("display", "none");
-    }
+    // if (!isMakeMoreMoney) {
+    //   $(".manage-both").css("display", "block");
+    //   parent.html(questionAndAnswersOfProspect(prospectAnswers));
+    // } else {
+    //   $(".manage-both").css("display", "none");
+    // }
+    $(".manage-both").css("display", "none");
   }
 
   populatePathOptions();

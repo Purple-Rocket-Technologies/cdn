@@ -234,6 +234,40 @@ export default function InitRouteQuestions() {
           ]
         );
       },
+      parseQuestionLabel(question, es = false) {
+        let label = question.question;
+        if (!label) return "";
+        if (!label.includes("partner")) {
+          return es ? question.es : label;
+        }
+        const lastAnswer = this.questions.find(
+          (e) => e.question === "Who is with you on your financial journey?"
+        );
+        const answerText = lastAnswer.answer[0];
+        if (answerText.includes("Just me")) {
+          label = "Now, a little about you";
+          question.es = "Ahora, un poco sobre ti";
+          return es ? question.es : label;
+        }
+        const hasSpouseOrFianceorDomesticPartner = answerText.includes("spouse")
+          ? "spouse"
+          : answerText.includes("fiance")
+          ? "fiance"
+          : answerText.includes("domestic partner")
+          ? "domestic partner"
+          : "";
+
+        label = label.replace("partner", hasSpouseOrFianceorDomesticPartner);
+        console.log("partner", hasSpouseOrFianceorDomesticPartner, label);
+        return es ? this.toEs(label) : label;
+      },
+      toEs(label) {
+        return label
+          .replace("partner", "conyugue")
+          .replace("fiance", "novio")
+          .replace("domestic partner", "concubino")
+          .replace("spouse", "cónyuge");
+      },
       questionsContainer() {
         const containerWidth = "1080px";
         const containerStyles = !isMobile()
@@ -266,9 +300,13 @@ export default function InitRouteQuestions() {
                       marginBottom: "10px",
                     },
                   },
-                  getCurrentLanguage() === "en"
-                    ? this.currentQuestion.question
-                    : this.currentQuestion.es
+                  this.parseQuestionLabel(
+                    this.currentQuestion,
+                    getCurrentLanguage() === "es"
+                  )
+                  // getCurrentLanguage() === "en"
+                  //   ? this.currentQuestion.question
+                  //   : this.currentQuestion.es
                 ),
                 h(
                   "span",
