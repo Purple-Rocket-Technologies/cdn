@@ -116,7 +116,7 @@ const appointmentUtils = {
       );
       profileVideoIframe.attr("width", "100%");
       profileVideoIframe.attr("class", "appointment-page-video");
-      profileVideoArea.css("display", "flex");
+      // profileVideoArea.css("display", "flex");
       watchVideoWrapper.css("opacity", "100%");
       watchVideoWrapper.css("display", "flex");
       watchVideoWrapper.css("opacity", "100%");
