@@ -36,7 +36,6 @@ function init() {
     cookies.get("Name"),
     cookies.get("FIN Number")
   );
-  console.table(page);
   page.setPath();
   page.handlePathSelection();
 }
