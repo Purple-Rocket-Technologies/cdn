@@ -53,7 +53,7 @@ const BASE_QUESTIONS = [
     answer: [],
     type: "radio",
     style: {
-      gridTemplateColumns: "repeat(3, 250px) !important",
+      gridTemplateColumns: "repeat(2, 250px) !important",
     },
     options: [
       {
@@ -106,7 +106,7 @@ const BASE_QUESTIONS = [
     answer: [],
     type: "checkbox",
     style: {
-      gridTemplateColumns: "repeat(3, 250px) !important",
+      gridTemplateColumns: "repeat(2, 250px) !important",
     },
     options: [
       // {
