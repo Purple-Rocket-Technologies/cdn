@@ -229,21 +229,19 @@ export default function initFinalStep() {
   };
 
   async function populatePathOptions() {
-    const parent = $("#ans-selected");
     let prospectAnswers;
     try {
       prospectAnswers = await getPathAnswers(cookies.get("PROSPECT_ID"));
     } catch (e) {
       console.log(e);
     }
-    $("#fin_number").each(() => {
-      $(this).text(
-        Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-          maximumFractionDigits: 0,
-        }).format(prospectAnswers["fin_number"])
-      );
+    const FinNumberEls = document.querySelectorAll("#fin_number");
+    FinNumberEls.forEach((el) => {
+      el.innerHTML = Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }).format(prospectAnswers["fin_number"]);
     });
 
     // $("#video-area").click(() => {
