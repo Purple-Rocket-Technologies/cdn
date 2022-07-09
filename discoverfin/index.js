@@ -1,24 +1,29 @@
-var statesList = [];
-var selectedCountry;
-var selectedCountryName;
-var price_array = [];
-var stripeId;
+let statesList = [];
+let selectedCountry;
+let selectedCountryName;
+let price_array = [];
+let stripeId;
 let trailMode = false;
 let planSelected;
+api_url = "devbackendapp.discoverfin.io";
 //api list
-var get_states_api =
+const get_states_api =
   "https://" + api_url + "/api/v1/users/countriesAndStates/?abbreviation=";
-var get_pricing = "https://" + api_url + "/api/v1/users/assets/calculateTotal";
-var checkCompanyEmail =
+const get_pricing =
+  "https://" + api_url + "/api/v1/users/assets/calculateTotal";
+const checkCompanyEmail =
   "https://" + api_url + "/api/v1/users/checkCompanyUserEmail";
-var createCharge = "https://" + api_url + "/api/v1/users/createCharge";
-var fetchPlan = "https://" + api_url + "/api/v1/users/plans?limit=100";
+const createCharge = "https://" + api_url + "/api/v1/users/createCharge";
+const fetchPlan = "https://" + api_url + "/api/v1/users/plans?limit=100";
 let allPlans = [];
-
+const stripeKey =
+  "pk_live_51H9OieCKHZ8kusjLVzlDed840WHxWdsSfI3ItMIympA15Ozhy1sUsZUODyP5qYPj5ofF3Kjtu5jCYtZP8iTzjrSh00bdfU07RR";
 // $("#Billing option:nth-child(1)").attr("value", "FINTap Monthly");
 // $("#Billing option:nth-child(2)").attr("value", "FINTap Yearly");
 
 // $("#billing_freq").text("Monthly");
+
+const stripePopup = $("#stripepopup");
 
 function openStripeModal() {
   //*************************************************//
@@ -26,14 +31,12 @@ function openStripeModal() {
   //***********************************************//
 
   $("#details-popup").css("display", "none");
-  $("#stripepopup").css("display", "flex");
-  var stripe = Stripe(
-    "pk_test_51H9OieCKHZ8kusjLzWw353ZdzHc9Atug0VunuxSd7dR8Dl1e0LDFRGq5GGp4IfjTqQJSRdDKfNtgMSuuyC9P3HpI00OUJLyPof"
-  );
-  var elements = stripe.elements();
+  stripePopup.css("display", "flex");
+  const stripe = Stripe(stripeKey);
+  const elements = stripe.elements();
 
-  // Custom styling can be passed to options when creating an Element.
-  var style = {
+  // Custom styling can be passed to option when creating an Element.
+  const style = {
     base: {
       // Add your base input styles here. For example:
       fontSize: "16px",
@@ -42,17 +45,17 @@ function openStripeModal() {
   };
 
   // Create an instance of the card Element.
-  var card = elements.create("card", { style: style });
+  const card = elements.create("card", { style: style });
 
   // Add an instance of the card Element into the `card-element` <div>.
   card.mount("#card-element");
 
   $("#payment_submit_btn").click(function () {
     setTimeout(function () {
-      if ($(".StripeElement").hasClass("StripeElement--invalid") == true) {
+      if ($(".StripeElement").hasClass("StripeElement--invalid") === true) {
         // Do nothing
       } else {
-        if ($("#Checkbox-2").prop("checked") == true) {
+        if ($("#Checkbox-2").prop("checked") === true) {
           stripe
             .createPaymentMethod({
               type: "card",
@@ -65,7 +68,7 @@ function openStripeModal() {
               // Handle result.error or result.paymentMethod
               if (result.error) {
                 console.log("createPaymentMethod result.error", result.error);
-                var errorElement = document.getElementById("card-errors");
+                const errorElement = document.getElementById("card-errors");
                 errorElement.textContent = result.error.message;
               } else {
                 console.log(
@@ -87,7 +90,7 @@ function openStripeModal() {
   async function stripeTokenHandler(token) {
     // Insert the token ID into the form so it gets submitted to the server
     console.log("Token handler started");
-    var reqBody = {
+    const reqBody = {
       advisorEmail: $("#Business-Email").val(),
       advisorName: $("#business-name").val().trim(),
       phone: $("#business-phone").val(),
@@ -97,12 +100,13 @@ function openStripeModal() {
       companyName: $("#business-name").val().trim(),
       desc: "payment",
       pay: "usd",
+      trial: trailMode,
       plan: stripeId,
       token: token.id,
       qty_links: $("#no-of-links").val(),
       qty_bracelets: $("#number-of-bracelets").val(),
-      addressLine1: $("#add_1").val(),
-      addressLine2: $("#add_2").val(),
+      addressLine1: $("#add_1").val() || "",
+      addressLine2: $("#add_2").val() || "",
       appartment: "",
       city: $("#City").val(),
       state: $("#state").find("option:selected").text(),
@@ -149,7 +153,7 @@ axios({
   .then(function (response) {
     allPlans = response.data.data;
     stripeId = response.data.data.filter(
-      (plan) => plan.planName === "The FIN System Monthly"
+      (plan) => plan.planName === "Fintell Dominate Monthly"
     )[0].stripeId;
   })
   .catch(function (error) {
@@ -175,7 +179,7 @@ function calculatePricing() {
       planType: billingFrequency.replace(/\s/g, "_"),
       shippingType: selectedCountry,
       qty_links: parseInt(links),
-      qty_bracelets: parseInt(bracelets),
+      qty_bracelets: 0,
     },
   })
     .then(function (response) {
@@ -191,30 +195,30 @@ function calculatePricing() {
 function setPriceValues() {
   const { discountPercent = 0, couponCode = 0 } = price_array.coupon || {};
   const toSet = [
-    {
-      elem: $("#price-setupfee"),
-      value: "$" + price_array.setupFee,
-    },
-    {
-      elem: $("#price-setupfee-another"),
-      value: "$" + price_array.setupFee,
-    },
+    // {
+    //   elem: $("#price-setupfee"),
+    //   value: "$" + price_array.setupFee,
+    // },
+    // {
+    //   elem: $("#price-setupfee-another"),
+    //   value: "$" + price_array.setupFee,
+    // },
     {
       elem: $("#price-link"),
       value: "$" + price_array.subscriptionTotal,
     },
-    {
-      elem: $("#price-bracelet"),
-      value: "$" + price_array.braceletsTotal,
-    },
-    {
-      elem: $("#bracelets-price"),
-      value: "$" + price_array.braceletsTotal,
-    },
-    {
-      elem: $("#price-shipping"),
-      value: "$" + price_array.shippingCost,
-    },
+    // {
+    //   elem: $("#price-bracelet"),
+    //   value: "$" + price_array.braceletsTotal,
+    // },
+    // {
+    //   elem: $("#bracelets-price"),
+    //   value: "$" + price_array.braceletsTotal,
+    // },
+    // {
+    //   elem: $("#price-shipping"),
+    //   value: "$" + price_array.shippingCost,
+    // },
     {
       elem: $("#price-total, #total-price"),
       value: "$" + parseFloat(price_array.invoiceTotal).toFixed(2),
@@ -227,30 +231,30 @@ function setPriceValues() {
       elem: $(".recurring-price"),
       value: "$" + price_array.subscriptionTotal,
     },
-    {
-      elem: $(".pmt-discount-percentage"),
-      value: "$" + discountPercent,
-    },
-    {
-      elem: $(".pmt-coupon-code"),
-      value: "$" + couponCode,
-    },
+    // {
+    //   elem: $(".pmt-discount-percentage"),
+    //   value: "$" + discountPercent,
+    // },
+    // {
+    //   elem: $(".pmt-coupon-code"),
+    //   value: "$" + couponCode,
+    // },
     {
       elem: $("#link-qty"),
       value: "$" + $("#no-of-links").val(),
     },
-    {
-      elem: $("#bracelet-qty"),
-      value: "$" + $("#number-of-bracelets").val(),
-    },
-    {
-      elem: $("#price-single-bracelet"),
-      value:
-        "$" +
-        (price_array.braceletsTotal / $("#number-of-bracelets").val()).toFixed(
-          2
-        ),
-    },
+    // {
+    //   elem: $("#bracelet-qty"),
+    //   value: "$" + $("#number-of-bracelets").val(),
+    // },
+    // {
+    //   elem: $("#price-single-bracelet"),
+    //   value:
+    //     "$" +
+    //     (price_array.braceletsTotal / $("#number-of-bracelets").val()).toFixed(
+    //       2
+    //     ),
+    // },
     {
       elem: $("#price-single-link"),
       value:
@@ -258,8 +262,12 @@ function setPriceValues() {
         (price_array.subscriptionTotal / $("#no-of-links").val()).toFixed(2),
     },
     {
+      elem: $("#checkout_price"),
+      value: "$" + price_array.subscriptionTotal,
+    },
+    {
       elem: $("#next-billing-date"),
-      value: "",
+      value: trailMode ? "30 days from now" : new Date().toDateString(),
     },
   ];
 
@@ -284,9 +292,14 @@ function setSelectStates(country) {
     .then(function (response) {
       statesList = response.data.data[0];
 
-      for (index = 0; index < Object.keys(statesList.states).length; index++) {
-        var state_name = statesList.states[index].name;
-        var state_abb = statesList.states[index].abbreviation;
+      let option_element;
+      for (
+        let index = 0;
+        index < Object.keys(statesList.states).length;
+        index++
+      ) {
+        const state_name = statesList.states[index].name;
+        const state_abb = statesList.states[index].abbreviation;
 
         option_element =
           '<option value="' + state_abb + '">' + state_name + "</option>";
@@ -318,14 +331,10 @@ $("#number-of-bracelets").keyup(function () {
   }
 });
 
-const fieldsToWatch = [
-  $("#no-of-links"),
-  $("#number-of-bracelets"),
-  $("#Billing"),
-];
+const fieldsToWatch = [$("#no-of-links"), $("#Billing")];
 
-fieldsToWatch[2].on("input change", () => {
-  const val = fieldsToWatch[2].val();
+fieldsToWatch[1].on("input change", () => {
+  const val = fieldsToWatch[1].val();
   const plan = val.substring(0, val.lastIndexOf(" ") + 1).trim();
   const freq = val.substring(val.lastIndexOf(" ") + 1, val.length).trim();
   $("#biling_type").text(`/${freq.toLowerCase()}`);
@@ -356,41 +365,41 @@ fieldsToWatch.forEach((element) => {
   });
 });
 
-//coupon add in field
-$(".copy-code, .pmt-coupon-container").click(function () {
-  var couponcode = $(".pmt-coupon-code").text();
-  $("#coupon").val(couponcode);
-  $("#coupon").attr(
-    "data-discount",
-    parseInt($(".pmt-discount-percentage").text().split("$")[1])
-  );
-});
-
-$(".pmt-coupon-button").click(function () {
-  if ($("#coupon").val() != "") {
-    $(".coupon-message").addClass("active");
-
-    var discount_percentage = $("#coupon").attr("data-discount");
-
-    var discount_price =
-      (parseFloat(price_array.braceletsTotal) / 100) * discount_percentage;
-
-    console.log(parseFloat(price_array.braceletsTotal), discount_price);
-    var discounted_price_on_bracelet =
-      parseFloat(price_array.invoiceTotal) - parseFloat(discount_price);
-    price_array.payblePrice = parseFloat(discounted_price_on_bracelet);
-
-    $(".discount-amout")
-      .children("strong")
-      .text("$" + parseFloat(discount_price));
-    $(".pmt-total-text.discount").text("- $" + parseFloat(discount_price));
-    $(".pmt-total-text.discounted, #total-price").text(
-      "$" + parseFloat(discounted_price_on_bracelet).toFixed(2)
-    );
-  } else {
-    alert("Please enter a coupon code.");
-  }
-});
+// //coupon add in field
+// $(".copy-code, .pmt-coupon-container").click(function () {
+//   var couponcode = $(".pmt-coupon-code").text();
+//   $("#coupon").val(couponcode);
+//   $("#coupon").attr(
+//     "data-discount",
+//     parseInt($(".pmt-discount-percentage").text().split("$")[1])
+//   );
+// });
+//
+// $(".pmt-coupon-button").click(function () {
+//   if ($("#coupon").val() != "") {
+//     $(".coupon-message").addClass("active");
+//
+//     var discount_percentage = $("#coupon").attr("data-discount");
+//
+//     var discount_price =
+//       (parseFloat(price_array.braceletsTotal) / 100) * discount_percentage;
+//
+//     console.log(parseFloat(price_array.braceletsTotal), discount_price);
+//     var discounted_price_on_bracelet =
+//       parseFloat(price_array.invoiceTotal) - parseFloat(discount_price);
+//     price_array.payblePrice = parseFloat(discounted_price_on_bracelet);
+//
+//     $(".discount-amout")
+//       .children("strong")
+//       .text("$" + parseFloat(discount_price));
+//     $(".pmt-total-text.discount").text("- $" + parseFloat(discount_price));
+//     $(".pmt-total-text.discounted, #total-price").text(
+//       "$" + parseFloat(discounted_price_on_bracelet).toFixed(2)
+//     );
+//   } else {
+//     alert("Please enter a coupon code.");
+//   }
+// });
 
 $("#go-t-2-dummy").click(() => {
   const links = $("#no-of-links").val();
@@ -405,37 +414,33 @@ $("#go-t-2-dummy").click(() => {
     if (!links || !bracelets) {
       if (!links) {
         alert("Please select a number of links");
-      } else if (!bracelets) {
-        alert("Please select a number of bracelets");
       }
     }
-    if (links && bracelets) {
+    if (links) {
       $("#goToSecondStep").click();
     }
   }
 });
 
 $("#checkout_btn").click(function () {
-  var email = $("#Business-Email").val();
+  const email = $("#Business-Email").val();
 
-  atomic(checkCompanyEmail, {
+  axios({
+    url: checkCompanyEmail,
     method: "POST",
     data: {
       email,
     },
   })
     .then(function (response) {
-      if (response.data.status == 200) {
+      if (response.data.status === 200) {
         console.log(response.data);
-        var checkout_name =
+        const checkout_name =
           $("#first-name").val() + " " + $("#last-name").val();
-        var checkout_company = $("#business-name").val();
+        const checkout_company = $("#business-name").val();
         $("#checkout_name").text(checkout_name);
         $("#checkout_company").text(checkout_company);
         $("#checkout_email").text(email.toString().toLowerCase());
-        $("#checkout_price").text(
-          "$" + parseFloat(price_array.payblePrice).toFixed(2)
-        );
         openStripeModal();
       } else {
         alert("Email already exists");
@@ -460,12 +465,12 @@ $("#showoverview").click(() => {
     $("#last-name").val(),
     $("#Business-Email").val(),
     $("#business-name").val(),
-    $("#business-phone").val(),
-    $("#add_1").val(),
-    $("#add_2").val(),
-    $("#state").val(),
-    $("#City").val(),
-    $("#zip-code").val(),
+    // $("#business-phone").val(),
+    // $("#add_1").val(),
+    // $("#add_2").val(),
+    // $("#state").val(),
+    // $("#City").val(),
+    // $("#zip-code").val(),
   ];
   setTimeout(() => {
     let toShowError = false;
@@ -488,7 +493,7 @@ $("#showoverview").click(() => {
 
 $("#goback-details").click(() => {
   $("#details-popup").css("display", "flex");
-  $("#stripepopup").css("display", "none");
+  stripePopup.css("display", "none");
 });
 
 function autoFill() {
@@ -507,12 +512,12 @@ function autoFill() {
 // autoFill();
 
 const buttonsToListen = [
-  $("#fin_sys"),
-  $("#fin"),
-  $("#social_media"),
-  $("#fin_sys_trial"),
-  $("#fin_trial"),
-  $("#social_media_trial"),
+  $(".buy-now"),
+  $(".free-trial"),
+  // $("#social_media"),
+  // $("#fin_sys_trial"),
+  // $("#fin_trial"),
+  // $("#social_media_trial"),
 ];
 
 function hideElemetsForSocialPlan(hide = true) {
@@ -533,61 +538,14 @@ function populatePlansInBillingFrequency(planName) {
 
 buttonsToListen.forEach((element) => {
   element.on("click", () => {
-    const id = element.attr("id");
-    switch (id) {
-      case "fin_sys":
-        // hideElemetsForSocialPlan(false);
-        planSelected = "The FIN System";
-        $("#price-link").text("$149");
-        $(".social-only").css("display", "none");
-        populatePlansInBillingFrequency(planSelected);
-        stripeId = filterPlan("The FIN System", "Monthly").stripeId;
-        break;
-      case "social_media":
-        hideElemetsForSocialPlan();
-        planSelected = "Social Media";
-        populatePlansInBillingFrequency(planSelected);
-        stripeId = filterPlan("Social Media", "Monthly").stripeId;
-        break;
-      case "fin":
-        planSelected = "FIN";
-        // hideElemetsForSocialPlan(false);
-        $("#price-link").text("$99");
-        $(".social-only").css("display", "none");
-        populatePlansInBillingFrequency(planSelected);
-        stripeId = filterPlan("FIN", "Monthly").stripeId;
-        break;
-      case "fin_sys_trial":
-        // hideElemetsForSocialPlan(false);
-
-        trailMode = true;
-        $(".social-only").css("display", "none");
-
-        planSelected = "Social Media";
-        populatePlansInBillingFrequency(planSelected);
-        stripeId = filterPlan("The FIN System", "Monthly").stripeId;
-        break;
-      case "fin_trial":
-        // hideElemetsForSocialPlan(false);
-        trailMode = true;
-        planSelected = "FIN";
-        $(".social-only").css("display", "none");
-
-        populatePlansInBillingFrequency(planSelected);
-        stripeId = filterPlan("FIN", "Monthly").stripeId;
-        break;
-      case "social_media_trial":
-        // hideElemetsForSocialPlan(false);
-
-        hideElemetsForSocialPlan();
-        planSelected = "The FIN System";
-        populatePlansInBillingFrequency(planSelected);
-        trailMode = true;
-        stripeId = filterPlan("Social Media", "Monthly").stripeId;
-        break;
-      default:
-        break;
-    }
+    const id = element.attr("class").includes("free");
+    // trailMode = !!id;
+    trailMode = true;
+    planSelected = "Fintell Dominate";
+    $("#price-link").text("$149");
+    $(".social-only").css("display", "none");
+    populatePlansInBillingFrequency(planSelected);
+    stripeId = filterPlan("Fintell Dominate", "Monthly").stripeId;
   });
 });
 
