@@ -1,8 +1,8 @@
 const relativ_url = window.location.origin + window.location.pathname;
 const curren_url = window.location;
-if (curren_url !== relativ_url) {
-  window.location = relativ_url;
-}
+// if (curren_url !== relativ_url) {
+//   window.location = relativ_url;
+// }
 
 $("body").on("scroll mousewheel touchmove", function (e) {
   e.preventDefault();
@@ -492,11 +492,11 @@ function setCookiesForPage(advisor, IS_OLD_LINK) {
 
 function _FetchAdvisor(USER_URL, COMPANY_URL = null) {
   const endpoint = COMPANY_URL
-    ? `/getCompany/name/${COMPANY_URL}/${USER_URL}`
-    : "/getUserByUrl/" + USER_URL;
+    ? `getCompany/name/${COMPANY_URL}/${USER_URL}`
+    : "getUserByUrl/" + USER_URL;
   axios({
     method: "get",
-    url: `https://${api_url}${endpoint}`,
+    url: `https://${api_url}/api/v1/users/"${endpoint}`,
   })
     .then(function (response) {
       const advisor =

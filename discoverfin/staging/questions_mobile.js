@@ -503,11 +503,11 @@ function setCookiesForPage(advisor, IS_OLD_LINK) {
 
 function _FetchAdvisor(USER_URL, COMPANY_URL = null) {
   const endpoint = COMPANY_URL
-    ? `/getCompany/name/${COMPANY_URL}/${USER_URL}`
-    : "/getUserByUrl/" + USER_URL;
+    ? `getCompany/name/${COMPANY_URL}/${USER_URL}`
+    : "getUserByUrl/" + USER_URL;
   axios({
     method: "get",
-    url: `https://${api_url}${endpoint}`,
+    url: `https://${api_url}/api/v1/users/"${endpoint}`,
   })
     .then(function (response) {
       const advisor =
