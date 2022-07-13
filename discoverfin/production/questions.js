@@ -496,7 +496,7 @@ function _FetchAdvisor(USER_URL, COMPANY_URL = null) {
     : "getUserByUrl/" + USER_URL;
   axios({
     method: "get",
-    url: `https://${api_url}/api/v1/users/"${endpoint}`,
+    url: `https://${api_url}/api/v1/users/${endpoint}`,
   })
     .then(function (response) {
       const advisor =
