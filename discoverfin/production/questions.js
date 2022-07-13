@@ -502,6 +502,7 @@ function _FetchAdvisor(USER_URL, COMPANY_URL = null) {
     url: `https://${api_url}/api/v1/users/${endpoint}`,
   })
     .then(function (response) {
+      console.log(response.data, "_FetchAdvisor");
       const advisor =
         response.data && response.data.data && response.data.data.advisor;
       if (advisor) {
