@@ -424,6 +424,8 @@ $("#submit_btn").click(function () {
 });
 
 function setCookiesForPage(advisor, IS_OLD_LINK) {
+  console.log("setCookiesForPage");
+  console.log(advisor);
   [
     {
       key: "isAffiliateUrl",
@@ -486,6 +488,7 @@ function setCookiesForPage(advisor, IS_OLD_LINK) {
       value: advisor.videoProfileLink,
     },
   ].forEach((cookie) => {
+    console.log(cookie);
     setCookies(cookie.key, cookie.value);
   });
 }

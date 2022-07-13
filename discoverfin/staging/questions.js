@@ -486,6 +486,7 @@ function setCookiesForPage(advisor, IS_OLD_LINK) {
       value: advisor.videoProfileLink,
     },
   ].forEach((cookie) => {
+    console.log(cookie);
     setCookies(cookie.key, cookie.value);
   });
 }
