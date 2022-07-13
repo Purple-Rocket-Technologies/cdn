@@ -1,6 +1,6 @@
-var relativ_url = window.location.origin + window.location.pathname;
-var curren_url = window.location;
-if (curren_url != relativ_url) {
+const relativ_url = window.location.origin + window.location.pathname;
+const curren_url = window.location;
+if (curren_url !== relativ_url) {
   window.location = relativ_url;
 }
 
@@ -21,7 +21,7 @@ function isEmail(e) {
   );
 }
 
-initializeVar()
+initializeVar();
 
 $(".button_blocker.email").click(function () {
   alert("Please enter a correct email");
@@ -422,3 +422,104 @@ $("#submit_btn").click(function () {
     alert("Please enter your email address");
   }
 });
+
+function setCookiesForPage(advisor, IS_OLD_LINK) {
+  [
+    {
+      key: "isAffiliateUrl",
+      value: advisor.isAffiliateUrl,
+    },
+    {
+      key: "COMPANY_ID",
+      value: advisor.companyId,
+    },
+    {
+      key: "COMPANY_URL",
+      value: advisor.companyUrl,
+    },
+    {
+      key: "USER_ID",
+      value: advisor.userId,
+    },
+    {
+      key: "IS_OLD_LINK",
+      value: IS_OLD_LINK,
+    },
+    {
+      key: "URL_COMPANY",
+      value: advisor.companyUrl,
+    },
+    {
+      key: "URL_USER",
+      value: advisor.companies && advisor.companies[0].url,
+    },
+    {
+      key: "USER_URL",
+      value: advisor.companies && advisor.companies[0].url,
+    },
+    {
+      key: "affiliateId",
+      value: advisor.affiliateId,
+    },
+    {
+      key: "APTMT_LINK",
+      value: advisor.appointmentBookingLink,
+    },
+    {
+      key: "REP_NAME",
+      value: advisor.firstName + " " + advisor.lastName,
+    },
+    {
+      key: "PIC",
+      value: advisor.profilePic,
+    },
+    {
+      key: "PHONE",
+      value: advisor.phone,
+    },
+    {
+      key: "EMAIL",
+      value: advisor.email,
+    },
+    {
+      key: "VIDEO",
+      value: advisor.videoProfileLink,
+    },
+  ].forEach((cookie) => {
+    setCookies(cookie.key, cookie.value);
+  });
+}
+
+function _FetchAdvisor(USER_URL, COMPANY_URL = null) {
+  const endpoint = COMPANY_URL
+    ? `/getCompany/name/${COMPANY_URL}/${USER_URL}`
+    : "/getUserByUrl/" + USER_URL;
+  axios({
+    method: "get",
+    url: `https://${api_url}${endpoint}`,
+  })
+    .then(function (response) {
+      const advisor =
+        response.data && response.data.data && response.data.data.advisor;
+      if (advisor) {
+        setCookiesForPage(advisor, false);
+      }
+    })
+    .catch(function (error) {
+      throw new SentryError(`Error while fetching advisor: ${USER_URL}`, error);
+    });
+}
+
+function handleUserFromFinPath() {
+  if (getUrlParameter("id")) {
+    const USER_URL = getUrlParameter("id") || getUrlParameter("user");
+    const START_OVER_URL = `${window.location.hostname}/en?id=${USER_URL}`;
+    setCookies("isOldUrl", false);
+    setCookies("START_OVER_URL", START_OVER_URL);
+    setCookies("INITIAL_LINK", START_OVER_URL);
+    $("#start_over").attr("href", START_OVER_URL);
+    _FetchAdvisor(USER_URL, null);
+  }
+}
+
+handleUserFromFinPath();

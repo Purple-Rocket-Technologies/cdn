@@ -1,6 +1,6 @@
-var relativ_url = window.location.origin + window.location.pathname;
-var curren_url = window.location;
-if (curren_url != relativ_url) {
+const relativ_url = window.location.origin + window.location.pathname;
+const curren_url = window.location;
+if (curren_url !== relativ_url) {
   window.location = relativ_url;
 }
 
@@ -63,6 +63,12 @@ $("#user_name").on("keypress", function (e) {
       $("#ques_1_btn")[0].click();
     }
   }
+});
+
+$("#ques_1_btn").on("click", function () {
+  trackMixPanelEvent("FIN Prospect Started Journey", {
+    first_name: $("#user_name").val(),
+  });
 });
 
 $("#user_age").keyup(function () {
@@ -292,29 +298,38 @@ async function createNewProspect() {
       setCookies("Name", response.data.data.first_name);
       setCookies("Country", response.data.data.country);
       window.location.href = "/result";
+      trackMixPanelEvent("FIN Prospect created.", response.data.data);
     })
     .catch(function (error) {
       alert(error.response.data.message);
+      throw new SentryError(
+        `Error while creating a prospect email: ${$("#email").val()}`,
+        error
+      );
     });
 
   //trrigerring the email
   // axios({
-  //   method: 'post',
-  //   url: 'https://'+ api_url +'/api/v1/users/email/send/finResults',
+  //   method: "post",
+  //   url: "https://" + api_url + "/api/v1/users/email/send/finResults",
   //   data: {
-  //     companyId: readCookie('COMPANY_ID'),
-  //     userId: readCookie('USER_ID'),
-  //     prospectName : $("#user_name").val(),
+  //     companyId: readCookie("COMPANY_ID"),
+  //     userId: readCookie("USER_ID"),
+  //     prospectName: $("#user_name").val(),
   //     prospectEmail: $("#email").val(),
-  //     finNumber: parseInt($("#fin_number").val())
-  //   }
+  //     finNumber: parseInt($("#fin_number").val()),
+  //   },
   // })
-  // .then(function(response) {
-  //   console.log(response.data);
-  // })
-  // .catch(function (error) {
-  //   alert("Oops, There was an unexpected error.");
-  // });
+  //   .then(function (response) {
+  //     console.log(response.data);
+  //   })
+  //   .catch(function (error) {
+  //     alert("Oops, There was an unexpected error.");
+  //     throw new SentryError(
+  //       `Error while sending finResults email: ${$("#email").val()}`,
+  //       error
+  //     );
+  //   });
 }
 
 async function updateProspect(prospectID) {
@@ -364,6 +379,10 @@ async function updateProspect(prospectID) {
     })
     .catch(function (error) {
       alert(error.response.data.message);
+      throw new SentryError(
+        `Error while updating prospect: ${prospectID}`,
+        error
+      );
     });
 }
 
@@ -383,15 +402,124 @@ $("#submit_btn").click(function () {
           readCookie("COMPANY_ID") +
           "/prospects?email=" +
           $("#email").val(),
-      }).then(function (response) {
-        if (response.data.count === 0) {
-          createNewProspect();
-        } else {
-          updateProspect(response.data.data[0]._id);
-        }
-      });
+      })
+        .then(function (response) {
+          if (response.data.count === 0) {
+            createNewProspect();
+          } else {
+            updateProspect(response.data.data[0]._id);
+          }
+        })
+        .catch(function (error) {
+          // alert("Oops, There was an unexpected error.");
+          throw new SentryError(
+            `Error While submitting results: ${$("#email").val()}`,
+            error
+          );
+        });
     }
   } else {
-    alert("Please enter a valid email address");
+    alert("Please enter your email address");
   }
 });
+
+function setCookiesForPage(advisor, IS_OLD_LINK) {
+  [
+    {
+      key: "isAffiliateUrl",
+      value: advisor.isAffiliateUrl,
+    },
+    {
+      key: "COMPANY_ID",
+      value: advisor.companyId,
+    },
+    {
+      key: "COMPANY_URL",
+      value: advisor.companyUrl,
+    },
+    {
+      key: "USER_ID",
+      value: advisor.userId,
+    },
+    {
+      key: "IS_OLD_LINK",
+      value: IS_OLD_LINK,
+    },
+    {
+      key: "URL_COMPANY",
+      value: advisor.companyUrl,
+    },
+    {
+      key: "URL_USER",
+      value: advisor.companies && advisor.companies[0].url,
+    },
+    {
+      key: "USER_URL",
+      value: advisor.companies && advisor.companies[0].url,
+    },
+    {
+      key: "affiliateId",
+      value: advisor.affiliateId,
+    },
+    {
+      key: "APTMT_LINK",
+      value: advisor.appointmentBookingLink,
+    },
+    {
+      key: "REP_NAME",
+      value: advisor.firstName + " " + advisor.lastName,
+    },
+    {
+      key: "PIC",
+      value: advisor.profilePic,
+    },
+    {
+      key: "PHONE",
+      value: advisor.phone,
+    },
+    {
+      key: "EMAIL",
+      value: advisor.email,
+    },
+    {
+      key: "VIDEO",
+      value: advisor.videoProfileLink,
+    },
+  ].forEach((cookie) => {
+    setCookies(cookie.key, cookie.value);
+  });
+}
+
+function _FetchAdvisor(USER_URL, COMPANY_URL = null) {
+  const endpoint = COMPANY_URL
+    ? `/getCompany/name/${COMPANY_URL}/${USER_URL}`
+    : "/getUserByUrl/" + USER_URL;
+  axios({
+    method: "get",
+    url: `https://${api_url}${endpoint}`,
+  })
+    .then(function (response) {
+      const advisor =
+        response.data && response.data.data && response.data.data.advisor;
+      if (advisor) {
+        setCookiesForPage(advisor, false);
+      }
+    })
+    .catch(function (error) {
+      throw new SentryError(`Error while fetching advisor: ${USER_URL}`, error);
+    });
+}
+
+function handleUserFromFinPath() {
+  if (getUrlParameter("id")) {
+    const USER_URL = getUrlParameter("id") || getUrlParameter("user");
+    const START_OVER_URL = `${window.location.hostname}/en?id=${USER_URL}`;
+    setCookies("isOldUrl", false);
+    setCookies("START_OVER_URL", START_OVER_URL);
+    setCookies("INITIAL_LINK", START_OVER_URL);
+    $("#start_over").attr("href", START_OVER_URL);
+    _FetchAdvisor(USER_URL, null);
+  }
+}
+
+handleUserFromFinPath();
