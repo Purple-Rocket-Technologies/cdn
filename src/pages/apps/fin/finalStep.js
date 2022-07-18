@@ -210,7 +210,7 @@ export default function initFinalStep() {
 
   const openFINPath = (email) => {
     window.open(
-      `https://finpath.discoverfin.io/${page.URL_USER}/start?email=${email}`,
+      `https://finpath.discoverfin.io/demopurple/start?email=${email}`,
       "_blank"
     );
   };
