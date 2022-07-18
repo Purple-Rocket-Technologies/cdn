@@ -8,6 +8,7 @@ const checkIsEmpty = (item) => {
     item === undefined ||
     item === null ||
     item === "" ||
+    item === "false" ||
     item === "null" ||
     item === "undefined" ||
     item === "[]" ||
