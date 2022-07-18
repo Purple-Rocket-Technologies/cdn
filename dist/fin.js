@@ -18354,8 +18354,9 @@ async function initAppointment() {
     page = appointmentUtils.setupTrackAppointmentButtonClick(page);
     appointmentUtils.mapDataToPage(page);
   } catch (e) {
-    console.log(e);
-    window.location.href = "/404";
+    if (!page.REP_ID || page.REP_ID === "") {
+      window.location.href = "/404";
+    }
   }
 
   appointmentUtils.handleScrollEvent();
