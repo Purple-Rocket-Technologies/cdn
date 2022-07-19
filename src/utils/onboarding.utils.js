@@ -54,6 +54,10 @@ const onBoarding = {
           value: advisor.profilePic,
         },
         {
+          key: "REP_IMAGE",
+          value: advisor.profilePic,
+        },
+        {
           key: "PHONE",
           value: advisor.phone,
         },

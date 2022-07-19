@@ -130,18 +130,26 @@ export default function initFinalStep() {
   );
 
   const rep_name = capitalize(cookies.get("REP_NAME"));
-  $(".rep_name").text(rep_name);
-  $("#rep-name").text(rep_name);
-  $(".rep_name_cta").text(rep_name);
+  const rep_name_element = [
+    $("#rep-name"),
+    $(".rep_name"),
+    $(".rep_name_cta"),
+    $("#rep_name"),
+  ];
+  rep_name_element.forEach(function (el) {
+    el.text(rep_name);
+  });
+
   const userNameEls = document.querySelectorAll("#user-name");
   userNameEls.forEach((el) => {
     el.innerHTML = capitalize(cookies.get("Name"));
   });
-  $("#rep_name").text(rep_name);
-  $("#rep-image").attr("src", cookies.get("PIC"));
-  $(".rep-phoito").css("background-image", "url('" + cookies.get("PIC") + "')");
-  $("#appointment-iframe iframe").attr("src", page.APPOINTMENT_LINK);
 
+  const rep_image = cookies.get("PIC") || cookies.get("REP_IMAGE");
+  $("#rep-image").attr("src", rep_image);
+  $("#rep-image").removeAttr("loading");
+  $(".rep-photo").css("background-image", "url('" + cookies.get("PIC") + "')");
+  $("#appointment-iframe iframe").attr("src", page.APPOINTMENT_LINK);
   $("#message-rep").each(function () {
     $(this).attr("href", `sms:${cookies.get("PHONE")}`);
     $(this).attr("target", "_parent");
