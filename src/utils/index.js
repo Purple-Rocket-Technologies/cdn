@@ -223,6 +223,13 @@ const toDollar = (value) => {
   }).format(value);
 };
 
+const isDevEnvironment = () => {
+  return (
+    window.location.host === "dev.discoverfin.io" ||
+    window.location.host === "devvideo.discoverfin.io"
+  );
+};
+
 export {
   getUrlParameter,
   cookies,
@@ -244,4 +251,5 @@ export {
   isEmail,
   isAppointmentPage,
   toDollar,
+  isDevEnvironment
 };

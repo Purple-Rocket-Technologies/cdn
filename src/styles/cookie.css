@@ -1,0 +1,10 @@
+.glow-buttons {
+  display: flex !important;
+  align-items: center !important;
+}
+#acceptCookies {
+  order: 1 !important;
+}
+#rejectCookies {
+  order: 0 !important;
+}

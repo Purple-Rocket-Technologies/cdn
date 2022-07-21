@@ -7,6 +7,7 @@ import {
   isEmpty,
   isMobile,
   getVideoBaseUrl,
+  isDevEnvironment,
 } from "../../../utils";
 import Service from "../../../service/Service";
 class FinalStep extends BasePage {
@@ -146,9 +147,18 @@ export default function initFinalStep() {
   });
 
   const rep_image = cookies.get("PIC") || cookies.get("REP_IMAGE");
-  $("#rep-image").attr("src", rep_image);
-  $("#rep-image").removeAttr("loading");
-  $(".rep-photo").css("background-image", "url('" + cookies.get("PIC") + "')");
+
+  if (isDevEnvironment()) {
+    console.log("rep_image", rep_image);
+    $("#rep-image").replaceWith(
+      '<img id="rep-image" src="https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/main_image_deep_field_smacs0723-5mb.jpg" alt="" class="image-44" />'
+    );
+  } else {
+    $("#rep-image").attr("src", rep_image);
+    $("#rep-image").removeAttr("loading");
+  }
+
+  $(".rep-photo").css("background-image", "url('" + rep_image + "')");
   $("#appointment-iframe iframe").attr("src", page.APPOINTMENT_LINK);
   $("#message-rep").each(function () {
     $(this).attr("href", `sms:${cookies.get("PHONE")}`);
@@ -218,7 +228,9 @@ export default function initFinalStep() {
 
   const openFINPath = (email) => {
     window.open(
-      `https://${finpath_base||'finpath.discoverfin.io'}/${page.URL_USER}/start?email=${email}`,
+      `https://${finpath_base || "finpath.discoverfin.io"}/${
+        page.URL_USER
+      }/start?email=${email}`,
       "_blank"
     );
   };
