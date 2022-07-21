@@ -147,17 +147,11 @@ export default function initFinalStep() {
   });
 
   const rep_image = cookies.get("PIC") || cookies.get("REP_IMAGE");
-
-  // if (isDevEnvironment()) {
-  //   console.log("rep_image", rep_image);
-  //   $("#rep-image").replaceWith(
-  //     '<img id="rep-image" src="https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/main_image_deep_field_smacs0723-5mb.jpg" alt="" class="image-44" />'
-  //   );
-  // } else {
   $("#rep-image").attr("src", rep_image);
   $("#rep-image").removeAttr("loading");
-  // }
-
+  $("#rep-image").replaceWith(
+    `<img id="rep-image" src="${rep_image}" alt="" class="image-44" />`
+  );
   $(".rep-photo").css("background-image", "url('" + rep_image + "')");
   $("#appointment-iframe iframe").attr("src", page.APPOINTMENT_LINK);
   $("#message-rep").each(function () {
