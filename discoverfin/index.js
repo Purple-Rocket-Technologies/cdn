@@ -465,7 +465,7 @@ $("#showoverview").click(() => {
     $("#last-name").val(),
     $("#Business-Email").val(),
     $("#business-name").val(),
-    // $("#business-phone").val(),
+    $("#business-phone").val(),
     // $("#add_1").val(),
     // $("#add_2").val(),
     // $("#state").val(),
