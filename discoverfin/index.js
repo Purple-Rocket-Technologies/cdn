@@ -5,7 +5,7 @@ let price_array = [];
 let stripeId;
 let trailMode = false;
 let planSelected;
-api_url = "devbackendapp.discoverfin.io";
+api_url = "prodapi.discoverfin.io";
 //api list
 const get_states_api =
   "https://" + api_url + "/api/v1/users/countriesAndStates/?abbreviation=";
@@ -17,7 +17,7 @@ const createCharge = "https://" + api_url + "/api/v1/users/createCharge";
 const fetchPlan = "https://" + api_url + "/api/v1/users/plans?limit=100";
 let allPlans = [];
 const stripeKey =
-  "pk_live_51H9OieCKHZ8kusjLVzlDed840WHxWdsSfI3ItMIympA15Ozhy1sUsZUODyP5qYPj5ofF3Kjtu5jCYtZP8iTzjrSh00bdfU07RR";
+  "pk_test_51H9OieCKHZ8kusjLzWw353ZdzHc9Atug0VunuxSd7dR8Dl1e0LDFRGq5GGp4IfjTqQJSRdDKfNtgMSuuyC9P3HpI00OUJLyPof";
 // $("#Billing option:nth-child(1)").attr("value", "FINTap Monthly");
 // $("#Billing option:nth-child(2)").attr("value", "FINTap Yearly");
 
@@ -153,7 +153,7 @@ axios({
   .then(function (response) {
     allPlans = response.data.data;
     stripeId = response.data.data.filter(
-      (plan) => plan.planName === "Fintell Dominate Monthly"
+      (plan) => plan.planName === "FINTap Monthly"
     )[0].stripeId;
   })
   .catch(function (error) {
@@ -541,11 +541,11 @@ buttonsToListen.forEach((element) => {
     const id = element.attr("class").includes("free");
     // trailMode = !!id;
     trailMode = true;
-    planSelected = "Fintell Dominate";
+    planSelected = "FINTap";
     $("#price-link").text("$149");
     $(".social-only").css("display", "none");
     populatePlansInBillingFrequency(planSelected);
-    stripeId = filterPlan("Fintell Dominate", "Monthly").stripeId;
+    stripeId = filterPlan("FINTap", "Monthly").stripeId;
   });
 });
 
