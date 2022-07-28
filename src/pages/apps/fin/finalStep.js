@@ -150,7 +150,9 @@ export default function initFinalStep() {
   $("#rep-image").attr("src", rep_image);
   $("#rep-image").removeAttr("loading");
   $("#rep-image").replaceWith(
-    `<img id="rep-image" src="${rep_image}" alt="" class="image-44" />`
+    isMobile()
+      ? `<img id="rep-image" src="${rep_image}" alt="" class="image-45" />`
+      : `<img id="rep-image" src="${rep_image}" alt="" class="image-44" />`
   );
   $(".rep-photo").css("background-image", "url('" + rep_image + "')");
   $("#appointment-iframe iframe").attr("src", page.APPOINTMENT_LINK);
