@@ -221,7 +221,7 @@ function setPriceValues() {
     // },
     {
       elem: $("#price-total, #total-price"),
-      value: "$" + parseFloat(price_array.invoiceTotal).toFixed(2),
+      value: "$" + parseFloat(price_array.subscriptionTotal).toFixed(2),
     },
     {
       elem: $("#recurring-price"),
@@ -539,8 +539,8 @@ function populatePlansInBillingFrequency(planName) {
 buttonsToListen.forEach((element) => {
   element.on("click", () => {
     const id = element.attr("class").includes("free");
-    // trailMode = !!id;
-    trailMode = true;
+    trailMode = !!id;
+    // trailMode = true
     planSelected = "FINTap";
     $("#price-link").text("$149");
     $(".social-only").css("display", "none");
@@ -559,3 +559,27 @@ function handlePlanBuyPopupClose() {
 $("#close-buy-flow").click(() => {
   handlePlanBuyPopupClose();
 });
+
+var serializeForm = function (form) {
+  var obj = {};
+  var formData = new FormData(form);
+  for (var key of formData.keys()) {
+    obj[key] = formData.get(key);
+  }
+  return obj;
+};
+
+function listenFormEvents() {
+  const form_ids = ["#free-trial-form-2", "#free-trial-form"];
+
+  form_ids.forEach((element) => {
+    $(element).on("submit", function (e) {
+      e.preventDefault();
+      const formData = serializeForm(e.target);
+      $("#Business-Email").val(formData.email);
+      document.querySelector("#free-t").click();
+      return false;
+    });
+  });
+}
+listenFormEvents();
