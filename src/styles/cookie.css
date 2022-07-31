@@ -27,6 +27,7 @@
 }
 .cookie__text p {
   margin-bottom: 0 !important;
+  margin-top: 0 !important;
 }
 .cookie__button {
   background: #ffffff;
