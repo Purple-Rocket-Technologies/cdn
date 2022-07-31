@@ -34,7 +34,7 @@ export class CookieWidget {
       cookiePolicyLink
     );
   }
-  showPopup() {
+  init() {
     if (!localStorage.getItem("acceptCookie")) {
       document.body.appendChild(this.cookieElement);
       const that = this;
@@ -42,14 +42,14 @@ export class CookieWidget {
         .querySelector(".cookie__button")
         .addEventListener("click", function () {
           that.storeCookie();
-          that.removeCookie();
+          that.remove();
         });
 
       this.cookieElement
         .querySelector(".cookie__reject")
         .addEventListener("click", function () {
           that.disableCookie();
-          that.removeCookie();
+          that.remove();
         });
     }
   }
@@ -60,7 +60,7 @@ export class CookieWidget {
     localStorage.setItem("acceptCookie", "true");
     document.cookie = "cookie=true";
   }
-  removeCookie() {
+  remove() {
     this.cookieElement.remove();
   }
 }

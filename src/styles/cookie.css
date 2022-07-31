@@ -25,6 +25,9 @@
   color: #fff;
   font-weight: 600;
 }
+.cookie__text p {
+  margin-bottom: 0 !important;
+}
 .cookie__button {
   background: #ffffff;
   padding: 10px 12px;
