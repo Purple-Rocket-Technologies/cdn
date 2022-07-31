@@ -8,6 +8,14 @@ module.exports = {
   entry: {
     fin: path.resolve(__dirname, "src/main.js"),
     video: path.resolve(__dirname, "src/pages/apps/video/index.js"),
+    cookie: {
+      import: path.resolve(__dirname, "src/cookie/index.js"),
+      library: {
+        name: "cookie",
+        type: "umd",
+        umdNamedDefine: true,
+      },
+    },
   },
   output: {
     path: path.resolve(__dirname, "dist"),

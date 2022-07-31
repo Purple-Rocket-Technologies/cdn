@@ -1,10 +1,92 @@
-.glow-buttons {
-  display: flex !important;
-  align-items: center !important;
+.cookie__text {
+  background: #1b1c1e;
+  border-radius: 13px;
+  font-family: "Trenda", sans-serif !important;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  z-index: 2147483645;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  margin: 10px 20px;
+  width: 98%;
+  padding: 6px 20px;
+  border-radius: 20px;
+  -webkit-box-shadow: 10px 10px 36px -13px rgb(0 0 0 / 15%);
+  -moz-box-shadow: 10px 10px 36px -13px rgba(0, 0, 0, 0.15);
+  box-shadow: 10px 10px 36px -13px rgb(0 0 0 / 15%);
 }
-#acceptCookies {
-  order: 1 !important;
+.cookie__text a {
+  color: #fff;
+  font-weight: 600;
 }
-#rejectCookies {
-  order: 0 !important;
+.cookie__button {
+  background: #ffffff;
+  padding: 10px 12px;
+  outline: none;
+  border-radius: 19.2308px;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.position__absolute {
+  position: absolute;
+}
+.bottom__0 {
+  bottom: 0;
+}
+.right__0 {
+  right: 0;
+}
+.left__0 {
+  left: 0;
+}
+.bottom__10 {
+  bottom: 10px;
+}
+.right__10 {
+  right: 10px;
+}
+.bottom__15 {
+  bottom: 15px;
+}
+.right__15 {
+  right: 15px;
+}
+.ml__30 {
+  margin-left: 0.75rem;
+}
+.mr__30 {
+  margin-right: 0.75rem;
+}
+.mr__50 {
+  margin-right: 50px;
+}
+.cursor__pointer {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 780px) {
+  .cookie__text {
+    width: 100%;
+    border-radius: 0;
+    margin: 0;
+    display: flex;
+    padding-bottom: 12px;
+    flex-direction: column;
+  }
+  .cookie__button {
+    margin-right: 0 !important;
+    width: 100%;
+  }
+  .sm_top__15 {
+    top: 15px !important;
+  }
 }
