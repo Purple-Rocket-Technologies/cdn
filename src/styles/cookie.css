@@ -15,7 +15,7 @@
   box-sizing: border-box;
   margin: 10px 20px;
   width: 98%;
-  padding: 6px 20px;
+  padding: 10px 20px;
   border-radius: 20px;
   -webkit-box-shadow: 10px 10px 36px -13px rgb(0 0 0 / 15%);
   -moz-box-shadow: 10px 10px 36px -13px rgba(0, 0, 0, 0.15);
@@ -31,12 +31,13 @@
 }
 .cookie__button {
   background: #ffffff;
-  padding: 10px 12px;
+  padding: 8px 12px;
   outline: none;
   border-radius: 19.2308px;
   cursor: pointer;
   border: none;
   display: flex;
+  color: black;
   justify-content: center;
   align-items: center;
 }
