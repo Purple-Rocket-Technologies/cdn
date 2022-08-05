@@ -577,12 +577,12 @@ function listenFormEvents() {
       e.preventDefault();
       const formData = serializeForm(e.target);
       $("#Business-Email").val(formData.email);
-      const dashboardBase =
-        window.location.hostname === "fintell.io"
-          ? "app.fintell.io"
-          : "demo.fintell.io";
+      // const dashboardBase =
+      //   window.location.hostname === "fintell.io"
+      //     ? "app.fintell.io"
+      //     : "demo.fintell.io";
       window.open(
-        `https://${dashboardBase}/onboarding?trial=true&email=${formData.email}`,
+        `https://app.fintell.io/onboarding?trial=true&email=${formData.email}`,
         "_self"
       );
       return false;
