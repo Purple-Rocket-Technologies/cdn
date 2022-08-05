@@ -582,7 +582,7 @@ function listenFormEvents() {
           ? "app.fintell.io"
           : "demo.fintell.io";
       window.open(
-        `https://${dashboardBase}/onboarding?trail=true&email=${formData.email}`,
+        `https://${dashboardBase}/onboarding?trial=true&email=${formData.email}`,
         "_self"
       );
       return false;
