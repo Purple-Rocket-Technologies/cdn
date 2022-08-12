@@ -217,9 +217,9 @@ const BASE_QUESTIONS = [
     },
     options: [
       {
-        label: "A Side Hustle Flexible Hours",
-        es: "Horario flexible",
-        value: "A Side Hustle Flexible Hours",
+        label: "Part-time Projects",
+        es: "Proyectos de parte de tiempo",
+        value: "Part-time Projects",
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621e20e5ea3b957635659c45_Group%20293.svg",
       },
       {
