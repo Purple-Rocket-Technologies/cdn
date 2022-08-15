@@ -163,6 +163,7 @@ const appointmentUtils = {
     }
   },
   handleFinButton: function (page) {
+    console.log("handleFinButton");
     $("#do-you-know-fin").click(() => {
       window.open(
         finBaseUrl(page.USER_URL, page.COMPANY_URL, "getBaseUrl", "en"),
