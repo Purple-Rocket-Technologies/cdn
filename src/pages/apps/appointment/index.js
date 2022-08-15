@@ -54,10 +54,8 @@ async function initAppointment() {
     });
     page = appointmentUtils.setupTrackAppointmentButtonClick(page);
     appointmentUtils.mapDataToPage(page);
-    console.log("page", page);
-    console.table(advisor);
-    handleBrokerCheckLinkAndDisclosure(advisor);
   } catch (e) {
+    console.log(e, "appointment page error");
     if (!page.REP_ID || page.REP_ID === "") {
       window.location.href = "/404";
     }

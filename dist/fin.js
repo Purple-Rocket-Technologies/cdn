@@ -18354,10 +18354,9 @@ async function initAppointment() {
     });
     page = appointmentUtils.setupTrackAppointmentButtonClick(page);
     appointmentUtils.mapDataToPage(page);
-    console.log("page", page);
-    console.table(advisor);
-    handleBrokerCheckLinkAndDisclosure(advisor);
   } catch (e) {
+    console.log(e, "appointment page error");
+
     if (!page.REP_ID || page.REP_ID === "") {
       window.location.href = "/404";
     }
@@ -19135,7 +19134,8 @@ __webpack_require__.r(__webpack_exports__);
 const {
   finBusinessVideoAppLink,
   finFinancialSuccessVideoAppLink,
-  finBaseUrl
+  finBaseUrl,
+  handleBrokerCheckLinkAndDisclosure
 } = __webpack_require__(8903);
 
 const appointmentUtils = {
@@ -19153,6 +19153,7 @@ const appointmentUtils = {
     COMPANY_URL: "",
     IS_OLD_LINK: false,
     IS_CANADIAN_LINK: false,
+    ADVISOR: {},
     PROFILE_VIDEO_URL: "",
     APPOINTMENT_BUTTON_CLICKED: false
   },
@@ -19215,6 +19216,7 @@ const appointmentUtils = {
     page.REP_PHONE = data.phone;
     page.REP_ID = data.userId;
     page.REP_IMAGE = data.profilePic;
+    page.ADVISOR = data.advisor;
     page.COMPANY_ID = data.companyId;
     page.IS_CANADIAN_LINK = data.address && data.address.country === "Canada";
     page.PROFILE_VIDEO_URL = data.videoProfileLink;
@@ -19275,6 +19277,7 @@ const appointmentUtils = {
       this.openLink(`mailto:${page.REP_EMAIL}`);
     });
     const onlyVideoAppElement = $("#only-video-app");
+    handleBrokerCheckLinkAndDisclosure(page.ADVISOR);
 
     if (page.IS_DASHBOARD_LINK) {
       console.log("is dashboard link");
