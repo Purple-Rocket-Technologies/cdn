@@ -7,7 +7,7 @@ import {
   isEmpty,
   isMobile,
   getVideoBaseUrl,
-  isDevEnvironment,
+  handleBrokerCheckLinkAndDisclosure,
 } from "../../../utils";
 import Service from "../../../service/Service";
 class FinalStep extends BasePage {
@@ -60,6 +60,11 @@ export default function initFinalStep() {
       ? "More than a Business"
       : "7 Steps To Create A Clear Financial Vision";
   };
+
+  handleBrokerCheckLinkAndDisclosure({
+    brokerCheckLink: cookies.get("brokerCheckLink"),
+    companyDisclosure: cookies.get("disclosureLink"),
+  });
 
   $("#video-title").text(videoTitle());
 

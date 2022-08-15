@@ -69,6 +69,14 @@ const onBoarding = {
           key: "VIDEO",
           value: advisor.videoProfileLink,
         },
+        {
+          key: "brokerCheckLink",
+          value: advisor.brokerCheckLink,
+        },
+        {
+          key: "disclosureLink",
+          value: advisor.companyDisclosure,
+        },
       ]);
     },
   },

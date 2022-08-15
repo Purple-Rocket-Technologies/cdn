@@ -1,6 +1,10 @@
 const { appointmentUtils } = require("../../../utils/appointment.utils");
 const { getCompany } = require("../../../service/appointment.service");
-const { url, BasePage } = require("../../../utils");
+const {
+  url,
+  BasePage,
+  handleBrokerCheckLinkAndDisclosure,
+} = require("../../../utils");
 const { submitForm } = require("../../../service/appointment.service");
 
 class AppointmentPage extends BasePage {
@@ -50,6 +54,7 @@ async function initAppointment() {
     });
     page = appointmentUtils.setupTrackAppointmentButtonClick(page);
     appointmentUtils.mapDataToPage(page);
+    handleBrokerCheckLinkAndDisclosure(advisor);
   } catch (e) {
     if (!page.REP_ID || page.REP_ID === "") {
       window.location.href = "/404";

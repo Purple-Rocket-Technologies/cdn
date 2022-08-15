@@ -230,6 +230,32 @@ const isDevEnvironment = () => {
   );
 };
 
+const handleBrokerCheckLinkAndDisclosure = (user) => {
+  const broker_check_link = user.brokerCheckLink;
+  const disclosure_text = user.companyDisclosure;
+  const broker_check_elem = $("#broker-check");
+  const disclosure_elem = $("#disclosure");
+  if (!isEmpty(broker_check_link) || !isEmpty(disclosure_text)) {
+    $("#disc-wrapper").removeClass("hide");
+    if (!isEmpty(broker_check_link)) {
+      broker_check_elem.text(broker_check_link);
+      broker_check_elem.attr("href", broker_check_link);
+      broker_check_elem.attr("target", "_blank");
+      broker_check_elem.css("display", "block");
+    } else {
+      broker_check_elem.css("display", "none");
+    }
+    if (!isEmpty(disclosure_text)) {
+      disclosure_elem.text(disclosure_text);
+      disclosure_elem.css("display", "block");
+    } else {
+      disclosure_elem.css("display", "none");
+    }
+  } else {
+    $("#disc-wrapper").addClass("hide");
+  }
+};
+
 export {
   getUrlParameter,
   cookies,
@@ -251,5 +277,6 @@ export {
   isEmail,
   isAppointmentPage,
   toDollar,
-  isDevEnvironment
+  isDevEnvironment,
+  handleBrokerCheckLinkAndDisclosure,
 };
