@@ -54,6 +54,7 @@ async function initAppointment() {
     });
     page = appointmentUtils.setupTrackAppointmentButtonClick(page);
     appointmentUtils.mapDataToPage(page);
+    console.log("page", page);
     console.table(advisor);
     handleBrokerCheckLinkAndDisclosure(advisor);
   } catch (e) {
