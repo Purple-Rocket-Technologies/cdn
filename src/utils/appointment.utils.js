@@ -81,13 +81,14 @@ const appointmentUtils = {
     page.REP_PHONE = data.phone;
     page.REP_ID = data.userId;
     page.REP_IMAGE = data.profilePic;
-    page.ADVISOR = data.advisor;
+    page.ADVISOR = data;
     page.COMPANY_ID = data.companyId;
     page.IS_CANADIAN_LINK = data.address && data.address.country === "Canada";
     page.PROFILE_VIDEO_URL = data.videoProfileLink;
     return page;
   },
   mapDataToPage: function (page) {
+    console.log("mapDataToPage", page.ADVISOR);
     const repName = $("#rep-name");
     repName.text(page.REP_NAME);
     $("#loading-logo").hide();
@@ -154,7 +155,6 @@ const appointmentUtils = {
     handleBrokerCheckLinkAndDisclosure(page.ADVISOR);
 
     if (page.IS_DASHBOARD_LINK) {
-      console.log("is dashboard link");
       const videos = [
         {
           id: "financial-video",
@@ -213,7 +213,6 @@ const appointmentUtils = {
     }
   },
   handleFinButton: function (page) {
-    console.log("handleFinButton");
     $("#do-you-know-fin").click(() => {
       window.open(
         finBaseUrl(page.USER_URL, page.COMPANY_URL, "getBaseUrl", "en"),

@@ -45,9 +45,7 @@ async function initAppointment() {
 
   try {
     const advisor = await getCompany(page.USER_URL, page.COMPANY_URL);
-    console.log("advisor", advisor);
-    page = appointmentUtils.populatePageData(page, advisor);
-    console.table(page);
+    page = await appointmentUtils.populatePageData(page, advisor);
     page.track("Prospect visited Appointment Page", {
       rep_name: page.REP_NAME,
       page_type: page.IS_VIDEO_APP ? "Video App" : "FIN App",
