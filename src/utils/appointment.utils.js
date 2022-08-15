@@ -149,17 +149,62 @@ const appointmentUtils = {
     const onlyVideoAppElement = $("#only-video-app");
 
     if (page.IS_DASHBOARD_LINK) {
-      this.handleVideoLinksButtons(page);
+      console.log("is dashboard link");
+      const videos = [
+        {
+          id: "financial-video",
+          link: finFinancialSuccessVideoAppLink(
+            page.USER_URL,
+            page.COMPANY_URL
+          ),
+        },
+        {
+          id: "business-video",
+          link: finBusinessVideoAppLink(page.USER_URL, page.COMPANY_URL),
+        },
+      ];
+      videos.forEach((video) => {
+        page.on(`click`, `#${video.id}`, () => {
+          window.open(video.link, "_blank");
+        });
+      });
       onlyVideoAppElement.css("display", "flex");
       $("#only-fin-app").css("display", "grid");
-      this.handleFinButton(page);
+      $("#do-you-know-fin").click(() => {
+        window.open(
+          finBaseUrl(page.USER_URL, page.COMPANY_URL, "getBaseUrl", "en"),
+          "_blank"
+        );
+      });
     }
     if (!page.IS_VIDEO_APP && !page.IS_DASHBOARD_LINK) {
       onlyVideoAppElement.css("display", "none");
-      this.handleVideoLinksButtons(page);
+      const videos = [
+        {
+          id: "financial-video",
+          link: finFinancialSuccessVideoAppLink(
+            page.USER_URL,
+            page.COMPANY_URL
+          ),
+        },
+        {
+          id: "business-video",
+          link: finBusinessVideoAppLink(page.USER_URL, page.COMPANY_URL),
+        },
+      ];
+      videos.forEach((video) => {
+        page.on(`click`, `#${video.id}`, () => {
+          window.open(video.link, "_blank");
+        });
+      });
     } else if (!page.IS_DASHBOARD_LINK) {
       $("#only-fin-app").css("display", "none");
-      this.handleFinButton(page);
+      $("#do-you-know-fin").click(() => {
+        window.open(
+          finBaseUrl(page.USER_URL, page.COMPANY_URL, "getBaseUrl", "en"),
+          "_blank"
+        );
+      });
     }
   },
   handleFinButton: function (page) {

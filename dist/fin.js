@@ -18346,14 +18346,15 @@ async function initAppointment() {
 
   try {
     const advisor = await getCompany(page.USER_URL, page.COMPANY_URL);
-    page = appointmentUtils.populatePageData(page, advisor);
-    console.table(page);
+    page = appointmentUtils.populatePageData(page, advisor); // console.table(page);
+
     page.track("Prospect visited Appointment Page", {
       rep_name: page.REP_NAME,
       page_type: page.IS_VIDEO_APP ? "Video App" : "FIN App"
     });
     page = appointmentUtils.setupTrackAppointmentButtonClick(page);
     appointmentUtils.mapDataToPage(page);
+    console.table(advisor);
     handleBrokerCheckLinkAndDisclosure(advisor);
   } catch (e) {
     if (!page.REP_ID || page.REP_ID === "") {
@@ -19275,18 +19276,45 @@ const appointmentUtils = {
     const onlyVideoAppElement = $("#only-video-app");
 
     if (page.IS_DASHBOARD_LINK) {
-      this.handleVideoLinksButtons(page);
+      console.log("is dashboard link");
+      const videos = [{
+        id: "financial-video",
+        link: finFinancialSuccessVideoAppLink(page.USER_URL, page.COMPANY_URL)
+      }, {
+        id: "business-video",
+        link: finBusinessVideoAppLink(page.USER_URL, page.COMPANY_URL)
+      }];
+      videos.forEach(video => {
+        page.on(`click`, `#${video.id}`, () => {
+          window.open(video.link, "_blank");
+        });
+      });
       onlyVideoAppElement.css("display", "flex");
       $("#only-fin-app").css("display", "grid");
-      this.handleFinButton(page);
+      $("#do-you-know-fin").click(() => {
+        window.open(finBaseUrl(page.USER_URL, page.COMPANY_URL, "getBaseUrl", "en"), "_blank");
+      });
     }
 
     if (!page.IS_VIDEO_APP && !page.IS_DASHBOARD_LINK) {
       onlyVideoAppElement.css("display", "none");
-      this.handleVideoLinksButtons(page);
+      const videos = [{
+        id: "financial-video",
+        link: finFinancialSuccessVideoAppLink(page.USER_URL, page.COMPANY_URL)
+      }, {
+        id: "business-video",
+        link: finBusinessVideoAppLink(page.USER_URL, page.COMPANY_URL)
+      }];
+      videos.forEach(video => {
+        page.on(`click`, `#${video.id}`, () => {
+          window.open(video.link, "_blank");
+        });
+      });
     } else if (!page.IS_DASHBOARD_LINK) {
       $("#only-fin-app").css("display", "none");
-      this.handleFinButton(page);
+      $("#do-you-know-fin").click(() => {
+        window.open(finBaseUrl(page.USER_URL, page.COMPANY_URL, "getBaseUrl", "en"), "_blank");
+      });
     }
   },
   handleFinButton: function (page) {
