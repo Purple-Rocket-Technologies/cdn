@@ -36,6 +36,7 @@ export default function initFinalStep() {
 
   // Reading name cookie
   const user_name = cookies.get("Name");
+  const rep_name = capitalize(cookies.get("REP_NAME"));
   $(".user_name").each(function () {
     $(this).html("" + user_name);
   });
@@ -64,6 +65,7 @@ export default function initFinalStep() {
   handleBrokerCheckLinkAndDisclosure({
     brokerCheckLink: cookies.get("brokerCheckLink"),
     companyDisclosure: cookies.get("disclosureLink"),
+    name: rep_name,
   });
 
   $("#video-title").text(videoTitle());
@@ -135,7 +137,6 @@ export default function initFinalStep() {
     false
   );
 
-  const rep_name = capitalize(cookies.get("REP_NAME"));
   const rep_name_element = [
     $("#rep-name"),
     $(".rep_name"),

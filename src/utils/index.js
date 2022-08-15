@@ -231,6 +231,7 @@ const isDevEnvironment = () => {
 };
 
 const handleBrokerCheckLinkAndDisclosure = (user) => {
+  console.log("im being called", new Date().toLocaleDateString());
   const broker_check_link = user.brokerCheckLink;
   const disclosure_text = user.companyDisclosure;
   console.log(broker_check_link, disclosure_text);
@@ -241,7 +242,7 @@ const handleBrokerCheckLinkAndDisclosure = (user) => {
   if (!isEmpty(broker_check_link) || !isEmpty(disclosure_text)) {
     $("#disc-wrapper").removeClass("hide");
     if (!isEmpty(broker_check_link)) {
-      broker_check_elem.text(broker_check_link);
+      broker_check_elem.text(`${user.name}'s FINRA Broker Check`);
       broker_check_elem.attr("href", broker_check_link);
       broker_check_elem.attr("target", "_blank");
       broker_check_elem.css("display", "block");

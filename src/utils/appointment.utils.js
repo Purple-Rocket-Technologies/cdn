@@ -118,6 +118,7 @@ const appointmentUtils = {
       profileVideoIframe.attr("class", "appointment-page-video");
       // profileVideoArea.css("display", "flex");
       watchVideoWrapper.css("opacity", "100%");
+      profileVideoArea.removeClass("hide");
       watchVideoWrapper.css("display", "flex");
       watchVideoWrapper.css("opacity", "100%");
       watchVideoWrapper.css("cursor", "pointer");
