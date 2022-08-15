@@ -233,6 +233,9 @@ const isDevEnvironment = () => {
 const handleBrokerCheckLinkAndDisclosure = (user) => {
   const broker_check_link = user.brokerCheckLink;
   const disclosure_text = user.companyDisclosure;
+  console.log(broker_check_link, disclosure_text);
+  console.log(isEmpty(broker_check_link));
+  console.log(isEmpty(disclosure_text));
   const broker_check_elem = $("#broker-check");
   const disclosure_elem = $("#disclosure");
   if (!isEmpty(broker_check_link) || !isEmpty(disclosure_text)) {
