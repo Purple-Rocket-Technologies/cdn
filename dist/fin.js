@@ -18346,6 +18346,7 @@ async function initAppointment() {
 
   try {
     const advisor = await getCompany(page.USER_URL, page.COMPANY_URL);
+    console.log("advisor", advisor);
     page = appointmentUtils.populatePageData(page, advisor);
     console.table(page);
     page.track("Prospect visited Appointment Page", {
