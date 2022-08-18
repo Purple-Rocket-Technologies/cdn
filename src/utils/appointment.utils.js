@@ -110,12 +110,17 @@ const appointmentUtils = {
       }
 
       function convertToIframeCode(url) {
-        return `<iframe src="${url}" width="100%" height="100%" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        return `<iframe src="${url}" width="100%" height="500px" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      }
+
+      function addHeightAndWidthToIframeCode(code) {
+        const refex = new RegExp("></iframe>");
+        return code.replace(refex, "height='500px' width='100%''></iframe>");
       }
 
       profileVideo.html(
         checkIsIframeCode(page.PROFILE_VIDEO_URL)
-          ? page.PROFILE_VIDEO_URL
+          ? addHeightAndWidthToIframeCode(page.PROFILE_VIDEO_URL)
           : convertToIframeCode(page.PROFILE_VIDEO_URL)
       );
       profileVideoIframe.attr("width", "100%");
