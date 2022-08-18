@@ -115,7 +115,7 @@ const appointmentUtils = {
 
       function addHeightAndWidthToIframeCode(code) {
         const refex = new RegExp("></iframe>");
-        return code.replace(refex, "height='500px' width='100%''></iframe>");
+        return code.replace(refex, " height='500px' width='100%'></iframe>");
       }
 
       profileVideo.html(
