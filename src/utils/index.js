@@ -134,6 +134,7 @@ const formatAnswers = (list) =>
     .reduce((acc, curr) => ({ ...acc, ...curr }));
 
 const isEmpty = (value) => {
+  if (value === "false") return true;
   if (value === null || value === undefined) return true;
   if (typeof value === "string" && value.trim() === "") return true;
   return typeof value === "object" && Object.keys(value).length === 0;
