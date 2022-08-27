@@ -19237,7 +19237,7 @@ const appointmentUtils = {
 
     if (isEmpty(profileVIDEO_URL)) {
       profileVideoArea.css("display", "none");
-      watchVideoWrapper.css("opacity", "0");
+      watchVideoWrapper.css("opacity", 0);
       watchVideoWrapper.css("cursor", "default");
     } else {
       const profileVideo = $("#profile-video");
@@ -19257,23 +19257,28 @@ const appointmentUtils = {
       }
 
       profileVideo.html(checkIsIframeCode(page.PROFILE_VIDEO_URL) ? addHeightAndWidthToIframeCode(page.PROFILE_VIDEO_URL) : convertToIframeCode(page.PROFILE_VIDEO_URL));
-      profileVideoIframe.attr("width", "100% !important");
-      profileVideoIframe.attr("class", "appointment-page-video");
 
-      if (isMobile()) {
-        profileVideoIframe.attr("height", "250px !important");
-      } else {
-        profileVideoIframe.attr("height", "500px !important");
+      try {
+        profileVideoIframe.attr("width", "100% !important");
+        profileVideoIframe.attr("class", "appointment-page-video");
+
+        if (isMobile()) {
+          profileVideoIframe.attr("height", "250px !important");
+        } else {
+          profileVideoIframe.attr("height", "500px !important");
+        }
+      } catch (e) {
+        console.log("error in map", e);
       } // profileVideoArea.css("display", "flex");
 
 
-      watchVideoWrapper.css("opacity", "100%");
+      watchVideoWrapper.css("opacity", 100);
       profileVideoArea.removeClass("hide");
       watchVideoWrapper.css("display", "flex");
-      watchVideoWrapper.css("opacity", "100%");
+      watchVideoWrapper.css("opacity", 100);
       watchVideoWrapper.css("cursor", "pointer");
       console.log("yeah i workrdß=");
-      $(".div-block-41.videowatch").css("opacity", "100% !important");
+      $(".div-block-41.videowatch").css("opacity", 100);
     }
 
     if (page.IS_CANADIAN_LINK) {
