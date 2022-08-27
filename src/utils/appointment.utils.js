@@ -3,6 +3,7 @@ const {
   finFinancialSuccessVideoAppLink,
   finBaseUrl,
   handleBrokerCheckLinkAndDisclosure,
+  isMobile,
 } = require("./index");
 const appointmentUtils = {
   initialState: {
@@ -115,7 +116,7 @@ const appointmentUtils = {
 
       function addHeightAndWidthToIframeCode(code) {
         const refex = new RegExp("></iframe>");
-        return code.replace(refex, " height='500px' width='100%'></iframe>");
+        return code.replace(refex, "height='500px' width='100%'></iframe>");
       }
 
       profileVideo.html(
@@ -123,14 +124,20 @@ const appointmentUtils = {
           ? addHeightAndWidthToIframeCode(page.PROFILE_VIDEO_URL)
           : convertToIframeCode(page.PROFILE_VIDEO_URL)
       );
-      profileVideoIframe.attr("width", "100%");
+      profileVideoIframe.attr("width", "100% !important");
       profileVideoIframe.attr("class", "appointment-page-video");
+      if (isMobile()) {
+        profileVideoIframe.attr("height", "250px !important");
+      } else {
+        profileVideoIframe.attr("height", "500px !important");
+      }
       // profileVideoArea.css("display", "flex");
       watchVideoWrapper.css("opacity", "100%");
       profileVideoArea.removeClass("hide");
       watchVideoWrapper.css("display", "flex");
       watchVideoWrapper.css("opacity", "100%");
       watchVideoWrapper.css("cursor", "pointer");
+      $(".div-block-41.videowatch").css("opacity", "100% !important");
     }
 
     if (page.IS_CANADIAN_LINK) {
