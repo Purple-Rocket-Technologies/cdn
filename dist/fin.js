@@ -19257,20 +19257,20 @@ const appointmentUtils = {
       }
 
       profileVideo.html(checkIsIframeCode(page.PROFILE_VIDEO_URL) ? addHeightAndWidthToIframeCode(page.PROFILE_VIDEO_URL) : convertToIframeCode(page.PROFILE_VIDEO_URL));
+      setTimeout(() => {
+        try {
+          profileVideoIframe.attr("width", "100% !important");
+          profileVideoIframe.attr("class", "appointment-page-video");
 
-      try {
-        profileVideoIframe.attr("width", "100% !important");
-        profileVideoIframe.attr("class", "appointment-page-video");
-
-        if (isMobile()) {
-          profileVideoIframe.attr("height", "250px !important");
-        } else {
-          profileVideoIframe.attr("height", "500px !important");
+          if (isMobile()) {
+            profileVideoIframe.attr("height", "250px !important");
+          } else {
+            profileVideoIframe.attr("height", "500px !important");
+          }
+        } catch (e) {
+          console.log("error in map", e);
         }
-      } catch (e) {
-        console.log("error in map", e);
-      } // profileVideoArea.css("display", "flex");
-
+      }, 500); // profileVideoArea.css("display", "flex");
 
       watchVideoWrapper.css("opacity", 100);
       profileVideoArea.removeClass("hide");
