@@ -4,6 +4,7 @@ const {
   finBaseUrl,
   handleBrokerCheckLinkAndDisclosure,
   isMobile,
+  isEmpty,
 } = require("./index");
 const appointmentUtils = {
   initialState: {
@@ -98,7 +99,8 @@ const appointmentUtils = {
     const watchVideoWrapper = $("#video-watch-wrapper");
     const profileVideoArea = $("#profile-video-area");
     $("#rep-image-container").css("background-image", `url(${page.REP_IMAGE})`);
-    if (page.PROFILE_VIDEO_URL === "" || !page.PROFILE_VIDEO_URL) {
+    const profileVIDEO_URL = page.PROFILE_VIDEO_URL;
+    if (isEmpty(profileVIDEO_URL)) {
       profileVideoArea.css("display", "none");
       watchVideoWrapper.css("opacity", "0");
       watchVideoWrapper.css("cursor", "default");
@@ -137,6 +139,7 @@ const appointmentUtils = {
       watchVideoWrapper.css("display", "flex");
       watchVideoWrapper.css("opacity", "100%");
       watchVideoWrapper.css("cursor", "pointer");
+      console.log("yeah i workrdß=")
       $(".div-block-41.videowatch").css("opacity", "100% !important");
     }
 
