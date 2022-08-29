@@ -108,6 +108,11 @@ const appointmentUtils = {
       const profileVideo = $("#profile-video");
       const profileVideoIframe = $("#profile-video iframe");
 
+      page.PROFILE_VIDEO_URL = page.PROFILE_VIDEO_URL.replace(
+        /accelerometer;/i,
+        ""
+      );
+
       function checkIsIframeCode(url) {
         return url.includes("iframe");
       }
@@ -116,30 +121,12 @@ const appointmentUtils = {
         return `<iframe src="${url}" width="100%" height="500px" frameborder="0" allow="autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
       }
 
-      function addHeightAndWidthToIframeCode(code) {
-        return code
-          .replace(/width="640" height="268"/i, "height='500px' width='100%'")
-          .replace(/width="560" height="315"/i, "height='500px' width='100%'");
-      }
-
       profileVideo.html(
         checkIsIframeCode(page.PROFILE_VIDEO_URL)
-          ? addHeightAndWidthToIframeCode(page.PROFILE_VIDEO_URL)
+          ? page.PROFILE_VIDEO_URL
           : convertToIframeCode(page.PROFILE_VIDEO_URL)
       );
-      setTimeout(() => {
-        try {
-          profileVideoIframe.attr("width", "100% !important");
-          profileVideoIframe.attr("class", "appointment-page-video");
-          if (isMobile()) {
-            profileVideoIframe.attr("height", "250px !important");
-          } else {
-            profileVideoIframe.attr("height", "500px !important");
-          }
-        } catch (e) {
-          console.log("error in map", e);
-        }
-      }, 1500);
+      profileVideoIframe.attr("class", "appointment-page-video");
       // profileVideoArea.css("display", "flex");
       watchVideoWrapper.css("opacity", 100);
       profileVideoArea.removeClass("hide");

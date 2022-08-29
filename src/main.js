@@ -13,6 +13,7 @@ import {
   isAppointmentPage,
 } from "./utils";
 import initAppointment from "./pages/apps/appointment";
+import "./styles/main.css";
 if (isOnBoardingPage()) {
   fin.init().then((r) => {
     console.log(r);
