@@ -117,10 +117,9 @@ const appointmentUtils = {
       }
 
       function addHeightAndWidthToIframeCode(code) {
-        return code.replace(
-          /width="640" height="268"/i,
-          "height='500px' width='100%'"
-        );
+        return code
+          .replace(/width="640" height="268"/i, "height='500px' width='100%'")
+          .replace(/width="560" height="315"/i, "height='500px' width='100%'");
       }
 
       profileVideo.html(
