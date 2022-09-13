@@ -29,18 +29,18 @@ export function init(advisorName = "") {
           class: "d-flex align-items-center flex-column text-center",
         },
         [
-          !isFinPath()
-            ? h(
-                "span",
-                {
-                  class: "video-description text-center",
-                },
-                this.description.replace(
+          h(
+            "span",
+            {
+              class: "video-description text-center",
+            },
+            isFinPath()
+              ? "Your results are ready for review! But before that, I have a short video message for you."
+              : this.description.replace(
                   /repname/g,
                   advisorName || cookies.get("REP_NAME")
                 )
-              )
-            : null,
+          ),
           h("video", {
             id: "video",
             class: "video-container",
