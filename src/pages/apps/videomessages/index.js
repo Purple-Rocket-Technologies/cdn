@@ -75,10 +75,6 @@ export function init(advisorName = "") {
               video.scrollIntoView({});
               video.play();
             };
-          } else {
-            openFinPath[i].onclick = function () {
-              console.log("Open finished");
-            };
           }
         }
         cookies.set("videomessageavailable", true);
@@ -88,6 +84,9 @@ export function init(advisorName = "") {
           cookies.set("videoEnded", true);
           for (let i = 0; i < openFinPath.length; i++) {
             openFinPath[i].style.opacity = "100";
+            openFinPath[i].onclick = function () {
+              console.log("Open finished");
+            };
           }
         });
         const show_fin_access = document.getElementById("show_fin_access");
