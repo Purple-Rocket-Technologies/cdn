@@ -272,7 +272,14 @@ export default function initFinalStep() {
 
     $(".open-video").each(function () {
       $(this).click(() => {
-        openFINPath(prospectAnswers["email"]);
+        const videoEnded = cookies.get("videoEnded");
+        const video_message_available = cookies.get("videomessageavailable");
+        if (
+          (videoEnded && JSON.parse(videoEnded)) ||
+          !JSON.parse(video_message_available)
+        ) {
+          openFINPath(prospectAnswers["email"]);
+        }
         // openVideoApp(prospectAnswers["email"]);
       });
     });

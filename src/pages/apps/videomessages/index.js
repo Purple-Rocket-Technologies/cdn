@@ -53,14 +53,11 @@ export function init(advisorName = "") {
       getVideoMessage,
     },
     async mounted() {
-      const USER_URL = cookies.get("USER_ID");
+      const USER_URL =
+        cookies.get("USER_ID") || localStorage.getItem("USER_ID");
       this.videoMessages = await this.getVideoMessage(USER_URL);
-
+      const openFinPath = document.querySelectorAll(".open-video");
       if (this.firstVideoMessage.onDemandLink) {
-        // const hide_me_if_vod = document.getElementById("hide_me_if_vod");
-        // if (hide_me_if_vod) {
-        //   hide_me_if_vod.style.display = "none";
-        // }
         const video = document.getElementById("video");
         const videoSrc = this.firstVideoMessage.onDemandLink;
         if (Hls.isSupported()) {
@@ -70,11 +67,36 @@ export function init(advisorName = "") {
         } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
           video.src = videoSrc;
         }
+        let videoEnded = 0;
+        for (let i = 0; i < openFinPath.length; i++) {
+          openFinPath[i].style.opacity = "85%";
+          if (!videoEnded) {
+            openFinPath[i].onclick = function () {
+              video.play();
+            };
+          }
+        }
+        cookies.set("videomessageavailable", true);
+        video.addEventListener("ended", () => {
+          videoEnded = 1;
+          cookies.set("videoEnded", true);
+          for (let i = 0; i < openFinPath.length; i++) {
+            openFinPath[i].style.opacity = "100";
+          }
+        });
         const show_fin_access = document.getElementById("show_fin_access");
         if (show_fin_access) {
           show_fin_access.style.display = "flex";
         }
       } else {
+        cookies.set("videomessageavailable", false);
+        if (openFinPath && openFinPath.length) {
+          for (let i = 0; i < openFinPath.length; i++) {
+            openFinPath[i].style.opacity = "100";
+          }
+        }
+
+        // openFinPath.innerHTML = `<div class="green-cta"><h1 class="heading-29">ACCESS FINPATH</h1></div>`;
         // const hide_me_if_vod = document.getElementById("hide_me_if_vod");
         document.getElementById("video_messages").remove();
         // if (hide_me_if_vod) {
