@@ -77,6 +77,7 @@ export function init(advisorName = "") {
           }
         }
         cookies.set("videomessageavailable", true);
+        cookies.set("videoEnded", false);
         video.addEventListener("ended", () => {
           videoEnded = 1;
           cookies.set("videoEnded", true);

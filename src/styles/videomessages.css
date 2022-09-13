@@ -2,9 +2,11 @@
   width: 854px;
   height: 480px;
 }
+
 #video_messages {
-  padding: 10rem 0 5rem;
+  padding: 6rem 0 0.5rem;
 }
+
 .d-flex {
   display: flex;
 }
