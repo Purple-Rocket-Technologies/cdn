@@ -13,6 +13,7 @@ import {
   isAppointmentPage,
 } from "./utils";
 import initAppointment from "./pages/apps/appointment";
+import { init } from "./pages/apps/videomessages/index";
 import "./styles/main.css";
 if (isOnBoardingPage()) {
   fin.init().then((r) => {
@@ -28,6 +29,7 @@ if (isOnBoardingPage()) {
   InitRouteQuestions();
 } else if (isRouteQuestionPage(true)) {
   initFinalStep();
+  init();
 } else if (isAppointmentPage()) {
   initAppointment();
 }

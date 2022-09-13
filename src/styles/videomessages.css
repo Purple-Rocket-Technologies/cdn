@@ -1,0 +1,41 @@
+.video-container {
+  width: 854px;
+  height: 480px;
+}
+#video_messages {
+  padding: 10rem 0 5rem;
+}
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+.flex-column {
+  flex-direction: column;
+}
+.video-description {
+  margin: 24px 0;
+  color: #fff;
+  font-size: 24px;
+}
+.text-center {
+  text-align: center;
+}
+@media screen and (max-width: 780px) {
+  .video-description {
+    font-size: 18px;
+  }
+  .video-container {
+    width: 355px;
+    height: auto;
+  }
+  #video_messages {
+    padding: 5rem 0;
+  }
+}

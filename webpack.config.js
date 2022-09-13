@@ -16,6 +16,14 @@ module.exports = {
         umdNamedDefine: true,
       },
     },
+    fin_video_messages: {
+      import: path.resolve(__dirname, "src/pages/apps/videomessages/index.js"),
+      library: {
+        name: "fin_video_messages",
+        type: "umd",
+        umdNamedDefine: true,
+      },
+    },
   },
   output: {
     path: path.resolve(__dirname, "dist"),

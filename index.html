@@ -4,18 +4,17 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cookie POlicy widget</title>
+    <title>Cookie Policy widget</title>
+    <script>
+      const api_url = "localhost:4000";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
   </head>
   <body>
-    <script src="./dist/cookie.js"></script>
+    <div id="video_messages"></div>
+    <script src="./dist/fin_video_messages.js"></script>
     <script>
-      const { CookieWidget } = cookie;
-      const cookieWidget = new CookieWidget(
-        "We use our own and third part cookies to personalize content and to analyze web traffic.",
-        "Accept Cookies",
-        "https://fintell.io/cookie-policy"
-      );
-      cookieWidget.init();
+      fin_video_messages.init("");
     </script>
   </body>
 </html>
