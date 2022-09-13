@@ -72,7 +72,12 @@ export function init(advisorName = "") {
           openFinPath[i].style.opacity = "85%";
           if (!videoEnded) {
             openFinPath[i].onclick = function () {
+              video.scrollIntoView({});
               video.play();
+            };
+          } else {
+            openFinPath[i].onclick = function () {
+              console.log("Open finished");
             };
           }
         }
