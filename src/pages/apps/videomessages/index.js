@@ -82,19 +82,23 @@ export function init(advisorName = "") {
         let videoEnded = 0;
         for (let i = 0; i < openFinPath.length; i++) {
           openFinPath[i].style.opacity = "85%";
-          if (!videoEnded) {
-            openFinPath[i].onclick = function () {
+          openFinPath[i].onclick = function () {
+            if (!videoEnded) {
               video.scrollIntoView({});
               video.play();
-            };
-          }
+            }
+          };
         }
         cookies.set("videomessageavailable", true);
         cookies.set("videoEnded", false);
         video.addEventListener("ended", () => {
           videoEnded = 1;
           cookies.set("videoEnded", true);
-
+          for (let i = 0; i < openFinPath.length; i++) {
+            openFinPath[i].onclick = function () {
+              console.log("Helo");
+            };
+          }
           if (showAfterUnlock && showAfterUnlock.length) {
             for (let i = 0; i < showAfterUnlock.length; i++) {
               showAfterUnlock[i].style.display = "block";
