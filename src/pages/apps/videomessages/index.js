@@ -1,6 +1,6 @@
 import { createApp, h } from "vue";
 import { getVideoMessage } from "../../../service/videomessages/videomessage.service";
-import { cookies } from "../../../utils";
+import { cookies, isEmpty } from "../../../utils";
 import "../../../../src/styles/videomessages.css";
 import { isFinPath } from "../../../utils/videomessage.utils";
 export function init(advisorName = "") {
@@ -51,15 +51,27 @@ export function init(advisorName = "") {
     },
     methods: {
       getVideoMessage,
+      handleFINPathButtons(fin_path_first_btn = false) {
+        const fin_path_first_btnEL =
+          document.querySelector(".fin-path-one-cta");
+        if (fin_path_first_btnEL) {
+          fin_path_first_btnEL.style.display = fin_path_first_btn
+            ? "flex"
+            : "none";
+        }
+      },
     },
     async mounted() {
       const USER_URL =
         cookies.get("USER_ID") || localStorage.getItem("USER_ID");
       this.videoMessages = await this.getVideoMessage(USER_URL);
       const openFinPath = document.querySelectorAll(".open-video");
-      if (this.firstVideoMessage.onDemandLink) {
+      const showAfterUnlock = document.querySelectorAll(".show-after-unlock");
+      const hideAfterUnlock = document.querySelectorAll(".hide-after-unlock");
+      const videoSrc = this.firstVideoMessage.onDemandLink;
+      this.handleFINPathButtons(!isEmpty(videoSrc));
+      if (videoSrc) {
         const video = document.getElementById("video");
-        const videoSrc = this.firstVideoMessage.onDemandLink;
         if (Hls.isSupported()) {
           const hls = new Hls();
           hls.loadSource(videoSrc);
@@ -82,11 +94,33 @@ export function init(advisorName = "") {
         video.addEventListener("ended", () => {
           videoEnded = 1;
           cookies.set("videoEnded", true);
+
+          if (showAfterUnlock && showAfterUnlock.length) {
+            for (let i = 0; i < showAfterUnlock.length; i++) {
+              showAfterUnlock[i].style.display = "block";
+            }
+          }
+
+          if (hideAfterUnlock && hideAfterUnlock.length) {
+            for (let i = 0; i < hideAfterUnlock.length; i++) {
+              hideAfterUnlock[i].style.display = "none";
+            }
+          }
+
           for (let i = 0; i < openFinPath.length; i++) {
             openFinPath[i].style.opacity = "100";
-            openFinPath[i].onclick = function () {
-              console.log("Open finished");
-            };
+          }
+        });
+        video.addEventListener("play", () => {
+          if (showAfterUnlock && showAfterUnlock.length) {
+            for (let i = 0; i < showAfterUnlock.length; i++) {
+              showAfterUnlock[i].style.display = "none";
+            }
+          }
+          if (hideAfterUnlock && hideAfterUnlock.length) {
+            for (let i = 0; i < hideAfterUnlock.length; i++) {
+              hideAfterUnlock[i].style.display = "block";
+            }
           }
         });
         const show_fin_access = document.getElementById("show_fin_access");
@@ -100,10 +134,10 @@ export function init(advisorName = "") {
             openFinPath[i].style.opacity = "100";
           }
         }
-
         // openFinPath.innerHTML = `<div class="green-cta"><h1 class="heading-29">ACCESS FINPATH</h1></div>`;
         // const hide_me_if_vod = document.getElementById("hide_me_if_vod");
         document.getElementById("video_messages").remove();
+        $(".unlock-copy").text("ACCESS MY");
         // if (hide_me_if_vod) {
         //   hide_me_if_vod.style.display = "none";
         // }
