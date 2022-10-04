@@ -81,7 +81,6 @@ export function init(advisorName = "") {
         }
         let videoEnded = 0;
         for (let i = 0; i < openFinPath.length; i++) {
-          openFinPath[i].style.opacity = "85%";
           openFinPath[i].onclick = function () {
             if (!videoEnded) {
               video.scrollIntoView({});
