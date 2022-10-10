@@ -12,41 +12,41 @@ const buttonArrowImage =
   "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/5f01858ae08dc78b0b7926d9_Pointer.svg";
 
 const BASE_QUESTIONS = [
-  {
-    question: "Which best describes you in your financial journey?",
-    es: "¿Qué es lo que más te gusta en tu viaje financiero?",
-    answer: [],
-    type: "radio",
-    style: {
-      gridTemplateColumns: "repeat(2, 250px) !important",
-    },
-    options: [
-      {
-        label: "Need to know where to start",
-        value: "Need to know where to start",
-        es: "Necesito saber dónde empezar",
-        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa4334b522c266f4260_Group%20294.svg",
-      },
-      {
-        label: "Need a more clear route",
-        value: "Need a more clear route",
-        es: "Necesito una ruta más clara",
-        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa4cb718ec356a073b2_Group%20295.svg",
-      },
-      {
-        label: "Got off track. Need help",
-        value: "Got off track. Need help",
-        es: "Me desvié. Necesitas ayuda",
-        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa4bec6bf77be327fa6_Group%20296.svg",
-      },
-      {
-        label: "Getting close to my destination",
-        value: "Getting close to my destination",
-        es: "Acercándome a mi destino",
-        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa46b0b64ddecfe609a_Group%20297.svg",
-      },
-    ],
-  },
+  // {
+  //   question: "Which best describes you in your financial journey?",
+  //   es: "¿Qué es lo que más te gusta en tu viaje financiero?",
+  //   answer: [],
+  //   type: "radio",
+  //   style: {
+  //     gridTemplateColumns: "repeat(2, 250px) !important",
+  //   },
+  //   options: [
+  //     {
+  //       label: "Need to know where to start",
+  //       value: "Need to know where to start",
+  //       es: "Necesito saber dónde empezar",
+  //       icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa4334b522c266f4260_Group%20294.svg",
+  //     },
+  //     {
+  //       label: "Need a more clear route",
+  //       value: "Need a more clear route",
+  //       es: "Necesito una ruta más clara",
+  //       icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa4cb718ec356a073b2_Group%20295.svg",
+  //     },
+  //     {
+  //       label: "Got off track. Need help",
+  //       value: "Got off track. Need help",
+  //       es: "Me desvié. Necesitas ayuda",
+  //       icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa4bec6bf77be327fa6_Group%20296.svg",
+  //     },
+  //     {
+  //       label: "Getting close to my destination",
+  //       value: "Getting close to my destination",
+  //       es: "Acercándome a mi destino",
+  //       icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa46b0b64ddecfe609a_Group%20297.svg",
+  //     },
+  //   ],
+  // },
   {
     question: "Who is with you on your financial journey?",
     es: "¿Quién está con vos en tu viaje financiero?",
@@ -246,8 +246,8 @@ const BASE_QUESTIONS = [
 
 const questions = {
   BOTH: BASE_QUESTIONS,
-  MANAGE_MONEY_BETTER: BASE_QUESTIONS.slice(0, 4),
-  MAKE_MORE_MONEY: [BASE_QUESTIONS[1], BASE_QUESTIONS[2], BASE_QUESTIONS[4]],
+  MANAGE_MONEY_BETTER: BASE_QUESTIONS.slice(0, 3),
+  MAKE_MORE_MONEY: [BASE_QUESTIONS[0], BASE_QUESTIONS[1], BASE_QUESTIONS[3]],
 };
 
 const getLastSlash = (str) => str.split("/").pop();
