@@ -74,10 +74,10 @@ export function init(advisorName = "") {
         const video = document.getElementById("video");
         if (Hls.isSupported()) {
           const hls = new Hls();
-          hls.loadSource(videoSrc);
+          hls.loadSource(`${videoSrc}#t=0.001`);
           hls.attachMedia(video);
         } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-          video.src = videoSrc;
+          video.src = `${videoSrc}#t=0.001`;
         }
         let videoEnded = 0;
         for (let i = 0; i < openFinPath.length; i++) {
