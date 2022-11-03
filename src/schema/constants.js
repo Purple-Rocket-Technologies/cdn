@@ -101,6 +101,7 @@ const BASE_QUESTIONS = [
       {
         label: "None of these",
         value: "None of these",
+        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
         es: "Ninguno de esos",
       },
     ],
@@ -153,6 +154,7 @@ const BASE_QUESTIONS = [
       },
       {
         label: "None of these",
+        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
         value: "None of these",
         es: "Ninguno de esos",
       },
@@ -217,6 +219,7 @@ const BASE_QUESTIONS = [
       },
       {
         label: "None of these",
+        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
         value: "None of these",
         es: "Ninguno de esos",
       },
@@ -259,6 +262,7 @@ const BASE_QUESTIONS = [
         label: "None of these",
         value: "None of these",
         es: "Ninguno de esos",
+        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
       },
     ],
   },
