@@ -38,7 +38,9 @@ export function init(advisorName = "") {
               ? "Your results are ready for review! But before that, I have a short video message for you."
               : this.description.replace(
                   /repname/g,
-                  advisorName || cookies.get("REP_NAME")
+                  advisorName ||
+                    cookies.get("FIRST_NAME") ||
+                    cookies.get("REP_NAME")
                 )
           ),
           h("video", {
