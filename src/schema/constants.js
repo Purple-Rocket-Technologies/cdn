@@ -98,6 +98,11 @@ const BASE_QUESTIONS = [
       //   es: "Trabajadores por cuenta propia",
       //   icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5efe60d8386fb1bfc_Group%20303.svg",
       // },
+      {
+        label: "None of these",
+        value: "None of these",
+        es: "Ninguno de esos",
+      },
     ],
   },
   {
@@ -145,6 +150,11 @@ const BASE_QUESTIONS = [
         value: "Self-Employed or Business Owner",
         es: "Propietario de negocio o empleado",
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5efe60d8386fb1bfc_Group%20303.svg",
+      },
+      {
+        label: "None of these",
+        value: "None of these",
+        es: "Ninguno de esos",
       },
     ],
   },
@@ -205,6 +215,11 @@ const BASE_QUESTIONS = [
         es: "Un plan general para mi futuro",
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa508009b8754c5c557_Group%20311.svg",
       },
+      {
+        label: "None of these",
+        value: "None of these",
+        es: "Ninguno de esos",
+      },
     ],
   },
   {
@@ -240,14 +255,19 @@ const BASE_QUESTIONS = [
         es: "solo soy de mente abierta",
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
       },
+      {
+        label: "None of these",
+        value: "None of these",
+        es: "Ninguno de esos",
+      },
     ],
   },
 ];
 
 const questions = {
   BOTH: BASE_QUESTIONS,
-  MANAGE_MONEY_BETTER: BASE_QUESTIONS.slice(0, 3),
-  MAKE_MORE_MONEY: [BASE_QUESTIONS[0], BASE_QUESTIONS[1], BASE_QUESTIONS[3]],
+  MANAGE_MONEY_BETTER: BASE_QUESTIONS,
+  MAKE_MORE_MONEY: BASE_QUESTIONS,
 };
 
 const getLastSlash = (str) => str.split("/").pop();

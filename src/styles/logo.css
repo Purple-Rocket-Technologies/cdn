@@ -1,0 +1,47 @@
+@font-face {
+    font-family: Uchen;
+    src: url(https://discoverfin.sfo3.digitaloceanspaces.com/1gc6el9ifp9gfuchenregularttf.ttf) format(truetype);
+    font-weight: 400;
+    font-style: normal;
+    font-display: auto;
+}
+@font-face {
+    font-family: Trenda;
+    src: url(https://uploads-ssl.webflow.com/629e3357919ae1682f65b07c/62a64de45e8f63a8c8bad2ab_trenda_regular.otf) format(opentype);
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+.circle__x {
+    border-radius: 50%;
+    display: flex;
+    font-family: 'Uchen';
+    width: 512px;
+    justify-content: center;
+    align-items: center;
+    height: 512px;
+    position: relative;
+    /*color: text_color;*/
+    /*border: 8px solid text_color;*/
+    z-index: 1;
+}
+
+.strip__x {
+    height: 106%;
+    width: 32px;
+    /*background: bgcolor;*/
+    z-index: 2;
+    transform: rotate(300deg);
+    position: absolute;
+}
+
+.circle__x span {
+    margin-bottom: 0;
+    font-size: 14rem;
+    z-index: 3;
+}
+
+.name__x {
+    font-family: "Trenda", sans-serif;
+}

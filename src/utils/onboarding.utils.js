@@ -46,6 +46,10 @@ const onBoarding = {
           value: advisor.appointmentBookingLink,
         },
         {
+          key: "FIRST_NAME",
+          value: advisor.firstName,
+        },
+        {
           key: "REP_NAME",
           value: advisor.firstName + " " + advisor.lastName,
         },

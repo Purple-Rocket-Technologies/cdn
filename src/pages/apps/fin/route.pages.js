@@ -7,11 +7,13 @@ class RoutePage {
     PROSPECT_ID,
     USER_NAME,
     FIN_NUMBER,
-    ROUTE_SELECTION = ""
+    ROUTE_SELECTION = "",
+    FIRST_NAME = ""
   ) {
     this.route_selection = ROUTE_SELECTION;
     this.user_name = USER_NAME;
     this.fin_number = FIN_NUMBER;
+    this.advisor_First_name = FIRST_NAME;
     this.company_id = COMPANY_ID;
     this.PROSPECT_ID = PROSPECT_ID;
   }
@@ -34,7 +36,8 @@ function init() {
     cookies.get("COMPANY_ID"),
     cookies.get("PROSPECT_ID"),
     cookies.get("Name"),
-    cookies.get("FIN Number")
+    cookies.get("FIN Number"),
+    cookies.get("FIRST_NAME")
   );
   page.setPath();
   page.handlePathSelection();

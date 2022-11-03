@@ -10,7 +10,7 @@ export function init(advisorName = "") {
         player: {},
         videoMessages: [],
         description:
-          "Watch a video from your financial advisor, repname to unlock your next step.",
+          "Watch a video message from repname, to learn your next best step.",
       };
     },
     computed: {
@@ -66,6 +66,9 @@ export function init(advisorName = "") {
         cookies.get("USER_ID") || localStorage.getItem("USER_ID");
       this.videoMessages = await this.getVideoMessage(USER_URL);
       const openFinPath = document.querySelectorAll(".open-video");
+      const bg_pr_open_fin = document.querySelectorAll(
+        ".open-video .bg-primary"
+      );
       const showAfterUnlock = document.querySelectorAll(".show-after-unlock");
       const hideAfterUnlock = document.querySelectorAll(".hide-after-unlock");
       const videoSrc = this.firstVideoMessage.onDemandLink;
@@ -83,7 +86,11 @@ export function init(advisorName = "") {
         for (let i = 0; i < openFinPath.length; i++) {
           openFinPath[i].onclick = function () {
             if (!videoEnded) {
-              video.scrollIntoView({});
+              video.scrollIntoView({
+                inline: "start",
+                block: "start",
+                behavior: "smooth",
+              });
               video.play();
             }
           };
@@ -93,10 +100,8 @@ export function init(advisorName = "") {
         video.addEventListener("ended", () => {
           videoEnded = 1;
           cookies.set("videoEnded", true);
-          for (let i = 0; i < openFinPath.length; i++) {
-            openFinPath[i].onclick = function () {
-              console.log("Helo");
-            };
+          for (let i = 0; i < bg_pr_open_fin.length; i++) {
+            bg_pr_open_fin[i].style.background = "#2ad76f";
           }
           if (showAfterUnlock && showAfterUnlock.length) {
             for (let i = 0; i < showAfterUnlock.length; i++) {
@@ -108,10 +113,6 @@ export function init(advisorName = "") {
             for (let i = 0; i < hideAfterUnlock.length; i++) {
               hideAfterUnlock[i].style.display = "none";
             }
-          }
-
-          for (let i = 0; i < openFinPath.length; i++) {
-            openFinPath[i].style.opacity = "100";
           }
         });
         video.addEventListener("play", () => {
@@ -132,9 +133,9 @@ export function init(advisorName = "") {
         }
       } else {
         cookies.set("videomessageavailable", false);
-        if (openFinPath && openFinPath.length) {
-          for (let i = 0; i < openFinPath.length; i++) {
-            openFinPath[i].style.opacity = "100";
+        if (bg_pr_open_fin && bg_pr_open_fin.length) {
+          for (let i = 0; i < bg_pr_open_fin.length; i++) {
+            bg_pr_open_fin[i].style.background = "#2ad76f";
           }
         }
         // openFinPath.innerHTML = `<div class="green-cta"><h1 class="heading-29">ACCESS FINPATH</h1></div>`;
