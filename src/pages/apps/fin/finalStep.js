@@ -137,13 +137,11 @@ export default function initFinalStep() {
     false
   );
 
-  [$(".rep_name_cta")].forEach(function (el) {
-    el.text(rep_name);
-  });
-
-  [$("#rep-name"), $("#rep_name"), $(".rep_name")].forEach(function (el) {
-    el.text(cookies.get("FIRST_NAME"));
-  });
+  [$("#rep-name"), $("#rep_name"), $(".rep_name"), $(".rep_name_cta")].forEach(
+    function (el) {
+      el.text(cookies.get("FIRST_NAME"));
+    }
+  );
   const userNameEls = document.querySelectorAll("#user-name");
   userNameEls.forEach((el) => {
     el.innerHTML = capitalize(cookies.get("Name"));
