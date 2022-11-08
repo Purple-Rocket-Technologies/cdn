@@ -14,8 +14,17 @@
   <body>
     <div id="video_messages"></div>
     <script src="./dist/fin_video_messages.js"></script>
+    <script src="./dist/advisor_logo.js"></script>
     <script>
-      fin_video_messages.init("");
+      // fin_video_messages.init("");
+      const logo = new advisor_logo.Logo(
+        "#video_messages",
+        "Harsh Vardhan",
+        "#fff",
+        "#000",
+        false
+      );
+      logo.__init__();
     </script>
   </body>
 </html>

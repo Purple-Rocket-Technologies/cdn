@@ -12,25 +12,34 @@
     font-style: normal;
     font-display: swap;
 }
+.d-flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+
+.position-relative {
+    position: relative;
+}
 
 .circle__x {
     border-radius: 50%;
     display: flex;
     font-family: 'Uchen';
-    width: 512px;
+    width: 45px;
     justify-content: center;
     align-items: center;
-    height: 512px;
+    height: 45px;
     position: relative;
-    /*color: text_color;*/
-    /*border: 8px solid text_color;*/
     z-index: 1;
 }
 
 .strip__x {
-    height: 106%;
-    width: 32px;
-    /*background: bgcolor;*/
+    height: 140%;
+    width: 10px;
     z-index: 2;
     transform: rotate(300deg);
     position: absolute;
@@ -38,10 +47,15 @@
 
 .circle__x span {
     margin-bottom: 0;
-    font-size: 14rem;
+    font-size: 24px;
     z-index: 3;
 }
 
-.name__x {
-    font-family: "Trenda", sans-serif;
+.big__name {
+    font-size: 24px;
+    font-family: 'Trenda', sans-serif;
+}
+
+.space-x-4 > * + * {
+    margin-left: 1.25rem;
 }

@@ -24,6 +24,14 @@ module.exports = {
         umdNamedDefine: true,
       },
     },
+    advisor_logo: {
+      import: path.resolve(__dirname, "src/logo/index.js"),
+      library: {
+        name: "advisor_logo",
+        type: "umd",
+        umdNamedDefine: true,
+      },
+    },
   },
   output: {
     path: path.resolve(__dirname, "dist"),
