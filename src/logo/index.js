@@ -1,6 +1,11 @@
+import { isEmpty } from "../utils/index";
 const sanitizeFullName = (name) => {
   if (!name) return name;
-  const name_array = name.split(" ");
+  name = name.trim();
+  const name_array = name
+    .split(" ")
+    .map((e) => e.trim())
+    .filter((e) => !isEmpty(e));
   if (name_array.length > 2) {
     return `${name_array[0]} ${name_array[1].charAt(0)}. ${name_array[2]}`;
   } else if (name_array.length <= 2) {
@@ -10,14 +15,15 @@ const sanitizeFullName = (name) => {
 
 const getNameInitials = (name) =>
   name
+    .trim()
     .split(" ")
     .slice(0, 2)
-    .map((e) => e.charAt(0))
+    .map((e) => e.charAt(0).trim())
     .join("");
 import "../styles/logo.css";
 export class Logo {
   constructor(selector, name, bgColor, textColor, circleOnly = true) {
-    this.name = name;
+    this.name = name.toUpperCase();
     this.bgColor = bgColor;
     this.textColor = textColor;
     this.circleOnly = circleOnly;
