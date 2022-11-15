@@ -6,20 +6,26 @@ const sanitizeFullName = (name) => {
     .split(" ")
     .map((e) => e.trim())
     .filter((e) => !isEmpty(e));
+
   if (name_array.length > 2) {
-    return `${name_array[0]} ${name_array[1].charAt(0)}. ${name_array[2]}`;
+    return `${name_array[0]} ${name_array[1].charAt(0)}. ${
+      name_array[name_array.length - 1]
+    }`;
   } else if (name_array.length <= 2) {
     return name;
   }
 };
 
-const getNameInitials = (name) =>
-  name
+const getNameInitials = (name) => {
+  name = name
     .trim()
     .split(" ")
-    .slice(0, 2)
-    .map((e) => e.charAt(0).trim())
-    .join("");
+    .map((e) => e.trim())
+    .filter((e) => !isEmpty(e))
+    .map((e) => e.charAt(0));
+  return `${name[0]}${name[name.length - 1]}`;
+};
+
 import "../styles/logo.css";
 export class Logo {
   constructor(selector, name, bgColor, textColor, circleOnly = true) {
