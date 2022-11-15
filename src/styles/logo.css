@@ -63,6 +63,12 @@
 
 @media screen and (max-width: 850px) {
   .big__name {
-    display: none;
+    /*display: none;*/
+    margin-top: 8px;
+    font-size: 16px;
+    margin-left: 0;
+  }
+  .sm-flex-col {
+    flex-direction: column;
   }
 }

@@ -40,7 +40,7 @@ export class Logo {
     const template = `
       <div style="color: ${
         this.textColor
-      }" class="d-flex items-center position-relative space-x-4">
+      }" class="d-flex sm-flex-col items-center position-relative space-x-4">
               <div style="color: ${this.textColor}; border: 2px solid ${
       this.textColor
     }" class="d-flex items-center circle__x">
