@@ -98,12 +98,12 @@ const BASE_QUESTIONS = [
       //   es: "Trabajadores por cuenta propia",
       //   icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5efe60d8386fb1bfc_Group%20303.svg",
       // },
-      {
-        label: "None of these",
-        value: "None of these",
-        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
-        es: "Ninguno de esos",
-      },
+      // {
+      //   label: "None of these",
+      //   value: "None of these",
+      //   icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
+      //   es: "Ninguno de esos",
+      // },
     ],
   },
   {
@@ -152,12 +152,12 @@ const BASE_QUESTIONS = [
         es: "Propietario de negocio o empleado",
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5efe60d8386fb1bfc_Group%20303.svg",
       },
-      {
-        label: "None of these",
-        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
-        value: "None of these",
-        es: "Ninguno de esos",
-      },
+      // {
+      //   label: "None of these",
+      //   icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
+      //   value: "None of these",
+      //   es: "Ninguno de esos",
+      // },
     ],
   },
   {
@@ -217,12 +217,12 @@ const BASE_QUESTIONS = [
         es: "Un plan general para mi futuro",
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa508009b8754c5c557_Group%20311.svg",
       },
-      {
-        label: "None of these",
-        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
-        value: "None of these",
-        es: "Ninguno de esos",
-      },
+      // {
+      //   label: "None of these",
+      //   icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
+      //   value: "None of these",
+      //   es: "Ninguno de esos",
+      // },
     ],
   },
   {
@@ -258,12 +258,12 @@ const BASE_QUESTIONS = [
         es: "solo soy de mente abierta",
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
       },
-      {
-        label: "None of these",
-        value: "None of these",
-        es: "Ninguno de esos",
-        icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
-      },
+      // {
+      //   label: "None of these",
+      //   value: "None of these",
+      //   es: "Ninguno de esos",
+      //   icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa6f2f85f5b3e5ef315_Group%20312.svg",
+      // },
     ],
   },
 ];
