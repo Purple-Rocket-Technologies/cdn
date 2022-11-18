@@ -56,6 +56,6 @@ export class Logo {
              }
       </div>
     `;
-    document.querySelector(this.selector).innerHTML += template;
+    document.querySelector(this.selector).innerHTML = template;
   }
 }

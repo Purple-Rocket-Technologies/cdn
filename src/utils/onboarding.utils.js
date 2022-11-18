@@ -51,7 +51,7 @@ const onBoarding = {
         },
         {
           key: "REP_NAME",
-          value: advisor.firstName + " " + advisor.lastName,
+          value: advisor.firstName.trim() + " " + advisor.lastName.trim(),
         },
         {
           key: "PIC",

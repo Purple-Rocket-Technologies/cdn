@@ -10,6 +10,7 @@ import {
   handleBrokerCheckLinkAndDisclosure,
 } from "../../../utils";
 import Service from "../../../service/Service";
+import { Logo } from "../../../logo";
 class FinalStep extends BasePage {
   constructor(_object) {
     super(_object);
@@ -33,6 +34,25 @@ export default function initFinalStep() {
   page.APPOINTMENT_LINK = !isEmpty(page.IS_OLD_LINK)
     ? `https://${window.location.host}/appointment?company=${page.IS_OLD_LINK}&user=${page.URL_USER}&video=false`
     : `https://${window.location.host}/appointment?id=${page.URL_USER}&video=false`;
+
+  if (window.location.host === "dev.discoverfin.io") {
+    const logo = new Logo(
+      "#logo-container",
+      `${cookies.get("REP_NAME").trim()}`,
+      "#4417c7",
+      "#fff",
+      false
+    );
+    logo.__init__();
+
+    if (isMobile()) {
+      $(".navbar").css("justify-content", "center");
+      const navbarDiv = $(".navbar .div-block-5");
+      navbarDiv.css("position", "absolute");
+      navbarDiv.css("right", "10px");
+    }
+    $("#logo-container").css("text-decoration", "none !important");
+  }
 
   // Reading name cookie
   const user_name = cookies.get("Name");

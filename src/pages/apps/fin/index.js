@@ -10,6 +10,7 @@ const {
   getProspect,
 } = require("../../../service/fin/onboarding.service");
 const { onBoarding } = require("../../../utils/onboarding.utils");
+const { Logo } = require("../../../logo");
 
 async function redirectContinuer() {
   try {
@@ -36,6 +37,20 @@ async function fetchAdvisor() {
     COMPANY_ID = advisor.company_id;
     IS_CANADIAN_LINK = advisor.address && advisor.country === "Canada";
     onBoarding.advisor.setCookies(advisor, IS_OLD_LINK);
+    //
+    if (window.location.host === "dev.discoverfin.io") {
+      const logo = new Logo(
+        "#logo-container",
+        `${advisor.firstName.trim()} ${advisor.lastName.trim()}`,
+        "#4417c7",
+        "#fff",
+        false
+      );
+      logo.__init__();
+
+      $("#logo-container").css("text-decoration", "none !important");
+    }
+
     initFINVideo();
   } catch (e) {
     console.log(e);
