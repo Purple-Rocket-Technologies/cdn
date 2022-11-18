@@ -39,7 +39,7 @@ export default function initFinalStep() {
     const logo = new Logo(
       "#logo-container",
       `${cookies.get("REP_NAME").trim()}`,
-      "#4417c7",
+      !isMobile() ? "#4417c7" : "#320ba7",
       "#fff",
       false
     );
