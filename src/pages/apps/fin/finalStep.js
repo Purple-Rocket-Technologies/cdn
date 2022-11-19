@@ -32,8 +32,8 @@ export default function initFinalStep() {
     PROSPECT_EMAIL: "",
   });
   page.APPOINTMENT_LINK = !isEmpty(page.IS_OLD_LINK)
-    ? `https://${window.location.host}/appointment?company=${page.IS_OLD_LINK}&user=${page.URL_USER}&video=false`
-    : `https://${window.location.host}/appointment?id=${page.URL_USER}&video=false`;
+    ? `https://${window.location.host}/appointment?id=${page.URL_USER}`
+    : `https://${window.location.host}/appointment?id=${page.URL_USER}`;
 
   if (window.location.host === "dev.discoverfin.io") {
     const logo = new Logo(
