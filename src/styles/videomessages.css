@@ -10,6 +10,11 @@
   border-radius: 20px;
 }
 
+.video-container::-webkit-media-controls-panel {
+  display: none !important;
+  opacity: 1 !important;
+}
+
 #video_messages {
   padding: 1rem 0 0.5rem;
 }

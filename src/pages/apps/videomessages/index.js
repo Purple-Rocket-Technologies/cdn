@@ -3,6 +3,7 @@ import { getVideoMessage } from "../../../service/videomessages/videomessage.ser
 import { cookies, isEmpty } from "../../../utils";
 import "../../../../src/styles/videomessages.css";
 import { isFinPath } from "../../../utils/videomessage.utils";
+
 export function init(advisorName = "") {
   createApp({
     data() {
@@ -46,13 +47,30 @@ export function init(advisorName = "") {
           h("video", {
             id: "video",
             class: "video-container",
-            controls: "true",
+            disablepictureinpicture: true,
+            playsinline: true,
+            controlslist: "nodownload inline play nofullscreen",
           }),
         ]
       );
     },
     methods: {
       getVideoMessage,
+      getVideoPlayer() {
+        return document.getElementById("video");
+      },
+      togglePlayback() {
+        const video = this.getVideoPlayer();
+        if (video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      },
+      toggleAudio() {
+        const video = this.getVideoPlayer();
+        video.muted = !video.muted;
+      },
       handleFINPathButtons(fin_path_first_btn = false) {
         const fin_path_first_btnEL =
           document.querySelector(".fin-path-one-cta");
@@ -79,9 +97,11 @@ export function init(advisorName = "") {
         const video = document.getElementById("video");
         if (Hls.isSupported()) {
           const hls = new Hls();
+          // url
           hls.loadSource(`${videoSrc}#t=0.001`);
           hls.attachMedia(video);
         } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+          // url
           video.src = `${videoSrc}#t=0.001`;
         }
         let videoEnded = 0;
