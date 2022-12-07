@@ -61,6 +61,10 @@
   margin-left: 1.25rem;
 }
 
+a[id="logo-container"] {
+  text-decoration: none !important;
+}
+
 @media screen and (max-width: 850px) {
   .big__name {
     /*display: none;*/

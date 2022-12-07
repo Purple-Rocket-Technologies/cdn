@@ -1,4 +1,6 @@
 import { isEmpty } from "../utils/index";
+import "../styles/logo.css";
+
 const sanitizeFullName = (name) => {
   if (!name) return name;
   name = name.trim();
@@ -26,7 +28,6 @@ const getNameInitials = (name) => {
   return `${name[0]}${name[name.length - 1]}`;
 };
 
-import "../styles/logo.css";
 export class Logo {
   constructor(selector, name, bgColor, textColor, circleOnly = true) {
     this.name = name.toUpperCase();
@@ -37,7 +38,8 @@ export class Logo {
   }
 
   __init__() {
-    const template = `
+    const selector = document.querySelector(this.selector);
+    selector.innerHTML = `
       <div style="color: ${
         this.textColor
       }" class="d-flex sm-flex-col items-center position-relative space-x-4">
@@ -56,6 +58,5 @@ export class Logo {
              }
       </div>
     `;
-    document.querySelector(this.selector).innerHTML = template;
   }
 }
