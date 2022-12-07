@@ -38,18 +38,18 @@ async function fetchAdvisor() {
     IS_CANADIAN_LINK = advisor.address && advisor.country === "Canada";
     onBoarding.advisor.setCookies(advisor, IS_OLD_LINK);
     //
-    if (window.location.host === "dev.discoverfin.io") {
-      const logo = new Logo(
-        "#logo-container",
-        `${advisor.firstName.trim()} ${advisor.lastName.trim()}`,
-        "#4417c7",
-        "#fff",
-        false
-      );
-      logo.__init__();
+    // if (window.location.host === "dev.discoverfin.io") {
+    const logo = new Logo(
+      "#logo-container",
+      `${advisor.firstName.trim()} ${advisor.lastName.trim()}`,
+      "#4417c7",
+      "#fff",
+      false
+    );
+    logo.__init__();
 
-      $("#logo-container").css("text-decoration", "none !important");
-    }
+    $("#logo-container").css("text-decoration", "none !important");
+    // }
 
     initFINVideo();
   } catch (e) {

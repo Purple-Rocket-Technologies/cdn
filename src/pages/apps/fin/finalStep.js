@@ -35,24 +35,24 @@ export default function initFinalStep() {
     ? `https://${window.location.host}/appointment?id=${page.URL_USER}`
     : `https://${window.location.host}/appointment?id=${page.URL_USER}`;
 
-  if (window.location.host === "dev.discoverfin.io") {
-    const logo = new Logo(
-      "#logo-container",
-      `${cookies.get("REP_NAME").trim()}`,
-      !isMobile() ? "#4417c7" : "#320ba7",
-      "#fff",
-      false
-    );
-    logo.__init__();
+  // if (window.location.host === "dev.discoverfin.io") {
+  const logo = new Logo(
+    "#logo-container",
+    `${cookies.get("REP_NAME").trim()}`,
+    !isMobile() ? "#4417c7" : "#320ba7",
+    "#fff",
+    false
+  );
+  logo.__init__();
 
-    if (isMobile()) {
-      $(".navbar").css("justify-content", "center");
-      const navbarDiv = $(".navbar .div-block-5");
-      navbarDiv.css("position", "absolute");
-      navbarDiv.css("right", "10px");
-    }
-    $("#logo-container").css("text-decoration", "none !important");
+  if (isMobile()) {
+    $(".navbar").css("justify-content", "center");
+    const navbarDiv = $(".navbar .div-block-5");
+    navbarDiv.css("position", "absolute");
+    navbarDiv.css("right", "10px");
   }
+  $("#logo-container").css("text-decoration", "none !important");
+  // }
 
   // Reading name cookie
   const user_name = cookies.get("Name");
