@@ -43,11 +43,36 @@ export function init(advisorName = "") {
                     cookies.get("REP_NAME")
                 )
           ),
-          h("video", {
-            id: "video",
-            class: "video-container",
-            controls: "true",
-          }),
+          h("div", { class: "video-overlay" }, [
+            h(
+              "div",
+              {
+                class:
+                  "d-flex video-overlay position-absolute justify-content-center align-items-center space-x-2",
+              },
+              [
+                h("img", {
+                  onClick: () => {
+                    this.togglePlayback();
+                  },
+                  class: "pointer-cursor index100",
+                  src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/playpause.svg",
+                }),
+                h("img", {
+                  onClick: () => {
+                    this.toggleAudio();
+                  },
+                  class: "pointer-cursor index100",
+                  src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/mute.svg",
+                }),
+              ]
+            ),
+            h("video", {
+              id: "video",
+              class: "video-container",
+              controls: "false",
+            }),
+          ]),
         ]
       );
     },
@@ -61,6 +86,21 @@ export function init(advisorName = "") {
             ? "flex"
             : "none";
         }
+      },
+      getVideoPlayer() {
+        return document.getElementById("video");
+      },
+      togglePlayback() {
+        const video = this.getVideoPlayer();
+        if (video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      },
+      toggleAudio() {
+        const video = this.getVideoPlayer();
+        video.muted = !video.muted;
       },
     },
     async mounted() {
