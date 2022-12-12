@@ -2,7 +2,7 @@ const {
   createProspect,
   updateProspectById,
 } = require("../../../service/fin/questions.service");
-const { cookies, isEmail, isMobile, url, toDollar } = require("../../../utils");
+const { cookies, isEmail, isMobile, url } = require("../../../utils");
 const { getProspect } = require("../../../service/fin/onboarding.service");
 const { _FetchAdvisor } = require("../../../pages/apps/fin/index.js");
 
@@ -140,15 +140,15 @@ function questionsPageInit() {
     }
   });
 
-  const formatter = {
-    format: (str) => toDollar(str),
-  };
-
   // Live Comma
   userIncomeEl.keyup(function () {
     if ($(this).val() !== "") {
       if (parseInt($(this).val()) > 0) {
-        $(this).val(formatter.format($(this).val()));
+        var income = parseInt(
+          $(this).val().replace(/[^\d]/g, "").replace(/,/g, ""),
+          10
+        ).toLocaleString();
+        $(this).val(income);
       } else {
         $(this).val("");
       }
@@ -179,9 +179,11 @@ function questionsPageInit() {
     let inflation_factor = Math.pow(1.025, year_left_in_retirement);
     inflation_factor = Math.round((inflation_factor + 0.00001) * 100) / 100;
     const income_after_inflation = parseInt(incomebi) * inflation_factor;
-    $("#ibi").html(formatter.format(incomebi));
-    $(".income_after_inflation").html(formatter.format(income_after_inflation));
-    $("#iai").html(formatter.format(income_after_inflation));
+    $("#ibi").html("$" + addCommas(parseInt(incomebi)));
+    $(".income_after_inflation").html(
+      addCommas(parseInt(income_after_inflation))
+    );
+    $("#iai").html("$" + addCommas(parseInt(income_after_inflation)));
     $("#income_after_inflation").val(parseInt(income_after_inflation));
     $("#at_age").html(avg_retirement_age);
   });
