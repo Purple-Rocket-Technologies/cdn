@@ -11,6 +11,8 @@ export function init(advisorName = "") {
         videoMessages: [],
         description:
           "Watch a video message from repname, to learn your next best step.",
+        playPauseToggle: false,
+        showOverLay: false,
       };
     },
     computed: {
@@ -20,6 +22,14 @@ export function init(advisorName = "") {
           this.videoMessages.length > 0 &&
           this.videoMessages[0]
         );
+      },
+      showPlayButton() {
+        const video = document.getElementById("video");
+        if (video && video.paused) {
+          return true;
+        } else {
+          return false;
+        }
       },
     },
     render() {
@@ -43,39 +53,61 @@ export function init(advisorName = "") {
                     cookies.get("REP_NAME")
                 )
           ),
-          h("div", { class: "video-overlay" }, [
-            h(
-              "div",
-              {
-                class:
-                  "d-flex video-overlay position-absolute justify-content-center align-items-center space-x-2",
-              },
-              [
-                h("img", {
-                  onClick: () => {
-                    this.togglePlayback();
-                  },
-                  class: "pointer-cursor index100",
-                  src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/playpause.svg",
-                }),
-                h("img", {
-                  onClick: () => {
-                    this.toggleAudio();
-                  },
-                  class: "pointer-cursor index100",
-                  src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/mute.svg",
-                }),
-              ]
-            ),
-            h("video", {
-              id: "video",
-              class: "video-container",
-              controls: "false",
-            }),
-          ]),
+          h(
+            "div",
+            {
+              class: "video-overlay",
+              onmouseenter: () => this.showSettingsOverLay(),
+              onmouseleave: () => this.showSettingsOverLay(),
+            },
+            [
+              this.showOverLay
+                ? h(
+                    "div",
+                    {
+                      class:
+                        "d-flex video-overlay position-absolute justify-content-center align-items-center space-x-2",
+                    },
+                    [
+                      !this.playPauseToggle
+                        ? h("img", {
+                            onClick: () => {
+                              this.togglePlayback();
+                            },
+                            class: "pointer-cursor index100",
+                            src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/playpause.svg",
+                          })
+                        : h("div", { class: "d-flex" }, [
+                            h("img", {
+                              onClick: () => {
+                                this.togglePlayback();
+                              },
+                              class: "pointer-cursor index100",
+                              src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/playpause.svg",
+                            }),
+                            h("img", {
+                              onClick: () => {
+                                this.toggleAudio();
+                              },
+                              class: "pointer-cursor index100",
+                              src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/mute.svg",
+                            }),
+                          ]),
+                    ]
+                  )
+                : null,
+              h("video", {
+                id: "video",
+                class: "video-container",
+                controls: "false",
+                autoPlay: true,
+              }),
+            ]
+          ),
         ]
       );
     },
+
     methods: {
       getVideoMessage,
       handleFINPathButtons(fin_path_first_btn = false) {
@@ -94,13 +126,22 @@ export function init(advisorName = "") {
         const video = this.getVideoPlayer();
         if (video.paused) {
           video.play();
+          this.playPauseToggle = true;
         } else {
           video.pause();
+          this.playPauseToggle = false;
         }
       },
       toggleAudio() {
         const video = this.getVideoPlayer();
         video.muted = !video.muted;
+      },
+      showSettingsOverLay() {
+        if (this.showOverLay) {
+          this.showOverLay = false;
+        } else {
+          this.showOverLay = true;
+        }
       },
     },
     async mounted() {

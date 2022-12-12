@@ -13731,13 +13731,25 @@ function init(advisorName = "") {
       return {
         player: {},
         videoMessages: [],
-        description: "Watch a video message from repname, to learn your next best step."
+        description: "Watch a video message from repname, to learn your next best step.",
+        playPauseToggle: false,
+        showOverLay: false
       };
     },
 
     computed: {
       firstVideoMessage() {
         return this.videoMessages && this.videoMessages.length > 0 && this.videoMessages[0];
+      },
+
+      showPlayButton() {
+        const video = document.getElementById("video");
+
+        if (video && video.paused) {
+          return true;
+        } else {
+          return false;
+        }
       }
 
     },
@@ -13748,9 +13760,19 @@ function init(advisorName = "") {
       }, [(0,runtime_core_esm_bundler.h)("span", {
         class: "video-description text-center"
       }, (0,videomessage_utils.isFinPath)() ? "Your results are ready for review! But before that, I have a short video message for you." : this.description.replace(/repname/g, advisorName || utils.cookies.get("FIRST_NAME") || utils.cookies.get("REP_NAME"))), (0,runtime_core_esm_bundler.h)("div", {
-        class: "video-overlay"
-      }, [(0,runtime_core_esm_bundler.h)("div", {
+        class: "video-overlay",
+        onmouseenter: () => this.showSettingsOverLay(),
+        onmouseleave: () => this.showSettingsOverLay()
+      }, [this.showOverLay ? (0,runtime_core_esm_bundler.h)("div", {
         class: "d-flex video-overlay position-absolute justify-content-center align-items-center space-x-2"
+      }, [!this.playPauseToggle ? (0,runtime_core_esm_bundler.h)("img", {
+        onClick: () => {
+          this.togglePlayback();
+        },
+        class: "pointer-cursor index100",
+        src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/playpause.svg"
+      }) : (0,runtime_core_esm_bundler.h)("div", {
+        class: "d-flex"
       }, [(0,runtime_core_esm_bundler.h)("img", {
         onClick: () => {
           this.togglePlayback();
@@ -13763,10 +13785,11 @@ function init(advisorName = "") {
         },
         class: "pointer-cursor index100",
         src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/mute.svg"
-      })]), (0,runtime_core_esm_bundler.h)("video", {
+      })])]) : null, (0,runtime_core_esm_bundler.h)("video", {
         id: "video",
         class: "video-container",
-        controls: "false"
+        controls: "false",
+        autoPlay: true
       })])]);
     },
 
@@ -13790,14 +13813,24 @@ function init(advisorName = "") {
 
         if (video.paused) {
           video.play();
+          this.playPauseToggle = true;
         } else {
           video.pause();
+          this.playPauseToggle = false;
         }
       },
 
       toggleAudio() {
         const video = this.getVideoPlayer();
         video.muted = !video.muted;
+      },
+
+      showSettingsOverLay() {
+        if (this.showOverLay) {
+          this.showOverLay = false;
+        } else {
+          this.showOverLay = true;
+        }
       }
 
     },
