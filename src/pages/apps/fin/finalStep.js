@@ -41,12 +41,6 @@ export default function initFinalStep() {
     !isMobile() ? "#4417c7" : "#320ba7"
   );
 
-  if (isMobile()) {
-    $(".navbar").css("justify-content", "center");
-    const navbarDiv = $(".navbar .div-block-5");
-    navbarDiv.css("position", "absolute");
-    navbarDiv.css("right", "10px");
-  }
   $("#logo-container").css("text-decoration", "none !important");
   // }
 
