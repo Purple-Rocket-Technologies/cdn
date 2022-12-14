@@ -10,9 +10,7 @@ const sanitizeFullName = (name) => {
     .filter((e) => !isEmpty(e));
 
   if (name_array.length > 2) {
-    return `${name_array[0]} ${name_array[1].charAt(0)}. ${
-      name_array[name_array.length - 1]
-    }`;
+    return `${name_array[0]} ${name_array[name_array.length - 1]}`;
   } else if (name_array.length <= 2) {
     return name;
   }
@@ -38,14 +36,16 @@ export class Logo {
   }
 
   __init__() {
-    const selector = document.querySelector(this.selector);
-    selector.innerHTML = `
+    const selectors = document.querySelectorAll(this.selector);
+    for (let i = 0; i < selectors.length; i++) {
+      const selector = selectors[i];
+      selector.innerHTML = `
       <div style="color: ${
         this.textColor
-      }" class="d-flex sm-flex-col items-center position-relative space-x-4">
+      }" class="d-flex items-center position-relative space-x-4">
               <div style="color: ${this.textColor}; border: 2px solid ${
-      this.textColor
-    }" class="d-flex items-center circle__x">
+        this.textColor
+      }" class="d-flex items-center circle__x">
                 <span>${getNameInitials(this.name)}</span>
                 <div style="background: ${this.bgColor}" class="strip__x"></div>
               </div>
@@ -58,5 +58,6 @@ export class Logo {
              }
       </div>
     `;
+    }
   }
 }
