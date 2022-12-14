@@ -31,5 +31,7 @@ if (isOnBoardingPage()) {
   initFinalStep();
   init();
 } else if (isAppointmentPage()) {
-  initAppointment();
+  initAppointment().then((r) => {
+    console.log("");
+  });
 }

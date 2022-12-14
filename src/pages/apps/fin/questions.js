@@ -2,7 +2,7 @@ const {
   createProspect,
   updateProspectById,
 } = require("../../../service/fin/questions.service");
-const { cookies, isEmail, isMobile, url } = require("../../../utils");
+const { cookies, isEmail, isMobile, url, initiateAdvisorLogo } = require("../../../utils");
 const { getProspect } = require("../../../service/fin/onboarding.service");
 const { _FetchAdvisor } = require("../../../pages/apps/fin/index.js");
 
@@ -19,6 +19,7 @@ function handleUserFromFinPath() {
 }
 
 function questionsPageInit() {
+  initiateAdvisorLogo(cookies.get("REP_NAME"));
   handleUserFromFinPath();
   $("body").on("scroll mousewheel touchmove", function (e) {
     e.preventDefault();

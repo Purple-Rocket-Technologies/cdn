@@ -8,6 +8,7 @@ import {
   isMobile,
   getVideoBaseUrl,
   handleBrokerCheckLinkAndDisclosure,
+  initiateAdvisorLogo,
 } from "../../../utils";
 import Service from "../../../service/Service";
 import { Logo } from "../../../logo";
@@ -35,15 +36,10 @@ export default function initFinalStep() {
     ? `https://${window.location.host}/appointment?id=${page.URL_USER}`
     : `https://${window.location.host}/appointment?id=${page.URL_USER}`;
 
-  // if (window.location.host === "dev.discoverfin.io") {
-  const logo = new Logo(
-    "#logo-container",
-    `${cookies.get("REP_NAME").trim()}`,
-    !isMobile() ? "#4417c7" : "#320ba7",
-    "#fff",
-    false
+  initiateAdvisorLogo(
+    cookies.get("REP_NAME"),
+    !isMobile() ? "#4417c7" : "#320ba7"
   );
-  logo.__init__();
 
   if (isMobile()) {
     $(".navbar").css("justify-content", "center");

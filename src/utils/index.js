@@ -1,3 +1,5 @@
+import { Logo } from "../logo";
+
 Array.prototype.first = function () {
   return this && this[0];
 };
@@ -261,6 +263,11 @@ const handleBrokerCheckLinkAndDisclosure = (user) => {
   }
 };
 
+const initiateAdvisorLogo = function (name, bg = "#4417c7") {
+  const logo = new Logo("#logo-container", name, bg, "#fff", false);
+  logo.__init__();
+};
+
 export {
   getUrlParameter,
   cookies,
@@ -284,4 +291,5 @@ export {
   toDollar,
   isDevEnvironment,
   handleBrokerCheckLinkAndDisclosure,
+  initiateAdvisorLogo,
 };

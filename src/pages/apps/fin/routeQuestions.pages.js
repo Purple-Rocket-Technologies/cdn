@@ -5,7 +5,7 @@ import {
   buttonArrowImage,
 } from "../../../schema/constants";
 import { saveAnswers } from "../../../service/fin/routeQuestion.service";
-import { formatAnswers, isMobile, cookies } from "../../../utils/index";
+import { formatAnswers, isMobile, cookies, initiateAdvisorLogo } from "../../../utils/index";
 
 export default function InitRouteQuestions() {
   const { createApp, h } = require("vue");
@@ -23,6 +23,8 @@ export default function InitRouteQuestions() {
     // make header sticky for this screen only
     document.querySelector(".header").style.position = "sticky";
   }
+
+  initiateAdvisorLogo(cookies.get("REP_NAME"));
 
   createApp({
     data() {

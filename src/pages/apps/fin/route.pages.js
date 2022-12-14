@@ -1,4 +1,4 @@
-const { cookies } = require("../../../utils");
+const { cookies, initiateAdvisorLogo } = require("../../../utils");
 const { routeUtils } = require("../../../utils/route.utils");
 console.log(routeUtils, "utils");
 class RoutePage {
@@ -41,6 +41,7 @@ function init() {
   );
   page.setPath();
   page.handlePathSelection();
+  initiateAdvisorLogo(cookies.get("REP_NAME"));
 }
 
 module.exports = {
