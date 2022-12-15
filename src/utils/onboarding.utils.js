@@ -136,6 +136,7 @@ const onBoarding = {
           totalDurationTime = await that.setTotalDuration();
           playerinitialized = true;
           that.player().pause();
+          that.player().muted = true;
         });
 
       setInterval(function () {
