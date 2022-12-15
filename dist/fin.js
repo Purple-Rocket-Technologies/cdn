@@ -19226,7 +19226,8 @@ function init(advisorName = "") {
         videoMessages: [],
         description: "Watch a video message from repname, to learn your next best step.",
         playPauseToggle: false,
-        showOverLay: false
+        showOverLay: false,
+        toggleVideoIcon: "playing"
       };
     },
 
@@ -19236,13 +19237,7 @@ function init(advisorName = "") {
       },
 
       showPlayButton() {
-        const video = document.getElementById("video");
-
-        if (video && video.paused) {
-          return true;
-        } else {
-          return false;
-        }
+        return this.toggleVideoIcon;
       }
 
     },
@@ -19252,19 +19247,19 @@ function init(advisorName = "") {
         class: "d-flex align-items-center flex-column text-center"
       }, [(0,runtime_core_esm_bundler.h)("span", {
         class: "video-description text-center"
-      }, (0,videomessage_utils.isFinPath)() ? "Your results are ready for review! But before that, I have a short video message for you." : this.description.replace(/repname/g, advisorName || utils.cookies.get("FIRST_NAME") || utils.cookies.get("REP_NAME"))), (0,runtime_core_esm_bundler.h)("div", {
+      }, !(0,videomessage_utils.isFinPath)() ? this.description.replace(/repname/g, advisorName || utils.cookies.get("FIRST_NAME") || utils.cookies.get("REP_NAME")) : null), (0,runtime_core_esm_bundler.h)("div", {
         class: "video-overlay",
         onmouseenter: () => this.showSettingsOverLay(),
         onmouseleave: () => this.showSettingsOverLay()
       }, [this.showOverLay ? (0,runtime_core_esm_bundler.h)("div", {
         class: "d-flex video-overlay position-absolute justify-content-center align-items-center space-x-2"
-      }, [!this.playPauseToggle ? (0,runtime_core_esm_bundler.h)("img", {
+      }, [this.showPlayButton === "paused" ? (0,runtime_core_esm_bundler.h)("img", {
         onClick: () => {
           this.togglePlayback();
         },
         class: "pointer-cursor index100",
-        src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/playpause.svg"
-      }) : (0,runtime_core_esm_bundler.h)("div", {
+        src: "https://discoverfin.s3.amazonaws.com/assets/Subtract.svg"
+      }) : null, this.showPlayButton === "playing" ? (0,runtime_core_esm_bundler.h)("div", {
         class: "d-flex"
       }, [(0,runtime_core_esm_bundler.h)("img", {
         onClick: () => {
@@ -19278,7 +19273,7 @@ function init(advisorName = "") {
         },
         class: "pointer-cursor index100",
         src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/mute.svg"
-      })])]) : null, (0,runtime_core_esm_bundler.h)("video", {
+      })]) : null]) : null, (0,runtime_core_esm_bundler.h)("video", {
         id: "video",
         class: "video-container",
         controls: "false",
@@ -19305,11 +19300,15 @@ function init(advisorName = "") {
         const video = this.getVideoPlayer();
 
         if (video.paused) {
-          video.play();
+          this.toggleVideoIcon = "playing";
           this.playPauseToggle = true;
+          video.play();
+          console.log(this.showPlayButton, "show button");
         } else {
-          video.pause();
+          this.toggleVideoIcon = "paused";
           this.playPauseToggle = false;
+          video.pause();
+          console.log(this.showPlayButton, "show button");
         }
       },
 
@@ -20585,7 +20584,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "@font-face {\r\n  font-family: Uchen;\r\n  src: url(https://discoverfin.sfo3.digitaloceanspaces.com/1gc6el9ifp9gfuchenregularttf.ttf)\r\n    format(truetype);\r\n  font-weight: 400;\r\n  font-style: normal;\r\n  font-display: auto;\r\n}\r\n@font-face {\r\n  font-family: Trenda;\r\n  src: url(https://uploads-ssl.webflow.com/629e3357919ae1682f65b07c/62a64de45e8f63a8c8bad2ab_trenda_regular.otf)\r\n    format(opentype);\r\n  font-weight: 400;\r\n  font-style: normal;\r\n  font-display: swap;\r\n}\r\n.d-flex {\r\n  display: flex;\r\n}\r\n\r\n.items-center {\r\n  align-items: center;\r\n}\r\n\r\n.position-relative {\r\n  position: relative;\r\n}\r\n\r\n.circle__x {\r\n  border-radius: 50%;\r\n  display: flex;\r\n  font-family: \"Uchen\";\r\n  width: 45px;\r\n  justify-content: center;\r\n  align-items: center;\r\n  height: 45px;\r\n  position: relative;\r\n  z-index: 1;\r\n}\r\n\r\n.strip__x {\r\n  height: 140%;\r\n  width: 10px;\r\n  z-index: 2;\r\n  transform: rotate(300deg);\r\n  position: absolute;\r\n}\r\n\r\n.circle__x span {\r\n  margin-bottom: 0;\r\n  font-size: 21px;\r\n  z-index: 3;\r\n}\r\n\r\n.big__name {\r\n  font-size: 24px;\r\n  font-family: \"Trenda\", sans-serif;\r\n}\r\n\r\n.space-x-4 > * + * {\r\n  margin-left: 1.25rem;\r\n}\r\n\r\na[id=\"logo-container\"] {\r\n  text-decoration: none !important;\r\n}\r\n\r\n@media screen and (max-width: 850px) {\r\n  .big__name {\r\n    /*display: none;*/\r\n    margin-top: 8px;\r\n    font-size: 16px;\r\n    margin-left: 0;\r\n  }\r\n  .sm-flex-col {\r\n    flex-direction: column;\r\n  }\r\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "@font-face {\n  font-family: Uchen;\n  src: url(https://discoverfin.sfo3.digitaloceanspaces.com/1gc6el9ifp9gfuchenregularttf.ttf)\n    format(truetype);\n  font-weight: 400;\n  font-style: normal;\n  font-display: auto;\n}\n@font-face {\n  font-family: Trenda;\n  src: url(https://uploads-ssl.webflow.com/629e3357919ae1682f65b07c/62a64de45e8f63a8c8bad2ab_trenda_regular.otf)\n    format(opentype);\n  font-weight: 400;\n  font-style: normal;\n  font-display: swap;\n}\n.d-flex {\n  display: flex;\n}\n\n.items-center {\n  align-items: center;\n}\n\n.position-relative {\n  position: relative;\n}\n\n.circle__x {\n  border-radius: 50%;\n  display: flex;\n  font-family: \"Uchen\";\n  width: 45px;\n  justify-content: center;\n  align-items: center;\n  height: 45px;\n  position: relative;\n  z-index: 1;\n}\n\n.strip__x {\n  height: 140%;\n  width: 10px;\n  z-index: 2;\n  transform: rotate(300deg);\n  position: absolute;\n}\n\n.circle__x span {\n  margin-bottom: 0;\n  font-size: 21px;\n  z-index: 3;\n}\n\n.big__name {\n  font-size: 24px;\n  font-family: \"Trenda\", sans-serif;\n}\n\n.space-x-4 > * + * {\n  margin-left: 1.25rem;\n}\n\na[id=\"logo-container\"] {\n  text-decoration: none !important;\n}\n\n@media screen and (max-width: 850px) {\n  .big__name {\n    /*display: none;*/\n    margin-top: 8px;\n    font-size: 16px;\n    margin-left: 0;\n  }\n  .sm-flex-col {\n    flex-direction: column;\n  }\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -20609,7 +20608,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#profile-video iframe {\r\n  width: 100% !important;\r\n  height: 500px !important;\r\n}\r\n\r\n@media screen and (max-width: 850px) {\r\n  #profile-video iframe {\r\n    height: 250px !important;\r\n  }\r\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "#profile-video iframe {\n  width: 100% !important;\n  height: 500px !important;\n}\n\n@media screen and (max-width: 850px) {\n  #profile-video iframe {\n    height: 250px !important;\n  }\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -20633,7 +20632,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".video-container,\r\n.video-overlay {\r\n  border-radius: 50%;\r\n  object-fit: cover;\r\n  width: 250px;\r\n  height: 250px;\r\n}\r\n\r\n.video-container::-webkit-media-controls-panel {\r\n  display: none !important;\r\n  opacity: 1 !important;\r\n}\r\n\r\n.pointer-cursor {\r\n  cursor: pointer;\r\n}\r\n.index100 {\r\n  z-index: 100;\r\n}\r\n\r\n#video_messages {\r\n  padding: 1rem 0 0.5rem;\r\n}\r\n\r\n.d-flex {\r\n  display: flex;\r\n}\r\n\r\n.position-absolute {\r\n  position: absolute;\r\n}\r\n\r\n.justify-content-between {\r\n  justify-content: space-between;\r\n}\r\n\r\n.justify-content-center {\r\n  justify-content: center;\r\n}\r\n\r\n.align-items-center {\r\n  align-items: center;\r\n}\r\n.flex-column {\r\n  flex-direction: column;\r\n}\r\n.video-description {\r\n  margin: 24px 0;\r\n  color: #fff;\r\n  font-size: 24px;\r\n}\r\n.text-center {\r\n  text-align: center;\r\n}\r\n.w-30px {\r\n  width: 30px;\r\n}\r\n.h-30px {\r\n  height: 30px;\r\n}\r\n.rotate-0 {\r\n  transform: rotate(0);\r\n}\r\n.m-0 {\r\n  margin: 0;\r\n}\r\n@media screen and (max-width: 780px) {\r\n  .video-description {\r\n    font-size: 18px;\r\n  }\r\n  /* .video-container {\r\n    width: 355px;\r\n    height: auto;\r\n  } */\r\n  #video_messages {\r\n    padding: 1rem 0;\r\n    padding-bottom: 3rem;\r\n  }\r\n}\r\n\r\n.green-cta {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  width: 40%;\r\n  padding-top: 18px;\r\n  padding-bottom: 18px;\r\n  -webkit-box-pack: center;\r\n  -webkit-justify-content: center;\r\n  -ms-flex-pack: center;\r\n  justify-content: center;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n  -ms-flex-align: center;\r\n  align-items: center;\r\n  border-radius: 10px;\r\n  background-color: #2ad76f;\r\n  opacity: 1;\r\n  outline-color: #555;\r\n  outline-offset: 0px;\r\n  color: white;\r\n  outline-style: none;\r\n  outline-width: 0px;\r\n  mix-blend-mode: normal;\r\n}\r\n\r\n.heading-29 {\r\n  font-size: 28px;\r\n  line-height: 140%;\r\n}\r\n\r\n.w-42px {\r\n  width: 42px;\r\n}\r\n\r\n.h-34px {\r\n  height: 34px;\r\n}\r\n.space-x-2 > * + * {\r\n  margin-left: 0.75rem;\r\n}\r\n\r\n.cursor-pointer {\r\n  cursor: pointer;\r\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".video-container,\n.video-overlay {\n  border-radius: 50%;\n  object-fit: cover;\n  width: 250px;\n  height: 250px;\n  \n}\n.video-container {\n  border: 10px solid rgba(110, 89, 174, 0.5);\n}\n\n.video-container::-webkit-media-controls-panel {\n  display: none !important;\n  opacity: 1 !important;\n}\n\n.pointer-cursor {\n  cursor: pointer;\n}\n.index100 {\n  z-index: 100;\n}\n\n#video_messages {\n  padding: 1rem 0 0.5rem;\n}\n\n.d-flex {\n  display: flex;\n}\n\n.position-absolute {\n  position: absolute;\n}\n\n.justify-content-between {\n  justify-content: space-between;\n}\n\n.justify-content-center {\n  justify-content: center;\n}\n\n.align-items-center {\n  align-items: center;\n}\n.flex-column {\n  flex-direction: column;\n}\n.video-description {\n  margin: 24px 0;\n  color: #fff;\n  font-size: 24px;\n}\n.text-center {\n  text-align: center;\n}\n.w-30px {\n  width: 30px;\n}\n.h-30px {\n  height: 30px;\n}\n.rotate-0 {\n  transform: rotate(0);\n}\n.m-0 {\n  margin: 0;\n}\n@media screen and (max-width: 780px) {\n  .video-description {\n    font-size: 18px;\n  }\n  /* .video-container {\n    width: 355px;\n    height: auto;\n  } */\n  #video_messages {\n    padding: 1rem 0;\n    padding-bottom: 3rem;\n  }\n}\n\n.green-cta {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  width: 40%;\n  padding-top: 18px;\n  padding-bottom: 18px;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  border-radius: 10px;\n  background-color: #2ad76f;\n  opacity: 1;\n  outline-color: #555;\n  outline-offset: 0px;\n  color: white;\n  outline-style: none;\n  outline-width: 0px;\n  mix-blend-mode: normal;\n}\n\n.heading-29 {\n  font-size: 28px;\n  line-height: 140%;\n}\n\n.w-42px {\n  width: 42px;\n}\n\n.h-34px {\n  height: 34px;\n}\n.space-x-2 > * + * {\n  margin-left: 0.75rem;\n}\n\n.cursor-pointer {\n  cursor: pointer;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

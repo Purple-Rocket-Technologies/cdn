@@ -4,6 +4,10 @@
   object-fit: cover;
   width: 250px;
   height: 250px;
+  
+}
+.video-container {
+  border: 10px solid rgba(110, 89, 174, 0.5);
 }
 
 .video-container::-webkit-media-controls-panel {

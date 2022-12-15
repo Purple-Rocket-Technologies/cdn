@@ -13,6 +13,7 @@ export function init(advisorName = "") {
           "Watch a video message from repname, to learn your next best step.",
         playPauseToggle: false,
         showOverLay: false,
+        toggleVideoIcon: "playing",
       };
     },
     computed: {
@@ -24,12 +25,7 @@ export function init(advisorName = "") {
         );
       },
       showPlayButton() {
-        const video = document.getElementById("video");
-        if (video && video.paused) {
-          return true;
-        } else {
-          return false;
-        }
+        return this.toggleVideoIcon;
       },
     },
     render() {
@@ -44,14 +40,14 @@ export function init(advisorName = "") {
             {
               class: "video-description text-center",
             },
-            isFinPath()
-              ? "Your results are ready for review! But before that, I have a short video message for you."
-              : this.description.replace(
+            !isFinPath()
+              ? this.description.replace(
                   /repname/g,
                   advisorName ||
                     cookies.get("FIRST_NAME") ||
                     cookies.get("REP_NAME")
                 )
+              : null
           ),
           h(
             "div",
@@ -69,15 +65,17 @@ export function init(advisorName = "") {
                         "d-flex video-overlay position-absolute justify-content-center align-items-center space-x-2",
                     },
                     [
-                      !this.playPauseToggle
+                      this.showPlayButton === "paused"
                         ? h("img", {
                             onClick: () => {
                               this.togglePlayback();
                             },
                             class: "pointer-cursor index100",
-                            src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/playpause.svg",
+                            src: "https://discoverfin.s3.amazonaws.com/assets/Subtract.svg",
                           })
-                        : h("div", { class: "d-flex" }, [
+                        : null,
+                      this.showPlayButton === "playing"
+                        ? h("div", { class: "d-flex" }, [
                             h("img", {
                               onClick: () => {
                                 this.togglePlayback();
@@ -92,7 +90,8 @@ export function init(advisorName = "") {
                               class: "pointer-cursor index100",
                               src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/mute.svg",
                             }),
-                          ]),
+                          ])
+                        : null,
                     ]
                   )
                 : null,
@@ -125,11 +124,15 @@ export function init(advisorName = "") {
       togglePlayback() {
         const video = this.getVideoPlayer();
         if (video.paused) {
-          video.play();
+          this.toggleVideoIcon = "playing";
           this.playPauseToggle = true;
+          video.play();
+          console.log(this.showPlayButton, "show button");
         } else {
-          video.pause();
+          this.toggleVideoIcon = "paused";
           this.playPauseToggle = false;
+          video.pause();
+          console.log(this.showPlayButton, "show button");
         }
       },
       toggleAudio() {
