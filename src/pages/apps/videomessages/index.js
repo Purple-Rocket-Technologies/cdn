@@ -11,6 +11,9 @@ export function init(advisorName = "") {
         videoMessages: [],
         description:
           "Watch a video message from repname, to learn your next best step.",
+        playPauseToggle: false,
+        showOverLay: false,
+        toggleVideoIcon: "playing",
       };
     },
     computed: {
@@ -20,6 +23,9 @@ export function init(advisorName = "") {
           this.videoMessages.length > 0 &&
           this.videoMessages[0]
         );
+      },
+      showPlayButton() {
+        return this.toggleVideoIcon;
       },
     },
     render() {
@@ -34,23 +40,73 @@ export function init(advisorName = "") {
             {
               class: "video-description text-center",
             },
-            isFinPath()
-              ? "Your results are ready for review! But before that, I have a short video message for you."
-              : this.description.replace(
+            !isFinPath()
+              ? this.description.replace(
                   /repname/g,
                   advisorName ||
                     cookies.get("FIRST_NAME") ||
                     cookies.get("REP_NAME")
                 )
+              : null
           ),
-          h("video", {
-            id: "video",
-            class: "video-container",
-            controls: "true",
-          }),
+          h(
+            "div",
+            {
+              class: "video-overlay",
+              onmouseenter: () => this.showSettingsOverLay(),
+              onmouseleave: () => this.showSettingsOverLay(),
+            },
+            [
+              this.showOverLay
+                ? h(
+                    "div",
+                    {
+                      class:
+                        "d-flex video-overlay position-absolute justify-content-center align-items-center space-x-2",
+                    },
+                    [
+                      this.showPlayButton === "paused"
+                        ? h("img", {
+                            onClick: () => {
+                              this.togglePlayback();
+                            },
+                            class: "pointer-cursor index100",
+                            src: "https://discoverfin.s3.amazonaws.com/assets/Subtract.svg",
+                          })
+                        : null,
+                      this.showPlayButton === "playing"
+                        ? h("div", { class: "d-flex" }, [
+                            h("img", {
+                              onClick: () => {
+                                this.togglePlayback();
+                              },
+                              class: "pointer-cursor index100",
+                              src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/playpause.svg",
+                            }),
+                            h("img", {
+                              onClick: () => {
+                                this.toggleAudio();
+                              },
+                              class: "pointer-cursor index100",
+                              src: "https://discoverfin.s3.us-east-1.amazonaws.com/assets/mute.svg",
+                            }),
+                          ])
+                        : null,
+                    ]
+                  )
+                : null,
+              h("video", {
+                id: "video",
+                class: "video-container",
+                controls: "false",
+                autoPlay: true,
+              }),
+            ]
+          ),
         ]
       );
     },
+
     methods: {
       getVideoMessage,
       handleFINPathButtons(fin_path_first_btn = false) {
@@ -60,6 +116,34 @@ export function init(advisorName = "") {
           fin_path_first_btnEL.style.display = fin_path_first_btn
             ? "flex"
             : "none";
+        }
+      },
+      getVideoPlayer() {
+        return document.getElementById("video");
+      },
+      togglePlayback() {
+        const video = this.getVideoPlayer();
+        if (video.paused) {
+          this.toggleVideoIcon = "playing";
+          this.playPauseToggle = true;
+          video.play();
+          console.log(this.showPlayButton, "show button");
+        } else {
+          this.toggleVideoIcon = "paused";
+          this.playPauseToggle = false;
+          video.pause();
+          console.log(this.showPlayButton, "show button");
+        }
+      },
+      toggleAudio() {
+        const video = this.getVideoPlayer();
+        video.muted = !video.muted;
+      },
+      showSettingsOverLay() {
+        if (this.showOverLay) {
+          this.showOverLay = false;
+        } else {
+          this.showOverLay = true;
         }
       },
     },
