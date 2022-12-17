@@ -19,7 +19,6 @@ function handleUserFromFinPath() {
 }
 
 function questionsPageInit() {
-  initiateAdvisorLogo(cookies.get("REP_NAME"));
   handleUserFromFinPath();
   $("body").on("scroll mousewheel touchmove", function (e) {
     e.preventDefault();
