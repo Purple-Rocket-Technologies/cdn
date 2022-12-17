@@ -13,7 +13,7 @@ export function init(advisorName = "") {
           "Watch a video message from repname, to learn your next best step.",
         playPauseToggle: false,
         showOverLay: false,
-        toggleVideoIcon: "playing",
+        toggleVideoIcon: "paused",
       };
     },
     computed: {
@@ -32,7 +32,7 @@ export function init(advisorName = "") {
       return h(
         "div",
         {
-          class: "d-flex align-items-center flex-column text-center",
+          class: " text-center",
         },
         [
           h(
@@ -53,8 +53,8 @@ export function init(advisorName = "") {
             "div",
             {
               class: "video-overlay",
-              onmouseenter: () => this.showSettingsOverLay(),
-              onmouseleave: () => this.showSettingsOverLay(),
+              onmouseenter: () => this.showOverLay = true,
+              onmouseleave: () => this.showOverLay = false,
             },
             [
               this.showOverLay
@@ -99,7 +99,7 @@ export function init(advisorName = "") {
                 id: "video",
                 class: "video-container",
                 controls: "false",
-                autoPlay: true,
+                autoPlay: "true",
               }),
             ]
           ),
@@ -168,6 +168,7 @@ export function init(advisorName = "") {
         } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
           video.src = `${videoSrc}#t=0.001`;
         }
+        video.play()
         let videoEnded = 0;
         for (let i = 0; i < openFinPath.length; i++) {
           openFinPath[i].onclick = function () {
@@ -232,6 +233,8 @@ export function init(advisorName = "") {
         //   hide_me_if_vod.style.display = "none";
         // }
       }
+    
+
     },
     beforeDestroy() {
       if (this.player) {

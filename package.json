@@ -44,6 +44,7 @@
   "homepage": "https://github.com/Purple-Rocket-Technologies/cdn#readme",
   "dependencies": {
     "axios": "^0.26.1",
-    "vue": "^3.2.33"
+    "vue": "^3.2.33",
+    "vue-core-video-player": "^0.2.0"
   }
 }
