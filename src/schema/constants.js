@@ -226,7 +226,7 @@ const BASE_QUESTIONS = [
     ],
   },
   {
-    question: "What Interests you most?",
+    question: "What interests you most?",
     es: "¿Qué te interesa más?",
     answer: [],
     type: "checkbox",
