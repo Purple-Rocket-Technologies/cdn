@@ -127,3 +127,11 @@
 .cursor-pointer {
   cursor: pointer;
 }
+.mt-12 {
+  margin-top: 3rem !important;
+}
+
+.mx-center {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
