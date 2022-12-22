@@ -167,9 +167,9 @@ export function init(advisorName = "") {
         } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
           video.src = `${videoSrc}#t=0.001`;
         }
-        if (isFinPath()) {
-          video.play();
-        }
+        // if (isFinPath()) {
+        //   video.play();
+        // }
 
         let videoEnded = 0;
         for (let i = 0; i < openFinPath.length; i++) {
