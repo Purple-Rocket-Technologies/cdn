@@ -52,9 +52,12 @@ export function init(advisorName = "") {
           h(
             "div",
             {
-              class: "video-overlay",
-              onmouseenter: () => this.showOverLay = true,
-              onmouseleave: () => this.showOverLay = false,
+              class: {
+                "video-overlay": true,
+                "mx-center mt-12": !isFinPath(),
+              },
+              onmouseenter: () => (this.showOverLay = true),
+              onmouseleave: () => (this.showOverLay = false),
             },
             [
               this.showOverLay
@@ -140,11 +143,7 @@ export function init(advisorName = "") {
         video.muted = !video.muted;
       },
       showSettingsOverLay() {
-        if (this.showOverLay) {
-          this.showOverLay = false;
-        } else {
-          this.showOverLay = true;
-        }
+        this.showOverLay = !this.showOverLay;
       },
     },
     async mounted() {
@@ -168,7 +167,10 @@ export function init(advisorName = "") {
         } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
           video.src = `${videoSrc}#t=0.001`;
         }
-        video.play()
+        if (isFinPath()) {
+          video.play();
+        }
+
         let videoEnded = 0;
         for (let i = 0; i < openFinPath.length; i++) {
           openFinPath[i].onclick = function () {
@@ -233,8 +235,6 @@ export function init(advisorName = "") {
         //   hide_me_if_vod.style.display = "none";
         // }
       }
-    
-
     },
     beforeDestroy() {
       if (this.player) {
