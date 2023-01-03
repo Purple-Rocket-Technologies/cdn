@@ -2,7 +2,13 @@ const {
   createProspect,
   updateProspectById,
 } = require("../../../service/fin/questions.service");
-const { cookies, isEmail, isMobile, url, initiateAdvisorLogo } = require("../../../utils");
+const {
+  cookies,
+  isEmail,
+  isMobile,
+  url,
+  toDollar,
+} = require("../../../utils");
 const { getProspect } = require("../../../service/fin/onboarding.service");
 const { _FetchAdvisor } = require("../../../pages/apps/fin/index.js");
 
@@ -125,7 +131,7 @@ function questionsPageInit() {
 
   //Question 4 Validation
   userIncomeEl.keyup(function () {
-    var var_income = $(this).val().replace(/,/g, "").replace(/[^\d]/g, "");
+    const var_income = $(this).val().replace(/,/g, "").replace(/[^\d]/g, "");
     if (var_income > 999) {
       $("#ques_four_active").addClass("active");
       $("#ques_4_btn").addClass("go_ahead");
@@ -144,11 +150,7 @@ function questionsPageInit() {
   userIncomeEl.keyup(function () {
     if ($(this).val() !== "") {
       if (parseInt($(this).val()) > 0) {
-        var income = parseInt(
-          $(this).val().replace(/[^\d]/g, "").replace(/,/g, ""),
-          10
-        ).toLocaleString();
-        $(this).val(income);
+        $(this).val(toDollar($(this).val()));
       } else {
         $(this).val("");
       }
@@ -169,8 +171,8 @@ function questionsPageInit() {
 
   //inflation calculation ques_4_btn
 
-  var year_left_in_retirement;
-  var fin_factor;
+  let year_left_in_retirement;
+  let fin_factor;
 
   $("#ques_4_btn").click(function () {
     const incomebi = userIncomeEl.val().replace(/,/g, "");
@@ -179,11 +181,9 @@ function questionsPageInit() {
     let inflation_factor = Math.pow(1.025, year_left_in_retirement);
     inflation_factor = Math.round((inflation_factor + 0.00001) * 100) / 100;
     const income_after_inflation = parseInt(incomebi) * inflation_factor;
-    $("#ibi").html("$" + addCommas(parseInt(incomebi)));
-    $(".income_after_inflation").html(
-      addCommas(parseInt(income_after_inflation))
-    );
-    $("#iai").html("$" + addCommas(parseInt(income_after_inflation)));
+    $("#ibi").html(toDollar(incomebi));
+    $(".income_after_inflation").html(toDollar(income_after_inflation));
+    $("#iai").html(toDollar(income_after_inflation));
     $("#income_after_inflation").val(parseInt(income_after_inflation));
     $("#at_age").html(avg_retirement_age);
   });
