@@ -189,6 +189,7 @@ export default function InitRouteQuestions() {
         return array.indexOf(element) > -1;
       },
       questionItem(question) {
+        question = this.changeToCanadianVersion(question);
         return h(
           "div",
           {
@@ -241,8 +242,8 @@ export default function InitRouteQuestions() {
                     },
               },
               getCurrentLanguage() !== "es"
-                ? this.changeToCanadianVersion(question.label)
-                : this.changeToCanadianVersion(question.es)
+                ? this.changeToCanadianVersion(question).label
+                : this.changeToCanadianVersion(question).es
             ),
           ]
         );
@@ -254,7 +255,6 @@ export default function InitRouteQuestions() {
           JSON.parse(isCanadian) &&
           window.location.hostname.includes("dev")
         ) {
-          console.log("is canadian", question);
           const replaceWith = (string, replace, replaceWith) => {
             return string.replace(new RegExp(replace, "gi"), replaceWith);
           };
@@ -339,7 +339,7 @@ export default function InitRouteQuestions() {
                     },
                   },
                   this.parseQuestionLabel(
-                    this.changeToCanadianVersion(this.currentQuestion),
+                    this.currentQuestion,
                     getCurrentLanguage() === "es"
                   )
                   // getCurrentLanguage() === "en"
