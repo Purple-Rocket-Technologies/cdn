@@ -24,6 +24,8 @@ export default function InitRouteQuestions() {
 
   const isCanadian = cookies.get("isCanadian");
 
+  console.log("isCanadian", isCanadian);
+
   const redirectTo = `${window.location.pathname}/video`;
 
   if (!isMobile()) {
@@ -252,6 +254,7 @@ export default function InitRouteQuestions() {
           JSON.parse(isCanadian) &&
           window.location.hostname.includes("dev")
         ) {
+          console.log("is canadian", question);
           const replaceWith = (string, replace, replaceWith) => {
             return string.replace(new RegExp(replace, "gi"), replaceWith);
           };
