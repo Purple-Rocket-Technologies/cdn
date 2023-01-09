@@ -171,6 +171,8 @@ const BASE_QUESTIONS = [
     options: [
       {
         label: "Roth IRA",
+        hasCanadianVersion: true,
+        replace: ["Roth IRA#TFSA"],
         es: "Roth IRA",
         value: "Roth IRA",
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa507dd8c52fb18c7aa_Group%20304.svg",
@@ -190,13 +192,15 @@ const BASE_QUESTIONS = [
       {
         label: "401k/403b/IRA Investment Choices",
         value: "401k/403b/IRA Investment Choices",
-        es: "401k/403b/Inversiones en IRAs",
+        es: "Opciones de inversión 401k/403b/IRA",
+        hasCanadianVersion: true,
+        replace: ["401k/403b#RRSP", "IRA#TFSA"],
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa5ba9df5475851661f_Group%20307.svg",
       },
       {
-        label: "Will / Trust Life Insurance",
-        es: "Seguro de vida de testamento/fideicomiso",
-        value: "Will / Trust Life Insurance",
+        label: "Will / Trust / Life Insurance",
+        es: "Testamento / Confianza / Seguro de vida",
+        value: "Will / Trust / Life Insurance",
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa53d0708ba1c3621e0_Group%20308.svg",
       },
       {
@@ -209,6 +213,8 @@ const BASE_QUESTIONS = [
         label: "Rolling Over Old 401k",
         es: "Rodando sobre la vieja 401k",
         value: "Rolling Over Old 401k",
+        hasCanadianVersion: true,
+        replace: ["401k#RRSP"],
         icon: "https://uploads-ssl.webflow.com/5efa44384416ea7ad59bfba6/621f8aa54fe71c93b968bcce_Group%20310.svg",
       },
       {

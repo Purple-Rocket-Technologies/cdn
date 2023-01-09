@@ -5,7 +5,12 @@ import {
   buttonArrowImage,
 } from "../../../schema/constants";
 import { saveAnswers } from "../../../service/fin/routeQuestion.service";
-import { formatAnswers, isMobile, cookies, initiateAdvisorLogo } from "../../../utils/index";
+import {
+  formatAnswers,
+  isMobile,
+  cookies,
+  initiateAdvisorLogo,
+} from "../../../utils/index";
 
 export default function InitRouteQuestions() {
   const { createApp, h } = require("vue");
@@ -16,6 +21,8 @@ export default function InitRouteQuestions() {
   const getCurrentLanguage = () => {
     return Weglot.getCurrentLang();
   };
+
+  const isCanadian = cookies.get("isCanadian");
 
   const redirectTo = `${window.location.pathname}/video`;
 
@@ -231,10 +238,35 @@ export default function InitRouteQuestions() {
                       fontWeight: "bold",
                     },
               },
-              getCurrentLanguage() !== "es" ? question.label : question.es
+              getCurrentLanguage() !== "es"
+                ? this.changeToCanadianVersion(question.label)
+                : this.changeToCanadianVersion(question.es)
             ),
           ]
         );
+      },
+      changeToCanadianVersion(question) {
+        if (
+          question.hasCanadianVersion &&
+          isCanadian &&
+          JSON.parse(isCanadian)
+        ) {
+          const replaceWith = (string, replace, replaceWith) => {
+            return string.replace(new RegExp(replace, "gi"), replaceWith);
+          };
+          const replace = question.replace.map((e) => e.split("#"));
+          const toReplace = ["label", "es", "value"];
+          for (let i = 0; i < replace.length; i++) {
+            toReplace.forEach((e) => {
+              question[e] = replaceWith(
+                question[e],
+                replace[i][0],
+                replace[i][1]
+              );
+            });
+          }
+        }
+        return question;
       },
       parseQuestionLabel(question, es = false) {
         let label = question.question;
@@ -303,7 +335,7 @@ export default function InitRouteQuestions() {
                     },
                   },
                   this.parseQuestionLabel(
-                    this.currentQuestion,
+                    this.changeToCanadianVersion(this.currentQuestion),
                     getCurrentLanguage() === "es"
                   )
                   // getCurrentLanguage() === "en"

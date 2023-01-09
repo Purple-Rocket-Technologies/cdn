@@ -81,6 +81,10 @@ const onBoarding = {
           key: "disclosureLink",
           value: advisor.companyDisclosure,
         },
+        {
+          key: "isCanadian",
+          value: advisor.address && advisor.address.country === "Canada",
+        },
       ]);
     },
   },

@@ -35,7 +35,7 @@ async function fetchAdvisor() {
   try {
     const advisor = await getUser(USER_URL, COMPANY_URL);
     COMPANY_ID = advisor.company_id;
-    IS_CANADIAN_LINK = advisor.address && advisor.country === "Canada";
+    IS_CANADIAN_LINK = advisor.address && advisor.address.country === "Canada";
     onBoarding.advisor.setCookies(advisor, IS_OLD_LINK);
     initiateAdvisorLogo(
       `${advisor.firstName.trim()} ${advisor.lastName.trim()}`
