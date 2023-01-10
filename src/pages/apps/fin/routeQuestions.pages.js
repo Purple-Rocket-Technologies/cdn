@@ -252,8 +252,7 @@ export default function InitRouteQuestions() {
         if (
           question.hasCanadianVersion &&
           isCanadian &&
-          JSON.parse(isCanadian) &&
-          window.location.hostname.includes("dev")
+          JSON.parse(isCanadian)
         ) {
           const replaceWith = (string, replace, replaceWith) => {
             return string.replace(new RegExp(replace, "gi"), replaceWith);
