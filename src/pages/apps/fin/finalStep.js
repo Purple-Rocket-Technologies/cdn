@@ -41,6 +41,16 @@ export default function initFinalStep() {
     !isMobile() ? "#4417c7" : "#320ba7"
   );
 
+  const IS_CANADIAN = cookies.get("isCanadian");
+
+  if (IS_CANADIAN && JSON.parse(IS_CANADIAN)) {
+    const replaceSpanEl = $("#replace-me");
+    const replaceSpanElText = replaceSpanEl.text(
+      replaceSpanEl.text.replace(/Roth IRA/g, "TFSA")
+    );
+    replaceSpanEl.text(replaceSpanElText);
+  }
+
   $("#logo-container").css("text-decoration", "none !important");
   // }
 
