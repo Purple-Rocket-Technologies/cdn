@@ -45,10 +45,8 @@ export default function initFinalStep() {
 
   if (IS_CANADIAN && JSON.parse(IS_CANADIAN)) {
     const replaceSpanEl = $("#replace-me");
-    const replaceSpanElText = replaceSpanEl.text(
-      replaceSpanEl.text.replace(/Roth IRA/g, "TFSA")
-    );
-    replaceSpanEl.text(replaceSpanElText);
+    const text = replaceSpanEl.text();
+    replaceSpanEl.text(text.replace(/Roth IRA/g, "TFSA"));
   }
 
   $("#logo-container").css("text-decoration", "none !important");
