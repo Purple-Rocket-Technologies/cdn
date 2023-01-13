@@ -23,6 +23,10 @@
   opacity: 1 !important;
 }
 
+video::-webkit-media-controls {
+    display:none !important;
+}
+
 .video-controls-icons {
   padding: 3px;
   border-radius: 8px;
