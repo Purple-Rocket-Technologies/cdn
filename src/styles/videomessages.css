@@ -8,10 +8,26 @@
 .video-container {
   border: 10px solid rgba(110, 89, 174, 0.5);
 }
+.rounded {
+  border-radius: 50%;
+}
+.bg-white {
+  background-color: white;
+}
 
+.text-black {
+  color: black;
+}
 .video-container::-webkit-media-controls-panel {
   display: none !important;
   opacity: 1 !important;
+}
+
+.video-controls-icons {
+  padding: 3px;
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
 }
 
 .pointer-cursor {
@@ -121,7 +137,7 @@
   height: 34px;
 }
 .space-x-2 > * + * {
-  margin-left: 0.75rem;
+  margin-left: 1rem;
 }
 
 .cursor-pointer {
