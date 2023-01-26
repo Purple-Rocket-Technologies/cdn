@@ -1,7 +1,7 @@
 <template>
   <video
-    id="video-message"
-    class="video-container rounded-30"
+    id="video"
+    class="video-container"
     disablepictureinpicture
     playsinline
   ></video>

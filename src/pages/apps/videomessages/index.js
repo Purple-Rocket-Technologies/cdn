@@ -107,14 +107,14 @@ export function init(advisorName = "") {
                     ]
                   )
                 : null,
-              h("video", {
-                id: "video",
-                class: "video-container",
-                attrs: {
-                controls: "false",
-                autoPlay: "true",
-                }
-              }),
+              // h("video", {
+              //   id: "video",
+              //   class: "video-container",
+              //   attrs: {
+              //   controls: "false",
+              //   autoPlay: "true",
+              //   }
+              // }),
                h(VideoPlayer),
             ]
           ),
