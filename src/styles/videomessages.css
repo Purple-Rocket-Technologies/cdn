@@ -155,3 +155,11 @@ video::-webkit-media-controls {
   margin-left: auto !important;
   margin-right: auto !important;
 }
+
+
+@media screen and (max-width: 600px) {
+  .video-message {
+    display: flex;
+    justify-content: center;
+  }
+}
