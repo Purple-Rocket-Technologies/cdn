@@ -9,6 +9,6 @@
 
 <script>
 export default {
-  name: 'VideoPlayer',
+  name: "VideoPlayer",
 };
 </script>

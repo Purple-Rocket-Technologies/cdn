@@ -31,7 +31,7 @@ export function init(advisorName = "") {
       },
     },
     components: {
-      VideoPlayer
+      VideoPlayer,
     },
     render() {
       return h(
@@ -78,31 +78,38 @@ export function init(advisorName = "") {
                             onClick: () => {
                               this.togglePlayback();
                             },
-                            class: "pointer-cursor index100 bg-white video-controls-icons ",
+                            class:
+                              "pointer-cursor index100 bg-white video-controls-icons ",
                             src: "https://discoverfin.s3.amazonaws.com/assets/play.svg",
                           })
                         : null,
                       this.showPlayButton === "playing"
-                        ? h("div", { class: "d-flex align-item-center space-x-2" }, [
-                            h("img", {
-                              onClick: () => {
-                                this.togglePlayback();
-                              },
-                              class: "pointer-cursor index100 video-controls-icons bg-white",
-                              src: "https://discoverfin.s3.amazonaws.com/assets/pause.svg",
-                            }),
-                            h("img", {
-                              onClick: () => {
-                                this.toggleAudio();
-                              },
-                              class: "pointer-cursor index100 video-controls-icons bg-white",
-                              src: `https://discoverfin.s3.amazonaws.com/assets/${
-                              !this.muted
-                                ? 'speaker-high'
-                                : 'speaker-simple-slash'
-                            }.svg`,
-                            }),
-                          ])
+                        ? h(
+                            "div",
+                            { class: "d-flex align-item-center space-x-2" },
+                            [
+                              h("img", {
+                                onClick: () => {
+                                  this.togglePlayback();
+                                },
+                                class:
+                                  "pointer-cursor index100 video-controls-icons bg-white",
+                                src: "https://discoverfin.s3.amazonaws.com/assets/pause.svg",
+                              }),
+                              h("img", {
+                                onClick: () => {
+                                  this.toggleAudio();
+                                },
+                                class:
+                                  "pointer-cursor index100 video-controls-icons bg-white",
+                                src: `https://discoverfin.s3.amazonaws.com/assets/${
+                                  !this.muted
+                                    ? "speaker-high"
+                                    : "speaker-simple-slash"
+                                }.svg`,
+                              }),
+                            ]
+                          )
                         : null,
                     ]
                   )
@@ -115,7 +122,7 @@ export function init(advisorName = "") {
               //   autoPlay: "true",
               //   }
               // }),
-               h(VideoPlayer),
+              h(VideoPlayer),
             ]
           ),
         ]
@@ -153,7 +160,7 @@ export function init(advisorName = "") {
       toggleAudio() {
         const video = this.getVideoPlayer();
         video.muted = !video.muted;
-         this.muted = video.muted;
+        this.muted = video.muted;
       },
       showSettingsOverLay() {
         this.showOverLay = !this.showOverLay;
