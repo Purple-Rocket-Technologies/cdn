@@ -3,6 +3,7 @@ import { getVideoMessage } from "../../../service/videomessages/videomessage.ser
 import { cookies, isEmpty } from "../../../utils";
 import "../../../../src/styles/videomessages.css";
 import { isFinPath } from "../../../utils/videomessage.utils";
+import VideoPlayer from "./videoComponent.vue";
 export function init(advisorName = "") {
   createApp({
     data() {
@@ -28,6 +29,9 @@ export function init(advisorName = "") {
       showPlayButton() {
         return this.toggleVideoIcon;
       },
+    },
+    components: {
+      VideoPlayer
     },
     render() {
       return h(
@@ -106,9 +110,12 @@ export function init(advisorName = "") {
               h("video", {
                 id: "video",
                 class: "video-container",
+                attrs: {
                 controls: "false",
                 autoPlay: "true",
+                }
               }),
+               h(VideoPlayer),
             ]
           ),
         ]
