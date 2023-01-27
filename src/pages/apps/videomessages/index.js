@@ -63,6 +63,8 @@ export function init(advisorName = "") {
               },
               onmouseenter: () => (this.showOverLay = true),
               onmouseleave: () => (this.showOverLay = false),
+              // ontouchstart:() => (this.showOverLay = true),
+              ontouchend:() => (!this.showOverLay),
             },
             [
               this.showOverLay
