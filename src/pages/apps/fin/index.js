@@ -42,6 +42,7 @@ async function fetchAdvisor() {
     );
     initFINVideo();
   } catch (e) {
+    window.location.href = "/404";
     console.log(e);
   }
 }
