@@ -249,7 +249,9 @@ const handleBrokerCheckLinkAndDisclosure = (user) => {
       broker_check_text.text(`${user.name}'s FINRA Broker Check`);
       broker_check_elem.attr("href", broker_check_link);
       broker_check_elem.attr("target", "_blank");
-      broker_check_elem.css("display", "block");
+      if (!isMobile()) {
+        broker_check_elem.css("display", "block");
+      }
     } else {
       broker_check_elem.css("display", "none");
     }
