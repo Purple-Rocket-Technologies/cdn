@@ -241,11 +241,12 @@ const handleBrokerCheckLinkAndDisclosure = (user) => {
   console.log(isEmpty(broker_check_link));
   console.log(isEmpty(disclosure_text));
   const broker_check_elem = $("#broker-check");
+  const broker_check_text = $("#broker-check-text");
   const disclosure_elem = $("#disclosure");
   if (!isEmpty(broker_check_link) || !isEmpty(disclosure_text)) {
     $("#disc-wrapper").removeClass("hide");
     if (!isEmpty(broker_check_link)) {
-      broker_check_elem.text(`${user.name}'s FINRA Broker Check`);
+      broker_check_text.text(`${user.name}'s FINRA Broker Check`);
       broker_check_elem.attr("href", broker_check_link);
       broker_check_elem.attr("target", "_blank");
       broker_check_elem.css("display", "block");
