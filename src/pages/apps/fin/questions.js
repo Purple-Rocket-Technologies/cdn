@@ -9,7 +9,7 @@ const { _FetchAdvisor } = require("../../../pages/apps/fin/index.js");
 function handleUserFromFinPath() {
   if (url.query.get("id")) {
     const USER_URL = url.query.get("id") || url.query.get("user");
-    const START_OVER_URL = `${window.location.hostname}/en?id=${USER_URL}`;
+    const START_OVER_URL = `https://${window.location.hostname}/en?id=${USER_URL}`;
     cookies.set("isOldUrl", false);
     cookies.set("START_OVER_URL", START_OVER_URL);
     cookies.set("INITIAL_LINK", START_OVER_URL);
