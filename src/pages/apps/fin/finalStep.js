@@ -105,9 +105,9 @@ export default function initFinalStep() {
       const finPath = publicFeatures.finPath;
       console.log("finPath", finPath);
       if (!finPath) {
-        const videoMessageEl = $("#video-messages");
-        $("#video-messages").remove();
-        $("#step1").before(videoMessageEl);
+        const videoMessageEl = $("#video_messages");
+        $("#video_messages").remove();
+        videoMessageEl.insertBefore($("#step1"));
         $("#step1").remove();
       }
     }
