@@ -1,6 +1,21 @@
 const Service = require("../Service");
 const { isEmpty } = require("../../utils");
 
+const getPublicFeatures = async (USER_ID) => {
+  const endpoint = `getPublicPlanFeatures/${USER_ID}`;
+  const publicFeatures = new Service(endpoint);
+  return await new Promise((resolve, reject) => {
+    publicFeatures.find().then(
+      (response) => {
+        resolve(publicFeatures.parseResponse(response));
+      },
+      (error) => {
+        reject(error);
+      }
+    );
+  });
+};
+
 const getUser = async (USER_URL, COMPANY_URL) => {
   const endpoint = !isEmpty(COMPANY_URL)
     ? `/getCompany/name/${COMPANY_URL}/${USER_URL}`
@@ -38,4 +53,4 @@ const getProspect = async (ADVISOR_ID, COMPANY_ID, EMAIL) => {
   });
 };
 
-export { getUser, getProspect };
+export { getUser, getProspect, getPublicFeatures };

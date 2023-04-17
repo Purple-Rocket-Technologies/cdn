@@ -8,9 +8,9 @@ const { cookies, url, initiateAdvisorLogo } = require("../../../utils");
 const {
   getUser,
   getProspect,
+  getPublicFeatures,
 } = require("../../../service/fin/onboarding.service");
 const { onBoarding } = require("../../../utils/onboarding.utils");
-const { Logo } = require("../../../logo");
 
 async function redirectContinuer() {
   try {
@@ -36,6 +36,12 @@ async function fetchAdvisor() {
     const advisor = await getUser(USER_URL, COMPANY_URL);
     COMPANY_ID = advisor.company_id;
     IS_CANADIAN_LINK = advisor.address && advisor.address.country === "Canada";
+    try {
+      const publicFeatures = await getPublicFeatures(advisor.userId);
+      console.log("publicFeatures", publicFeatures);
+    } catch (e) {
+      console.log(e);
+    }
     onBoarding.advisor.setCookies(advisor, IS_OLD_LINK);
     initiateAdvisorLogo(
       `${advisor.firstName.trim()} ${advisor.lastName.trim()}`
