@@ -18980,7 +18980,7 @@ async function fetchAdvisor() {
     IS_CANADIAN_LINK = advisor.address && advisor.address.country === "Canada";
     try {
       const publicFeatures = await getPublicFeatures(advisor.userId);
-      console.log("publicFeatures", publicFeatures);
+      cookies.set("publicFeatures", JSON.stringify(publicFeatures));
     } catch (e) {
       console.log(e);
     }
@@ -22055,12 +22055,9 @@ function InitRouteQuestions() {
 // EXTERNAL MODULE: ./src/service/Service.js
 var service_Service = __webpack_require__(3912);
 var Service_default = /*#__PURE__*/__webpack_require__.n(service_Service);
-// EXTERNAL MODULE: ./src/logo/index.js
-var logo = __webpack_require__(9009);
 ;// CONCATENATED MODULE: ./src/pages/apps/fin/finalStep.js
 //var height = ($(".video_placeholder").width() / 16) * 9;
 //$(".video_placeholder").height(height);
-
 
 
 
@@ -22112,6 +22109,20 @@ function initFinalStep() {
     });
   };
   $("#aptmt_link").attr("href", page.APPOINTMENT_LINK);
+  function handlePublicFeatures() {
+    const publicFeatures = utils.cookies.get("publicFeatures");
+    if (!(publicFeatures && JSON.parse(publicFeatures))) return;
+    const finPath = publicFeatures.finPath;
+    if (!finPath) {
+      const videoMessageEl = $("#video-messages");
+      $("#video-messages").remove();
+      $("#step-1").before(videoMessageEl);
+      $("#step-1").remove();
+    }
+  }
+  if ((0,utils.isDevEnvironment)()) {
+    handlePublicFeatures();
+  }
   setTrailerVideo();
   /**
    *

@@ -38,7 +38,7 @@ async function fetchAdvisor() {
     IS_CANADIAN_LINK = advisor.address && advisor.address.country === "Canada";
     try {
       const publicFeatures = await getPublicFeatures(advisor.userId);
-      console.log("publicFeatures", publicFeatures);
+      cookies.set("publicFeatures", JSON.stringify(publicFeatures));
     } catch (e) {
       console.log(e);
     }

@@ -9,9 +9,9 @@ import {
   getVideoBaseUrl,
   handleBrokerCheckLinkAndDisclosure,
   initiateAdvisorLogo,
+  isDevEnvironment,
 } from "../../../utils";
 import Service from "../../../service/Service";
-import { Logo } from "../../../logo";
 class FinalStep extends BasePage {
   constructor(_object) {
     super(_object);
@@ -95,6 +95,22 @@ export default function initFinalStep() {
   };
 
   $("#aptmt_link").attr("href", page.APPOINTMENT_LINK);
+
+  function handlePublicFeatures() {
+    const publicFeatures = cookies.get("publicFeatures");
+    if (!(publicFeatures && JSON.parse(publicFeatures))) return;
+    const finPath = publicFeatures.finPath;
+    if (!finPath) {
+      const videoMessageEl = $("#video-messages");
+      $("#video-messages").remove();
+      $("#step-1").before(videoMessageEl);
+      $("#step-1").remove();
+    }
+  }
+
+  if (isDevEnvironment()) {
+    handlePublicFeatures();
+  }
 
   setTrailerVideo();
   /**
