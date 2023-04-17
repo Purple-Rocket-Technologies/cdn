@@ -98,7 +98,8 @@ export default function initFinalStep() {
 
   function handlePublicFeatures() {
     const publicFeatures =
-      publicFeatures && JSON.parse(cookies.get("publicFeatures"));
+      !isEmpty(cookies.get("publicFeatures")) &&
+      JSON.parse(cookies.get("publicFeatures"));
     if (publicFeatures) {
       const finPath = publicFeatures.finPath;
       if (!finPath) {

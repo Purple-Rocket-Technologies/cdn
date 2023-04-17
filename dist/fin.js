@@ -22110,7 +22110,7 @@ function initFinalStep() {
   };
   $("#aptmt_link").attr("href", page.APPOINTMENT_LINK);
   function handlePublicFeatures() {
-    const publicFeatures = publicFeatures && JSON.parse(utils.cookies.get("publicFeatures"));
+    const publicFeatures = !(0,utils.isEmpty)(utils.cookies.get("publicFeatures")) && JSON.parse(utils.cookies.get("publicFeatures"));
     if (publicFeatures) {
       const finPath = publicFeatures.finPath;
       if (!finPath) {
