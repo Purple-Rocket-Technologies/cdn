@@ -98,17 +98,20 @@ export default function initFinalStep() {
 
   function handlePublicFeatures() {
     const publicFeatures = cookies.get("publicFeatures");
-    if (!(publicFeatures && JSON.parse(publicFeatures))) return;
-    const finPath = publicFeatures.finPath;
-    if (!finPath) {
-      const videoMessageEl = $("#video-messages");
-      $("#video-messages").remove();
-      $("#step-1").before(videoMessageEl);
-      $("#step-1").remove();
+    if (publicFeatures && JSON.parse(publicFeatures)) {
+      const finPath = publicFeatures.finPath;
+      console.log("finPath", finPath);
+      if (!finPath) {
+        const videoMessageEl = $("#video-messages");
+        $("#video-messages").remove();
+        $("#step-1").before(videoMessageEl);
+        $("#step-1").remove();
+      }
     }
   }
 
   if (isDevEnvironment()) {
+    console.log("isDevEnvironment");
     handlePublicFeatures();
   }
 

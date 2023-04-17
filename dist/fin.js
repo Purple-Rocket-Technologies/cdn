@@ -22111,16 +22111,19 @@ function initFinalStep() {
   $("#aptmt_link").attr("href", page.APPOINTMENT_LINK);
   function handlePublicFeatures() {
     const publicFeatures = utils.cookies.get("publicFeatures");
-    if (!(publicFeatures && JSON.parse(publicFeatures))) return;
-    const finPath = publicFeatures.finPath;
-    if (!finPath) {
-      const videoMessageEl = $("#video-messages");
-      $("#video-messages").remove();
-      $("#step-1").before(videoMessageEl);
-      $("#step-1").remove();
+    if (publicFeatures && JSON.parse(publicFeatures)) {
+      const finPath = publicFeatures.finPath;
+      console.log("finPath", finPath);
+      if (!finPath) {
+        const videoMessageEl = $("#video-messages");
+        $("#video-messages").remove();
+        $("#step-1").before(videoMessageEl);
+        $("#step-1").remove();
+      }
     }
   }
   if ((0,utils.isDevEnvironment)()) {
+    console.log("isDevEnvironment");
     handlePublicFeatures();
   }
   setTrailerVideo();
