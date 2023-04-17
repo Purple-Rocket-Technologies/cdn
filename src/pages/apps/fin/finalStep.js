@@ -113,10 +113,8 @@ export default function initFinalStep() {
     }
   }
 
-  if (isDevEnvironment()) {
-    console.log("isDevEnvironment");
-    handlePublicFeatures();
-  }
+  console.log("isDevEnvironment");
+  handlePublicFeatures();
 
   setTrailerVideo();
   /**
