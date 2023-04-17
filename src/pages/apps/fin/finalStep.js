@@ -109,6 +109,7 @@ export default function initFinalStep() {
         $("#video_messages").remove();
         videoMessageEl.insertBefore($("#step1"));
         $("#step1").remove();
+        $(".down-arrow").remove();
       }
     }
   }
