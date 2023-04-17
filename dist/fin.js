@@ -22118,8 +22118,8 @@ function initFinalStep() {
       if (!finPath) {
         const videoMessageEl = $("#video-messages");
         $("#video-messages").remove();
-        $("#step-1").before(videoMessageEl);
-        $("#step-1").remove();
+        $("#step1").before(videoMessageEl);
+        $("#step1").remove();
       }
     }
   }
