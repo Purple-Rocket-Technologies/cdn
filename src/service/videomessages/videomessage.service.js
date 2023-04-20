@@ -1,8 +1,8 @@
-import { isFinPath } from "../../utils/videomessage.utils";
+import { isFinPath, isIPN } from "../../utils/videomessage.utils";
 import Service from "../Service";
 
 const getVideoMessage = function (user_id) {
-  const type = isFinPath() ? "fin_path" : "fin_link";
+  const type = isFinPath() ? "fin_path" : isIPN() ? "ipn" : "fin_link";
   const url = `getVideoMessagingForUserId`;
   const service = new Service(url);
   const queryParams = [

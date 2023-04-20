@@ -2,7 +2,7 @@ import { createApp, h } from "vue";
 import { getVideoMessage } from "../../../service/videomessages/videomessage.service";
 import { cookies, isEmpty } from "../../../utils";
 import "../../../../src/styles/videomessages.css";
-import { isFinPath } from "../../../utils/videomessage.utils";
+import { isFinPath, isIPN } from "../../../utils/videomessage.utils";
 import VideoPlayer from "./videoComponent.vue";
 export function init(advisorName = "") {
   createApp({
@@ -45,7 +45,7 @@ export function init(advisorName = "") {
             {
               class: "video-description text-center",
             },
-            !isFinPath()
+            !isFinPath() && !isIPN()
               ? this.description.replace(
                   /repname/g,
                   advisorName ||
@@ -59,12 +59,12 @@ export function init(advisorName = "") {
             {
               class: {
                 "video-overlay": true,
-                "mx-center mt-12": !isFinPath(),
+                "mx-center mt-12": !isFinPath() && !isIPN(),
               },
               onmouseenter: () => (this.showOverLay = true),
               onmouseleave: () => (this.showOverLay = false),
               // ontouchstart:() => (this.showOverLay = true),
-              ontouchend:() => (!this.showOverLay),
+              ontouchend: () => !this.showOverLay,
             },
             [
               this.showOverLay
@@ -189,10 +189,6 @@ export function init(advisorName = "") {
         } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
           video.src = `${videoSrc}#t=0.001`;
         }
-        // if (isFinPath()) {
-        //   video.play();
-        // }
-
         let videoEnded = 0;
         for (let i = 0; i < openFinPath.length; i++) {
           openFinPath[i].onclick = function () {

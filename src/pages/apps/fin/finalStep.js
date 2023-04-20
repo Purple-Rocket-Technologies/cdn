@@ -103,7 +103,6 @@ export default function initFinalStep() {
     console.log("publicFeatures", publicFeatures);
     if (publicFeatures) {
       const finPath = publicFeatures.finPath;
-      console.log("finPath", finPath);
       if (!finPath) {
         const videoMessageEl = $("#video_messages");
         $("#video_messages").remove();
