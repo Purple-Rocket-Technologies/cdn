@@ -2,14 +2,10 @@ import { isFinPath, isIPN } from "../../utils/videomessage.utils";
 import Service from "../Service";
 
 const getVideoMessage = function (user_id) {
-  const type = isFinPath() ? "fin_path" : isIPN() ? "ipn" : "fin_link";
   const url = `getVideoMessagingForUserId`;
   const service = new Service(url);
+
   const queryParams = [
-    {
-      key: "tool",
-      value: type,
-    },
     {
       key: "isDeleted",
       value: false,
@@ -35,6 +31,24 @@ const getVideoMessage = function (user_id) {
       value: user_id,
     },
   ];
+  if (isFinPath()) {
+    ["fin_path", "fin_path_start", "fin_path_end"].forEach(function (key) {
+      queryParams.push({
+        key: "tool",
+        value: key,
+      });
+    });
+  } else if (isIPN()) {
+    queryParams.push({
+      key: "tool",
+      value: "ipn",
+    });
+  } else {
+    queryParams.push({
+      key: "tool",
+      value: "fin_link",
+    });
+  }
   queryParams.forEach(function ({ key, value }) {
     service.equals(key, value);
   });
