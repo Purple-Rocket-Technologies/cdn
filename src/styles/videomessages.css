@@ -8,9 +8,6 @@
 .video-container {
   border: 10px solid rgba(110, 89, 174, 0.5);
 }
-.rounded {
-  border-radius: 50%;
-}
 .bg-white {
   background-color: white;
 }

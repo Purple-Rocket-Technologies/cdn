@@ -72,7 +72,7 @@ export function init(advisorName = "") {
                     "div",
                     {
                       class:
-                        "d-flex   video-overlay position-absolute justify-content-center align-items-center space-x-2",
+                        "d-flex video-overlay position-absolute justify-content-center align-items-center space-x-2",
                     },
                     [
                       this.showPlayButton === "paused"
