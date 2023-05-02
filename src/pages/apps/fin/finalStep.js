@@ -19,6 +19,7 @@ class FinalStep extends BasePage {
 }
 
 export default function initFinalStep() {
+  let hasIpn = false;
   let page = new FinalStep({
     URL_COMPANY:
       cookies.get("URL_COMPANY") !== "undefined"
@@ -107,6 +108,18 @@ export default function initFinalStep() {
         const videoMessageEl = $("#video_messages");
         $("#video_messages").remove();
         videoMessageEl.insertBefore($("#step1"));
+        if (isDevEnvironment()) {
+          hasIpn = true;
+          if (hasIpn) {
+            $(".image-48").attr(
+              "src",
+              "https://discoverfin.s3.amazonaws.com/assets/IPN.svg"
+            );
+          }
+          const actionButton = $(".open-video");
+          actionButton.insertBefore($("#step1"));
+        }
+        actionButton.css("padding-bottom", "32px");
         $("#step1").remove();
         $(".down-arrow").remove();
       }
@@ -270,6 +283,14 @@ export default function initFinalStep() {
     );
   };
 
+  const ipn_base = window.location.hostname.includes("dev")
+    ? "ipn.fintell.io"
+    : "incomeprotection.ai";
+
+  const openIpn = () => {
+    window.open(`https://${ipn_base}/${page.URL_USER}`, "_blank");
+  };
+
   const openVideoApp = (email) => {
     window.open(
       !isEmpty(page.IS_OLD_LINK)
@@ -307,11 +328,20 @@ export default function initFinalStep() {
       $(this).click(() => {
         const videoEnded = cookies.get("videoEnded");
         const video_message_available = cookies.get("videomessageavailable");
-        if (
-          (videoEnded && JSON.parse(videoEnded)) ||
-          !JSON.parse(video_message_available)
-        ) {
-          openFINPath(prospectAnswers["email"]);
+        if (!video_message_available || !JSON.parse(video_message_available)) {
+          if (hasIpn && isDevEnvironment()) {
+            openIpn();
+          } else {
+            openFINPath(prospectAnswers["email"]);
+          }
+          return;
+        }
+        if (videoEnded && JSON.parse(videoEnded)) {
+          if (hasIpn && isDevEnvironment()) {
+            openIpn();
+          } else {
+            openFINPath(prospectAnswers["email"]);
+          }
         }
         // openVideoApp(prospectAnswers["email"]);
       });
