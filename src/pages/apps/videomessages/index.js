@@ -249,6 +249,7 @@ export function init(advisorName = "") {
         // const hide_me_if_vod = document.getElementById("hide_me_if_vod");
         document.getElementById("video_messages").remove();
         $(".unlock-copy").text("ACCESS MY");
+        $(".hide-after-unlock").css("display", "none");
         // if (hide_me_if_vod) {
         //   hide_me_if_vod.style.display = "none";
         // }
