@@ -118,8 +118,10 @@ export default function initFinalStep() {
           }
           const actionButton = $(".open-video");
           actionButton.insertBefore($("#step1"));
+          actionButton.css("padding-bottom", "32px");
+          actionButton.css("padding-top", "32px");
         }
-        actionButton.css("padding-bottom", "32px");
+
         $("#step1").remove();
         $(".down-arrow").remove();
       }
@@ -328,6 +330,15 @@ export default function initFinalStep() {
       $(this).click(() => {
         const videoEnded = cookies.get("videoEnded");
         const video_message_available = cookies.get("videomessageavailable");
+        console.log(
+          "videoEnded, video_message_available",
+          videoEnded,
+          video_message_available
+        );
+        console.log(
+          "!video_message_available || !JSON.parse(video_message_available)",
+          !video_message_available || !JSON.parse(video_message_available)
+        );
         if (!video_message_available || !JSON.parse(video_message_available)) {
           if (hasIpn && isDevEnvironment()) {
             openIpn();
