@@ -9,7 +9,7 @@ import {
   getVideoBaseUrl,
   handleBrokerCheckLinkAndDisclosure,
   initiateAdvisorLogo,
-  isDevEnvironment,
+  // isDevEnvironment,
 } from "../../../utils";
 import Service from "../../../service/Service";
 class FinalStep extends BasePage {
@@ -108,27 +108,23 @@ export default function initFinalStep() {
         const videoMessageEl = $("#video_messages");
         $("#video_messages").remove();
         videoMessageEl.insertBefore($("#step1"));
-        if (isDevEnvironment()) {
-          hasIpn = true;
-          if (hasIpn) {
-            $(".image-48").attr(
-              "src",
-              "https://discoverfin.s3.amazonaws.com/assets/IPN.svg"
-            );
-          }
-          const actionButton = $(".open-video");
-          actionButton.insertBefore($("#step1"));
-          actionButton.css("padding-bottom", "32px");
-          actionButton.css("padding-top", "32px");
+        hasIpn = true;
+        if (hasIpn) {
+          $(".image-48").attr(
+            "src",
+            "https://discoverfin.s3.amazonaws.com/assets/IPN.svg"
+          );
         }
+        const actionButton = $(".open-video");
+        actionButton.insertBefore($("#step1"));
+        actionButton.css("padding-bottom", "32px");
+        actionButton.css("padding-top", "32px");
 
         $("#step1").remove();
         $(".down-arrow").remove();
       }
     }
   }
-
-  console.log("isDevEnvironment");
   handlePublicFeatures();
 
   setTrailerVideo();
@@ -340,7 +336,7 @@ export default function initFinalStep() {
           !video_message_available || !JSON.parse(video_message_available)
         );
         if (!video_message_available || !JSON.parse(video_message_available)) {
-          if (hasIpn && isDevEnvironment()) {
+          if (hasIpn) {
             openIpn();
           } else {
             openFINPath(prospectAnswers["email"]);
@@ -348,7 +344,7 @@ export default function initFinalStep() {
           return;
         }
         if (videoEnded && JSON.parse(videoEnded)) {
-          if (hasIpn && isDevEnvironment()) {
+          if (hasIpn) {
             openIpn();
           } else {
             openFINPath(prospectAnswers["email"]);
