@@ -2,7 +2,7 @@ const {
   createProspect,
   updateProspectById,
 } = require("../../../service/fin/questions.service");
-const { cookies, isEmail, isMobile, url, initiateAdvisorLogo } = require("../../../utils");
+const { cookies, isEmail, isMobile, url } = require("../../../utils");
 const { getProspect } = require("../../../service/fin/onboarding.service");
 const { _FetchAdvisor } = require("../../../pages/apps/fin/index.js");
 
@@ -55,6 +55,8 @@ function questionsPageInit() {
   const userAgeEl = $("#user_age");
   const ques2Btn = $("#ques_2_btn");
   const userIncomeEl = $("#user_income");
+  const annualIncome = $("#annual-income");
+  const investMentAndSavings = $("#investment_and_savings");
   const emailEl = $("#email");
   const step3Selector = $("#step_3_selector");
   const step5Selector = $("#step_5_selector");
@@ -88,6 +90,7 @@ function questionsPageInit() {
       first_name: userNameEl.val(),
     });
   });
+
   userAgeEl.keyup(function () {
     var var_age = $(this).val();
     if (var_age.length > 1) {
@@ -123,39 +126,64 @@ function questionsPageInit() {
     default_death_age = parseInt(valueee2);
   });
 
-  //Question 4 Validation
-  userIncomeEl.keyup(function () {
-    var var_income = $(this).val().replace(/,/g, "").replace(/[^\d]/g, "");
-    if (var_income > 999) {
-      $("#ques_four_active").addClass("active");
-      $("#ques_4_btn").addClass("go_ahead");
-    } else {
-      $("#ques_four_active").removeClass("active");
-      $("#ques_4_btn").removeClass("go_ahead");
-    }
-    if (var_income > 0) {
-      $(".dollar").addClass("show");
-    } else {
-      $(".dollar").removeClass("show");
-    }
-  });
+  const _questionss = [
+    {
+      selector: userIncomeEl,
+      active: $("#ques_four_active"),
+      btn: $("#ques_4_btn"),
+    },
+    {
+      selector: annualIncome,
+      active: $("#ques_5_active"),
+      btn: $("#ques_5_btn"),
+    },
+    {
+      selector: investMentAndSavings,
+      active: $("#ques_6_active"),
+      btn: $("#ques_6_btn"),
+    },
+  ];
 
-  // Live Comma
-  userIncomeEl.keyup(function () {
-    if ($(this).val() !== "") {
-      if (parseInt($(this).val()) > 0) {
-        var income = parseInt(
-          $(this).val().replace(/[^\d]/g, "").replace(/,/g, ""),
-          10
-        ).toLocaleString();
-        $(this).val(income);
+  for (let index = 0; index < _questionss.length; index++) {
+    const element = _questionss[index];
+    element.selector.keyup(function () {
+      var var_income = $(this).val().replace(/,/g, "").replace(/[^\d]/g, "");
+      if (var_income > 999) {
+        element.active.addClass("active");
+        element.btn.addClass("go_ahead");
+      } else {
+        element.active.removeClass("active");
+        element.btn.removeClass("go_ahead");
+      }
+      if (var_income > 0) {
+        $(".dollar").addClass("show");
+      } else {
+        $(".dollar").removeClass("show");
+      }
+      if ($(this).val() !== "") {
+        if (parseInt($(this).val()) > 0) {
+          $(this).val(
+            parseInt(
+              $(this).val().replace(/[^\d]/g, "").replace(/,/g, ""),
+              10
+            ).toLocaleString()
+          );
+        } else {
+          $(this).val("");
+        }
       } else {
         $(this).val("");
       }
-    } else {
-      $(this).val("");
-    }
-  });
+    });
+    element.selector.on("keypress", function (e) {
+      if (e.which === 13) {
+        e.preventDefault();
+        if (element.btn.hasClass("go_ahead")) {
+          element.btn[0].click();
+        }
+      }
+    });
+  }
 
   //question four desktop 1
   userIncomeEl.on("keypress", function (e) {
@@ -205,8 +233,8 @@ function questionsPageInit() {
     step5Selector.addClass("lightup");
     $("#light_arrow_5").addClass("show");
     step5Selector.html(ans1);
-    $("#ques_5_active").addClass("active");
-    $("#ques_5_btn").addClass("go_ahead");
+    $("#ques_7_active").addClass("active");
+    $("#ques_7_btn").addClass("go_ahead");
     $("#pension_choice").val(ans1);
     const fin_array = [
       4.7, 5.5, 6.2, 6.9, 7.7, 8.5, 9.18, 9.86, 10.54, 11.22, 11.9, 12.48,
@@ -284,6 +312,9 @@ function questionsPageInit() {
       annual_income_before_inflation: parseInt(
         userIncomeEl.val().replace(/,/g, "")
       ),
+      annualIncome: parseInt(annualIncome.val().replace(/,/g, "")) || 0,
+      investMentAndSavings:
+        parseInt(investMentAndSavings.val().replace(/,/g, "")) || 0,
       retirement_age,
       pension_choice,
       guessed_fin,
@@ -330,6 +361,9 @@ function questionsPageInit() {
         userIncomeEl.val().replace(/,/g, "")
       ),
       pension_choice,
+      annualIncome: parseInt(annualIncome.val().replace(/,/g, "")) || 0,
+      investMentAndSavings:
+        parseInt(investMentAndSavings.val().replace(/,/g, "")) || 0,
       guessed_fin,
       fin_number: parseInt($("#fin_number").val()),
     })
