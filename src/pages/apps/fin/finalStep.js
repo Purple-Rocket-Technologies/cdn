@@ -322,6 +322,12 @@ export default function initFinalStep() {
     //   openVideoApp(prospectAnswers["email"]);
     // });
 
+    if (!(video_message_available && JSON.parse(video_message_available))) {
+      $("#main_copy").html(
+        `Your financial pro and (also a real human, I promise!) I hope you’ve enjoyed your experience so far.`
+      );
+    }
+
     $(".open-video").each(function () {
       $(this).click(() => {
         const videoEnded = cookies.get("videoEnded");
