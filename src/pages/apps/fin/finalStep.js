@@ -322,6 +322,8 @@ export default function initFinalStep() {
     //   openVideoApp(prospectAnswers["email"]);
     // });
 
+    const video_message_available = cookies.get("videomessageavailable");
+
     if (!(video_message_available && JSON.parse(video_message_available))) {
       $("#main_copy").html(
         `Your financial pro and (also a real human, I promise!) I hope you’ve enjoyed your experience so far.`
@@ -331,16 +333,6 @@ export default function initFinalStep() {
     $(".open-video").each(function () {
       $(this).click(() => {
         const videoEnded = cookies.get("videoEnded");
-        const video_message_available = cookies.get("videomessageavailable");
-        console.log(
-          "videoEnded, video_message_available",
-          videoEnded,
-          video_message_available
-        );
-        console.log(
-          "!video_message_available || !JSON.parse(video_message_available)",
-          !video_message_available || !JSON.parse(video_message_available)
-        );
         if (!video_message_available || !JSON.parse(video_message_available)) {
           if (hasIpn) {
             openIpn();
