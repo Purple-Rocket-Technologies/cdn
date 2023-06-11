@@ -128,17 +128,20 @@ function questionsPageInit() {
 
   const _questionss = [
     {
-      selector: userIncomeEl,
+      selectors: [userIncomeEl],
       active: $("#ques_four_active"),
       btn: $("#ques_4_btn"),
     },
     {
-      selector: annualIncome,
+      selectors: [annualIncome],
       active: $("#ques_5_active"),
       btn: $("#ques_5_btn"),
     },
     {
-      selector: investMentAndSavings,
+      selectors: [
+        $("#total_investment_and_savings"),
+        $("#monthly_investment_and_savings"),
+      ],
       active: $("#ques_6_active"),
       btn: $("#ques_6_btn"),
     },
@@ -146,42 +149,44 @@ function questionsPageInit() {
 
   for (let index = 0; index < _questionss.length; index++) {
     const element = _questionss[index];
-    element.selector.keyup(function () {
-      var var_income = $(this).val().replace(/,/g, "").replace(/[^\d]/g, "");
-      if (var_income > 999) {
-        element.active.addClass("active");
-        element.btn.addClass("go_ahead");
-      } else {
-        element.active.removeClass("active");
-        element.btn.removeClass("go_ahead");
-      }
-      if (var_income > 0) {
-        $(".dollar").addClass("show");
-      } else {
-        $(".dollar").removeClass("show");
-      }
-      if ($(this).val() !== "") {
-        if (parseInt($(this).val()) > 0) {
-          $(this).val(
-            parseInt(
-              $(this).val().replace(/[^\d]/g, "").replace(/,/g, ""),
-              10
-            ).toLocaleString()
-          );
+    element.selectors.forEach((selector) => {
+      selector.keyup(function () {
+        var var_income = $(this).val().replace(/,/g, "").replace(/[^\d]/g, "");
+        if (var_income > 999) {
+          element.active.addClass("active");
+          element.btn.addClass("go_ahead");
+        } else {
+          element.active.removeClass("active");
+          element.btn.removeClass("go_ahead");
+        }
+        if (var_income > 0) {
+          $(".dollar").addClass("show");
+        } else {
+          $(".dollar").removeClass("show");
+        }
+        if ($(this).val() !== "") {
+          if (parseInt($(this).val()) > 0) {
+            $(this).val(
+              parseInt(
+                $(this).val().replace(/[^\d]/g, "").replace(/,/g, ""),
+                10
+              ).toLocaleString()
+            );
+          } else {
+            $(this).val("");
+          }
         } else {
           $(this).val("");
         }
-      } else {
-        $(this).val("");
-      }
-    });
-    element.selector.on("keypress", function (e) {
-      if (e.which === 13) {
-        e.preventDefault();
-        if (element.btn.hasClass("go_ahead")) {
-          element.btn[0].click();
+      });
+      selector.on("keypress", function (e) {
+        if (e.which === 13) {
+          e.preventDefault();
+          if (element.btn.hasClass("go_ahead")) {
+            element.btn[0].click();
+          }
         }
-      }
+      });
     });
   }
 
@@ -313,8 +318,13 @@ function questionsPageInit() {
         userIncomeEl.val().replace(/,/g, "")
       ),
       annualIncome: parseInt(annualIncome.val().replace(/,/g, "")) || 0,
-      investMentAndSavings:
-        parseInt(investMentAndSavings.val().replace(/,/g, "")) || 0,
+      montlyInvestMentAndSavings:
+        parseInt(
+          $("#monthly_investment_and_savings").val().replace(/,/g, "")
+        ) || 0,
+      totalInvestmentAndSavings: parseInt(
+        $("#total_investment_and_savings").val().replace(/,/g, "")
+      ),
       retirement_age,
       pension_choice,
       guessed_fin,
@@ -362,9 +372,15 @@ function questionsPageInit() {
       ),
       pension_choice,
       annualIncome: parseInt(annualIncome.val().replace(/,/g, "")) || 0,
-      investMentAndSavings:
-        parseInt(investMentAndSavings.val().replace(/,/g, "")) || 0,
+      montlyInvestMentAndSavings:
+        parseInt(
+          $("#monthly_investment_and_savings").val().replace(/,/g, "")
+        ) || 0,
+      totalInvestmentAndSavings: parseInt(
+        $("#total_investment_and_savings").val().replace(/,/g, "")
+      ),
       guessed_fin,
+
       fin_number: parseInt($("#fin_number").val()),
     })
       .then(function (response) {
