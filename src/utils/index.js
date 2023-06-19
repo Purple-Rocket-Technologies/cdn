@@ -227,6 +227,10 @@ const toDollar = (value) => {
   }).format(value);
 };
 
+const toCurrencyWithoutDollar = (value) => {
+  return toDollar(value).replace("$", "");
+};
+
 const isDevEnvironment = () => {
   return (
     window.location.host === "dev.discoverfin.io" ||
@@ -296,4 +300,5 @@ export {
   isDevEnvironment,
   handleBrokerCheckLinkAndDisclosure,
   initiateAdvisorLogo,
+  toCurrencyWithoutDollar,
 };

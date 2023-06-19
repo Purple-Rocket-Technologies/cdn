@@ -2,7 +2,13 @@ const {
   createProspect,
   updateProspectById,
 } = require("../../../service/fin/questions.service");
-const { cookies, isEmail, isMobile, url } = require("../../../utils");
+const {
+  cookies,
+  isEmail,
+  isMobile,
+  url,
+  toCurrencyWithoutDollar,
+} = require("../../../utils");
 const { getProspect } = require("../../../service/fin/onboarding.service");
 const { _FetchAdvisor } = require("../../../pages/apps/fin/index.js");
 
@@ -167,10 +173,7 @@ function questionsPageInit() {
         if ($(this).val() !== "") {
           if (parseInt($(this).val()) > 0) {
             $(this).val(
-              parseInt(
-                $(this).val().replace(/[^\d]/g, "").replace(/,/g, ""),
-                10
-              ).toLocaleString()
+              toCurrencyWithoutDollar($(this).val().replace(/[^\d]/g, ""))
             );
           } else {
             $(this).val("");
