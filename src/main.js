@@ -43,9 +43,6 @@ import "./styles/main.css";
     const primaryColor = "#2A4246";
     const secondaryColor = "#84C0B8";
 
-    $(".button-5 popup").attr("href", "https://myapp.wealthio.com/finrya20gq");
-    $(".main_logo").attr("src", "https://finpath.ai/assets/anna.70ddd921.gif");
-
     [
       {
         color: primaryColor,
@@ -100,5 +97,10 @@ import "./styles/main.css";
     // set .text-field::placeholder color
     // $(".text-field").css("");
     $(".button_arrow").css("background-color", "rgba(255, 255, 255, .1)");
+    $(".button-5.popup").attr("href", "https://myapp.wealthio.com/finrya20gq");
+    $(".main_logo").attr("src", "https://finpath.ai/assets/anna.70ddd921.gif");
+    $(".logo-container").html(
+      "<img width='180px' src='https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493400b63c62651c3ba9ae5_clear_financial_vision.png' />"
+    );
   }
 })();
