@@ -74,7 +74,7 @@ import "./styles/main.css";
       },
     ].forEach((obj) => {
       obj.selectors.forEach((el) => {
-        el.css("background-color", `${obj.color} !important`);
+        el.css("background-color", obj.color);
       });
     });
     [
