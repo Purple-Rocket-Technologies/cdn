@@ -43,6 +43,8 @@ import "./styles/main.css";
     const primaryColor = "#2A4246";
     const secondaryColor = "#84C0B8";
 
+    $(".button-5 popup").attr("href", "https://myapp.wealthio.com/finrya20gq");
+
     [
       {
         color: primaryColor,
@@ -57,6 +59,9 @@ import "./styles/main.css";
           $(".headsup_container"),
           $(".question"),
           $(".headsup_1"),
+          $(".buttons_headsup"),
+          $(".button"),
+          $(".navbar.result"),
         ],
       },
       {
@@ -71,13 +76,12 @@ import "./styles/main.css";
       },
     ].forEach((obj) => {
       obj.selectors.forEach((el) => {
-        el.css("background-color", obj.color);
+        el.css("background-color", `${obj.color} !important`);
       });
     });
     [
       $(".options_popup.step_3, .options_popup.step_5"),
       $(".guess_game"),
-      $(".headsup_1"),
     ].forEach((el) => {
       el.css("background-color", "rgb(132 192 184 / 90%)");
     });
@@ -94,5 +98,6 @@ import "./styles/main.css";
     );
     // set .text-field::placeholder color
     $(".text-field").css("");
+    $(".button_arrow").css("background-color", "rgba(255, 255, 255, .1)");
   }
 })();
