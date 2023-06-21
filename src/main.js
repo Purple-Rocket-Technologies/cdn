@@ -42,23 +42,46 @@ import "./styles/main.css";
   if (cookies.get("isRyanSemons") === "true") {
     const primaryColor = "#2A4246";
     const secondaryColor = "#84C0B8";
-    $(".body").css("background-color", primaryColor);
-    $(".header").css("background-color", primaryColor);
-    $(".cta_btn").css("background-color", secondaryColor);
-    $(".bottom_container").css("background-image", primaryColor);
-    $(".button_active").css("background-color", secondaryColor);
-    $(".options_container").css("background-color", primaryColor);
+
+    [
+      {
+        color: primaryColor,
+        selectors: [
+          $(".body"),
+          $(".header"),
+          $(".bottom_container"),
+          $(".options_container"),
+          $(".guess_container"),
+          $(".email_container"),
+          $(".calculating_loader"),
+          $(".headsup_container"),
+          $(".question"),
+          $(".headsup_1"),
+        ],
+      },
+      {
+        color: secondaryColor,
+        selectors: [
+          $(".cta_btn"),
+          $(".button_active"),
+          $(".guess_option.active"),
+          $(".help_text"),
+          $(".green"),
+        ],
+      },
+    ].forEach((obj) => {
+      obj.selectors.forEach((el) => {
+        el.css("background-color", obj.color);
+      });
+    });
     [
       $(".options_popup.step_3, .options_popup.step_5"),
       $(".guess_game"),
+      $(".headsup_1"),
     ].forEach((el) => {
-      el.css("background-color", "rgb(132 192 184 / 30%)");
+      el.css("background-color", "rgb(132 192 184 / 90%)");
     });
-    $(".guess_container").css("background-color", primaryColor);
-    $(".guess_option.active").css("background-color", secondaryColor);
-    $(".email_container").css("background-color", primaryColor);
-    $(".calculating_loader").css("background-color", primaryColor);
-    $(".help_text").css("background-color", secondaryColor);
+    $(".bottom_container").css("background-image", "none !important");
     $(".route > .bottom").css(
       "background-image",
       "url(https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/64932caf87fa9e07937db8c7_bg_routes.svg)"
@@ -69,5 +92,7 @@ import "./styles/main.css";
       "src",
       "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493318e39d75038c4a47bea_output-onlinegiftools.gif"
     );
+    // set .text-field::placeholder color
+    $(".text-field").css("");
   }
 })();
