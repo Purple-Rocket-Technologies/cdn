@@ -48,10 +48,12 @@ import "./styles/main.css";
     $(".bottom_container").css("background-image", primaryColor);
     $(".button_active").css("background-color", secondaryColor);
     $(".options_container").css("background-color", primaryColor);
-    [$(".options_popup.step_3, .options_popup.step_5"), $(".guess_game")].css(
-      "background-color",
-      "rgb(132 192 184 / 30%)"
-    );
+    [
+      $(".options_popup.step_3, .options_popup.step_5"),
+      $(".guess_game"),
+    ].forEach((el) => {
+      el.css("background-color", "rgb(132 192 184 / 30%)");
+    });
     $(".guess_container").css("background-color", primaryColor);
     $(".guess_option.active").css("background-color", secondaryColor);
     $(".email_container").css("background-color", primaryColor);
