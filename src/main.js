@@ -44,6 +44,7 @@ import "./styles/main.css";
     const secondaryColor = "#84C0B8";
 
     $(".button-5 popup").attr("href", "https://myapp.wealthio.com/finrya20gq");
+    $(".main_logo").attr("src", "https://finpath.ai/assets/anna.70ddd921.gif");
 
     [
       {
@@ -97,7 +98,7 @@ import "./styles/main.css";
       "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493318e39d75038c4a47bea_output-onlinegiftools.gif"
     );
     // set .text-field::placeholder color
-    $(".text-field").css("");
+    // $(".text-field").css("");
     $(".button_arrow").css("background-color", "rgba(255, 255, 255, .1)");
   }
 })();
