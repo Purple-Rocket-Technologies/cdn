@@ -85,6 +85,12 @@ const onBoarding = {
           key: "isCanadian",
           value: advisor.address && advisor.address.country === "Canada",
         },
+        {
+          key: "isRyanSemons",
+          value:
+            advisor.userId === "62ed9a963936add1bb47aa03" ||
+            advisor.userId === "63175c881d3ead78eaa417c7",
+        },
       ]);
     },
   },
