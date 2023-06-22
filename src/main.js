@@ -100,21 +100,32 @@ import "./styles/main.css";
     // $(".text-field").css("");
     $(".button_arrow").css("background-color", "rgba(255, 255, 255, .1)");
     $(".show-btn > a").attr("href", "https://myapp.wealthio.com/finrya20gq");
-    $(".main_logo").attr("src", "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493400b63c62651c3ba9ae5_clear_financial_vision.png");
-    $(".logo-container").html(
+    $(".main_logo").attr(
+      "src",
+      "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493400b63c62651c3ba9ae5_clear_financial_vision.png"
+    );
+    $(".main_logo").css("width", "150px");
+    $("#logo-container").html(
       "<img width='180px' src='https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493400b63c62651c3ba9ae5_clear_financial_vision.png' />"
     );
 
-    $(".text-block-9").css("color", "#fff");
+    $(".text-block-9").css("color", "#ffffff50");
+
+    $(".arrow > .image-5:nth-child(2)").attr(
+      "src",
+      "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/5f2b119ee036c022ae3c3c72_Vector%2022.svg"
+    );
 
     // append to head style tag
     $("head").append(`
       <style>
       .text-field::placeholder {
-        color: #fff;
+        color: #ffffff50;
         opacity: 1;
       }
       </style>
       `);
+
+    $(".email_form").css("background-color", "rgb(132 192 184 / 90%)");
   }
 })();
