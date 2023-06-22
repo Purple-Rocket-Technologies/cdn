@@ -58,8 +58,8 @@ import "./styles/main.css";
           $(".question"),
           $(".headsup_1"),
           $(".buttons_headsup"),
-          $(".button"),
           $(".navbar.result"),
+          $(".language-section"),
         ],
       },
       {
@@ -70,6 +70,7 @@ import "./styles/main.css";
           $(".guess_option.active"),
           $(".help_text"),
           $(".green"),
+          $(".button"),
         ],
       },
     ].forEach((obj) => {
@@ -80,10 +81,11 @@ import "./styles/main.css";
     [
       $(".options_popup.step_3, .options_popup.step_5"),
       $(".guess_game"),
+      $(".email_form"),
     ].forEach((el) => {
       el.css("background-color", "rgb(132 192 184 / 90%)");
     });
-    $(".bottom_container").css("background-image", "none !important");
+    $(".bottom_container").css("background-image", "none");
     $(".route > .bottom").css(
       "background-image",
       "url(https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/64932caf87fa9e07937db8c7_bg_routes.svg)"
@@ -97,10 +99,22 @@ import "./styles/main.css";
     // set .text-field::placeholder color
     // $(".text-field").css("");
     $(".button_arrow").css("background-color", "rgba(255, 255, 255, .1)");
-    $(".button-5.popup").attr("href", "https://myapp.wealthio.com/finrya20gq");
-    $(".main_logo").attr("src", "https://finpath.ai/assets/anna.70ddd921.gif");
+    $(".show-btn > a").attr("href", "https://myapp.wealthio.com/finrya20gq");
+    $(".main_logo").attr("src", "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493400b63c62651c3ba9ae5_clear_financial_vision.png");
     $(".logo-container").html(
       "<img width='180px' src='https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493400b63c62651c3ba9ae5_clear_financial_vision.png' />"
     );
+
+    $(".text-block-9").css("color", "#fff");
+
+    // append to head style tag
+    $("head").append(`
+      <style>
+      .text-field::placeholder {
+        color: #fff;
+        opacity: 1;
+      }
+      </style>
+      `);
   }
 })();

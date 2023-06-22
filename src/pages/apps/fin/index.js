@@ -43,9 +43,12 @@ async function fetchAdvisor() {
       console.log(e);
     }
     onBoarding.advisor.setCookies(advisor, IS_OLD_LINK);
-    initiateAdvisorLogo(
-      `${advisor.firstName.trim()} ${advisor.lastName.trim()}`
-    );
+    if (cookies.get("isRyanSemons") !== "true") {
+      initiateAdvisorLogo(
+        `${advisor.firstName.trim()} ${advisor.lastName.trim()}`
+      );
+    }
+
     initFINVideo();
   } catch (e) {
     window.location.href = "/404";
