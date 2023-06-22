@@ -450,6 +450,10 @@ function questionsPageInit() {
       $("*").scrollTop(0);
     });
   }
+
+  $("#guess_btn").on("click", function () {
+    $(".email_form").css("background-color", "transparent");
+  });
 }
 
 module.exports = questionsPageInit;

@@ -94,7 +94,7 @@ import "./styles/main.css";
     $(".image_3").attr("src", "https://finpath.ai/assets/anna.70ddd921.gif");
     $(".cake > .image_3").attr(
       "src",
-      "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493318e39d75038c4a47bea_output-onlinegiftools.gif"
+      "https://discoverfin.s3.amazonaws.com/assets/output-onlinegiftools.gif"
     );
     // set .text-field::placeholder color
     // $(".text-field").css("");
@@ -115,6 +115,8 @@ import "./styles/main.css";
       "src",
       "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/5f2b119ee036c022ae3c3c72_Vector%2022.svg"
     );
+
+    $(".header").css("background-color", "transparent");
 
     // append to head style tag
     $("head").append(`
