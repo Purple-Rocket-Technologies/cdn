@@ -87,9 +87,7 @@ const onBoarding = {
         },
         {
           key: "isRyanSemons",
-          value:
-            advisor.userId === "62ed9a963936add1bb47aa03" ||
-            advisor.userId === "63175c881d3ead78eaa417c7",
+          value: advisor.userId === "63175c881d3ead78eaa417c7",
         },
       ]);
     },

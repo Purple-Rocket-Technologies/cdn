@@ -130,4 +130,14 @@ import "./styles/main.css";
 
     $(".email_form").css("background-color", "rgb(132 192 184 / 90%)");
   }
+  if (cookies.get("EMAIL") === "info@fintell.ai") {
+    $(".main_logo").attr(
+      "src",
+      "https://app.wealthio.com/_nuxt/a138a4fc1e71dc5dda40cbcd66489af4.svg"
+    );
+    $(".main_logo").css("width", "200px");
+    $("#logo-container").html(
+      "<img width='200px' src='https://app.wealthio.com/_nuxt/a138a4fc1e71dc5dda40cbcd66489af4.svg' />"
+    );
+  }
 })();

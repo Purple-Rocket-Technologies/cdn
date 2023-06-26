@@ -43,7 +43,10 @@ async function fetchAdvisor() {
       console.log(e);
     }
     onBoarding.advisor.setCookies(advisor, IS_OLD_LINK);
-    if (cookies.get("isRyanSemons") !== "true") {
+    if (
+      cookies.get("isRyanSemons") !== "true" ||
+      cookies.get("EMAIL") !== "info@fintell.ai"
+    ) {
       initiateAdvisorLogo(
         `${advisor.firstName.trim()} ${advisor.lastName.trim()}`
       );
