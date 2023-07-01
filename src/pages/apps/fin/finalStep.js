@@ -109,12 +109,14 @@ export default function initFinalStep() {
         $("#video_messages").remove();
         videoMessageEl.insertBefore($("#step1"));
         hasIpn = true;
+
         if (hasIpn) {
           $(".image-48").attr(
             "src",
             "https://discoverfin.s3.amazonaws.com/assets/IPN.svg"
           );
         }
+        $(".open-video").remove();
         const actionButton = $(".open-video");
         actionButton.insertBefore($("#step1"));
         actionButton.css("padding-bottom", "32px");
@@ -326,7 +328,7 @@ export default function initFinalStep() {
 
     if (!(video_message_available && JSON.parse(video_message_available))) {
       $("#main_copy").html(
-        `Your financial pro and (also a real human, I promise!) I hope you’ve enjoyed your experience so far.`
+        `Click on either of the buttons below to schedule an appointment with me to learn more about your financial intelligence number.`
       );
     }
 
