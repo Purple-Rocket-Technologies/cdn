@@ -103,7 +103,7 @@ export default function initFinalStep() {
       JSON.parse(cookies.get("publicFeatures"));
     console.log("publicFeatures", publicFeatures);
     if (publicFeatures) {
-      const finPath = publicFeatures.finPath;
+      const finPath = publicFeatures.FINPATH;
       if (!finPath) {
         const videoMessageEl = $("#video_messages");
         $("#video_messages").remove();

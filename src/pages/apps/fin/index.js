@@ -39,12 +39,17 @@ async function fetchAdvisor() {
     try {
       const publicFeatures = await getPublicFeatures(advisor.userId);
       cookies.set("publicFeatures", JSON.stringify(publicFeatures));
+
+      if (!publicFeatures.FIN) {
+        alert("This advisor is not using FIN");
+        window.location.href = "/404";
+      }
     } catch (e) {
       console.log(e);
     }
     onBoarding.advisor.setCookies(advisor, IS_OLD_LINK);
     if (
-      cookies.get("isRyanSemons") !== "true" ||
+      cookies.get("isRyanSemons") !== "true" &&
       cookies.get("EMAIL") !== "info@fintell.ai"
     ) {
       initiateAdvisorLogo(
