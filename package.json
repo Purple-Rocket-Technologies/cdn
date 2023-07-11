@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --watch",
     "build": "npm run webpack",
-    "webpack": "webpack --mode=production"
+    "webpack": "webpack --mode=production",
+    "lint:fix": "prettier --write \"src/**/*.{js}\""
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,9 @@
     "babel-loader": "^8.2.5",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.1",
-    "eslint": "latest",
+    "eslint": "^8.44.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "postcss": "^8.4.14",
     "postcss-loader": "^7.0.0",
     "postcss-preset-env": "^7.6.0",

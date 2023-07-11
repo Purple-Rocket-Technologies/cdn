@@ -1,65 +1,65 @@
-const path = require("path");
-const TerserPlugin = require("terser-webpack-plugin");
-const isProduction = true;
-const { VueLoaderPlugin } = require("vue-loader");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const path = require('path')
+const TerserPlugin = require('terser-webpack-plugin')
+const isProduction = false
+const { VueLoaderPlugin } = require('vue-loader')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   entry: {
-    fin: path.resolve(__dirname, "src/main.js"),
-    video: path.resolve(__dirname, "src/pages/apps/video/index.js"),
+    fin: path.resolve(__dirname, 'src/main.js'),
+    video: path.resolve(__dirname, 'src/pages/apps/video/index.js'),
     cookie: {
-      import: path.resolve(__dirname, "src/cookie/index.js"),
+      import: path.resolve(__dirname, 'src/cookie/index.js'),
       library: {
-        name: "cookie",
-        type: "umd",
+        name: 'cookie',
+        type: 'umd',
         umdNamedDefine: true,
       },
     },
     fin_video_messages: {
-      import: path.resolve(__dirname, "src/pages/apps/videomessages/index.js"),
+      import: path.resolve(__dirname, 'src/pages/apps/videomessages/index.js'),
       library: {
-        name: "fin_video_messages",
-        type: "umd",
+        name: 'fin_video_messages',
+        type: 'umd',
         umdNamedDefine: true,
       },
     },
     advisor_logo: {
-      import: path.resolve(__dirname, "src/logo/index.js"),
+      import: path.resolve(__dirname, 'src/logo/index.js'),
       library: {
-        name: "advisor_logo",
-        type: "umd",
+        name: 'advisor_logo',
+        type: 'umd',
         umdNamedDefine: true,
       },
     },
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "[name].js",
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
   },
   module: {
     rules: [
       {
         test: /\.(js)$/,
         exclude: /node_modules/,
-        use: "babel-loader",
+        use: 'babel-loader',
       },
       {
         test: /\.svg$/,
-        loader: "svg-inline-loader",
+        loader: 'svg-inline-loader',
       },
       {
         test: /\.vue$/,
-        loader: "vue-loader",
+        loader: 'vue-loader',
       },
       {
         test: /\.css$/,
-        use: ["vue-style-loader", "css-loader", "postcss-loader"],
+        use: ['vue-style-loader', 'css-loader', 'postcss-loader'],
       },
     ],
   },
   plugins: [new CleanWebpackPlugin(), new VueLoaderPlugin()],
-  mode: "production",
+  mode: 'production',
   optimization: {
     minimize: isProduction,
     minimizer: isProduction
@@ -78,4 +78,4 @@ module.exports = {
         ]
       : [],
   },
-};
+}

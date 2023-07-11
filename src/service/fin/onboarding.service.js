@@ -1,56 +1,71 @@
 const Service = require("../Service");
-const { isEmpty } = require("../../utils");
+const {isEmpty} = require("../../utils");
 
 const getPublicFeatures = async (USER_ID) => {
-  const endpoint = `getPublicPlanFeatures/${USER_ID}`;
-  const publicFeatures = new Service(endpoint);
-  return await new Promise((resolve, reject) => {
-    publicFeatures.find().then(
-      (response) => {
-        resolve(publicFeatures.parseResponse(response));
-      },
-      (error) => {
-        reject(error);
-      }
-    );
-  });
+    const endpoint = `getPublicPlanFeatures/${USER_ID}`;
+    const publicFeatures = new Service(endpoint);
+    return await new Promise((resolve, reject) => {
+        publicFeatures.find().then(
+            (response) => {
+                resolve(publicFeatures.parseResponse(response));
+            },
+            (error) => {
+                reject(error);
+            }
+        );
+    });
 };
 
 const getUser = async (USER_URL, COMPANY_URL) => {
-  const endpoint = !isEmpty(COMPANY_URL)
-    ? `/getCompany/name/${COMPANY_URL}/${USER_URL}`
-    : "/getUserByUrl/" + USER_URL;
+    const endpoint = !isEmpty(COMPANY_URL)
+        ? `/getCompany/name/${COMPANY_URL}/${USER_URL}`
+        : "/getUserByUrl/" + USER_URL;
 
-  const user = new Service(endpoint);
-  return await new Promise((resolve, reject) => {
-    user.find().then(
-      (response) => {
-        resolve(user.parseResponse(response));
-      },
-      (error) => {
-        reject(error);
-      }
-    );
-  });
+    const user = new Service(endpoint);
+    return await new Promise((resolve, reject) => {
+        user.find().then(
+            (response) => {
+                resolve(user.parseResponse(response));
+            },
+            (error) => {
+                reject(error);
+            }
+        );
+    });
 };
+
+const getBrandPersonalization = async (USER_ID) => {
+    const endpoint = `brand_personalization/${USER_ID}`;
+    const brandPersonalization = new Service(endpoint);
+    return await new Promise((resolve, reject) => {
+        brandPersonalization.find().then(
+            (response) => {
+                resolve(brandPersonalization.parseResponse(response));
+            },
+            (error) => {
+                reject(error);
+            }
+        );
+    });
+}
 
 const getProspect = async (ADVISOR_ID, COMPANY_ID, EMAIL) => {
-  const endpoint = `company/${COMPANY_ID}/prospects`;
-  const prospect = new Service(endpoint);
-  prospect.equals("email", EMAIL);
-  prospect.equals("userId", ADVISOR_ID);
-  return await new Promise((resolve, reject) => {
-    prospect.find().then(
-      (response) => {
-        response.count === 0 || response.error
-          ? reject(response)
-          : resolve(prospect.parseResponse(response).first());
-      },
-      (error) => {
-        reject(error);
-      }
-    );
-  });
+    const endpoint = `company/${COMPANY_ID}/prospects`;
+    const prospect = new Service(endpoint);
+    prospect.equals("email", EMAIL);
+    prospect.equals("userId", ADVISOR_ID);
+    return await new Promise((resolve, reject) => {
+        prospect.find().then(
+            (response) => {
+                response.count === 0 || response.error
+                    ? reject(response)
+                    : resolve(prospect.parseResponse(response).first());
+            },
+            (error) => {
+                reject(error);
+            }
+        );
+    });
 };
 
-export { getUser, getProspect, getPublicFeatures };
+export {getUser, getProspect, getPublicFeatures, getBrandPersonalization};
