@@ -280,7 +280,7 @@ const handleBrandLogo = (color = '#4417c7') => {
   let brand = cookies.get('BRAND')
   brand = brand && JSON.parse(brand)
 
-  if (!brand || !isDevEnvironment()) {
+  if (!brand) {
     initiateAdvisorLogo(cookies.get('REP_NAME'), color)
   } else {
     $('.main_logo').attr('src', brand.logo)
