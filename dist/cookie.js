@@ -287,7 +287,9 @@ const initiateAdvisorLogo = function (name, bg = '#4417c7') {
 const handleBrandLogo = (color = '#4417c7') => {
   let brand = cookies.get('BRAND');
   brand = brand && JSON.parse(brand);
-  if (!brand || !isDevEnvironment()) {
+  console.log('brand', brand);
+  if (!brand) {
+    console.log('brand not found');
     initiateAdvisorLogo(cookies.get('REP_NAME'), color);
   } else {
     $('.main_logo').attr('src', brand.logo);
