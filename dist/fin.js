@@ -18002,7 +18002,7 @@ module.exports = initAppointment;
 /***/ 3756:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-let USER_URL = "",
+let USER_URL = '',
   IS_CANADIAN_LINK = false,
   COMPANY_URL = null,
   COMPANY_ID = null,
@@ -18010,7 +18010,7 @@ let USER_URL = "",
 const {
   cookies,
   url,
-  initiateAdvisorLogo
+  handleBrandLogo
 } = __webpack_require__(8903);
 const {
   getUser,
@@ -18024,12 +18024,12 @@ const {
 const redirectContinuer = async function () {
   try {
     const prospect = await getProspect();
-    $(".main_start_div").addClass("show");
+    $('.main_start_div').addClass('show');
     if (prospect) {
       onBoarding.prospect.setCookies(prospect);
       onBoarding.prospect.handleRedirect();
     } else {
-      window.location.href = "/404";
+      window.location.href = '/404';
     }
   } catch (e) {
     console.log(e);
@@ -18042,30 +18042,30 @@ async function fetchAdvisor() {
   try {
     const advisor = await getUser(USER_URL, COMPANY_URL);
     COMPANY_ID = advisor.company_id;
-    IS_CANADIAN_LINK = advisor.address && advisor.address.country === "Canada";
+    IS_CANADIAN_LINK = advisor.address && advisor.address.country === 'Canada';
     try {
       const publicFeatures = await getPublicFeatures(advisor.userId);
-      cookies.set("publicFeatures", JSON.stringify(publicFeatures));
+      cookies.set('publicFeatures', JSON.stringify(publicFeatures));
       if (!publicFeatures.FIN) {
-        alert("This advisor is not using FIN");
-        window.location.href = "/404";
+        alert('This advisor is not using FIN');
+        window.location.href = '/404';
       }
     } catch (e) {
       console.log(e);
     }
     onBoarding.advisor.setCookies(advisor, IS_OLD_LINK);
-    if (cookies.get("isRyanSemons") !== "true" && cookies.get("EMAIL") !== "info@fintell.ai") {
-      initiateAdvisorLogo(`${advisor.firstName.trim()} ${advisor.lastName.trim()}`);
-    }
     initFINVideo();
     try {
       const brand = await getBrandPersonalization(advisor.userId);
-      console.log("brand -->> ", brand);
+      if (brand) {
+        cookies.set('BRAND', JSON.stringify(brand));
+        handleBrandLogo();
+      }
     } catch (e) {
       console.log(e);
     }
   } catch (e) {
-    window.location.href = "/404";
+    window.location.href = '/404';
     console.log(e);
   }
 }
@@ -18073,26 +18073,26 @@ function _FetchAdvisor(user, company = null) {
   USER_URL = user;
   COMPANY_URL = company;
   fetchAdvisor().then(() => {
-    console.log("fetchAdvisor");
+    console.log('fetchAdvisor');
   });
 }
 async function init() {
   // read query string from url
-  USER_URL = url.query.get("id") || url.query.get("user");
-  COMPANY_URL = url.query.get("company");
+  USER_URL = url.query.get('id') || url.query.get('user');
+  COMPANY_URL = url.query.get('company');
   IS_OLD_LINK = COMPANY_URL || false;
 
   // set is old url or not in cookies to support old fin links
-  cookies.set("isOldUrl", IS_OLD_LINK);
+  cookies.set('isOldUrl', IS_OLD_LINK);
 
   // set start over url
-  cookies.set("START_OVER_URL", window.location.href);
-  cookies.set("INITIAL_LINK", window.location.href);
-  $("#start_over").attr("href", window.location.href);
+  cookies.set('START_OVER_URL', window.location.href);
+  cookies.set('INITIAL_LINK', window.location.href);
+  $('#start_over').attr('href', window.location.href);
   await fetchAdvisor();
 
   // check for continue url
-  if (USER_URL && url.query.get("prospectEmail")) {
+  if (USER_URL && url.query.get('prospectEmail')) {
     await redirectContinuer();
   }
 }
@@ -18480,14 +18480,14 @@ module.exports = questionsPageInit;
 
 const {
   cookies,
-  initiateAdvisorLogo
+  handleBrandLogo
 } = __webpack_require__(8903);
 const {
   routeUtils
 } = __webpack_require__(4395);
-console.log(routeUtils, "utils");
+console.log(routeUtils, 'utils');
 class RoutePage {
-  constructor(COMPANY_ID, PROSPECT_ID, USER_NAME, FIN_NUMBER, ROUTE_SELECTION = "", FIRST_NAME = "") {
+  constructor(COMPANY_ID, PROSPECT_ID, USER_NAME, FIN_NUMBER, ROUTE_SELECTION = '', FIRST_NAME = '') {
     this.route_selection = ROUTE_SELECTION;
     this.user_name = USER_NAME;
     this.fin_number = FIN_NUMBER;
@@ -18506,10 +18506,10 @@ class RoutePage {
   }
 }
 function init() {
-  const page = new RoutePage(cookies.get("COMPANY_ID"), cookies.get("PROSPECT_ID"), cookies.get("Name"), cookies.get("FIN Number"), cookies.get("FIRST_NAME"));
+  const page = new RoutePage(cookies.get('COMPANY_ID'), cookies.get('PROSPECT_ID'), cookies.get('Name'), cookies.get('FIN Number'), cookies.get('FIRST_NAME'));
   page.setPath();
   page.handlePathSelection();
-  initiateAdvisorLogo(cookies.get("REP_NAME"));
+  handleBrandLogo();
 }
 module.exports = {
   init
@@ -19297,6 +19297,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getBaseUrl: () => (/* binding */ getBaseUrl),
 /* harmony export */   getUrlParameter: () => (/* binding */ getUrlParameter),
 /* harmony export */   getVideoBaseUrl: () => (/* binding */ getVideoBaseUrl),
+/* harmony export */   handleBrandLogo: () => (/* binding */ handleBrandLogo),
 /* harmony export */   handleBrokerCheckLinkAndDisclosure: () => (/* binding */ handleBrokerCheckLinkAndDisclosure),
 /* harmony export */   initiateAdvisorLogo: () => (/* binding */ initiateAdvisorLogo),
 /* harmony export */   isAppointmentPage: () => (/* binding */ isAppointmentPage),
@@ -19344,27 +19345,27 @@ class BasePage {
   }
 }
 const isOnBoardingPage = () => {
-  return window.location.pathname.startsWith("/en");
+  return window.location.pathname.startsWith('/en');
 };
 const isRouteSelectedPage = () => {
   const path = window.location.pathname;
-  return path.startsWith("/route") && !path.includes("make-more-money") && !path.includes("manage-money-better") && !path.includes("both");
+  return path.startsWith('/route') && !path.includes('make-more-money') && !path.includes('manage-money-better') && !path.includes('both');
 };
 const isResultPage = () => {
   const path = window.location.pathname;
-  return path.startsWith("/result");
+  return path.startsWith('/result');
 };
 const isQuestionPage = () => {
   const path = window.location.pathname;
-  return path.startsWith("/questions");
+  return path.startsWith('/questions');
 };
 const isRouteQuestionPage = checkisVideo => {
   const path = window.location.pathname;
-  const baseCondition = path.startsWith("/route") && (path.includes("make-more-money") || path.includes("manage-money-better") || path.includes("both"));
+  const baseCondition = path.startsWith('/route') && (path.includes('make-more-money') || path.includes('manage-money-better') || path.includes('both'));
   if (checkisVideo) {
-    return baseCondition && path.includes("/video") && checkisVideo;
+    return baseCondition && path.includes('/video') && checkisVideo;
   } else {
-    return baseCondition && !path.includes("/video");
+    return baseCondition && !path.includes('/video');
   }
 };
 const getUrlParameter = name => {
@@ -19385,7 +19386,7 @@ const cookies = {
     if (r != null) return decodeURIComponent(r[2]);
     return null;
   },
-  set: (name, value, expires, path = "/", domain, secure) => {
+  set: (name, value, expires, path = '/', domain, secure) => {
     let cookie = `${name}=${value}`;
     if (expires) {
       cookie += `; expires=${expires}`;
@@ -19402,7 +19403,7 @@ const cookies = {
     document.cookie = cookie;
   },
   unset: (name, path, domain, secure) => {
-    undefined.set(name, "", new Date(0), path, domain, secure);
+    undefined.set(name, '', new Date(0), path, domain, secure);
   },
   setMultiple: array => {
     array.forEach(({
@@ -19424,108 +19425,120 @@ const isMobile = () => {
 };
 //formarans
 const formatAnswers = list => list.map((question, index) => ({
-  [`ques_${index + 1}`]: `${question.question} * ${question.answer.join(" * ")}`
+  [`ques_${index + 1}`]: `${question.question} * ${question.answer.join(' * ')}`
 })).reduce((acc, curr) => ({
   ...acc,
   ...curr
 }));
 const isEmpty = value => {
-  if (value === "false") return true;
-  if (value === "null") return true;
+  if (value === 'false') return true;
+  if (value === 'null') return true;
   if (value === null || value === undefined) return true;
-  if (typeof value === "string" && value.trim() === "") return true;
-  return typeof value === "object" && Object.keys(value).length === 0;
+  if (typeof value === 'string' && value.trim() === '') return true;
+  return typeof value === 'object' && Object.keys(value).length === 0;
 };
 const getVideoBaseUrl = () => {
-  if (window.location.host === "devvideo.discoverfin.io" || window.location.host === "dev.discoverfin.io") {
-    return "https://devvideo.discoverfin.io/";
-  } else if (window.location.host === "staging.discoverfin.io" || window.location.host === "dev.discoverfin.io") {
-    return "https://stagingvideo.discoverfin.io/";
-  } else if (window.location.host === "discoverfin.io" || window.location.host === "dev.discoverfin.io") {
-    return "https://video.discoverfin.io/";
-  } else if (window.location.host === "qa.discoverfin.io" || window.location.host === "dev.discoverfin.io") {
-    return "https://qavideo.discoverfin.io/";
+  if (window.location.host === 'devvideo.discoverfin.io' || window.location.host === 'dev.discoverfin.io') {
+    return 'https://devvideo.discoverfin.io/';
+  } else if (window.location.host === 'staging.discoverfin.io' || window.location.host === 'dev.discoverfin.io') {
+    return 'https://stagingvideo.discoverfin.io/';
+  } else if (window.location.host === 'discoverfin.io' || window.location.host === 'dev.discoverfin.io') {
+    return 'https://video.discoverfin.io/';
+  } else if (window.location.host === 'qa.discoverfin.io' || window.location.host === 'dev.discoverfin.io') {
+    return 'https://qavideo.discoverfin.io/';
   }
 };
 const getBaseUrl = () => {
-  if (window.location.host === "dev.discoverfin.io" || window.location.host === "devvideo.discoverfin.io") {
-    return "https://dev.discoverfin.io/";
-  } else if (window.location.host === "staging.discoverfin.io" || window.location.host === "devvideo.discoverfin.io") {
-    return "https://staging.discoverfin.io/";
-  } else if (window.location.host === "discoverfin.io" || window.location.host === "devvideo.discoverfin.io") {
-    return "https://discoverfin.io/";
-  } else if (window.location.host === "qa.discoverfin.io" || window.location.host === "devvideo.discoverfin.io") {
-    return "https://qa.discoverfin.io/";
+  if (window.location.host === 'dev.discoverfin.io' || window.location.host === 'devvideo.discoverfin.io') {
+    return 'https://dev.discoverfin.io/';
+  } else if (window.location.host === 'staging.discoverfin.io' || window.location.host === 'devvideo.discoverfin.io') {
+    return 'https://staging.discoverfin.io/';
+  } else if (window.location.host === 'discoverfin.io' || window.location.host === 'devvideo.discoverfin.io') {
+    return 'https://discoverfin.io/';
+  } else if (window.location.host === 'qa.discoverfin.io' || window.location.host === 'devvideo.discoverfin.io') {
+    return 'https://qa.discoverfin.io/';
   }
 };
 function finBaseUrl(user, company, type, start) {
   return company ? `${eval(type)(user, company)}${start}?company=${company}&user=${user}` : `${eval(type)(user, company)}${start}?id=${user}`;
 }
 const videoLink = (user, company, type, videoName) => {
-  const url = finBaseUrl(user, company, type, "video_type");
+  const url = finBaseUrl(user, company, type, 'video_type');
   return url.replace(`video_type`, videoName);
 };
 const finBusinessVideoAppLink = (user, company) => {
-  return videoLink(user, company, "getVideoBaseUrl", "businessOverview");
+  return videoLink(user, company, 'getVideoBaseUrl', 'businessOverview');
 };
 const finFinancialSuccessVideoAppLink = (user, company) => {
-  return videoLink(user, company, "getVideoBaseUrl", "financialHouse");
+  return videoLink(user, company, 'getVideoBaseUrl', 'financialHouse');
 };
 const isAppointmentPage = () => {
-  return window.location.pathname.startsWith("/appointment");
+  return window.location.pathname.startsWith('/appointment');
 };
 const isEmail = email => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 };
 const toDollar = value => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
     maximumFractionDigits: 0
   }).format(value);
 };
 const toCurrencyWithoutDollar = value => {
-  return toDollar(value).replace("$", "");
+  return toDollar(value).replace('$', '');
 };
 const isDevEnvironment = () => {
-  return window.location.host === "dev.discoverfin.io" || window.location.host === "devvideo.discoverfin.io";
+  return window.location.host === 'dev.discoverfin.io' || window.location.host === 'devvideo.discoverfin.io';
 };
 const handleBrokerCheckLinkAndDisclosure = user => {
-  console.log("im being called", new Date().toLocaleDateString());
+  console.log('im being called', new Date().toLocaleDateString());
   const broker_check_link = user.brokerCheckLink;
   const disclosure_text = user.companyDisclosure;
   console.log(broker_check_link, disclosure_text);
   console.log(isEmpty(broker_check_link));
   console.log(isEmpty(disclosure_text));
-  const broker_check_elem = $("#broker-check");
-  const broker_check_text = $("#broker-check-text");
-  const disclosure_elem = $("#disclosure");
+  const broker_check_elem = $('#broker-check');
+  const broker_check_text = $('#broker-check-text');
+  const disclosure_elem = $('#disclosure');
   if (!isEmpty(broker_check_link) || !isEmpty(disclosure_text)) {
-    $("#disc-wrapper").removeClass("hide");
+    $('#disc-wrapper').removeClass('hide');
     if (!isEmpty(broker_check_link)) {
       broker_check_text.text(`${user.name}'s FINRA Broker Check`);
-      broker_check_elem.attr("href", broker_check_link);
-      broker_check_elem.attr("target", "_blank");
+      broker_check_elem.attr('href', broker_check_link);
+      broker_check_elem.attr('target', '_blank');
       if (!isMobile()) {
-        broker_check_elem.css("display", "block");
+        broker_check_elem.css('display', 'block');
       }
     } else {
-      broker_check_elem.css("display", "none");
+      broker_check_elem.css('display', 'none');
     }
     if (!isEmpty(disclosure_text)) {
       disclosure_elem.text(disclosure_text);
-      disclosure_elem.css("display", "block");
+      disclosure_elem.css('display', 'block');
     } else {
-      disclosure_elem.css("display", "none");
+      disclosure_elem.css('display', 'none');
     }
   } else {
-    $("#disc-wrapper").addClass("hide");
+    $('#disc-wrapper').addClass('hide');
   }
 };
-const initiateAdvisorLogo = function (name, bg = "#4417c7") {
-  const logo = new _logo__WEBPACK_IMPORTED_MODULE_0__.Logo("#logo-container", name, bg, "#fff", false);
+const initiateAdvisorLogo = function (name, bg = '#4417c7') {
+  const logo = new _logo__WEBPACK_IMPORTED_MODULE_0__.Logo('#logo-container', name, bg, '#fff', false);
   logo.__init__();
+};
+const handleBrandLogo = (color = '#4417c7') => {
+  let brand = cookies.get('BRAND');
+  brand = brand && JSON.parse(brand);
+  if (!brand || !isDevEnvironment()) {
+    initiateAdvisorLogo(cookies.get('REP_NAME'), color);
+  } else {
+    $('.main_logo').attr('src', brand.logo);
+    $('.main_logo').css('width', '200px');
+    $('#logo-container').html(`<img width='200px' src='${brand.logo}' />`);
+    $('.logo-container').html(`<img width='200px' src='${brand.logo}' />`);
+  }
 };
 
 
@@ -20857,18 +20870,10 @@ var utils = __webpack_require__(8903);
 
 function resultInit() {
   __webpack_require__(4359);
-  if (utils.cookies.get("isRyanSemons") !== "true" && utils.cookies.get("EMAIL") !== "info@fintell.ai") {
-    (0,utils.initiateAdvisorLogo)(utils.cookies.get("REP_NAME"));
-  } else if (utils.cookies.get("EMAIL") !== "info@fintell.ai") {
-    $(".logo-container").html("<img width='180px' src='https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493400b63c62651c3ba9ae5_clear_financial_vision.png' />");
-  } else if (utils.cookies.get("EMAIL") === "info@fintell.ai") {
-    $(".main_logo").attr("src", "https://app.wealthio.com/_nuxt/a138a4fc1e71dc5dda40cbcd66489af4.svg");
-    $(".main_logo").css("width", "200px");
-    $("#logo-container").html("<img width='200px' src='https://app.wealthio.com/_nuxt/a138a4fc1e71dc5dda40cbcd66489af4.svg' />");
-  }
-  $("#fin_number").html((0,utils.toDollar)(utils.cookies.get("FIN Number")));
-  $(".user_name").each(function () {
-    $(this).html(utils.cookies.get("Name"));
+  (0,utils.handleBrandLogo)();
+  $('#fin_number').html((0,utils.toDollar)(utils.cookies.get('FIN Number')));
+  $('.user_name').each(function () {
+    $(this).html(utils.cookies.get('Name'));
   });
 }
 // EXTERNAL MODULE: ./src/pages/apps/fin/questions.js
@@ -21170,7 +21175,7 @@ function InitRouteQuestions() {
     // make header sticky for this screen only
     document.querySelector(".header").style.position = "sticky";
   }
-  (0,utils.initiateAdvisorLogo)(utils.cookies.get("REP_NAME"));
+  (0,utils.handleBrandLogo)();
   createApp({
     data() {
       return {
@@ -21462,7 +21467,7 @@ function initFinalStep() {
     PROSPECT_EMAIL: ""
   });
   page.APPOINTMENT_LINK = !(0,utils.isEmpty)(page.IS_OLD_LINK) ? `https://${window.location.host}/appointment?id=${page.URL_USER}` : `https://${window.location.host}/appointment?id=${page.URL_USER}`;
-  (0,utils.initiateAdvisorLogo)(utils.cookies.get("REP_NAME"), !(0,utils.isMobile)() ? "#4417c7" : "#320ba7");
+  (0,utils.handleBrandLogo)(!(0,utils.isMobile)() ? "#4417c7" : "#320ba7");
   const IS_CANADIAN = utils.cookies.get("isCanadian");
   if (IS_CANADIAN && JSON.parse(IS_CANADIAN)) {
     const replaceSpanEl = $("#replace-me");
@@ -21726,44 +21731,44 @@ var main = __webpack_require__(5682);
     (0,videomessages.init)();
   } else if ((0,utils.isAppointmentPage)()) {
     await appointment_default()().then(r => {
-      console.log("");
+      console.log('');
     });
   }
-  if (utils.cookies.get("isRyanSemons") === "true") {
-    const primaryColor = "#2A4246";
-    const secondaryColor = "#84C0B8";
+  if (utils.cookies.get('isRyanSemons') === 'true') {
+    const primaryColor = '#2A4246';
+    const secondaryColor = '#84C0B8';
     [{
       color: primaryColor,
-      selectors: [$(".body"), $(".header"), $(".bottom_container"), $(".options_container"), $(".guess_container"), $(".email_container"), $(".calculating_loader"), $(".headsup_container"), $(".question"), $(".headsup_1"), $(".buttons_headsup"), $(".navbar.result"), $(".language-section")]
+      selectors: [$('.body'), $('.header'), $('.bottom_container'), $('.options_container'), $('.guess_container'), $('.email_container'), $('.calculating_loader'), $('.headsup_container'), $('.question'), $('.headsup_1'), $('.buttons_headsup'), $('.navbar.result'), $('.language-section')]
     }, {
       color: secondaryColor,
-      selectors: [$(".cta_btn"), $(".button_active"), $(".guess_option.active"), $(".help_text"), $(".green"), $(".button")]
+      selectors: [$('.cta_btn'), $('.button_active'), $('.guess_option.active'), $('.help_text'), $('.green'), $('.button')]
     }].forEach(obj => {
       obj.selectors.forEach(el => {
-        el.css("background-color", obj.color);
+        el.css('background-color', obj.color);
       });
     });
-    [$(".options_popup.step_3, .options_popup.step_5"), $(".guess_game"), $(".email_form")].forEach(el => {
-      el.css("background-color", "rgb(132 192 184 / 90%)");
+    [$('.options_popup.step_3, .options_popup.step_5'), $('.guess_game'), $('.email_form')].forEach(el => {
+      el.css('background-color', 'rgb(132 192 184 / 90%)');
     });
-    $(".bottom_container").css("background-image", "none");
-    $(".route > .bottom").css("background-image", "url(https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/64932caf87fa9e07937db8c7_bg_routes.svg)");
-    $(".image-11").attr("src", "https://finpath.ai/assets/anna.70ddd921.gif");
-    $(".image_3").attr("src", "https://finpath.ai/assets/anna.70ddd921.gif");
-    $(".cake > .image_3").attr("src", "https://discoverfin.s3.amazonaws.com/assets/output-onlinegiftools.gif");
+    $('.bottom_container').css('background-image', 'none');
+    $('.route > .bottom').css('background-image', 'url(https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/64932caf87fa9e07937db8c7_bg_routes.svg)');
+    $('.image-11').attr('src', 'https://finpath.ai/assets/anna.70ddd921.gif');
+    $('.image_3').attr('src', 'https://finpath.ai/assets/anna.70ddd921.gif');
+    $('.cake > .image_3').attr('src', 'https://discoverfin.s3.amazonaws.com/assets/output-onlinegiftools.gif');
     // set .text-field::placeholder color
     // $(".text-field").css("");
-    $(".button_arrow").css("background-color", "rgba(255, 255, 255, .1)");
-    $(".show-btn > a").attr("href", "https://myapp.wealthio.com/finrya20gq");
-    $(".main_logo").attr("src", "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493400b63c62651c3ba9ae5_clear_financial_vision.png");
-    $(".main_logo").css("width", "150px");
-    $("#logo-container").html("<img width='180px' src='https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493400b63c62651c3ba9ae5_clear_financial_vision.png' />");
-    $(".text-block-9").css("color", "#ffffff50");
-    $(".arrow > .image-5:nth-child(2)").attr("src", "https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/5f2b119ee036c022ae3c3c72_Vector%2022.svg");
-    $(".header").css("background-color", "transparent");
+    $('.button_arrow').css('background-color', 'rgba(255, 255, 255, .1)');
+    $('.show-btn > a').attr('href', 'https://myapp.wealthio.com/finrya20gq');
+    $('.main_logo').attr('src', 'https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493400b63c62651c3ba9ae5_clear_financial_vision.png');
+    $('.main_logo').css('width', '150px');
+    $('#logo-container').html("<img width='180px' src='https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/6493400b63c62651c3ba9ae5_clear_financial_vision.png' />");
+    $('.text-block-9').css('color', '#ffffff50');
+    $('.arrow > .image-5:nth-child(2)').attr('src', 'https://uploads-ssl.webflow.com/5f2b119ee036c0684f3c3c36/5f2b119ee036c022ae3c3c72_Vector%2022.svg');
+    $('.header').css('background-color', 'transparent');
 
     // append to head style tag
-    $("head").append(`
+    $('head').append(`
       <style>
       .text-field::placeholder {
         color: #ffffff50;
@@ -21771,12 +21776,9 @@ var main = __webpack_require__(5682);
       }
       </style>
       `);
-    $(".email_form").css("background-color", "rgb(132 192 184 / 90%)");
-  }
-  if (utils.cookies.get("EMAIL") === "info@fintell.ai") {
-    $(".main_logo").attr("src", "https://app.wealthio.com/_nuxt/a138a4fc1e71dc5dda40cbcd66489af4.svg");
-    $(".main_logo").css("width", "200px");
-    $("#logo-container").html("<img width='200px' src='https://app.wealthio.com/_nuxt/a138a4fc1e71dc5dda40cbcd66489af4.svg' />");
+    $('.email_form').css('background-color', 'rgb(132 192 184 / 90%)');
+  } else {
+    (0,utils.handleBrandLogo)();
   }
 })();
 })();

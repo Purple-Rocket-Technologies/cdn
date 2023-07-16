@@ -2406,6 +2406,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getBaseUrl: () => (/* binding */ getBaseUrl),
 /* harmony export */   getUrlParameter: () => (/* binding */ getUrlParameter),
 /* harmony export */   getVideoBaseUrl: () => (/* binding */ getVideoBaseUrl),
+/* harmony export */   handleBrandLogo: () => (/* binding */ handleBrandLogo),
 /* harmony export */   handleBrokerCheckLinkAndDisclosure: () => (/* binding */ handleBrokerCheckLinkAndDisclosure),
 /* harmony export */   initiateAdvisorLogo: () => (/* binding */ initiateAdvisorLogo),
 /* harmony export */   isAppointmentPage: () => (/* binding */ isAppointmentPage),
@@ -2453,27 +2454,27 @@ class BasePage {
   }
 }
 const isOnBoardingPage = () => {
-  return window.location.pathname.startsWith("/en");
+  return window.location.pathname.startsWith('/en');
 };
 const isRouteSelectedPage = () => {
   const path = window.location.pathname;
-  return path.startsWith("/route") && !path.includes("make-more-money") && !path.includes("manage-money-better") && !path.includes("both");
+  return path.startsWith('/route') && !path.includes('make-more-money') && !path.includes('manage-money-better') && !path.includes('both');
 };
 const isResultPage = () => {
   const path = window.location.pathname;
-  return path.startsWith("/result");
+  return path.startsWith('/result');
 };
 const isQuestionPage = () => {
   const path = window.location.pathname;
-  return path.startsWith("/questions");
+  return path.startsWith('/questions');
 };
 const isRouteQuestionPage = checkisVideo => {
   const path = window.location.pathname;
-  const baseCondition = path.startsWith("/route") && (path.includes("make-more-money") || path.includes("manage-money-better") || path.includes("both"));
+  const baseCondition = path.startsWith('/route') && (path.includes('make-more-money') || path.includes('manage-money-better') || path.includes('both'));
   if (checkisVideo) {
-    return baseCondition && path.includes("/video") && checkisVideo;
+    return baseCondition && path.includes('/video') && checkisVideo;
   } else {
-    return baseCondition && !path.includes("/video");
+    return baseCondition && !path.includes('/video');
   }
 };
 const getUrlParameter = name => {
@@ -2494,7 +2495,7 @@ const cookies = {
     if (r != null) return decodeURIComponent(r[2]);
     return null;
   },
-  set: (name, value, expires, path = "/", domain, secure) => {
+  set: (name, value, expires, path = '/', domain, secure) => {
     let cookie = `${name}=${value}`;
     if (expires) {
       cookie += `; expires=${expires}`;
@@ -2511,7 +2512,7 @@ const cookies = {
     document.cookie = cookie;
   },
   unset: (name, path, domain, secure) => {
-    undefined.set(name, "", new Date(0), path, domain, secure);
+    undefined.set(name, '', new Date(0), path, domain, secure);
   },
   setMultiple: array => {
     array.forEach(({
@@ -2533,108 +2534,120 @@ const isMobile = () => {
 };
 //formarans
 const formatAnswers = list => list.map((question, index) => ({
-  [`ques_${index + 1}`]: `${question.question} * ${question.answer.join(" * ")}`
+  [`ques_${index + 1}`]: `${question.question} * ${question.answer.join(' * ')}`
 })).reduce((acc, curr) => ({
   ...acc,
   ...curr
 }));
 const isEmpty = value => {
-  if (value === "false") return true;
-  if (value === "null") return true;
+  if (value === 'false') return true;
+  if (value === 'null') return true;
   if (value === null || value === undefined) return true;
-  if (typeof value === "string" && value.trim() === "") return true;
-  return typeof value === "object" && Object.keys(value).length === 0;
+  if (typeof value === 'string' && value.trim() === '') return true;
+  return typeof value === 'object' && Object.keys(value).length === 0;
 };
 const getVideoBaseUrl = () => {
-  if (window.location.host === "devvideo.discoverfin.io" || window.location.host === "dev.discoverfin.io") {
-    return "https://devvideo.discoverfin.io/";
-  } else if (window.location.host === "staging.discoverfin.io" || window.location.host === "dev.discoverfin.io") {
-    return "https://stagingvideo.discoverfin.io/";
-  } else if (window.location.host === "discoverfin.io" || window.location.host === "dev.discoverfin.io") {
-    return "https://video.discoverfin.io/";
-  } else if (window.location.host === "qa.discoverfin.io" || window.location.host === "dev.discoverfin.io") {
-    return "https://qavideo.discoverfin.io/";
+  if (window.location.host === 'devvideo.discoverfin.io' || window.location.host === 'dev.discoverfin.io') {
+    return 'https://devvideo.discoverfin.io/';
+  } else if (window.location.host === 'staging.discoverfin.io' || window.location.host === 'dev.discoverfin.io') {
+    return 'https://stagingvideo.discoverfin.io/';
+  } else if (window.location.host === 'discoverfin.io' || window.location.host === 'dev.discoverfin.io') {
+    return 'https://video.discoverfin.io/';
+  } else if (window.location.host === 'qa.discoverfin.io' || window.location.host === 'dev.discoverfin.io') {
+    return 'https://qavideo.discoverfin.io/';
   }
 };
 const getBaseUrl = () => {
-  if (window.location.host === "dev.discoverfin.io" || window.location.host === "devvideo.discoverfin.io") {
-    return "https://dev.discoverfin.io/";
-  } else if (window.location.host === "staging.discoverfin.io" || window.location.host === "devvideo.discoverfin.io") {
-    return "https://staging.discoverfin.io/";
-  } else if (window.location.host === "discoverfin.io" || window.location.host === "devvideo.discoverfin.io") {
-    return "https://discoverfin.io/";
-  } else if (window.location.host === "qa.discoverfin.io" || window.location.host === "devvideo.discoverfin.io") {
-    return "https://qa.discoverfin.io/";
+  if (window.location.host === 'dev.discoverfin.io' || window.location.host === 'devvideo.discoverfin.io') {
+    return 'https://dev.discoverfin.io/';
+  } else if (window.location.host === 'staging.discoverfin.io' || window.location.host === 'devvideo.discoverfin.io') {
+    return 'https://staging.discoverfin.io/';
+  } else if (window.location.host === 'discoverfin.io' || window.location.host === 'devvideo.discoverfin.io') {
+    return 'https://discoverfin.io/';
+  } else if (window.location.host === 'qa.discoverfin.io' || window.location.host === 'devvideo.discoverfin.io') {
+    return 'https://qa.discoverfin.io/';
   }
 };
 function finBaseUrl(user, company, type, start) {
   return company ? `${eval(type)(user, company)}${start}?company=${company}&user=${user}` : `${eval(type)(user, company)}${start}?id=${user}`;
 }
 const videoLink = (user, company, type, videoName) => {
-  const url = finBaseUrl(user, company, type, "video_type");
+  const url = finBaseUrl(user, company, type, 'video_type');
   return url.replace(`video_type`, videoName);
 };
 const finBusinessVideoAppLink = (user, company) => {
-  return videoLink(user, company, "getVideoBaseUrl", "businessOverview");
+  return videoLink(user, company, 'getVideoBaseUrl', 'businessOverview');
 };
 const finFinancialSuccessVideoAppLink = (user, company) => {
-  return videoLink(user, company, "getVideoBaseUrl", "financialHouse");
+  return videoLink(user, company, 'getVideoBaseUrl', 'financialHouse');
 };
 const isAppointmentPage = () => {
-  return window.location.pathname.startsWith("/appointment");
+  return window.location.pathname.startsWith('/appointment');
 };
 const isEmail = email => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 };
 const toDollar = value => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
     maximumFractionDigits: 0
   }).format(value);
 };
 const toCurrencyWithoutDollar = value => {
-  return toDollar(value).replace("$", "");
+  return toDollar(value).replace('$', '');
 };
 const isDevEnvironment = () => {
-  return window.location.host === "dev.discoverfin.io" || window.location.host === "devvideo.discoverfin.io";
+  return window.location.host === 'dev.discoverfin.io' || window.location.host === 'devvideo.discoverfin.io';
 };
 const handleBrokerCheckLinkAndDisclosure = user => {
-  console.log("im being called", new Date().toLocaleDateString());
+  console.log('im being called', new Date().toLocaleDateString());
   const broker_check_link = user.brokerCheckLink;
   const disclosure_text = user.companyDisclosure;
   console.log(broker_check_link, disclosure_text);
   console.log(isEmpty(broker_check_link));
   console.log(isEmpty(disclosure_text));
-  const broker_check_elem = $("#broker-check");
-  const broker_check_text = $("#broker-check-text");
-  const disclosure_elem = $("#disclosure");
+  const broker_check_elem = $('#broker-check');
+  const broker_check_text = $('#broker-check-text');
+  const disclosure_elem = $('#disclosure');
   if (!isEmpty(broker_check_link) || !isEmpty(disclosure_text)) {
-    $("#disc-wrapper").removeClass("hide");
+    $('#disc-wrapper').removeClass('hide');
     if (!isEmpty(broker_check_link)) {
       broker_check_text.text(`${user.name}'s FINRA Broker Check`);
-      broker_check_elem.attr("href", broker_check_link);
-      broker_check_elem.attr("target", "_blank");
+      broker_check_elem.attr('href', broker_check_link);
+      broker_check_elem.attr('target', '_blank');
       if (!isMobile()) {
-        broker_check_elem.css("display", "block");
+        broker_check_elem.css('display', 'block');
       }
     } else {
-      broker_check_elem.css("display", "none");
+      broker_check_elem.css('display', 'none');
     }
     if (!isEmpty(disclosure_text)) {
       disclosure_elem.text(disclosure_text);
-      disclosure_elem.css("display", "block");
+      disclosure_elem.css('display', 'block');
     } else {
-      disclosure_elem.css("display", "none");
+      disclosure_elem.css('display', 'none');
     }
   } else {
-    $("#disc-wrapper").addClass("hide");
+    $('#disc-wrapper').addClass('hide');
   }
 };
-const initiateAdvisorLogo = function (name, bg = "#4417c7") {
-  const logo = new _logo__WEBPACK_IMPORTED_MODULE_0__.Logo("#logo-container", name, bg, "#fff", false);
+const initiateAdvisorLogo = function (name, bg = '#4417c7') {
+  const logo = new _logo__WEBPACK_IMPORTED_MODULE_0__.Logo('#logo-container', name, bg, '#fff', false);
   logo.__init__();
+};
+const handleBrandLogo = (color = '#4417c7') => {
+  let brand = cookies.get('BRAND');
+  brand = brand && JSON.parse(brand);
+  if (!brand || !isDevEnvironment()) {
+    initiateAdvisorLogo(cookies.get('REP_NAME'), color);
+  } else {
+    $('.main_logo').attr('src', brand.logo);
+    $('.main_logo').css('width', '200px');
+    $('#logo-container').html(`<img width='200px' src='${brand.logo}' />`);
+    $('.logo-container').html(`<img width='200px' src='${brand.logo}' />`);
+  }
 };
 
 

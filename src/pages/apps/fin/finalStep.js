@@ -8,7 +8,7 @@ import {
   isMobile,
   getVideoBaseUrl,
   handleBrokerCheckLinkAndDisclosure,
-  initiateAdvisorLogo,
+  handleBrandLogo,
   // isDevEnvironment,
 } from "../../../utils";
 import Service from "../../../service/Service";
@@ -37,10 +37,7 @@ export default function initFinalStep() {
     ? `https://${window.location.host}/appointment?id=${page.URL_USER}`
     : `https://${window.location.host}/appointment?id=${page.URL_USER}`;
 
-  initiateAdvisorLogo(
-    cookies.get("REP_NAME"),
-    !isMobile() ? "#4417c7" : "#320ba7"
-  );
+  handleBrandLogo(!isMobile() ? "#4417c7" : "#320ba7");
 
   const IS_CANADIAN = cookies.get("isCanadian");
 

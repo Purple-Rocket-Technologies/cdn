@@ -9,7 +9,7 @@ import {
   formatAnswers,
   isMobile,
   cookies,
-  initiateAdvisorLogo,
+  handleBrandLogo,
 } from "../../../utils/index";
 
 export default function InitRouteQuestions() {
@@ -32,8 +32,7 @@ export default function InitRouteQuestions() {
     // make header sticky for this screen only
     document.querySelector(".header").style.position = "sticky";
   }
-
-  initiateAdvisorLogo(cookies.get("REP_NAME"));
+  handleBrandLogo();
 
   createApp({
     data() {
