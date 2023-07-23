@@ -18248,7 +18248,7 @@ function questionsPageInit() {
     element.selectors.forEach(selector => {
       selector.keyup(function () {
         var var_income = $(this).val().replace(/,/g, "").replace(/[^\d]/g, "");
-        if (var_income > 999) {
+        if (var_income > 99) {
           element.active.addClass("active");
           element.btn.addClass("go_ahead");
         } else {
