@@ -19790,6 +19790,7 @@ const routeUtils = {
 /***/ 4359:
 /***/ (() => {
 
+;
 (function () {
   'use strict';
 
@@ -19864,7 +19865,7 @@ const routeUtils = {
   function handlePercentage(filledInPixels) {
     filledInPixels = filledInPixels || 0;
     console.log(filledInPixels + '%');
-    if (filledInPixels > 40) {
+    if (filledInPixels > 20) {
       canvas.parentNode.removeChild(canvas);
       //$('.cntext').addClass('cntxt_visible');
       $('.body').addClass('result');
