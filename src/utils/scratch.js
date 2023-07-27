@@ -83,7 +83,8 @@
   function handlePercentage(filledInPixels) {
     filledInPixels = filledInPixels || 0
     console.log(filledInPixels + '%')
-    if (filledInPixels > 20) {
+    const isIOSorSafari = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)
+    if (filledInPixels > isIOSorSafari ? 40 : 4) {
       canvas.parentNode.removeChild(canvas)
       //$('.cntext').addClass('cntxt_visible');
       $('.body').addClass('result')
