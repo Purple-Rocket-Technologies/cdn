@@ -131,9 +131,7 @@ export function init(advisorName = "", tool = null) {
       );
     },
     methods: {
-      getVideoMessage(){
-        return getVideoMessage(tool);
-      },
+      getVideoMessage,
       handleFINPathButtons(fin_path_first_btn = false) {
         const fin_path_first_btnEL =
           document.querySelector(".fin-path-one-cta");
@@ -172,7 +170,7 @@ export function init(advisorName = "", tool = null) {
     async mounted() {
       const USER_URL =
         cookies.get("USER_ID") || localStorage.getItem("USER_ID");
-      this.videoMessages = await this.getVideoMessage(USER_URL);
+      this.videoMessages = await this.getVideoMessage(USER_URL, tool);
       const openFinPath = document.querySelectorAll(".open-video");
       const bg_pr_open_fin = document.querySelectorAll(
         ".open-video .bg-primary"
