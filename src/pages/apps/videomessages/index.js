@@ -4,7 +4,7 @@ import { cookies, isEmpty } from "../../../utils";
 import "../../../../src/styles/videomessages.css";
 import { isFinPath, isIPN } from "../../../utils/videomessage.utils";
 import VideoPlayer from "./videoComponent.vue";
-export function init(advisorName = "") {
+export function init(advisorName = "", tool = null) {
   createApp({
     data() {
       return {
@@ -130,9 +130,10 @@ export function init(advisorName = "") {
         ]
       );
     },
-
     methods: {
-      getVideoMessage,
+      getVideoMessage(){
+        return getVideoMessage(tool);
+      },
       handleFINPathButtons(fin_path_first_btn = false) {
         const fin_path_first_btnEL =
           document.querySelector(".fin-path-one-cta");
