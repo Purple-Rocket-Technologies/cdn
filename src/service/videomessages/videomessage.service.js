@@ -31,6 +31,7 @@ const getVideoMessage = function (user_id, tool = null) {
       value: user_id,
     },
   ]
+  console.log('getVideoMessage', tool)
   if (isFinPath()) {
     tool
       ? [tool]
