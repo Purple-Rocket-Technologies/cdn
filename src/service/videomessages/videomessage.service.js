@@ -2,6 +2,7 @@ import { isFinPath, isIPN } from '../../utils/videomessage.utils'
 import Service from '../Service'
 
 const getVideoMessage = function (user_id, tool = null) {
+  console.log('getVideoMessage', user_id, tool)
   const url = `getVideoMessagingForUserId`
   const service = new Service(url)
 
@@ -31,7 +32,6 @@ const getVideoMessage = function (user_id, tool = null) {
       value: user_id,
     },
   ]
-  console.log('getVideoMessage', tool)
   if (isFinPath()) {
     tool
       ? [tool]
