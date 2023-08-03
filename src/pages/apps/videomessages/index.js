@@ -168,8 +168,6 @@ export function init(advisorName = '', tool = null) {
     },
     async mounted() {
       const USER_URL = cookies.get('USER_ID') || localStorage.getItem('USER_ID')
-      console.log(USER_URL, 'USER_URL')
-      console.log(tool, 'getVideoMessage')
       this.videoMessages = await this.getVideoMessage(USER_URL, tool)
       const openFinPath = document.querySelectorAll('.open-video')
       const bg_pr_open_fin = document.querySelectorAll(
