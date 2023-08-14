@@ -61,61 +61,55 @@ export function init(advisorName = '', tool = null) {
                 'video-overlay': true,
                 'mx-center mt-12': !isFinPath() && !isIPN(),
               },
-              onmouseenter: () => (this.showOverLay = true),
-              onmouseleave: () => (this.showOverLay = false),
-              // ontouchstart:() => (this.showOverLay = true),
-              ontouchend: () => !this.showOverLay,
             },
             [
-              this.showOverLay
-                ? h(
-                    'div',
-                    {
-                      class:
-                        'd-flex video-overlay position-absolute justify-content-center align-items-center space-x-2',
-                    },
-                    [
-                      this.showPlayButton === 'paused'
-                        ? h('img', {
+              h(
+                'div',
+                {
+                  class:
+                    'd-flex video-overlay position-absolute justify-content-center align-items-center space-x-2',
+                },
+                [
+                  this.showPlayButton === 'paused'
+                    ? h('img', {
+                        onClick: () => {
+                          this.togglePlayback()
+                        },
+                        class:
+                          'pointer-cursor index100 bg-white video-controls-icons ',
+                        src: 'https://discoverfin.s3.amazonaws.com/assets/play.svg',
+                      })
+                    : null,
+                  this.showPlayButton === 'playing'
+                    ? h(
+                        'div',
+                        { class: 'd-flex align-item-center space-x-2' },
+                        [
+                          h('img', {
                             onClick: () => {
                               this.togglePlayback()
                             },
                             class:
-                              'pointer-cursor index100 bg-white video-controls-icons ',
-                            src: 'https://discoverfin.s3.amazonaws.com/assets/play.svg',
-                          })
-                        : null,
-                      this.showPlayButton === 'playing'
-                        ? h(
-                            'div',
-                            { class: 'd-flex align-item-center space-x-2' },
-                            [
-                              h('img', {
-                                onClick: () => {
-                                  this.togglePlayback()
-                                },
-                                class:
-                                  'pointer-cursor index100 video-controls-icons bg-white',
-                                src: 'https://discoverfin.s3.amazonaws.com/assets/pause.svg',
-                              }),
-                              h('img', {
-                                onClick: () => {
-                                  this.toggleAudio()
-                                },
-                                class:
-                                  'pointer-cursor index100 video-controls-icons bg-white',
-                                src: `https://discoverfin.s3.amazonaws.com/assets/${
-                                  !this.muted
-                                    ? 'speaker-high'
-                                    : 'speaker-simple-slash'
-                                }.svg`,
-                              }),
-                            ],
-                          )
-                        : null,
-                    ],
-                  )
-                : null,
+                              'pointer-cursor index100 video-controls-icons bg-white',
+                            src: 'https://discoverfin.s3.amazonaws.com/assets/pause.svg',
+                          }),
+                          h('img', {
+                            onClick: () => {
+                              this.toggleAudio()
+                            },
+                            class:
+                              'pointer-cursor index100 video-controls-icons bg-white',
+                            src: `https://discoverfin.s3.amazonaws.com/assets/${
+                              !this.muted
+                                ? 'speaker-high'
+                                : 'speaker-simple-slash'
+                            }.svg`,
+                          }),
+                        ],
+                      )
+                    : null,
+                ],
+              ),
               // h("video", {
               //   id: "video",
               //   class: "video-container",
