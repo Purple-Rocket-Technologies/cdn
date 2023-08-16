@@ -287,12 +287,12 @@ const handleBrandLogo = (color = '#4417c7') => {
     initiateAdvisorLogo(cookies.get('REP_NAME'), color)
   } else {
     $('.main_logo').attr('src', brand.logo)
-    $('.main_logo').css('width', `${isMobile() ? '130px' : '200px'}`)
+    $('.main_logo').css('width', `${isMobile() ? '130px' : '150px'}`)
     $('#logo-container').html(
-      `<img width='${isMobile() ? '130px' : '200px'}' src='${brand.logo}' />`,
+      `<img width='${isMobile() ? '130px' : '150px'}' src='${brand.logo}' />`,
     )
     $('.logo-container').html(
-      `<img width='${isMobile() ? '130px' : '200px'}' src='${brand.logo}' />`,
+      `<img width='${isMobile() ? '130px' : '150px'}' src='${brand.logo}' />`,
     )
   }
 }
