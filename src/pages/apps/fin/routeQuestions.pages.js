@@ -26,7 +26,7 @@ export default function InitRouteQuestions() {
 
   console.log("isCanadian", isCanadian);
 
-  const redirectTo = `${window.location.pathname}/video`;
+  const redirectTo = `${window.location.hostname}/schedule`;
 
   if (!isMobile()) {
     // make header sticky for this screen only

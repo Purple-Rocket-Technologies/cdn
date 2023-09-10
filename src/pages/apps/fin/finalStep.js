@@ -92,7 +92,8 @@ export default function initFinalStep() {
     });
   };
 
-  $("#aptmt_link").attr("href", page.APPOINTMENT_LINK);
+  $("#learn-more").attr("href", page.APPOINTMENT_LINK);
+  $("#learn-more").attr("target", "_blank");
 
   function handlePublicFeatures() {
     const publicFeatures =
