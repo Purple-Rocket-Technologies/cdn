@@ -73,6 +73,11 @@ const isRouteQuestionPage = (checkisVideo) => {
   }
 }
 
+const isFinalPage = () => {
+  const path = window.location.pathname
+  return path.startsWith('/schedule')
+}
+
 const getUrlParameter = (name) => {
   const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`)
   const r = window.location.search.substr(1).match(reg)
@@ -323,4 +328,5 @@ export {
   initiateAdvisorLogo,
   toCurrencyWithoutDollar,
   handleBrandLogo,
+  isFinalPage,
 }

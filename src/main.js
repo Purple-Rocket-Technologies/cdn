@@ -9,6 +9,7 @@ import {
   isRouteQuestionPage,
   isResultPage,
   isRouteSelectedPage,
+  isFinalPage,
   isQuestionPage,
   isAppointmentPage,
   cookies,
@@ -30,7 +31,7 @@ import './styles/main.css'
     questionsPageInit()
   } else if (isRouteQuestionPage(false)) {
     InitRouteQuestions()
-  } else if (isRouteQuestionPage(true)) {
+  } else if (isFinalPage()) {
     initFinalStep()
     init()
   } else if (isAppointmentPage()) {
