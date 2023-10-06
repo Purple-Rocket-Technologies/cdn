@@ -203,7 +203,9 @@ const onBoarding = {
         : false
 
       if (IS_EXPERIOR) {
-        $('.language-option.ca').toggle('hide')
+        const ca_lang_elem = $('.language-option.ca')
+        ca_lang_elem.toggle('hide')
+        ca_lang_elem.css('display', "flex");
         $('.language-flag.us').toggle('hide')
       }
 
