@@ -168,7 +168,7 @@ export default function InitRouteQuestions() {
               width: "100vw",
               zIndex: 999,
               height: isMobile() ? "6px" : "8px",
-              top: isMobile() ? "71px" : "80px",
+              top: isMobile() ? "71px" : "100px",
               position: "fixed",
             },
           },
