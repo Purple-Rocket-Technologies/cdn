@@ -293,11 +293,12 @@ const handleBrandLogo = (color = '#4417c7') => {
   } else {
     $('.main_logo').attr('src', brand.logo)
     $('.main_logo').css('width', `${isMobile() ? '130px' : '140px'}`)
+    $('.main_logo').css('height', '50px')
     $('#logo-container').html(
-      `<img width='${isMobile() ? '130px' : '140px'}' src='${brand.logo}' />`,
+      `<img width='${isMobile() ? '130px' : '140px'}' height="50px" src='${brand.logo}' />`,
     )
     $('.logo-container').html(
-      `<img width='${isMobile() ? '130px' : '140px'}' src='${brand.logo}' />`,
+      `<img width='${isMobile() ? '130px' : '140px'}' height="50px" src='${brand.logo}' />`,
     )
   }
 }

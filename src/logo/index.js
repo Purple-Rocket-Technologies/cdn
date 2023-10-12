@@ -1,63 +1,63 @@
-import { isEmpty } from "../utils/index";
-import "../styles/logo.css";
+import { isEmpty } from '../utils/index'
+import '../styles/logo.css'
 
 const sanitizeFullName = (name) => {
-  if (!name) return name;
-  name = name.trim();
+  if (!name) return name
+  name = name.trim()
   const name_array = name
-    .split(" ")
+    .split(' ')
     .map((e) => e.trim())
-    .filter((e) => !isEmpty(e));
+    .filter((e) => !isEmpty(e))
 
   if (name_array.length > 2) {
-    return `${name_array[0]} ${name_array[name_array.length - 1]}`;
+    return `${name_array[0]} ${name_array[name_array.length - 1]}`
   } else if (name_array.length <= 2) {
-    return name;
+    return name
   }
-};
+}
 
 const getNameInitials = (name) => {
   name = name
     .trim()
-    .split(" ")
+    .split(' ')
     .map((e) => e.trim())
     .filter((e) => !isEmpty(e))
-    .map((e) => e.charAt(0));
-  return `${name[0]}${name[name.length - 1]}`;
-};
+    .map((e) => e.charAt(0))
+  return `${name[0]}${name[name.length - 1]}`
+}
 
 export class Logo {
   constructor(selector, name, bgColor, textColor, circleOnly = true) {
-    this.name = name.toUpperCase();
-    this.bgColor = bgColor;
-    this.textColor = textColor;
-    this.circleOnly = circleOnly;
-    this.selector = selector;
+    this.name = name.toUpperCase()
+    this.bgColor = bgColor
+    this.textColor = textColor
+    this.circleOnly = circleOnly
+    this.selector = selector
   }
 
   __init__() {
-    const selectors = document.querySelectorAll(this.selector);
+    const selectors = document.querySelectorAll(this.selector)
     for (let i = 0; i < selectors.length; i++) {
-      const selector = selectors[i];
+      const selector = selectors[i]
       selector.innerHTML = `
       <div style="color: ${
         this.textColor
       }" class="d-flex items-center position-relative space-x-4">
               <div style="color: ${this.textColor}; border: 2px solid ${
-        this.textColor
-      }" class="d-flex items-center circle__x">
+                this.textColor
+              }" class="d-flex items-center circle__x">
                 <span>${getNameInitials(this.name)}</span>
                 <div style="background: ${this.bgColor}" class="strip__x"></div>
               </div>
              ${
                !this.circleOnly
                  ? `<span class="big__name">${sanitizeFullName(
-                     this.name
+                     this.name,
                    )}</span>`
-                 : ""
+                 : ''
              }
       </div>
-    `;
+    `
     }
   }
 }
