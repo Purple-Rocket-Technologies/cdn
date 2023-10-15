@@ -95,7 +95,7 @@ const cookies = {
   get: (name) => {
     const reg = new RegExp(`(^| )${name}=([^;]*)(;|$)`)
     const r = document.cookie.match(reg)
-    if (r != null) return decodeURIComponent(r[2])
+    if (r != null) return r[2]
     return null
   },
   set: (name, value, expires, path = '/', domain, secure) => {
@@ -295,10 +295,14 @@ const handleBrandLogo = (color = '#4417c7') => {
     $('.main_logo').css('width', `${isMobile() ? '130px' : '140px'}`)
     $('.main_logo').css('height', '50px')
     $('#logo-container').html(
-      `<img width='${isMobile() ? '130px' : '140px'}' height="50px" src='${brand.logo}' />`,
+      `<img width='${isMobile() ? '130px' : '140px'}' height="50px" src='${
+        brand.logo
+      }' />`,
     )
     $('.logo-container').html(
-      `<img width='${isMobile() ? '130px' : '140px'}' height="50px" src='${brand.logo}' />`,
+      `<img width='${isMobile() ? '130px' : '140px'}' height="50px" src='${
+        brand.logo
+      }' />`,
     )
   }
 }
