@@ -37,7 +37,7 @@ export function init(advisorName = '', tool = null) {
       return h(
         'div',
         {
-          class: ' text-center',
+          class: 'text-center',
         },
         [
           h(
@@ -61,53 +61,64 @@ export function init(advisorName = '', tool = null) {
                 'video-overlay': true,
                 'mx-center mt-12': !isFinPath() && !isIPN(),
               },
+              style: {
+                position: 'relative',
+              },
             },
             [
               h(
                 'div',
                 {
-                  class:
-                    'd-flex video-overlay position-absolute justify-content-center align-items-center space-x-2',
+                  style: {
+                    bottom: 0,
+                  },
+                  class: {
+                    'd-flex position-absolute justify-content-center align-items-center space-x-2': true,
+                  },
                 },
                 [
-                  this.showPlayButton === 'paused'
-                    ? h('img', {
+                  h('img', {
+                    onClick: () => {
+                      this.togglePlayback()
+                    },
+                    class: {
+                      'pointer-cursor index100 bg-white video-controls-icons ': true,
+                      'hidden--xs': this.showPlayButton !== 'paused',
+                    },
+                    src: 'https://discoverfin.s3.amazonaws.com/assets/play.svg',
+                  }),
+                  h(
+                    'div',
+                    {
+                      class: {
+                        'd-flex align-item-center space-x-2': true,
+                        'hidden--xs': this.showPlayButton === 'paused',
+                      },
+                      style: {
+                        padding: '0 2rem',
+                      },
+                    },
+                    [
+                      h('img', {
                         onClick: () => {
                           this.togglePlayback()
                         },
                         class:
-                          'pointer-cursor index100 bg-white video-controls-icons ',
-                        src: 'https://discoverfin.s3.amazonaws.com/assets/play.svg',
-                      })
-                    : null,
-                  this.showPlayButton === 'playing'
-                    ? h(
-                        'div',
-                        { class: 'd-flex align-item-center space-x-2' },
-                        [
-                          h('img', {
-                            onClick: () => {
-                              this.togglePlayback()
-                            },
-                            class:
-                              'pointer-cursor index100 video-controls-icons bg-white',
-                            src: 'https://discoverfin.s3.amazonaws.com/assets/pause.svg',
-                          }),
-                          h('img', {
-                            onClick: () => {
-                              this.toggleAudio()
-                            },
-                            class:
-                              'pointer-cursor index100 video-controls-icons bg-white',
-                            src: `https://discoverfin.s3.amazonaws.com/assets/${
-                              !this.muted
-                                ? 'speaker-high'
-                                : 'speaker-simple-slash'
-                            }.svg`,
-                          }),
-                        ],
-                      )
-                    : null,
+                          'pointer-cursor index100 video-controls-icons bg-white',
+                        src: 'https://discoverfin.s3.amazonaws.com/assets/pause.svg',
+                      }),
+                      h('img', {
+                        onClick: () => {
+                          this.toggleAudio()
+                        },
+                        class:
+                          'pointer-cursor index100 video-controls-icons bg-white',
+                        src: `https://discoverfin.s3.amazonaws.com/assets/${
+                          !this.muted ? 'speaker-high' : 'speaker-simple-slash'
+                        }.svg`,
+                      }),
+                    ],
+                  ),
                 ],
               ),
               // h("video", {
@@ -155,9 +166,6 @@ export function init(advisorName = '', tool = null) {
         const video = this.getVideoPlayer()
         video.muted = !video.muted
         this.muted = video.muted
-      },
-      showSettingsOverLay() {
-        this.showOverLay = !this.showOverLay
       },
     },
     async mounted() {

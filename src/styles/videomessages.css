@@ -5,8 +5,13 @@
   width: 250px;
   height: 250px;
 }
+.video-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .video-container {
-  border: 10px solid rgba(110, 89, 174, 0.5);
+  border: 6px solid rgba(110, 89, 174, 0.5);
 }
 .bg-white {
   background-color: white;
@@ -21,14 +26,14 @@
 }
 
 video::-webkit-media-controls {
-    display:none !important;
+  display: none !important;
 }
 
 .video-controls-icons {
   padding: 3px;
   border-radius: 8px;
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
 }
 
 .pointer-cursor {
@@ -83,6 +88,9 @@ video::-webkit-media-controls {
 }
 .m-0 {
   margin: 0;
+}
+.hidden--xs {
+  display: none !important;
 }
 @media screen and (max-width: 780px) {
   .video-description {
@@ -152,7 +160,6 @@ video::-webkit-media-controls {
   margin-left: auto !important;
   margin-right: auto !important;
 }
-
 
 @media screen and (max-width: 600px) {
   .video-message {
