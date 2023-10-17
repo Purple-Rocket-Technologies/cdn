@@ -61,6 +61,14 @@ export function init(advisorName = '', tool = null) {
                 'video-overlay': true,
                 'mx-center mt-12': !isFinPath() && !isIPN(),
               },
+              onMouseover: () => {
+                console.log('onMouseOver')
+                this.showOverLay = true
+              },
+              onMouseleave: () => {
+                console.log('onMouseLeave')
+                this.showOverLay = false
+              },
               style: {
                 position: 'relative',
               },
@@ -73,7 +81,7 @@ export function init(advisorName = '', tool = null) {
                     bottom: 0,
                   },
                   class: {
-                    'd-flex position-absolute justify-content-center align-items-center space-x-2': true,
+                    'd-flex video-overlay position-absolute justify-content-center align-items-center space-x-2': true,
                   },
                 },
                 [
@@ -87,48 +95,43 @@ export function init(advisorName = '', tool = null) {
                     },
                     src: 'https://discoverfin.s3.amazonaws.com/assets/play.svg',
                   }),
-                  h(
-                    'div',
-                    {
-                      class: {
-                        'd-flex align-item-center space-x-2': true,
-                        'hidden--xs': this.showPlayButton === 'paused',
-                      },
-                      style: {
-                        padding: '0 2rem',
-                      },
-                    },
-                    [
-                      h('img', {
-                        onClick: () => {
-                          this.togglePlayback()
+                  this.showOverLay && this.showPlayButton === 'playing'
+                    ? h(
+                        'div',
+                        {
+                          class: {
+                            'd-flex align-item-center space-x-2': true,
+                          },
+                          style: {
+                            padding: '0 2rem',
+                          },
                         },
-                        class:
-                          'pointer-cursor index100 video-controls-icons bg-white',
-                        src: 'https://discoverfin.s3.amazonaws.com/assets/pause.svg',
-                      }),
-                      h('img', {
-                        onClick: () => {
-                          this.toggleAudio()
-                        },
-                        class:
-                          'pointer-cursor index100 video-controls-icons bg-white',
-                        src: `https://discoverfin.s3.amazonaws.com/assets/${
-                          !this.muted ? 'speaker-high' : 'speaker-simple-slash'
-                        }.svg`,
-                      }),
-                    ],
-                  ),
+                        [
+                          h('img', {
+                            onClick: () => {
+                              this.togglePlayback()
+                            },
+                            class:
+                              'pointer-cursor index100 video-controls-icons bg-white',
+                            src: 'https://discoverfin.s3.amazonaws.com/assets/pause.svg',
+                          }),
+                          h('img', {
+                            onClick: () => {
+                              this.toggleAudio()
+                            },
+                            class:
+                              'pointer-cursor index100 video-controls-icons bg-white',
+                            src: `https://discoverfin.s3.amazonaws.com/assets/${
+                              !this.muted
+                                ? 'speaker-high'
+                                : 'speaker-simple-slash'
+                            }.svg`,
+                          }),
+                        ],
+                      )
+                    : null,
                 ],
               ),
-              // h("video", {
-              //   id: "video",
-              //   class: "video-container",
-              //   attrs: {
-              //   controls: "false",
-              //   autoPlay: "true",
-              //   }
-              // }),
               h(VideoPlayer),
             ],
           ),
