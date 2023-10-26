@@ -18048,6 +18048,12 @@ async function fetchAdvisor() {
       advisor.address.country = 'Canada';
       cookies.set('isCanadian', true);
       cookies.set('country', 'Canada', true);
+      cookies.set('Country', 'CA');
+    } else if (hasCountryParam && hasCountryParam === 'us') {
+      advisor.address.country = 'United States';
+      cookies.set('isCanadian', false);
+      cookies.set('country', 'United States', true);
+      cookies.set('Country', 'US');
     }
     try {
       const publicFeatures = await getPublicFeatures(advisor.userId);
