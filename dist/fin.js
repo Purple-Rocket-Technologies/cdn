@@ -18042,7 +18042,7 @@ async function fetchAdvisor() {
   try {
     const advisor = await getUser(USER_URL, COMPANY_URL);
     COMPANY_ID = advisor.company_id;
-    const hasCountryParam = window.location.search && window.location.search.country;
+    const hasCountryParam = new URLSearchParams(window.location.search).get('country');
     IS_CANADIAN_LINK = hasCountryParam ? hasCountryParam === 'ca' : advisor.address && advisor.address.country === 'Canada';
     console.log('hasCountryParam', hasCountryParam);
     if (hasCountryParam && hasCountryParam === 'ca') {
