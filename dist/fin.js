@@ -18044,9 +18044,10 @@ async function fetchAdvisor() {
     COMPANY_ID = advisor.company_id;
     const hasCountryParam = new URLSearchParams(window.location.search).get('country');
     IS_CANADIAN_LINK = hasCountryParam ? hasCountryParam === 'ca' : advisor.address && advisor.address.country === 'Canada';
-    console.log('hasCountryParam', hasCountryParam);
     if (hasCountryParam && hasCountryParam === 'ca') {
       advisor.address.country = 'Canada';
+      cookies.set('isCanadian', true);
+      cookies.set('country', 'Canada', true);
     }
     try {
       const publicFeatures = await getPublicFeatures(advisor.userId);

@@ -43,9 +43,10 @@ async function fetchAdvisor() {
       ? hasCountryParam === 'ca'
       : advisor.address && advisor.address.country === 'Canada'
 
-    console.log('hasCountryParam', hasCountryParam)
     if (hasCountryParam && hasCountryParam === 'ca') {
       advisor.address.country = 'Canada'
+      cookies.set('isCanadian', true)
+      cookies.set('country', 'Canada', true)
     }
 
     try {
