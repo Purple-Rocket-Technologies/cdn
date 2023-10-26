@@ -36,7 +36,17 @@ async function fetchAdvisor() {
   try {
     const advisor = await getUser(USER_URL, COMPANY_URL)
     COMPANY_ID = advisor.company_id
-    IS_CANADIAN_LINK = advisor.address && advisor.address.country === 'Canada'
+    const hasCountryParam =
+      window.location.search && window.location.search.country
+    IS_CANADIAN_LINK = hasCountryParam
+      ? hasCountryParam === 'ca'
+      : advisor.address && advisor.address.country === 'Canada'
+
+    console.log('hasCountryParam', hasCountryParam)
+    if (hasCountryParam && hasCountryParam === 'ca') {
+      advisor.address.country = 'Canada'
+    }
+
     try {
       const publicFeatures = await getPublicFeatures(advisor.userId)
       cookies.set('publicFeatures', JSON.stringify(publicFeatures))

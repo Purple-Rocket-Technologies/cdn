@@ -128,7 +128,7 @@ const onBoarding = {
         cookies.set(
           'isCanadian',
           country ? country.toLowerCase() === 'ca' : IS_CANADIAN_LINK,
-        )
+        );
         that.renderVideo(
           getVideoUrl(language, country ? country === 'ca' : IS_CANADIAN_LINK),
         )
@@ -205,7 +205,7 @@ const onBoarding = {
       if (IS_EXPERIOR) {
         const ca_lang_elem = $('.language-option.ca')
         ca_lang_elem.toggle('hide')
-        ca_lang_elem.css('display', "flex");
+        ca_lang_elem.css('display', 'flex')
         $('.language-flag.us').toggle('hide')
       }
 
