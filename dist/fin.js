@@ -19416,7 +19416,7 @@ const cookies = {
     if (r != null) return r[2];
     return null;
   },
-  set: (name, value, expires, path = '/', domain = window.location.host, secure) => {
+  set: (name, value, expires, path = '/', domain = window.location.host, secure = true, samesite = 'none') => {
     let cookie = `${name}=${value}`;
     if (expires) {
       cookie += `; expires=${expires}`;
@@ -19429,6 +19429,9 @@ const cookies = {
     }
     if (secure) {
       cookie += `; secure=${secure}`;
+    }
+    if (samesite) {
+      cookie += `; samesite=${samesite}`;
     }
     document.cookie = cookie;
   },

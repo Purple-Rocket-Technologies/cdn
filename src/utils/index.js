@@ -104,7 +104,8 @@ const cookies = {
     expires,
     path = '/',
     domain = window.location.host,
-    secure,
+    secure = true,
+    samesite = 'none',
   ) => {
     let cookie = `${name}=${value}`
     if (expires) {
@@ -118,6 +119,9 @@ const cookies = {
     }
     if (secure) {
       cookie += `; secure=${secure}`
+    }
+    if (samesite) {
+      cookie += `; samesite=${samesite}`
     }
     document.cookie = cookie
   },
