@@ -149,7 +149,7 @@ const cookies = {
     if (r != null) return r[2];
     return null;
   },
-  set: (name, value, expires, path = '/', domain, secure) => {
+  set: (name, value, expires, path = '/', domain = window.location.host, secure) => {
     let cookie = `${name}=${value}`;
     if (expires) {
       cookie += `; expires=${expires}`;
