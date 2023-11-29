@@ -32,6 +32,14 @@ module.exports = {
         umdNamedDefine: true,
       },
     },
+    finWidget: {
+      import: path.resolve(__dirname, 'src/fin-widget/widget.js'),
+      library: {
+        name: 'finWidget',
+        type: 'umd',
+        umdNamedDefine: true,
+      },
+    },
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
