@@ -103,7 +103,7 @@ const cookies = {
     value,
     expires,
     path = '/',
-    domain = window.location.host,
+    domain = '.discoverfin.io',
     secure = true,
     samesite = 'none',
   ) => {
