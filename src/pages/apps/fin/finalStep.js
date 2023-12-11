@@ -129,14 +129,16 @@ export default function initFinalStep() {
 
   const setupBRAND = () => {
     const BRAND = cookies.get('BRAND')
+    console.log('BRAND', BRAND)
     if (BRAND) {
       const brand = JSON.parse(BRAND)
+      console.log('brand', brand && brand.callToAction)
       if (
         !isEmpty(
           brand &&
-          brand.callToAction &&
-          brand.callToAction.url &&
-          brand.callToAction.text,
+            brand.callToAction &&
+            brand.callToAction.url &&
+            brand.callToAction.text,
         )
       ) {
         $('#learn-more').html(
