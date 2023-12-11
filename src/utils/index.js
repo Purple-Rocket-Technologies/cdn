@@ -296,12 +296,10 @@ const handleBrandLogo = (color = '#4417c7') => {
   let brand = cookies.get('BRAND')
   brand = brand && JSON.parse(brand)
 
-  console.log('brand', brand)
-
-  if (!brand) {
+  if (!brand || isEmpty(brand && brand.logo)) {
     console.log('brand not found')
     initiateAdvisorLogo(cookies.get('REP_NAME'), color)
-  } else {
+  } else if (!isEmpty(brand.logo)) {
     $('.main_logo').attr('src', brand.logo)
     $('.main_logo').css('width', `auto`)
     $('.main_logo').css('height', '60px')
