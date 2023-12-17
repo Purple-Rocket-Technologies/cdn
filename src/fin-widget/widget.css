@@ -14,7 +14,7 @@
   width: max-content;
   display: flex;
   align-items: center;
-  z-index: 99999999;
+  z-index: 100;
   flex-direction: column;
   gap: 12px;
 }
