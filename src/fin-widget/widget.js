@@ -40,6 +40,8 @@ function init(user_id) {
     // Function to show the popup
     var showPopup = function () {
       document.body.appendChild(popupOverlay)
+      const floatingMessage = document.querySelector('.floating--message')
+      if(floatingMessage) floatingMessage.remove()
     }
 
     // Function to hide the popup
